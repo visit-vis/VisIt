@@ -1,0 +1,1637 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "Box"=.\Box.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name BoxE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name BoxG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name BoxI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name BoxS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name BoxV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "BoxE"=.\BoxE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "BoxG"=.\BoxG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "BoxI"=.\BoxI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "BoxS"=.\BoxS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "BoxV"=.\BoxV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Clip"=.\Clip.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ClipE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ClipG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ClipI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ClipS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ClipV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ClipE"=.\ClipE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ClipG"=.\ClipG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ClipI"=.\ClipI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ClipS"=.\ClipS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ClipV"=.\ClipV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Cone"=.\Cone.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ConeE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ConeG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ConeI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ConeS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ConeV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ConeE"=.\ConeE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ConeG"=.\ConeG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ConeI"=.\ConeI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ConeS"=.\ConeS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ConeV"=.\ConeV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Context"=.\Context.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ContextE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ContextG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ContextI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ContextS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ContextV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ContextE"=.\ContextE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ContextG"=.\ContextG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ContextI"=.\ContextI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ContextS"=.\ContextS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ContextV"=.\ContextV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Cylinder"=.\Cylinder.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CylinderE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CylinderG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CylinderI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CylinderS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CylinderV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "CylinderE"=.\CylinderE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CylinderG"=.\CylinderG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CylinderI"=.\CylinderI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CylinderS"=.\CylinderS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CylinderV"=.\CylinderV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Displace"=.\Displace.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name DisplaceE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name DisplaceG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name DisplaceI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name DisplaceS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name DisplaceV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "DisplaceE"=.\DisplaceE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "DisplaceG"=.\DisplaceG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "DisplaceI"=.\DisplaceI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "DisplaceS"=.\DisplaceS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "DisplaceV"=.\DisplaceV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IndexSelect"=.\IndexSelect.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name IndexSelectE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IndexSelectG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IndexSelectI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IndexSelectS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IndexSelectV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "IndexSelectE"=.\IndexSelectE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IndexSelectG"=.\IndexSelectG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IndexSelectI"=.\IndexSelectI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IndexSelectS"=.\IndexSelectS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IndexSelectV"=.\IndexSelectV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "InverseGhostZone"=.\InverseGhostZone.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name InverseGhostZoneE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name InverseGhostZoneG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name InverseGhostZoneI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name InverseGhostZoneS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name InverseGhostZoneV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "InverseGhostZoneE"=.\InverseGhostZoneE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "InverseGhostZoneG"=.\InverseGhostZoneG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "InverseGhostZoneI"=.\InverseGhostZoneI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "InverseGhostZoneS"=.\InverseGhostZoneS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "InverseGhostZoneV"=.\InverseGhostZoneV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IsoSurface"=.\IsoSurface.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name IsoSurfaceE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IsoSurfaceG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IsoSurfaceI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IsoSurfaceS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IsoSurfaceV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "IsoSurfaceE"=.\IsoSurfaceE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IsoSurfaceG"=.\IsoSurfaceG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IsoSurfaceI"=.\IsoSurfaceI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IsoSurfaceS"=.\IsoSurfaceS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IsoSurfaceV"=.\IsoSurfaceV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Lineout"=.\Lineout.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name LineoutE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LineoutG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LineoutI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LineoutS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LineoutV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "LineoutE"=.\LineoutE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LineoutG"=.\LineoutG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LineoutI"=.\LineoutI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LineoutS"=.\LineoutS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LineoutV"=.\LineoutV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "OnionPeel"=.\OnionPeel.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name OnionPeelE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name OnionPeelG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name OnionPeelI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name OnionPeelS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name OnionPeelV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "OnionPeelE"=.\OnionPeelE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "OnionPeelG"=.\OnionPeelG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "OnionPeelI"=.\OnionPeelI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "OnionPeelS"=.\OnionPeelS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "OnionPeelV"=.\OnionPeelV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Reflect"=.\Reflect.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ReflectE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ReflectG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ReflectI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ReflectS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ReflectV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ReflectE"=.\ReflectE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ReflectG"=.\ReflectG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ReflectI"=.\ReflectI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ReflectS"=.\ReflectS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ReflectV"=.\ReflectV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SiloDump"=.\SiloDump.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name SiloDumpE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SiloDumpG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SiloDumpI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SiloDumpS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SiloDumpV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "SiloDumpE"=.\SiloDumpE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SiloDumpG"=.\SiloDumpG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SiloDumpI"=.\SiloDumpI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SiloDumpS"=.\SiloDumpS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SiloDumpV"=.\SiloDumpV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Slice"=.\Slice.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name SliceE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SliceG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SliceI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SliceS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SliceV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "SliceE"=.\SliceE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SliceG"=.\SliceG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SliceI"=.\SliceI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SliceS"=.\SliceS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SliceV"=.\SliceV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SphereSlice"=.\SphereSlice.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name SphereSliceE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SphereSliceG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SphereSliceI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SphereSliceS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SphereSliceV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "SphereSliceE"=.\SphereSliceE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SphereSliceG"=.\SphereSliceG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SphereSliceI"=.\SphereSliceI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SphereSliceS"=.\SphereSliceS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SphereSliceV"=.\SphereSliceV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ThreeSlice"=.\ThreeSlice.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ThreeSliceE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ThreeSliceG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ThreeSliceI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ThreeSliceS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ThreeSliceV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ThreeSliceE"=.\ThreeSliceE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ThreeSliceG"=.\ThreeSliceG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ThreeSliceI"=.\ThreeSliceI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ThreeSliceS"=.\ThreeSliceS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ThreeSliceV"=.\ThreeSliceV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Threshold"=.\Threshold.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ThresholdE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ThresholdG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ThresholdI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ThresholdS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ThresholdV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ThresholdE"=.\ThresholdE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ThresholdG"=.\ThresholdG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ThresholdI"=.\ThresholdI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ThresholdS"=.\ThresholdS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ThresholdV"=.\ThresholdV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Transform"=.\Transform.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name TransformE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TransformG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TransformI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TransformS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TransformV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "TransformE"=.\TransformE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TransformG"=.\TransformG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TransformI"=.\TransformI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TransformS"=.\TransformS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TransformV"=.\TransformV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "_TOP_LEVEL"=.\_TOP_LEVEL.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name Box
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Clip
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Cone
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Cylinder
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IndexSelect
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IsoSurface
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Lineout
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name OnionPeel
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Reflect
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Slice
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SphereSlice
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ThreeSlice
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Threshold
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Transform
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

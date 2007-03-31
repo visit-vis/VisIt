@@ -1,0 +1,197 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "_TOP_LEVEL"=.\_TOP_LEVEL.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name xml2atts
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name xml2avt
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name xml2info
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name xml2java
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name xml2python
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name xml2window
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name qtssh
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name silex
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name xmledit
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "qtssh"=.\qtssh.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name remotecommand
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "remotecommand"=.\remotecommand.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "silex"=.\silex.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name moc
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "xml2atts"=.\xml2atts.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "xml2avt"=.\xml2avt.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "xml2info"=.\xml2info.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "xml2java"=.\xml2java.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "xml2projectfile"=.\xml2projectfile.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "xml2python"=.\xml2python.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "xml2window"=.\xml2window.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "xmledit"=.\xmledit.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name moc
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+
