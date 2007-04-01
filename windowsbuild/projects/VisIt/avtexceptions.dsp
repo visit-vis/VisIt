@@ -100,39 +100,39 @@ PostBuild_Cmds=copy Debug\avtexceptions.lib ..\..\lib\Release\avtexceptions.lib	
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Database\BadPermissionException.C
+SOURCE=..\..\visit\common\Exceptions\Database\BadPermissionException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Database\FileDoesNotExistException.C
+SOURCE=..\..\visit\common\Exceptions\Database\FileDoesNotExistException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Database\InvalidDBTypeException.C
+SOURCE=..\..\visit\common\Exceptions\Database\InvalidDBTypeException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Database\InvalidFilesException.C
+SOURCE=..\..\visit\common\Exceptions\Database\InvalidFilesException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Database\InvalidSourceException.C
+SOURCE=..\..\visit\common\Exceptions\Database\InvalidSourceException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Database\InvalidTimeStepException.C
+SOURCE=..\..\visit\common\Exceptions\Database\InvalidTimeStepException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Database\InvalidVariableException.C
+SOURCE=..\..\visit\common\Exceptions\Database\InvalidVariableException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Database\InvalidZoneTypeException.C
+SOURCE=..\..\visit\common\Exceptions\Database\InvalidZoneTypeException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Database\SiloException.C
+SOURCE=..\..\visit\common\Exceptions\Database\SiloException.C
 # End Source File
 # End Group
 # Begin Group "Pipeline"
@@ -140,95 +140,95 @@ SOURCE=..\..\visit\components\Exceptions\Database\SiloException.C
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\AbortException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\AbortException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\BadCellException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\BadCellException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\BadDomainException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\BadDomainException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\BadIndexException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\BadIndexException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\BadNodeException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\BadNodeException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\BadVectorException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\BadVectorException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\ExpressionException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\ExpressionException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\GhostCellException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\GhostCellException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\ImproperUseException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\ImproperUseException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\IncompatibleDomainListsException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\IncompatibleDomainListsException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\IntervalTreeNotCalculatedException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\IntervalTreeNotCalculatedException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\InvalidCategoryException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\InvalidCategoryException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\InvalidCellTypeException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\InvalidCellTypeException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\InvalidDimensionsException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\InvalidDimensionsException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\InvalidLimitsException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\InvalidLimitsException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\InvalidMergeException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\InvalidMergeException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\InvalidSetException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\InvalidSetException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\LogicalIndexException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\LogicalIndexException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\NoCurveException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\NoCurveException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\NoDefaultVariableException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\NoDefaultVariableException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\NoInputException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\NoInputException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\NonQueryableInputException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\NonQueryableInputException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Pipeline\UnexpectedValueException.C
+SOURCE=..\..\visit\common\Exceptions\Pipeline\UnexpectedValueException.C
 # End Source File
 # End Group
 # Begin Group "VisWindow"
@@ -236,23 +236,23 @@ SOURCE=..\..\visit\components\Exceptions\Pipeline\UnexpectedValueException.C
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\VisWindow\BadColleagueException.C
+SOURCE=..\..\visit\common\Exceptions\VisWindow\BadColleagueException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\VisWindow\BadInteractorException.C
+SOURCE=..\..\visit\common\Exceptions\VisWindow\BadInteractorException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\VisWindow\BadPlotException.C
+SOURCE=..\..\visit\common\Exceptions\VisWindow\BadPlotException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\VisWindow\BadWindowModeException.C
+SOURCE=..\..\visit\common\Exceptions\VisWindow\BadWindowModeException.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\VisWindow\PlotDimensionalityException.C
+SOURCE=..\..\visit\common\Exceptions\VisWindow\PlotDimensionalityException.C
 # End Source File
 # End Group
 # Begin Group "Plotter"
@@ -260,7 +260,7 @@ SOURCE=..\..\visit\components\Exceptions\VisWindow\PlotDimensionalityException.C
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\..\visit\components\Exceptions\Plotter\InvalidColortableException.C
+SOURCE=..\..\visit\common\Exceptions\Plotter\InvalidColortableException.C
 # End Source File
 # End Group
 # End Target
