@@ -372,6 +372,10 @@ SOURCE=..\..\visit\common\state\Subject.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\state\SurfaceFilterAttributes.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\state\SyncAttributes.C
 # End Source File
 # Begin Source File

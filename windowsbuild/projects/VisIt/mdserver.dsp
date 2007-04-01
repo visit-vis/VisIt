@@ -115,6 +115,10 @@ SOURCE=..\..\visit\mdserver\main\GetMetaDataRPCExecutor.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\mdserver\main\GetPluginErrorsRPCExecutor.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\mdserver\main\GetSILRPCExecutor.C
 # End Source File
 # Begin Source File

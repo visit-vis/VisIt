@@ -1029,6 +1029,63 @@ Package=<4>
 
 ###############################################################################
 
+Project: "SAR"=.\SAR.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name SARE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SARI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SARM
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "SARE"=.\SARE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SARI"=.\SARI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SARM"=.\SARM.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "STL"=.\STL.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1189,6 +1246,63 @@ Package=<4>
 ###############################################################################
 
 Project: "SpheralM"=.\SpheralM.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TFT"=.\TFT.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name TFTE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TFTI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TFTM
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "TFTE"=.\TFTE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TFTI"=.\TFTI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TFTM"=.\TFTM.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -1513,6 +1627,12 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Dune
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SAR
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TFT
     End Project Dependency
 }}}
 

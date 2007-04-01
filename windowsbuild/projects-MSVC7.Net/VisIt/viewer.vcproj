@@ -40,7 +40,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib comm.lib plugin.lib viewer.lib visit_vtk.lib qt-mt302.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib comm.lib plugin.lib viewer.lib pipeline_ser.lib visit_vtk.lib qt-mt302.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Release\viewer.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -102,7 +102,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib plugin.lib viewer.lib visit_vtk.lib qt-mt302.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib plugin.lib viewer.lib pipeline_ser.lib visit_vtk.lib qt-mt302.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Debug\viewer.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

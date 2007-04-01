@@ -97,10 +97,6 @@ PostBuild_Cmds=copy Debug\libVSurface.dll ..\..\bin\Debug\plots
 # Name "SurfaceV - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\visit\plots\Surface\avtSurfaceFilter.C
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\visit\plots\Surface\avtSurfacePlot.C
 # End Source File
 # Begin Source File

@@ -525,6 +525,93 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Elevate"=.\Elevate.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ElevateE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ElevateG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ElevateI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ElevateS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ElevateV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ElevateE"=.\ElevateE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ElevateG"=.\ElevateG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ElevateI"=.\ElevateI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ElevateS"=.\ElevateS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ElevateV"=.\ElevateV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "IndexSelect"=.\IndexSelect.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1894,6 +1981,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Revolve
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Elevate
     End Project Dependency
 }}}
 

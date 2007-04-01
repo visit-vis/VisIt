@@ -192,6 +192,10 @@ SOURCE=..\..\visit\components\Filters\avtSummationFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Filters\avtSurfaceFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Filters\avtTiledImageCompositor.C
 # End Source File
 # Begin Source File

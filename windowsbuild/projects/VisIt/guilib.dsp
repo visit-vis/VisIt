@@ -240,6 +240,10 @@ SOURCE=..\..\visit\gui\QvisFileSelectionWindow.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisFtp.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisGaussianOpacityBar.C
 # End Source File
 # Begin Source File
@@ -445,6 +449,10 @@ SOURCE=..\..\visit\gui\QvisViewWindow.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisVisItUpdate.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisWindowBase.C
 # End Source File
 # Begin Source File
@@ -562,6 +570,10 @@ SOURCE=..\..\visit\gui\QvisFilePanel_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisFileSelectionWindow_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisFtp_moc.C
 # End Source File
 # Begin Source File
 
@@ -742,6 +754,10 @@ SOURCE=..\..\visit\gui\QvisVCRControl_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisViewWindow_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisVisItUpdate_moc.C
 # End Source File
 # Begin Source File
 

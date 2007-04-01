@@ -1502,6 +1502,21 @@ copy Debug\state.lib ..\..\lib\MSVC7.Net\Debug\state.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\common\state\SurfaceFilterAttributes.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\common\state\SyncAttributes.C">
 				<FileConfiguration
 					Name="Release|Win32">

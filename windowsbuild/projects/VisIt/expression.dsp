@@ -204,6 +204,10 @@ SOURCE=..\..\visit\components\Expressions\General\avtRelativeDifferenceFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\General\avtResradFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\General\avtSpecMFFilter.C
 # End Source File
 # Begin Source File
@@ -345,6 +349,10 @@ SOURCE=..\..\visit\components\Expressions\MeshQuality\avtRevolvedSurfaceArea.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\MeshQuality\avtRevolvedVolume.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\MeshQuality\avtSideVolume.C
 # End Source File
 # Begin Source File
 

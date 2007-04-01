@@ -36,6 +36,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisFileInformationWindow.h        -o %G%\QvisFileInformationWindow_moc.C
 %MOC% %HEADERS%\QvisFilePanel.h                    -o %G%\QvisFilePanel_moc.C
 %MOC% %HEADERS%\QvisFileSelectionWindow.h          -o %G%\QvisFileSelectionWindow_moc.C
+%MOC% %HEADERS%\QvisFtp.h                          -o %G%\QvisFtp_moc.C
 %MOC% %HEADERS%\QvisGUIApplication.h               -o %G%\QvisGUIApplication_moc.C
 %MOC% %HEADERS%\QvisGaussianOpacityBar.h           -o %G%\QvisGaussianOpacityBar_moc.C
 %MOC% %HEADERS%\QvisGlobalLineoutWindow.h          -o %G%\QvisGlobalLineoutWindow_moc.C
@@ -81,6 +82,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisVariableButtonHelper.h         -o %G%\QvisVariableButtonHelper_moc.C
 %MOC% %HEADERS%\QvisVCRControl.h                   -o %G%\QvisVCRControl_moc.C
 %MOC% %HEADERS%\QvisViewWindow.h                   -o %G%\QvisViewWindow_moc.C
+%MOC% %HEADERS%\QvisVisItUpdate.h                  -o %G%\QvisVisItUpdate_moc.C
 %MOC% %HEADERS%\QvisWindowBase.h                   -o %G%\QvisWindowBase_moc.C
 %MOC% %HEADERS%\QvisWizard.h                       -o %G%\QvisWizard_moc.C
 %MOC% %HEADERS%\SplashScreen.h                     -o %G%\SplashScreen_moc.C
