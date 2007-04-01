@@ -21,6 +21,7 @@ set G=%VISIT%\plots
 %MOC% %G%\Surface\QvisSurfacePlotWindow.h               -o %G%\Surface\QvisSurfacePlotWindow_moc.C
 %MOC% %G%\Tensor\QvisTensorPlotWindow.h                 -o %G%\Tensor\QvisTensorPlotWindow_moc.C
 %MOC% %G%\Topology\QvisTopologyPlotWindow.h             -o %G%\Topology\QvisTopologyPlotWindow_moc.C
+%MOC% %G%\Truecolor\QvisTruecolorPlotWindow.h           -o %G%\Truecolor\QvisTruecolorPlotWindow_moc.C
 %MOC% %G%\Vector\QvisVectorPlotWindow.h                 -o %G%\Vector\QvisVectorPlotWindow_moc.C
 %MOC% %G%\Volume\QvisVolumePlotWindow.h                 -o %G%\Volume\QvisVolumePlotWindow_moc.C
 

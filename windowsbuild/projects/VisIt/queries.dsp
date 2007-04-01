@@ -238,6 +238,10 @@ SOURCE=..\..\visit\components\Queries\Queries\avtWeightedVariableSummationQuery.
 
 SOURCE=..\..\visit\components\Queries\Queries\avtZoneCenterQuery.C
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\MinMaxInfo.C
+# End Source File
 # End Group
 # Begin Group "Misc"
 

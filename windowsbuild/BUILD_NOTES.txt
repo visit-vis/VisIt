@@ -9,7 +9,7 @@ Required packages
 VisIt requires several libraries in order to build successfully. The table below lists the library packages that VisIt requires. Pre-built versions of the libraries listed below are provided in the VisIt development distribution to make VisIt easier to build. The only library that is not provided as a pre-built binary is Qt. You can either download Qt free edition for Windows or you can purchase a Qt development license. In either case, you must build Qt yourself. We use Qt 3.0.2 to develop VisIt on Windows, though we use versions ranging from 2.3.0 through 3.3.0 on other platforms.
 
 Package   Version    Download location
-VisIt     1.3      ftp://ftp.llnl.gov/pub/visit/visit1.3/VisItDev1.3.2.exe
+VisIt     1.3      ftp://ftp.llnl.gov/pub/visit/visit1.3/VisItDev1.3.3.exe
 VTK       4.2+       ftp://ftp.llnl.gov/pub/visit/3rd_party/Vtk_cvs_2003_10_28.tar.gz
                      http://www.kitware.com
 CMake     1.8        http://www.cmake.org/CMSetup182.exe
@@ -22,7 +22,7 @@ Qt        3.0.2+     http://www.trolltech.com
 Required Compiler
 =================
 
-These instructions assume that you are using Microsoft’s Visual C++ version 6.0. Other compilers may work to compile VisIt but we only provide project files and pre-built libraries for Microsoft’s Visual C++ version 6.0. We plan to support Microsoft’s Visual C++ .NET 2003 compiler too but our current source code distribution has header file incompatibilities with that compiler.
+These instructions assume that you are using Microsoft's Visual C++ version 6.0. Other compilers may work to compile VisIt but we only provide project files and pre-built libraries for Microsoft's Visual C++ version 6.0. We plan to support Microsoft's Visual C++ .NET 2003 compiler too but our current source code distribution has header file incompatibilities with that compiler.
 
 Project file issues
 ===================
@@ -32,12 +32,12 @@ It has been reported that the VisIt project files reference qt-mt302.lib, which 
 Installing packages
 ===================
 
-First download Qt from Trolltech’'s Web site and then extract it to your C:\ drive. If you want to build all of VisIt’s other libraries from source, download those libraries as well. After downloading all of the required packages, extract them to your C:\ drive or run their installation programs. After running the package installation programs, you should have the following directories on your hard drive:
+First download Qt from Trolltech's Web site and then extract it to your C:\ drive. If you want to build all of VisIt's other libraries from source, download those libraries as well. After downloading all of the required packages, extract them to your C:\ drive or run their installation programs. After running the package installation programs, you should have the following directories on your hard drive:
 
-C:\VisItDev1.3.2 where version is the version of VisIt
+C:\VisItDev1.3.3 where version is the version of VisIt
 C:\Qt
 
-You will also have these directories if you installed VTK, Mesa, and Python instead of opting to use VisIt’s pre-built versions.
+You will also have these directories if you installed VTK, Mesa, and Python instead of opting to use VisIt's pre-built versions.
 
 C:\VTK
 C:\Mesa-5.0.1
@@ -47,30 +47,30 @@ C:\Python2.1.2
 Tips before you build
 =====================
 
-Much of VisIt is implemented in the form of dynamically linked libraries (DLLs) so it is imperative that all libraries are built with the Multithreaded DLL memory model. Also be sure to use the same Debug/Release setting when you build libraries. If you build any of VisIt’s DLLs with a different memory model, VisIt will likely crash at runtime in unexpected ways. That being said, all of VisIt’s support libraries must be built as DLLs. You can set the memory model in the Project settings window in the C++ code generation options.
+Much of VisIt is implemented in the form of dynamically linked libraries (DLLs) so it is imperative that all libraries are built with the Multithreaded DLL memory model. Also be sure to use the same Debug/Release setting when you build libraries. If you build any of VisIt's DLLs with a different memory model, VisIt will likely crash at runtime in unexpected ways. That being said, all of VisIt's support libraries must be built as DLLs. You can set the memory model in the Project settings window in the C++ code generation options.
 
-Some scripts that run as part of the VisIt build need to have the VISITDEVDIR environment variable set. When VisIt’s windows development distribution is installed, this environment variable is set to the directory where the development distribution was installed. If for some reason, the environment variable was not set, please add it to the environment. To add an environment variable on Windows 2000, open the Environment variables window by opening System from the Control Panel and then clicking the Environment variables… button on the advanced tab. Once the Environment variables window is open, click the New… button in the User variables pane and add VISITDEVDIR with the path to the VisIt source distribution. If you installed the source distribution in the default location, you would set VISITDEVDIR to C:\VisItDev1.3.2.
+Some scripts that run as part of the VisIt build need to have the VISITDEVDIR environment variable set. When VisIt's windows development distribution is installed, this environment variable is set to the directory where the development distribution was installed. If for some reason, the environment variable was not set, please add it to the environment. To add an environment variable on Windows 2000, open the Environment variables window by opening System from the Control Panel and then clicking the Environment variables… button on the advanced tab. Once the Environment variables window is open, click the New… button in the User variables pane and add VISITDEVDIR with the path to the VisIt source distribution. If you installed the source distribution in the default location, you would set VISITDEVDIR to C:\VisItDev1.3.3.
 Directories for include files and libraries
 
-The compiler and linker must know where to find VisIt’s header files and libraries and the header files and libraries of the support libraries that it uses. You must set include and library directories in order to build VisIt. Open the Options window by selecting Tools->Options… Once the Options window is open, choose the Directories tab and add the following include directories if you plan to build VisIt using the pre-built support libraries:
+The compiler and linker must know where to find VisIt's header files and libraries and the header files and libraries of the support libraries that it uses. You must set include and library directories in order to build VisIt. Open the Options window by selecting Tools->Options… Once the Options window is open, choose the Directories tab and add the following include directories if you plan to build VisIt using the pre-built support libraries:
 
-C:\VisItDev1.3.2\visit\
-C:\VisItDev1.3.2\vtk\
-C:\VisItDev1.3.2\Python\
-C:\VisItDev1.3.2\mesa\
-C:\VisItDev1.3.2\silo\
-C:\VisItDev1.3.2\zlib\
-C:\VisItDev1.3.2\tools\
+C:\VisItDev1.3.3\include\visit\
+C:\VisItDev1.3.3\include\vtk\
+C:\VisItDev1.3.3\include\Python\
+C:\VisItDev1.3.3\include\Mesa\
+C:\VisItDev1.3.3\include\silo\
+C:\VisItDev1.3.3\include\zlib\
+C:\VisItDev1.3.3\include\Tools\
 
-If you’ve built any of the support libraries yourself, substitute the path to that library instead of using the included header files. You must also add the include path to Qt if it is not already in the list or VisIt will fail to build.
+If you've built any of the support libraries yourself, substitute the path to that library instead of using the included header files. You must also add the include path to Qt if it is not already in the list or VisIt will fail to build.
 
 In addition to adding include file directories, you also must add library directories. Make sure that you add either:
 
-C:\VisItDev1.3.2\lib\Release
+C:\VisItDev1.3.3\lib\Release
 
 or
 
-C:\VisItDev1.3.2\lib\Debug
+C:\VisItDev1.3.3\lib\Debug
 
 
 Building Qt
@@ -87,11 +87,11 @@ Most developers can skip this step since a pre-built version of Mesa is included
 Building VTK
 ============
 
-VisIt’s Windows development distribution includes pre-built versions of VTK, the visualization toolkit that VisIt uses for data manipulation and rendering, so you do not need to build it unless you want to use a newer version of VTK. Be aware that when you use a newer version of VTK, VisIt might not build because the VTK programming interface often changes drastically from release to release. 
+VisIt's Windows development distribution includes pre-built versions of VTK, the visualization toolkit that VisIt uses for data manipulation and rendering, so you do not need to build it unless you want to use a newer version of VTK. Be aware that when you use a newer version of VTK, VisIt might not build because the VTK programming interface often changes drastically from release to release. 
 
 If you want to build your own version of VTK, you must have CMake, which is a cross-platform make utility that VTK uses to generate project files for Visual Studio. Once you have CMake installed, run it a window will appear on the screen. Near the top of the window, there are options to tell CMake where to find the source code and where to build the binaries. Make sure you tell CMake that the source code is located in C:\VTK and that you want to build binaries in C:\VTK\bin.
 
-After telling CMake where to find source code and where to put binaries, click the Configure button to start configuring CMake to generate VTK’s project files. Once CMake has been configured, a list of properties will appear in the center of CMake’s window. These properties tell CMake how you want to configure VTK.
+After telling CMake where to find source code and where to put binaries, click the Configure button to start configuring CMake to generate VTK's project files. Once CMake has been configured, a list of properties will appear in the center of CMake's window. These properties tell CMake how you want to configure VTK.
 
     * Change the VTK_USE_MANGLED_MESA property so it is ON. This allows VisIt to use both OpenGL and Mesa at the same time, which is required for off-screen rendering.
     * Change the LIBRARY_OUTPUT_PATH and EXECUTABLE_OUTPUT_PATH properties to C:\VTK\bin.
@@ -101,13 +101,13 @@ After telling CMake where to find source code and where to put binaries, click t
 
 Click the Configure button again so CMake creates updated Visual Studio project files for VTK. Properties that are shown in red need more information to complete. Provide the required information and click the Configure button again until all properties are gray and CMake creates the project files to build VTK.
 
-Before you start building VTK, you need to copy VisIt’s implementation of vtkCamera over the native VTK implementation to work around deficiencies in VTK’s camera class. Copy C:\VisItDev\1.3.2\visitsrc\visit_vtk\vtkCamera.h to C:\VTK\Rendering and also copy C:\VisItDev1.3.2\visitsrc\visit_vtk\vtkCamera.C to C:\VTK\Rendering\vtkCamera.cxx.
+Before you start building VTK, you need to copy VisIt's implementation of vtkCamera over the native VTK implementation to work around deficiencies in VTK's camera class. Copy C:\VisItDev\1.3.3\visitsrc\visit_vtk\vtkCamera.h to C:\VTK\Rendering and also copy C:\VisItDev1.3.3\visitsrc\visit_vtk\vtkCamera.C to C:\VTK\Rendering\vtkCamera.cxx.
 
-Now that VTK has been configured, run Visual Studio and open up the VTK workspace stored in C:\VTK\bin\VTK.dsw. Select the ALLBUILD project if it is not already the active project. Then set the active build configuration to “ALL BUILD – Win32 Release” if you want a release version of the code or use “ALL BUILD – Win32 Debug” if you want debugging information.
+Now that VTK has been configured, run Visual Studio and open up the VTK workspace stored in C:\VTK\bin\VTK.dsw. Select the ALLBUILD project if it is not already the active project. Then set the active build configuration to "ALL BUILD - Win32 Release" if you want a release version of the code or use "ALL BUILD - Win32 Debug" if you want debugging information.
 
 The project settings for each VTK library should already be targeted to generate code that uses a Multithreaded DLL runtime library but it makes sense to double-check and perhaps change the target processor to Pentium Pro instead of using the default “blend” target.
 
-As libraries are created, they are put into C:\VTK\bin\Release if you’re building a Release version or they are put into C:\VTK\bin\Debug if you’re building a Debug version of the VTK library. Once VTK is done building, copy all of the import libraries (*.lib) and from C:\VTK\bin\Release into C:\VisItDev1.3.2\lib\Release. Copy all of the DLL’s (*.dll) from C:\VTK\bin\Release into C:\VisItDev1.3.2\bin\Release. If you built a Debug version of VTK, substitute “Debug” for “Release”.
+As libraries are created, they are put into C:\VTK\bin\Release if you're building a Release version or they are put into C:\VTK\bin\Debug if you're building a Debug version of the VTK library. Once VTK is done building, copy all of the import libraries (*.lib) and from C:\VTK\bin\Release into C:\VisItDev1.3.3\lib\Release. Copy all of the DLL's (*.dll) from C:\VTK\bin\Release into C:\VisItDev1.3.3\bin\Release. If you built a Debug version of VTK, substitute "Debug" for "Release".
 
 
 Building Python
@@ -119,15 +119,17 @@ Use the version of Python that comes with VisIt.
 Building VisIt
 ==============
 
-Five project workspaces are required to build VisIt. All project workspaces are located under the C:\VisItDev1.3.2\projects directory. The table below lists the name of the project workspace and lists the purpose of the workspace. The order the workspaces appear in the table is the order in which they must be built.
+Five project workspaces are required to build VisIt. All project workspaces are located under the C:\VisItDev1.3.3\projects directory. The table below lists the name of the project workspace and lists the purpose of the workspace. The order the workspaces appear in the table is the order in which they must be built.
 
 Project workspace     Purpose
-VisIt.dsw             Builds all of VisIt’s core libraries
-PlotPlugins.dsw       Builds all of VisIt’s standard plot plug-ins
-OperatorPlugins.dsw   Builds all of VisIt’s standard operator plug-ins
-DatabasePlugins.dsw   Builds all of VisIt’s standard database plug-ins
-Tools.dsw             Builds all of VisIt’s support tools
+VisIt.dsw             Builds all of VisIt's core libraries
+PlotPlugins.dsw       Builds all of VisIt's standard plot plug-ins
+OperatorPlugins.dsw   Builds all of VisIt's standard operator plug-ins
+DatabasePlugins.dsw   Builds all of VisIt's standard database plug-ins
+Tools.dsw             Builds all of VisIt's support tools
 
-To build VisIt, open a project workspace, set the active configuration, which tells the compiler to build either Debug or Release code, and build the source code. Make sure that the _TOP_LEVEL project is the active project to ensure that all projects in the workspace are built. Note that you must use the same active configuration for all VisIt project workspaces or you’ll get unexpected runtime errors.
+Before building VisIt, make sure that your C++ build environment is set up to look for include files from all of the directories under C:\VisItDev1.3.3\include. Also make sure that it looks for library files in C:\VisItDev1.3.3\lib\Release or C:\VisItDev1.3.3\lib\Debug, depending on which kind of build you plan to create.
 
-If you are building a Release version of VisIt, all of the shared libraries, etc. will be placed in the C:\VisItDev1.3.2\bin\Release directory. If you built a Debug version, all of VisIt’s components will be saved in the C:\VisItDev1.3.2\bin\Debug directory. 
+To build VisIt, open a project workspace, set the active configuration, which tells the compiler to build either Debug or Release code, and build the source code. Make sure that the _TOP_LEVEL project is the active project to ensure that all projects in the workspace are built. Note that you must use the same active configuration for all VisIt project workspaces or you'll get unexpected runtime errors.
+
+If you are building a Release version of VisIt, all of the shared libraries, etc. will be placed in the C:\VisItDev1.3.3\bin\Release directory. If you built a Debug version, all of VisIt's components will be saved in the C:\VisItDev1.3.3\bin\Debug directory. 

@@ -26,11 +26,14 @@
 #   Brad Whitlock, Tue Jun 29 13:08:33 PST 2004
 #   Updated for 1.3.2.
 #
+#   Brad Whitlock, Wed Jul 14 09:34:28 PDT 2004
+#   Updated for 1.3.3 and changed registry keys.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt for Windows source code"
-!define PRODUCT_VERSION "1.3.2"
+!define PRODUCT_VERSION "1.3.3"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visitdev${PRODUCT_VERSION}"
@@ -124,6 +127,7 @@ Section -Post
   
   # Set the VISITDEVDIR key in the registry.
   WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITDEVDIR" "$INSTDIR"
+  WriteRegStr HKCU "VISIT${PRODUCT_VERSION}" "VISITDEVDIR" "$INSTDIR"
 
   # Set the VISITDEVDIR key in the registry so it will be set as an 
   # environment variable for the current user.

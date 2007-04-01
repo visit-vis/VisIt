@@ -26,11 +26,16 @@
 #   Brad Whitlock, Tue Jun 29 13:08:46 PST 2004
 #   Updated for 1.3.2.
 #
+#   Brad Whitlock, Wed Jul 14 09:19:08 PDT 2004
+#   Updated for 1.3.3 and made it save the registry keys that VisIt needs
+#   in order to run to user-accessible registry keys so installing VisIt
+#   without admin access does not prevent VisIt from running at all.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.3.2"
+!define PRODUCT_VERSION "1.3.3"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit.exe"
@@ -373,10 +378,13 @@ SectionEnd
 Section AddVisItRegKeys
 #
 # This section installs the VISIT<version> key, which tells visit.exe where
-# to find the rest of the VisIt components.
+# to find the rest of the VisIt components. Note that we put keys in 
+# HKEY_LOCAL_MACHINE and in HKEY_CURRENT_USER.
 #
   WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "" ""
+  WriteRegStr HKCU "VISIT${PRODUCT_VERSION}" "" ""
   WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITHOME" "$INSTDIR"
+  WriteRegStr HKCU "VISIT${PRODUCT_VERSION}" "VISITHOME" "$INSTDIR"
 
   # Write the system config that the user chose.
   !insertmacro MUI_INSTALLOPTIONS_READ $0 "NetworkConfig.ini" "Field 1" "State"
@@ -388,9 +396,11 @@ HaveNetworkConfig:
     Strcmp $0 "1" OpenNetworkConfig ClosedNetworkConfig
 OpenNetworkConfig:
          WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-open"
+         WriteRegStr HKCU "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-open"
          Goto SkipNetworkConfig
 ClosedNetworkConfig:
          WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-closed"
+         WriteRegStr HKCU "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-closed"
 SkipNetworkConfig:
 
   # If the Python installation path for Python 2.1 does not exist then create it.
@@ -490,6 +500,7 @@ Section Uninstall
 
   # Delete the VisIt <version> key registry.
   DeleteRegKey HKCR "VISIT${PRODUCT_VERSION}"
+  DeleteRegKey HKCU "VISIT${PRODUCT_VERSION}"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"

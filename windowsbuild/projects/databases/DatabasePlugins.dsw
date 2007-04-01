@@ -117,6 +117,63 @@ Package=<4>
 
 ###############################################################################
 
+Project: "CosmosPP"=.\CosmosPP.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CosmosPPE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CosmosPPI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CosmosPPM
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "CosmosPPE"=.\CosmosPPE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CosmosPPI"=.\CosmosPPI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CosmosPPM"=.\CosmosPPM.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "Curve2D"=.\Curve2D.dsp - Package Owner=<4>
 
 Package=<5>
@@ -277,6 +334,63 @@ Package=<4>
 ###############################################################################
 
 Project: "HexM"=.\HexM.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Image"=.\Image.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ImageE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ImageI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ImageM
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ImageE"=.\ImageE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ImageI"=.\ImageI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ImageM"=.\ImageM.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -1029,6 +1143,63 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Vista"=.\Vista.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name VistaE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name VistaI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name VistaM
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "VistaE"=.\VistaE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "VistaI"=.\VistaI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "VistaM"=.\VistaM.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "WavefrontOBJ"=.\WavefrontOBJ.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1147,6 +1318,15 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name PDB
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CosmosPP
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name KullLite
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Image
     End Project Dependency
 }}}
 

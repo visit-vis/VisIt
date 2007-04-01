@@ -1134,6 +1134,93 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Truecolor"=.\Truecolor.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name TruecolorE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TruecolorG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TruecolorI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TruecolorS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TruecolorV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "TruecolorE"=.\TruecolorE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TruecolorG"=.\TruecolorG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TruecolorI"=.\TruecolorI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TruecolorS"=.\TruecolorS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TruecolorV"=.\TruecolorV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "_TOP_LEVEL"=.\_TOP_LEVEL.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1174,6 +1261,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Tensor
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Truecolor
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Vector

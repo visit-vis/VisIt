@@ -104,6 +104,10 @@ SOURCE=..\..\visit\visit_vtk\lightweight\ClipCasesHex.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visit_vtk\lightweight\ClipCasesPix.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visit_vtk\lightweight\ClipCasesPyr.C
 # End Source File
 # Begin Source File
@@ -117,6 +121,10 @@ SOURCE=..\..\visit\visit_vtk\lightweight\ClipCasesTet.C
 # Begin Source File
 
 SOURCE=..\..\visit\visit_vtk\lightweight\ClipCasesTri.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visit_vtk\lightweight\ClipCasesVox.C
 # End Source File
 # Begin Source File
 
