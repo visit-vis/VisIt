@@ -100,63 +100,79 @@ PostBuild_Cmds=copy Debug\remotecommand.lib ..\..\lib\Debug\remotecommand.lib	co
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSH.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\ssh.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHBLOWF.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHAES.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHBN.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshblowf.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHCRC.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshbn.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHDES.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshcrc.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHDH.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHCRCDA.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHDSS.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshdes.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHMD5.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshdh.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHPRIME.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshdss.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHPUBK.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHDSSG.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHRAND.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshmd5.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHRSA.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshprime.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHRSAG.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshpubk.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHSHA.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshrand.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHZLIB.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshrsa.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshrsag.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHSH512.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshsha.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\sshzlib.c
 # End Source File
 # End Group
 # Begin Group "puttysrc"
@@ -164,7 +180,27 @@ SOURCE=..\..\visit\tools\qtssh\remotecommand\SSHZLIB.C
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\..\visit\tools\qtssh\remotecommand\BE_SSH.C
+SOURCE=..\..\visit\tools\qtssh\remotecommand\BE_ALL.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\CMDLINE.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\CONSOLE.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\LDISC.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\LOGGING.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\MISC.C
 # End Source File
 # Begin Source File
 
@@ -176,7 +212,31 @@ SOURCE=..\..\visit\tools\qtssh\remotecommand\PAGEANTC.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\tools\qtssh\remotecommand\PORTFWD.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\PPROXY.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\PROXY.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\RAW.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\RLOGIN.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\tools\qtssh\remotecommand\SETTINGS.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\TELNET.C
 # End Source File
 # Begin Source File
 
@@ -188,11 +248,27 @@ SOURCE=..\..\visit\tools\qtssh\remotecommand\VERSION.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\tools\qtssh\remotecommand\WILDCARD.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\WINDEFS.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\WINMISC.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\tools\qtssh\remotecommand\WINNET.C
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\visit\tools\qtssh\remotecommand\WINSTORE.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\tools\qtssh\remotecommand\X11FWD.C
 # End Source File
 # End Group
 # Begin Source File
