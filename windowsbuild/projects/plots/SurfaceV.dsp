@@ -105,6 +105,10 @@ SOURCE=..\..\visit\plots\Surface\avtSurfacePlot.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\plots\Surface\avtWireframeFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\plots\Surface\SurfaceAttributes.C
 # End Source File
 # Begin Source File

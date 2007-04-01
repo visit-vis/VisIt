@@ -392,6 +392,14 @@ SOURCE=..\..\visit\common\state\VisItRPC.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\state\VisualCueInfo.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\common\state\VisualCueList.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\state\WindowAttributes.C
 # End Source File
 # Begin Source File

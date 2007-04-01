@@ -152,10 +152,6 @@ SOURCE=..\..\visit\components\Queries\Queries\avtCompactnessQuery.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Queries\Queries\avtCurvePickQuery.C
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\visit\components\Queries\Queries\avtCycleQuery.C
 # End Source File
 # Begin Source File
@@ -176,11 +172,11 @@ SOURCE=..\..\visit\components\Queries\Queries\avtL2NormQuery.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Queries\Queries\avtLocateCellQuery.C
+SOURCE=..\..\visit\components\Queries\Queries\avtMinMaxQuery.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Queries\Queries\avtMinMaxQuery.C
+SOURCE=..\..\visit\components\Queries\Queries\avtNodeCoordsQuery.C
 # End Source File
 # Begin Source File
 
@@ -201,10 +197,6 @@ SOURCE=..\..\visit\components\Queries\Queries\avtOriginalDataNumNodesQuery.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Queries\Queries\avtOriginalDataNumZonesQuery.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Queries\Queries\avtPickQuery.C
 # End Source File
 # Begin Source File
 
@@ -242,6 +234,10 @@ SOURCE=..\..\visit\components\Queries\Queries\avtVariableSummationQuery.C
 
 SOURCE=..\..\visit\components\Queries\Queries\avtWeightedVariableSummationQuery.C
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtZoneCenterQuery.C
+# End Source File
 # End Group
 # Begin Group "Misc"
 
@@ -253,6 +249,58 @@ SOURCE=..\..\visit\components\Queries\Misc\avtQueryFactory.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Queries\Misc\avtQueryOverTimeFilter.C
+# End Source File
+# End Group
+# Begin Group "Pick"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtActualCoordsQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtActualNodeCoordsQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtActualZoneCoordsQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtCurvePickQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtLocateCellQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtLocateNodeQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtLocateQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtNodePickQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtPickByNodeQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtPickByZoneQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtPickQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Pick\avtZonePickQuery.C
 # End Source File
 # End Group
 # End Target
