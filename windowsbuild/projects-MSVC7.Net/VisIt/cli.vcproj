@@ -12,8 +12,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
+			OutputDirectory=".\Release\cli"
+			IntermediateDirectory=".\Release\cli"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -75,8 +75,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
+			OutputDirectory=".\Debug\cli"
+			IntermediateDirectory=".\Debug\cli"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -232,6 +232,15 @@
 					BasicRuntimeChecks="3"
 					CompileAs="2"
 					UndefinePreprocessorDefinitions=""/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\visit\visitpy\PyInteractorAttributes.C">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					CompileAs="2"/>
 			</FileConfiguration>
 		</File>
 		<File

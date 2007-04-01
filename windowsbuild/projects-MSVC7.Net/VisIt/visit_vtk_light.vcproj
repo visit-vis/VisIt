@@ -23,12 +23,12 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VISIT_VTK_LIGHT_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Release\visit_vtk_light.pch"
 				AssemblerListingLocation=".\Release\"
@@ -44,8 +44,8 @@
 				OutputFile=".\Release\visit_vtk_light.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release\visit_vtk_light.pdb"
 				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				ProgramDatabaseFile=".\Release\visit_vtk_light.pdb"
 				ImportLibrary=".\Release\visit_vtk_light.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -92,11 +92,11 @@ copy Release\visit_vtk_light.dll ..\..\bin\MSVC7.Net\Release\visit_vtk_light.dll
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VISIT_VTK_LIGHT_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug\visit_vtk_light.pch"
 				AssemblerListingLocation=".\Debug\"
@@ -113,9 +113,9 @@ copy Release\visit_vtk_light.dll ..\..\bin\MSVC7.Net\Release\visit_vtk_light.dll
 				OutputFile=".\Debug\visit_vtk_light.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\visit_vtk_light.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				ImportLibrary=".\Debug\visit_vtk_light.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -378,6 +378,15 @@ copy Debug\visit_vtk_light.lib ..\..\lib\MSVC7.Net\Debug\visit_vtk_light.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\visit_vtk\lightweight\vtkPolyDataRelevantPointsFilter.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\visit_vtk\lightweight\vtkTriangulationTables.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -414,6 +423,15 @@ copy Debug\visit_vtk_light.lib ..\..\lib\MSVC7.Net\Debug\visit_vtk_light.lib
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\visit_vtk\lightweight\vtkUnstructuredGridFacelistFilter.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

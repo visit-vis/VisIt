@@ -39,7 +39,7 @@ RSC=rc.exe
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
-# PROP Intermediate_Dir "Release"
+# PROP Intermediate_Dir "Release\plotter"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PLOTTER_EXPORTS" /YX /FD /c
@@ -69,7 +69,7 @@ PostBuild_Cmds=copy Release\plotter.lib ..\..\lib\Release\plotter.lib	copy Relea
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
-# PROP Intermediate_Dir "Debug"
+# PROP Intermediate_Dir "Debug\plotter"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PLOTTER_EXPORTS" /YX /FD /GZ /c
@@ -197,6 +197,10 @@ SOURCE=..\..\visit\components\Plotter\avtPickActor.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Plotter\avtPlot.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Plotter\avtPointGlyphMapper.C
 # End Source File
 # Begin Source File
 

@@ -18,6 +18,7 @@ set O=%VISIT%\operators
 %MOC% %O%\IsoVolume\QvisIsoVolumeWindow.h -o %O%\IsoVolume\QvisIsoVolumeWindow_moc.C
 %MOC% %O%\Lineout\QvisLineoutWindow.h -o %O%\Lineout\QvisLineoutWindow_moc.C
 %MOC% %O%\OnionPeel\QvisOnionPeelWindow.h -o %O%\OnionPeel\QvisOnionPeelWindow_moc.C
+%MOC% %O%\Project\QvisProjectWindow.h -o %O%\Project\QvisProjectWindow_moc.C
 %MOC% %O%\Reflect\QvisReflectWindow.h -o %O%\Reflect\QvisReflectWindow_moc.C
 %MOC% %O%\Reflect\QvisReflectWidget.h -o %O%\Reflect\QvisReflectWidget_moc.C
 %MOC% %O%\SiloDump\QvisSiloDumpWindow.h -o %O%\SiloDump\QvisSiloDumpWindow_moc.C

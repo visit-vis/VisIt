@@ -73,8 +73,7 @@ PostBuild_Cmds=copy Release\libVTruecolor.dll ..\..\bin\Release\plots
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /YX /FD /GZ /c
-# ADD CPP /nologo /G6 /MDd /W3 /Gm /GX /ZI /Od /I "..\..\visit\plots\Truecolor" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "USING_MSVC6" /D "VIEWER_PLUGIN_EXPORTS" 
-/D "GENERAL_PLUGIN_EXPORTS" /YX /FD /GZ /TP /c
+# ADD CPP /nologo /G6 /MDd /W3 /Gm /GX /ZI /Od /I "..\..\visit\plots\Truecolor" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "USING_MSVC6" /D "VIEWER_PLUGIN_EXPORTS" /D "GENERAL_PLUGIN_EXPORTS" /YX /FD /GZ /TP /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
@@ -98,15 +97,7 @@ PostBuild_Cmds=copy Debug\libVTruecolor.dll ..\..\bin\Debug\plots
 # Name "TruecolorV - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\visit\plots\Truecolor\TruecolorPluginInfo.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\plots\Truecolor\TruecolorCommonPluginInfo.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\plots\Truecolor\TruecolorViewerPluginInfo.C
+SOURCE=..\..\visit\plots\Truecolor\avtTruecolorFilter.C
 # End Source File
 # Begin Source File
 
@@ -118,7 +109,15 @@ SOURCE=..\..\visit\plots\Truecolor\TruecolorAttributes.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\plots\Truecolor\avtTruecolorFilter.C
+SOURCE=..\..\visit\plots\Truecolor\TruecolorCommonPluginInfo.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\plots\Truecolor\TruecolorPluginInfo.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\plots\Truecolor\TruecolorViewerPluginInfo.C
 # End Source File
 # End Target
 # End Project

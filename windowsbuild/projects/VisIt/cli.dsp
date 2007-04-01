@@ -38,7 +38,7 @@ RSC=rc.exe
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
-# PROP Intermediate_Dir "Release"
+# PROP Intermediate_Dir "Release\cli"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
@@ -62,7 +62,7 @@ LINK32=link.exe
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
-# PROP Intermediate_Dir "Debug"
+# PROP Intermediate_Dir "Debug\cli"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
@@ -101,6 +101,10 @@ SOURCE=..\..\visit\visitpy\PyGlobalLineoutAttributes.C
 # Begin Source File
 
 SOURCE=..\..\visit\visitpy\PyHostProfile.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visitpy\PyInteractorAttributes.C
 # End Source File
 # Begin Source File
 

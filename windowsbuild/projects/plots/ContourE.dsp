@@ -56,7 +56,7 @@ LINK32=link.exe
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib plotter.lib pipeline_ser.lib avtfilters.lib avtexceptions.lib /nologo /dll /machine:I386 /out:"Release/libEContour_ser.dll"
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy Release\libEContour_ser.dll ..\..\bin\Release\plots	..\..\script\runmoc.bat
+PostBuild_Cmds=copy Release\libEContour_ser.dll ..\..\bin\Release\plots
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "ContourE - Win32 Debug"
@@ -86,7 +86,7 @@ LINK32=link.exe
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib plotter.lib pipeline_ser.lib avtfilters.lib avtexceptions.lib /nologo /dll /debug /machine:I386 /out:"Debug/libEContour_ser.dll" /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy Debug\libEContour_ser.dll ..\..\bin\Release\plots	..\scriDebug\plots
+PostBuild_Cmds=copy Debug\libEContour_ser.dll ..\..\bin\Release\plots
 # End Special Build Tool
 
 !ENDIF 

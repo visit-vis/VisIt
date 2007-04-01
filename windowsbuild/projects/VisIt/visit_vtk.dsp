@@ -39,7 +39,7 @@ RSC=rc.exe
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
-# PROP Intermediate_Dir "Release"
+# PROP Intermediate_Dir "Release\visit_vtk"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "VISIT_VTK_EXPORTS" /YX /FD /c
@@ -69,7 +69,7 @@ PostBuild_Cmds=copy Release\visit_vtk.lib ..\..\lib\Release\visit_vtk.lib	copy R
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
-# PROP Intermediate_Dir "Debug"
+# PROP Intermediate_Dir "Debug\visit_vtk"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "VISIT_VTK_EXPORTS" /YX /FD /GZ /c
@@ -144,10 +144,6 @@ SOURCE=..\..\visit\visit_vtk\full\vtkOnionPeelFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\full\vtkPolyDataRelevantPointsFilter.C
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\visit\visit_vtk\full\vtkPPMWriter.C
 # End Source File
 # Begin Source File
@@ -197,10 +193,6 @@ SOURCE=..\..\visit\visit_vtk\full\vtkTriad2D.C
 # Begin Source File
 
 SOURCE=..\..\visit\visit_vtk\full\vtkUniqueFeatureEdges.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\full\vtkUnstructuredGridFacelistFilter.C
 # End Source File
 # Begin Source File
 
@@ -257,6 +249,10 @@ SOURCE=..\..\visit\visit_vtk\full\vtkVisItCutter.C
 # Begin Source File
 
 SOURCE=..\..\visit\visit_vtk\full\vtkVisItFeatureEdges.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItGlyph3D.C
 # End Source File
 # Begin Source File
 

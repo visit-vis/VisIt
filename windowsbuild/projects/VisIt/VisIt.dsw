@@ -761,6 +761,9 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name misc
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtexceptions
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -1004,6 +1007,15 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name avtexceptions
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name state
+    End Project Dependency
 }}}
 
 ###############################################################################

@@ -23,12 +23,12 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;STATE_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Release\state.pch"
 				AssemblerListingLocation=".\Release\"
@@ -44,8 +44,8 @@
 				OutputFile=".\Release\state.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release\state.pdb"
 				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				ProgramDatabaseFile=".\Release\state.pdb"
 				ImportLibrary=".\Release\state.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -92,11 +92,11 @@ copy Release\state.lib ..\..\lib\MSVC7.Net\Release\state.lib
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;STATE_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug\state.pch"
 				AssemblerListingLocation=".\Debug\"
@@ -113,9 +113,9 @@ copy Release\state.lib ..\..\lib\MSVC7.Net\Release\state.lib
 				OutputFile=".\Debug\state.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\state.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				ImportLibrary=".\Debug\state.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -774,6 +774,15 @@ copy Debug\state.lib ..\..\lib\MSVC7.Net\Debug\state.lib
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\common\state\InteractorAttributes.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

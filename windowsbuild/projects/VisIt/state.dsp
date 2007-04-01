@@ -39,7 +39,7 @@ RSC=rc.exe
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
-# PROP Intermediate_Dir "Release"
+# PROP Intermediate_Dir "Release\state"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "STATE_EXPORTS" /YX /FD /c
@@ -69,7 +69,7 @@ PostBuild_Cmds=copy Release\state.dll ..\..\bin\Release\state.dll	copy Release\s
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
-# PROP Intermediate_Dir "Debug"
+# PROP Intermediate_Dir "Debug\state"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "STATE_EXPORTS" /YX /FD /GZ /c
@@ -221,6 +221,10 @@ SOURCE=..\..\visit\common\state\HostProfile.C
 # Begin Source File
 
 SOURCE=..\..\visit\common\state\HostProfileList.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\common\state\InteractorAttributes.C
 # End Source File
 # Begin Source File
 

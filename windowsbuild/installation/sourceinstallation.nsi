@@ -32,11 +32,14 @@
 #   Brad Whitlock, Tue Aug 24 11:37:40 PDT 2004
 #   Updated for 1.3.4. We now have MSVC7.Net specific stuff to distribute.
 #
+#   Brad Whitlock, Thu Sep 23 09:39:12 PDT 2004
+#   Updated for 1.3.5
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt for Windows source code"
-!define PRODUCT_VERSION "1.3.4"
+!define PRODUCT_VERSION "1.3.5"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visitdev${PRODUCT_VERSION}"

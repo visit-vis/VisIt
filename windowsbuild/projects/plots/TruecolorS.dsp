@@ -73,8 +73,7 @@ PostBuild_Cmds=copy Release\libSTruecolor.dll ..\..\bin\Release\plots
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /YX /FD /GZ /c
-# ADD CPP /nologo /G6 /MDd /W3 /Gm /GX /ZI /Od /I "..\..\visit\plots\Truecolor" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "USING_MSVC6" /D "SCRIPTING_PLUGIN_EXPORTS" 
-/D "GENERAL_PLUGIN_EXPORTS" /YX /FD /GZ /TP /c
+# ADD CPP /nologo /G6 /MDd /W3 /Gm /GX /ZI /Od /I "..\..\visit\plots\Truecolor" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "USING_MSVC6" /D "SCRIPTING_PLUGIN_EXPORTS" /D "GENERAL_PLUGIN_EXPORTS" /U "_DEBUG" /YX /FD /GZ /TP /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
@@ -84,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib /nologo /dll /debug /machine:I386 /out:"Debug/libSTruecolor.dll" /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib python21.lib /nologo /dll /debug /machine:I386 /out:"Debug/libSTruecolor.dll" /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\libSTruecolor.dll ..\..\bin\Debug\plots
@@ -98,7 +97,11 @@ PostBuild_Cmds=copy Debug\libSTruecolor.dll ..\..\bin\Debug\plots
 # Name "TruecolorS - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\visit\plots\Truecolor\TruecolorPluginInfo.C
+SOURCE=..\..\visit\plots\Truecolor\PyTruecolorAttributes.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\plots\Truecolor\TruecolorAttributes.C
 # End Source File
 # Begin Source File
 
@@ -106,15 +109,11 @@ SOURCE=..\..\visit\plots\Truecolor\TruecolorCommonPluginInfo.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\plots\Truecolor\TruecolorPluginInfo.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\plots\Truecolor\TruecolorScriptingPluginInfo.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\plots\Truecolor\PyTruecolorAttributes.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\plots\Truecolor\TruecolorAttributes.C
 # End Source File
 # End Target
 # End Project

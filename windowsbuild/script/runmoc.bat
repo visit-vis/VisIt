@@ -44,6 +44,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisGlobalLineoutWindow.h          -o %G%\QvisGlobalLineoutWindow_moc.C
 %MOC% %HEADERS%\QvisHelpWindow.h                   -o %G%\QvisHelpWindow_moc.C
 %MOC% %HEADERS%\QvisHostProfileWindow.h            -o %G%\QvisHostProfileWindow_moc.C
+%MOC% %HEADERS%\QvisInteractorWindow.h             -o %G%\QvisInteractorWindow_moc.C
 %MOC% %HEADERS%\QvisKeyframeWindow.h               -o %G%\QvisKeyframeWindow_moc.C
 %MOC% %HEADERS%\QvisLightingWidget.h               -o %G%\QvisLightingWidget_moc.C
 %MOC% %HEADERS%\QvisLightingWindow.h               -o %G%\QvisLightingWindow_moc.C
@@ -90,9 +91,11 @@ set V=%VISIT%\viewer\main
 %MOC% %HEADERS%\ViewerActionBase.h                 -o %V%\ViewerActionBase_moc.C
 %MOC% %HEADERS%\ViewerConnectionProgressDialog.h   -o %V%\ViewerConnectionProgressDialog_moc.C
 %MOC% %HEADERS%\ViewerHostProfileSelectorWithWin.h -o %V%\ViewerHostProfileSelectorWithWin_moc.C
+%MOC% %HEADERS%\ViewerMetaDataObserver.h           -o %V%\ViewerMetaDataObserver_moc.C
 %MOC% %HEADERS%\ViewerMultipleAction.h             -o %V%\ViewerMultipleAction_moc.C
 %MOC% %HEADERS%\ViewerPasswordWindow.h             -o %V%\ViewerPasswordWindow_moc.C
 %MOC% %HEADERS%\ViewerRPCObserver.h                -o %V%\ViewerRPCObserver_moc.C
+%MOC% %HEADERS%\ViewerSILAttsObserver.h            -o %V%\ViewerSILAttsObserver_moc.C
 %MOC% %HEADERS%\ViewerSubject.h                    -o %V%\ViewerSubject_moc.C
 %MOC% %HEADERS%\ViewerWindowManager.h              -o %V%\ViewerWindowManager_moc.C
 

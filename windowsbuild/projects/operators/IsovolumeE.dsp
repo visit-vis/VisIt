@@ -39,7 +39,7 @@ RSC=rc.exe
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
-# PROP Intermediate_Dir "Release"
+# PROP Intermediate_Dir "Release\IsoVolumeE"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /YX /FD /c
@@ -69,11 +69,11 @@ PostBuild_Cmds=copy Release\libEIsovolume_ser.dll ..\..\bin\Release\operators
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
-# PROP Intermediate_Dir "Debug"
+# PROP Intermediate_Dir "Debug\IsoVolumeE"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /YX /FD /GZ /c
-# ADD CPP /nologo /G6 /MDd /W3 /Gm /GX /ZI /Od /I "..\..\visit\operators\Isovolume" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "USING_MSVC6" /D "ENGINE_PLUGIN_EXPORTS"
+# ADD CPP /nologo /G6 /MDd /W3 /Gm /GX /ZI /Od /I "..\..\visit\operators\Isovolume" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "USING_MSVC6" /D "ENGINE_PLUGIN_EXPORTS" /D "GENERAL_PLUGIN_EXPORTS" /YX /FD /GZ /TP /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
@@ -83,10 +83,10 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib plotter.lib pipeline_ser.lib avtexceptions.lib viewer.lib dbatts.lib visit_vtk.lib vtkCommon.lib vtkGraphics.lib vtkFiltering.lib /nologo /dll /debug /machine:I386 /out:"Debug/libEIsovolume_ser.dll" /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib plotter.lib pipeline_ser.lib avtexceptions.lib viewer.lib dbatts.lib visit_vtk.lib vtkCommon.lib vtkGraphics.lib vtkFiltering.lib /nologo /subsystem:console /dll /debug /machine:I386 /out:"Debug/libEIsovolume_ser.dll" /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy Debug\libEIsovolume.dll ..\..\bin\Debug\operators
+PostBuild_Cmds=copy Debug\libEIsovolume_ser.dll ..\..\bin\Debug\operators
 # End Special Build Tool
 
 !ENDIF 
@@ -96,23 +96,18 @@ PostBuild_Cmds=copy Debug\libEIsovolume.dll ..\..\bin\Debug\operators
 # Name "IsovolumeE - Win32 Release"
 # Name "IsovolumeE - Win32 Debug"
 # Begin Source File
-
 SOURCE=..\..\visit\operators\Isovolume\avtIsovolumeFilter.C
 # End Source File
 # Begin Source File
-
 SOURCE=..\..\visit\operators\Isovolume\IsovolumeAttributes.C
 # End Source File
 # Begin Source File
-
 SOURCE=..\..\visit\operators\Isovolume\IsovolumeCommonPluginInfo.C
 # End Source File
 # Begin Source File
-
 SOURCE=..\..\visit\operators\Isovolume\IsovolumeEnginePluginInfo.C
 # End Source File
 # Begin Source File
-
 SOURCE=..\..\visit\operators\Isovolume\IsovolumePluginInfo.C
 # End Source File
 # End Target

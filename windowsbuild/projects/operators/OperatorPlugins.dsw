@@ -1047,6 +1047,93 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Project"=.\Project.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ProjectE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ProjectG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ProjectI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ProjectS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ProjectV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ProjectE"=.\ProjectE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ProjectG"=.\ProjectG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ProjectI"=.\ProjectI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ProjectS"=.\ProjectS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ProjectV"=.\ProjectV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "Reflect"=.\Reflect.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1714,6 +1801,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Displace
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Project
     End Project Dependency
 }}}
 

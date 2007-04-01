@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib /nologo /dll /machine:I386 /out:"Release/libEVistaDatabase_ser.dll"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib silohdf5.lib regex.lib /nologo /dll /machine:I386 /out:"Release/libEVistaDatabase_ser.dll"
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\libEVistaDatabase_ser.dll ..\..\bin\Release\databases
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib /nologo /dll /debug /machine:I386 /out:"Debug/libEVistaDatabase_ser.dll" /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib silohdf5.lib regex.lib /nologo /dll /debug /machine:I386 /out:"Debug/libEVistaDatabase_ser.dll" /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\libEVistaDatabase_ser.dll ..\..\bin\Debug\databases
@@ -97,7 +97,19 @@ PostBuild_Cmds=copy Debug\libEVistaDatabase_ser.dll ..\..\bin\Debug\databases
 # Name "VistaE - Win32 Debug"
 # Begin Source File
 
-SOURCE=..\..\visit\databases\Vista\VistaPluginInfo.C
+SOURCE=..\..\visit\databases\Vista\avtVistaAle3dFileFormat.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\Vista\avtVistaDiabloFileFormat.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\Vista\avtVistaFileFormat.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\Vista\StringHelpers.C
 # End Source File
 # Begin Source File
 
@@ -109,11 +121,7 @@ SOURCE=..\..\visit\databases\Vista\VistaEnginePluginInfo.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\databases\Vista\avtVistaFileFormat.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\databases\Vista\StringHelpers.C
+SOURCE=..\..\visit\databases\Vista\VistaPluginInfo.C
 # End Source File
 # End Target
 # End Project

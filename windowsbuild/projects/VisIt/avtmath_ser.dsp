@@ -39,7 +39,7 @@ RSC=rc.exe
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
-# PROP Intermediate_Dir "Release"
+# PROP Intermediate_Dir "Release\avtmath_ser"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "AVTMATH_SER_EXPORTS" /YX /FD /c
@@ -69,7 +69,7 @@ PostBuild_Cmds=copy Release\avtmath_ser.dll ..\..\bin\Release\avtmath_ser.dll	co
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
-# PROP Intermediate_Dir "Debug"
+# PROP Intermediate_Dir "Debug\avtmath_ser"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "AVTMATH_SER_EXPORTS" /YX /FD /GZ /c
@@ -86,7 +86,7 @@ LINK32=link.exe
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy Debug\avtmath_ser.dll ..\bin\avtmath_ser.dll	copy Debug\avtmath_ser.lib ..\lib\avtmath_ser.lib
+PostBuild_Cmds=copy Debug\avtmath_ser.dll ..\..\bin\Debug\avtmath_ser.dll	copy Debug\avtmath_ser.lib ..\..\lib\Debug\avtmath_ser.lib
 # End Special Build Tool
 
 !ENDIF 

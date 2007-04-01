@@ -39,7 +39,7 @@ RSC=rc.exe
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
-# PROP Intermediate_Dir "Release"
+# PROP Intermediate_Dir "Release\database_ser"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "DATABASE_SER_EXPORTS" /YX /FD /c
@@ -69,7 +69,7 @@ PostBuild_Cmds=copy Release\database_ser.dll ..\..\bin\Release\database_ser.dll	
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
-# PROP Intermediate_Dir "Debug"
+# PROP Intermediate_Dir "Debug\database_ser"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "DATABASE_SER_EXPORTS" /YX /FD /GZ /c
@@ -197,6 +197,14 @@ SOURCE=..\..\visit\components\Database\Ghost\avtStructuredDomainBoundaries.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Database\Ghost\avtStructuredDomainNesting.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Database\Ghost\avtUnstructuredDomainBoundaries.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Database\Ghost\avtUnstructuredPointBoundaries.C
 # End Source File
 # Begin Source File
 

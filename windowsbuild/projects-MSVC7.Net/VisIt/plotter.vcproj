@@ -22,11 +22,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;PLOTTER_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug\plotter.pch"
 				AssemblerListingLocation=".\Debug\"
@@ -43,9 +43,9 @@
 				OutputFile=".\Debug\plotter.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\plotter.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				ImportLibrary=".\Debug\plotter.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -93,12 +93,12 @@ copy Debug\plotter.dll ..\..\bin\MSVC7.Net\Debug\plotter.dll
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;PLOTTER_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Release\plotter.pch"
 				AssemblerListingLocation=".\Release\"
@@ -114,8 +114,8 @@ copy Debug\plotter.dll ..\..\bin\MSVC7.Net\Debug\plotter.dll
 				OutputFile=".\Release\plotter.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release\plotter.pdb"
 				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				ProgramDatabaseFile=".\Release\plotter.pdb"
 				ImportLibrary=".\Release\plotter.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -654,6 +654,21 @@ copy Release\plotter.dll ..\..\bin\MSVC7.Net\Release\plotter.dll
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Plotter\avtPointGlyphMapper.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

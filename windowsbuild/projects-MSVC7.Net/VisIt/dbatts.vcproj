@@ -22,11 +22,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;DBATTS_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug\dbatts.pch"
 				AssemblerListingLocation=".\Debug\"
@@ -43,9 +43,9 @@
 				OutputFile=".\Debug\dbatts.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\dbatts.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				ImportLibrary=".\Debug\dbatts.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -93,12 +93,12 @@ copy Debug\dbatts.dll ..\..\bin\MSVC7.Net\Debug\dbatts.dll
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;DBATTS_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Release\dbatts.pch"
 				AssemblerListingLocation=".\Release\"
@@ -114,8 +114,8 @@ copy Debug\dbatts.dll ..\..\bin\MSVC7.Net\Debug\dbatts.dll
 				OutputFile=".\Release\dbatts.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release\dbatts.pdb"
 				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				ProgramDatabaseFile=".\Release\dbatts.pdb"
 				ImportLibrary=".\Release\dbatts.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -174,6 +174,15 @@ copy Release\dbatts.lib ..\..\lib\MSVC7.Net\Release\dbatts.lib
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\DBAtts\MetaData\avtSimulationInformation.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

@@ -39,7 +39,7 @@ RSC=rc.exe
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
-# PROP Intermediate_Dir "Release"
+# PROP Intermediate_Dir "Release\viewerlib"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "VIEWERLIB_EXPORTS" /YX /FD /c
@@ -69,7 +69,7 @@ PostBuild_Cmds=copy Release\viewer.dll ..\..\bin\Release\viewer.dll	copy Release
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
-# PROP Intermediate_Dir "Debug"
+# PROP Intermediate_Dir "Debug\viewerlib"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "VIEWERLIB_EXPORTS" /YX /FD /GZ /c
@@ -176,6 +176,10 @@ SOURCE=..\..\visit\viewer\main\ViewerMessaging.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\viewer\main\ViewerMetaDataObserver.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\viewer\main\ViewerMultipleAction.C
 # End Source File
 # Begin Source File
@@ -232,6 +236,10 @@ SOURCE=..\..\visit\viewer\main\ViewerServerManager.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\viewer\main\ViewerSILAttsObserver.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\viewer\main\ViewerSubject.C
 # End Source File
 # Begin Source File
@@ -284,6 +292,10 @@ SOURCE=..\..\visit\viewer\main\ViewerHostProfileSelectorWithWin_moc.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\viewer\main\ViewerMetaDataObserver_moc.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\viewer\main\ViewerMultipleAction_moc.C
 # End Source File
 # Begin Source File
@@ -293,6 +305,10 @@ SOURCE=..\..\visit\viewer\main\ViewerPasswordWindow_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\viewer\main\ViewerRPCObserver_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\viewer\main\ViewerSILAttsObserver_moc.C
 # End Source File
 # Begin Source File
 

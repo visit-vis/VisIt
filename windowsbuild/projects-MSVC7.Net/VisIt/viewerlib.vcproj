@@ -22,11 +22,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VIEWER_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug\viewerlib.pch"
 				AssemblerListingLocation=".\Debug\"
@@ -43,9 +43,9 @@
 				OutputFile="Debug\viewer.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\viewer.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				ImportLibrary=".\Debug\viewer.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -93,12 +93,12 @@ copy Debug\viewer.lib ..\..\lib\MSVC7.Net\Debug\viewer.lib
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VIEWER_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Release\viewerlib.pch"
 				AssemblerListingLocation=".\Release\"
@@ -114,8 +114,8 @@ copy Debug\viewer.lib ..\..\lib\MSVC7.Net\Debug\viewer.lib
 				OutputFile="Release\viewer.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release\viewer.pdb"
 				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				ProgramDatabaseFile=".\Release\viewer.pdb"
 				ImportLibrary=".\Release\viewer.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -538,6 +538,15 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\viewer\main\ViewerMetaDataObserver.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\viewer\main\ViewerMultipleAction.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -818,6 +827,15 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\viewer\main\ViewerSILAttsObserver.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\viewer\main\ViewerSubject.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1062,6 +1080,15 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\viewer\main\ViewerMetaDataObserver_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\viewer\main\ViewerMultipleAction_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1118,6 +1145,15 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\viewer\main\ViewerSILAttsObserver_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

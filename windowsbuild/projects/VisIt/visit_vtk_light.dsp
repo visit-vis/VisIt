@@ -39,7 +39,7 @@ RSC=rc.exe
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
-# PROP Intermediate_Dir "Release"
+# PROP Intermediate_Dir "Release\visit_vtk_light"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "visit_vtk_light_EXPORTS" /YX /FD /c
@@ -69,7 +69,7 @@ PostBuild_Cmds=copy Release\visit_vtk_light.lib ..\..\lib\Release\visit_vtk_ligh
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
-# PROP Intermediate_Dir "Debug"
+# PROP Intermediate_Dir "Debug\visit_vtk_light"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "visit_vtk_light_EXPORTS" /YX /FD /GZ /c
@@ -144,11 +144,19 @@ SOURCE=..\..\visit\visit_vtk\lightweight\vtkDebugStream.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visit_vtk\lightweight\vtkPolyDataRelevantPointsFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visit_vtk\lightweight\vtkTriangulationTables.C
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\visit\visit_vtk\lightweight\vtkUnstructuredGridBoundaryFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visit_vtk\lightweight\vtkUnstructuredGridFacelistFilter.C
 # End Source File
 # Begin Source File
 
