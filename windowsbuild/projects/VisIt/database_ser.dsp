@@ -196,6 +196,10 @@ SOURCE=..\..\visit\components\Database\Ghost\avtStructuredDomainBoundaries.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Database\Ghost\avtStructuredDomainNesting.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Database\Ghost\StructuredBoundary.C
 # End Source File
 # End Group

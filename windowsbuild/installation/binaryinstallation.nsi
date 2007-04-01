@@ -69,7 +69,7 @@ page custom ChooseNetworkConfig
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "..\installation\visit${PRODUCT_VERSION}.exe"
+OutFile "..\installations\visit${PRODUCT_VERSION}.exe"
 InstallDir "$PROGRAMFILES\LLNL\VisIt ${PRODUCT_VERSION}"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -92,10 +92,11 @@ Section "Executable Components" SEC01
   SetOverwrite ifnewer
   File "..\bin\Release\*.dll"
   File "..\bin\Release\*.exe"
-  File "..\bin\Release\visit-config-closed"
-  File "..\bin\Release\visit-config-open"
+  File "..\bin\Release\visit-config-closed.ini"
+  File "..\bin\Release\visit-config-open.ini"
   File "..\bin\Release\xml2plugin.bat"
   File "..\bin\Release\makemovie.py"
+        
   CreateDirectory "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}"
   CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt ${PRODUCT_VERSION}.lnk"     "$INSTDIR\visit.exe" ""     "" 0 SW_SHOWMINIMIZED "" "VisIt allows you to visualize simulation data."
   CreateShortCut "$DESKTOP\VisIt ${PRODUCT_VERSION}.lnk"                                 "$INSTDIR\visit.exe" ""     "" 0 SW_SHOWMINIMIZED "" "VisIt allows you to visualize simulation data."
@@ -373,10 +374,10 @@ HaveNetworkConfig:
     # If $0=="" then we're going to use the closed config
     Strcmp $0 "1" OpenNetworkConfig ClosedNetworkConfig
 OpenNetworkConfig:
-         WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-open"
+         WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-open.ini"
          Goto SkipNetworkConfig
 ClosedNetworkConfig:
-         WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-closed"
+         WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-closed.ini"
 SkipNetworkConfig:
 
   # If the Python installation path for Python 2.1 does not exist then create it.
@@ -411,6 +412,7 @@ Section AddFileAssociations
   WriteRegStr HKCR "visitSessionFile\shell\Make 640x480 movie\command"  "" '$INSTDIR\visit.exe -movie -format tiff -geometry 640x480 -sessionfile "%1"'
   WriteRegStr HKCR "visitSessionFile\shell\Make 800x600 movie\command"  "" '$INSTDIR\visit.exe -movie -format tiff -geometry 800x600 -sessionfile "%1\'
   WriteRegStr HKCR "visitSessionFile\shell\Make 1024x768 movie\command" "" '$INSTDIR\visit.exe -movie -format tiff -geometry 1024x768 -sessionfile "%1"'
+  WriteRegStr HKCR "visitSessionFile\shell\Edit\command" "" 'notepad.exe "%1"'
   WriteRegStr HKCR "visitSessionFile\shell\open\command" "" '$INSTDIR\visit.exe -sessionfile "%1"'
 SectionEnd
 

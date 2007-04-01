@@ -915,6 +915,63 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Tetrad"=.\Tetrad.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name TetradE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TetradI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TetradM
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "TetradE"=.\TetradE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TetradI"=.\TetradI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TetradM"=.\TetradM.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "VTK"=.\VTK.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1081,6 +1138,12 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name ANALYZE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SAMRAI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Tetrad
     End Project Dependency
 }}}
 
