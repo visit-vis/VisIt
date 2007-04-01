@@ -156,6 +156,10 @@ SOURCE=..\..\visit\components\Exceptions\Pipeline\BadIndexException.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Exceptions\Pipeline\BadNodeException.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Exceptions\Pipeline\BadVectorException.C
 # End Source File
 # Begin Source File

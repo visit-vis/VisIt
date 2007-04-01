@@ -63,7 +63,70 @@ Package=<4>
 
 ###############################################################################
 
+Project: "avtfilewriter"=.\avtfilewriter.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name comm
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name dbatts
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name pipeline_ser
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name state
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name visit_vtk
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vtk_sl_io
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "avtfilters"=.\avtfilters.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name avtview
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtmath_ser
+    End Project Dependency
+}}}
+
+###############################################################################
+
 Project: "avtmath_ser"=.\avtmath_ser.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "avtview"=.\avtview.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -239,6 +302,12 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name visitparser
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtfilters
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtview
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -405,10 +474,13 @@ Package=<4>
     Project_Dep_Name state
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name visit_vtk
+    Project_Dep_Name plugin
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name plugin
+    Project_Dep_Name visit_vtk_light
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vtk_sl_io
     End Project Dependency
 }}}
 
@@ -530,6 +602,9 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name avtmath_ser
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name vtk_sl_io
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -556,6 +631,12 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name visit_vtk
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtview
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtfilters
     End Project Dependency
 }}}
 
@@ -619,6 +700,12 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name state
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtfilters
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name visit_vtk_light
     End Project Dependency
 }}}
 
@@ -782,6 +869,15 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name visitparser
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtfilewriter
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtfilters
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtview
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -845,6 +941,21 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name avtexceptions
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name visit_vtk_light
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "visit_vtk_light"=.\visit_vtk_light.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
 }}}
 
 ###############################################################################
@@ -896,6 +1007,21 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name vtkqt
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtview
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "vtk_sl_io"=.\vtk_sl_io.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
 }}}
 
 ###############################################################################

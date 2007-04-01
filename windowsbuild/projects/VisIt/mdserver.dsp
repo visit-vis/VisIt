@@ -74,7 +74,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib comm.lib misc.lib utility.lib mdsrpc.lib dbatts.lib database_ser.lib visit_vtk.lib avtexceptions.lib plugin.lib utility.lib /nologo /subsystem:console /debug /machine:I386 /out:"../../bin/Debug/mdserver.exe" /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib comm.lib misc.lib mdsrpc.lib dbatts.lib database_ser.lib avtexceptions.lib plugin.lib utility.lib /nologo /subsystem:console /debug /machine:I386 /out:"../../bin/Debug/mdserver.exe" /pdbtype:sept
 
 !ENDIF 
 
@@ -119,14 +119,11 @@ SOURCE=..\..\visit\mdserver\main\GetSILRPCExecutor.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\mdserver\main\LoadPluginsRPCExecutor.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\mdserver\main\main.C
-
-!IF  "$(CFG)" == "mdserver - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "mdserver - Win32 Debug"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 

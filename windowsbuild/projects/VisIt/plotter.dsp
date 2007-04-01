@@ -124,6 +124,10 @@ SOURCE=..\..\visit\components\Plotter\avtDecorationsMapper.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Plotter\avtDrawable.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Plotter\avtDrawer.C
 # End Source File
 # Begin Source File

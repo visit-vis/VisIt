@@ -15,6 +15,7 @@ set O=%VISIT%\operators
 %MOC% %O%\IndexSelect\QvisIndexSelectWindow.h -o %O%\IndexSelect\QvisIndexSelectWindow_moc.C
 %MOC% %O%\InverseGhostZone\QvisInverseGhostZoneWindow.h -o %O%\InverseGhostZone\QvisInverseGhostZoneWindow_moc.C
 %MOC% %O%\IsoSurface\QvisIsoSurfaceWindow.h -o %O%\IsoSurface\QvisIsoSurfaceWindow_moc.C
+%MOC% %O%\IsoVolume\QvisIsoVolumeWindow.h -o %O%\IsoVolume\QvisIsoVolumeWindow_moc.C
 %MOC% %O%\Lineout\QvisLineoutWindow.h -o %O%\Lineout\QvisLineoutWindow_moc.C
 %MOC% %O%\OnionPeel\QvisOnionPeelWindow.h -o %O%\OnionPeel\QvisOnionPeelWindow_moc.C
 %MOC% %O%\Reflect\QvisReflectWindow.h -o %O%\Reflect\QvisReflectWindow_moc.C

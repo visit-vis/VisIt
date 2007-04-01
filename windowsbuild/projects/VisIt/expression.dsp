@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib pipeline_ser.lib avtexceptions.lib state.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib avtfilters.lib pipeline_ser.lib avtexceptions.lib state.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /machine:I386
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\expression.lib ..\..\lib\Release\expression.lib	copy Release\expression.dll ..\..\bin\Release\expression.dll
@@ -104,11 +104,19 @@ SOURCE=..\..\visit\components\Expressions\Abstract\avtBinaryMathFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\Abstract\avtComparisonFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\Abstract\avtExpressionFilter.C
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\Abstract\avtMultipleInputExpressionFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\Abstract\avtSingleInputExpressionFilter.C
 # End Source File
 # Begin Source File
 

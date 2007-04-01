@@ -11,12 +11,14 @@
 # Date:       Mon, Dec 15 11:26:34 PDT 2003
 #
 # Modifications:
+#   Brad Whitlock, Mon Feb 9 14:45:04 PST 2004
+#   Updated for 1.2.7
 #
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt for Windows source code"
-!define PRODUCT_VERSION "1.2.6"
+!define PRODUCT_VERSION "1.2.7"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visitdev${PRODUCT_VERSION}"
@@ -72,7 +74,7 @@ Section "InstallationFiles" SEC04
   File "..\VisItBuildInstructionsOnWindows.doc"
   File "..\BUILD_NOTES.txt"
   # The installation files that we use to build the binary and source distributions.
-  SetOutPath "$INSTDIR\installations"
+  SetOutPath "$INSTDIR\installation"
   File "binaryinstallation.nsi"
   File "sourceinstallation.nsi"
   File "copyright.txt"
@@ -110,4 +112,8 @@ Section -Post
   
   # Set the VISITDEVDIR key in the registry.
   WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITDEVDIR" "$INSTDIR"
+
+  # Set the VISITDEVDIR key in the registry so it will be set as an 
+  # environment variable for the current user.
+  WriteRegStr HKCU "Environment" "VISITDEVDIR" "$INSTDIR"
 SectionEnd

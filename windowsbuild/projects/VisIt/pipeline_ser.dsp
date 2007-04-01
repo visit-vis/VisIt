@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib visit_vtk.lib avtmath_ser.lib vtkCommon.lib vtkIO.lib vtkFiltering.lib vtkGraphics.lib vtkRendering.lib vtkImaging.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib visit_vtk.lib avtmath_ser.lib vtkCommon.lib vtkFiltering.lib vtk_sl_io.lib /nologo /dll /machine:I386
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\pipeline_ser.lib ..\..\lib\Release\pipeline_ser.lib	copy Release\pipeline_ser.dll ..\..\bin\Release\pipeline_ser.dll
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib avtmath_ser.lib dbatts.lib visit_vtk.lib vtkCommon.lib vtkIO.lib vtkFiltering.lib vtkGraphics.lib vtkRendering.lib vtkImaging.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib visit_vtk.lib avtmath_ser.lib vtkCommon.lib vtkFiltering.lib vtk_sl_io.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\pipeline_ser.lib ..\..\lib\Debug\pipeline_ser.lib	copy Debug\pipeline_ser.dll ..\..\bin\Debug\pipeline_ser.dll
@@ -248,6 +248,10 @@ SOURCE=..\..\visit\components\Pipeline\Data\avtPhong.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\Data\avtPixelizer.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\Data\avtPointAttribute.C
 # End Source File
 # Begin Source File
@@ -285,22 +289,6 @@ SOURCE=..\..\visit\components\Pipeline\Data\avtTetrahedronExtractor.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Pipeline\Data\avtVariablePixelizer.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Data\avtView2D.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Data\avtView3D.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Data\avtViewCurve.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Data\avtViewInfo.C
 # End Source File
 # Begin Source File
 
@@ -368,7 +356,19 @@ SOURCE=..\..\visit\components\Pipeline\Pipeline\avtPipelineSpecification.C
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtCompactTreeFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtDataObjectToDatasetFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtDataObjectToImageFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtDataObjectToSamplePointsFilter.C
 # End Source File
 # Begin Source File
 
@@ -400,7 +400,35 @@ SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtImageToDataObjectFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtImageToImageFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtMultipleInputToDataObjectFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtMultipleInputToDatasetFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtPluginStreamer.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtSamplePointsToDataObjectFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtSamplePointsToDatasetFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtSamplePointsToImageFilter.C
 # End Source File
 # Begin Source File
 
@@ -413,98 +441,6 @@ SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtSingleFilterFacade.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtStreamer.C
-# End Source File
-# End Group
-# Begin Group "PublicFilters"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtCompactTreeFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtCondenseDatasetFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtContourFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtCurrentExtentFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtCurveConstructorFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtFacelistFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtFeatureEdgesFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtGhostZoneAndFacelistFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtGhostZoneFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtImageCompositer.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtPointToGlyphFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtRayCompositer.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtRayTracer.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtResampleFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtSamplePointExtractor.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtShiftCenteringFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtSimilarityTransformFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtSmoothPolyDataFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtTransform.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtVertexNormalsFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtWholeImageCompositer.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\PublicFilters\avtWorldSpaceToImageSpaceTransform.C
 # End Source File
 # End Group
 # Begin Group "Sinks"
@@ -520,19 +456,7 @@ SOURCE=..\..\visit\components\Pipeline\Sinks\avtDataObjectSink.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Pipeline\Sinks\avtDatasetFileWriter.C
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\visit\components\Pipeline\Sinks\avtDatasetSink.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Sinks\avtFileWriter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Sinks\avtImageFileWriter.C
 # End Source File
 # Begin Source File
 
@@ -549,6 +473,14 @@ SOURCE=..\..\visit\components\Pipeline\Sinks\avtNullDataSink.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Pipeline\Sinks\avtOriginatingDatasetSink.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Sinks\avtOriginatingImageSink.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Sinks\avtOriginatingNullDataSink.C
 # End Source File
 # Begin Source File
 
@@ -584,11 +516,19 @@ SOURCE=..\..\visit\components\Pipeline\Sources\avtNullDataSource.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\Sources\avtQueryableSource.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\Sources\avtSamplePointsSource.C
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\visit\components\Pipeline\Sources\avtSourceFromAVTDataset.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Sources\avtSourceFromAVTImage.C
 # End Source File
 # Begin Source File
 
@@ -600,11 +540,19 @@ SOURCE=..\..\visit\components\Pipeline\Sources\avtSourceFromImage.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\Sources\avtSourceFromNullData.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\Sources\avtTerminatingDatasetSource.C
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\visit\components\Pipeline\Sources\avtTerminatingImageSource.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Sources\avtTerminatingNullDataSource.C
 # End Source File
 # Begin Source File
 

@@ -146,6 +146,10 @@ SOURCE=..\..\visit\mdserver\rpc\GetMetaDataRPC.C
 
 SOURCE=..\..\visit\mdserver\rpc\GetSILRPC.C
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\mdserver\rpc\LoadPluginsRPC.C
+# End Source File
 # End Group
 # End Target
 # End Project

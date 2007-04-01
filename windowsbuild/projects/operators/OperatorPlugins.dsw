@@ -786,6 +786,93 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Isovolume"=.\Isovolume.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name IsovolumeE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IsovolumeG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IsovolumeI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IsovolumeS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name IsovolumeV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "IsovolumeE"=.\IsovolumeE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IsovolumeG"=.\IsovolumeG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IsovolumeI"=.\IsovolumeI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IsovolumeS"=.\IsovolumeS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IsovolumeV"=.\IsovolumeV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "Lineout"=.\Lineout.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1621,6 +1708,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name InverseGhostZone
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Isovolume
     End Project Dependency
 }}}
 

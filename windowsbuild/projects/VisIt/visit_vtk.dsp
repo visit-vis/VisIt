@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib vtkHybrid.lib vtkRendering.lib misc.lib avtexceptions.lib vtktiff.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib vtkHybrid.lib vtkRendering.lib misc.lib avtexceptions.lib visit_vtk_light.lib vtktiff.lib /nologo /dll /machine:I386
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\visit_vtk.lib ..\..\lib\Release\visit_vtk.lib	copy Release\visit_vtk.dll ..\..\bin\Release\visit_vtk.dll
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib vtkHybrid.lib vtkRendering.lib misc.lib avtexceptions.lib vtktiff.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib vtkHybrid.lib vtkRendering.lib misc.lib avtexceptions.lib visit_vtk_light.lib vtktiff.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\visit_vtk.dll ..\..\bin\Debug\visit_vtk.dll	copy Debug\visit_vtk.lib ..\..\lib\Debug\visit_vtk.lib
@@ -100,235 +100,187 @@ PostBuild_Cmds=copy Debug\visit_vtk.dll ..\..\bin\Debug\visit_vtk.dll	copy Debug
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\ClipCasesHex.C
+SOURCE=..\..\visit\visit_vtk\full\InitVTK.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\ClipCasesPyr.C
+SOURCE=..\..\visit\visit_vtk\full\vtkAxisDepthSort.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\ClipCasesQua.C
+SOURCE=..\..\visit\visit_vtk\full\vtkBackgroundActor.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\ClipCasesTet.C
+SOURCE=..\..\visit\visit_vtk\full\vtkConnectedTubeFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\ClipCasesTri.C
+SOURCE=..\..\visit\visit_vtk\full\vtkDashedXorGridMapper2D.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\ClipCasesWdg.C
+SOURCE=..\..\visit\visit_vtk\full\vtkDataSetRemoveGhostCells.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\InitVTK.C
+SOURCE=..\..\visit\visit_vtk\full\vtkDisjointCubesFacelistFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkAxisDepthSort.C
+SOURCE=..\..\visit\visit_vtk\full\vtkHankAxisActor2D.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkBackgroundActor.C
+SOURCE=..\..\visit\visit_vtk\full\vtkHankTIFFWriter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkConnectedTubeFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkKatAxisActor.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkDashedXorGridMapper2D.C
+SOURCE=..\..\visit\visit_vtk\full\vtkKatCubeAxesActor.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkDataSetFromVolume.C
+SOURCE=..\..\visit\visit_vtk\full\vtkLineoutFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkDataSetRemoveGhostCells.C
+SOURCE=..\..\visit\visit_vtk\full\vtkLinesFromOriginalCells.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkDebugStream.C
+SOURCE=..\..\visit\visit_vtk\full\vtkOBJWriter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkDisjointCubesFacelistFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkOnionPeelFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkHankAxisActor2D.C
+SOURCE=..\..\visit\visit_vtk\full\vtkPolyDataRelevantPointsFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkHankTIFFWriter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkPPMWriter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkKatAxisActor.C
+SOURCE=..\..\visit\visit_vtk\full\vtkRectilinearGridFacelistFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkKatCubeAxesActor.C
+SOURCE=..\..\visit\visit_vtk\full\vtkRGBWriter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkLineoutFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkRubberBandMapper2D.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkLinesFromOriginalCells.C
+SOURCE=..\..\visit\visit_vtk\full\vtkSkewLookupTable.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkOBJWriter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkSlicer.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkOnionPeelFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkStructuredGridFacelistFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkPolyDataRelevantPointsFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkSurfaceFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkPPMWriter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkSurfaceFromVolume.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkRectilinearGridFacelistFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkTensorReduceFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkRGBWriter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkTimeSliderActor.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkRubberBandMapper2D.C
+SOURCE=..\..\visit\visit_vtk\full\vtkTriad2D.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkSkewLookupTable.C
+SOURCE=..\..\visit\visit_vtk\full\vtkUniqueFeatureEdges.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkSlicer.C
+SOURCE=..\..\visit\visit_vtk\full\vtkUnstructuredGridFacelistFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkStructuredGridFacelistFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkUnstructuredGridRelevantPointsFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkSurfaceFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVectorGlyph.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkSurfaceFromVolume.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVectorReduceFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkTensorReduceFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVertexFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkTimeSliderActor.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVerticalScalarBarActor.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkTriad2D.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVerticalScalarBarWithOpacityActor.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkTriangulationTables.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItCellLocator.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkUniqueFeatureEdges.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItClipper3D.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkUnstructuredGridBoundaryFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItContourFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkUnstructuredGridFacelistFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItCutter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkUnstructuredGridRelevantPointsFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItFeatureEdges.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkVectorGlyph.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItPolyDataNormals.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkVectorReduceFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItScalarTree.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkVertexFilter.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItSTLWriter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkVerticalScalarBarActor.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItStreamLine.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\vtkVerticalScalarBarWithOpacityActor.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVisItCellLocator.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVisItClipper3D.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVisItContourFilter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVisItCutter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVisItFeatureEdges.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVisItPLOT3DReader.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVisItPolyDataNormals.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVisItScalarTree.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVisItSTLWriter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVisItStreamLine.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVisItUtility.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\vtkVolumeFromVolume.C
+SOURCE=..\..\visit\visit_vtk\full\vtkVolumeFromVolume.C
 # End Source File
 # End Group
 # End Target
