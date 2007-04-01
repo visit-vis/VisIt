@@ -265,6 +265,21 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath="..\..\visit\visitpy\PyLightAttributes.C">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					CompileAs="2"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					CompileAs="2"/>
+			</FileConfiguration>
+		</File>
+		<File
 			RelativePath="..\..\visit\visitpy\PyMaterialAttributes.C">
 			<FileConfiguration
 				Name="Release|Win32">

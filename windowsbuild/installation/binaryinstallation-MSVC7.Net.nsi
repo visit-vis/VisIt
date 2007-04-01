@@ -17,15 +17,18 @@
 #  Brad Whitlock, Wed Nov 3 14:07:03 PST 2004
 #  Updated for 1.4.
 #
+#  Brad Whitlock, Wed Jan 5 17:24:18 PST 2005
+#  Updated for 1.4.1.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.4"
+!define PRODUCT_VERSION "1.4.1"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
-!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit.exe"
-!define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
+!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"
+!define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME} ${PRODUCT_VERSION}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
 # Define macros for Qt.

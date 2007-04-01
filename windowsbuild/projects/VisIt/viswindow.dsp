@@ -184,6 +184,14 @@ SOURCE=..\..\visit\components\VisWindow\Colleagues\VisWinView.C
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\visit\components\VisWindow\Interactors\Dolly3D.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\VisWindow\Interactors\FlyThrough.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\VisWindow\Interactors\Lineout2D.C
 # End Source File
 # Begin Source File

@@ -41,7 +41,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib plotter.lib pipeline_ser.lib avtfilters.lib avtexceptions.lib viewer.lib dbatts.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkGraphics.lib vtkFiltering.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib plotter.lib pipeline_ser.lib avtfilters.lib avtexceptions.lib viewer.lib dbatts.lib visitexpr.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkGraphics.lib vtkFiltering.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Release\plots\libVVectorPlot.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -107,7 +107,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib plotter.lib pipeline_ser.lib avtfilters.lib avtexceptions.lib viewer.lib dbatts.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkGraphics.lib vtkFiltering.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib plotter.lib pipeline_ser.lib avtfilters.lib avtexceptions.lib viewer.lib dbatts.lib visitexpr.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkGraphics.lib vtkFiltering.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Debug\plots\libVVectorPlot.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

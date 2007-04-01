@@ -23,12 +23,12 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;ENGINE_PROXY_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Release\engineproxy.pch"
 				AssemblerListingLocation=".\Release\"
@@ -40,12 +40,12 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib enginerpc.lib state.lib misc.lib comm.lib avtexceptions.lib visitparser.lib dbatts.lib pipeline_ser.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib enginerpc.lib state.lib misc.lib comm.lib avtexceptions.lib visitexpr.lib visitparser.lib dbatts.lib pipeline_ser.lib"
 				OutputFile=".\Release\engineproxy.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release\engineproxy.pdb"
 				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				ProgramDatabaseFile=".\Release\engineproxy.pdb"
 				ImportLibrary=".\Release\engineproxy.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -92,11 +92,11 @@ copy Release\engineproxy.dll ..\..\bin\MSVC7.Net\Release\engineproxy.dll
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;ENGINE_PROXY_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug\engineproxy.pch"
 				AssemblerListingLocation=".\Debug\"
@@ -109,13 +109,13 @@ copy Release\engineproxy.dll ..\..\bin\MSVC7.Net\Release\engineproxy.dll
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib enginerpc.lib state.lib misc.lib comm.lib avtexceptions.lib visitparser.lib dbatts.lib pipeline_ser.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib enginerpc.lib state.lib misc.lib comm.lib avtexceptions.lib visitexpr.lib visitparser.lib dbatts.lib pipeline_ser.lib"
 				OutputFile=".\Debug\engineproxy.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\engineproxy.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				ImportLibrary=".\Debug\engineproxy.lib"
 				TargetMachine="1"/>
 			<Tool

@@ -58,6 +58,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisPlotListBox.h                  -o %G%\QvisPlotListBox_moc.C
 %MOC% %HEADERS%\QvisPlotManagerWidget.h            -o %G%\QvisPlotManagerWidget_moc.C
 %MOC% %HEADERS%\QvisPluginWindow.h                 -o %G%\QvisPluginWindow_moc.C
+%MOC% %HEADERS%\QvisPointControl.h                 -o %G%\QvisPointControl_moc.C
 %MOC% %HEADERS%\QvisPostableWindow.h               -o %G%\QvisPostableWindow_moc.C
 %MOC% %HEADERS%\QvisPostableWindowObserver.h       -o %G%\QvisPostableWindowObserver_moc.C
 %MOC% %HEADERS%\QvisPostableWindowSimpleObserver.h -o %G%\QvisPostableWindowSimpleObserver_moc.C
@@ -76,9 +77,12 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisText2DInterface.h              -o %G%\QvisText2DInterface_moc.C
 %MOC% %HEADERS%\QvisTimeSliderInterface.h          -o %G%\QvisTimeSliderInterface_moc.C
 %MOC% %HEADERS%\QvisTurnDownButton.h               -o %G%\QvisTurnDownButton_moc.C
+%MOC% %HEADERS%\QvisVariableButton.h               -o %G%\QvisVariableButton_moc.C
+%MOC% %HEADERS%\QvisVariableButtonHelper.h         -o %G%\QvisVariableButtonHelper_moc.C
 %MOC% %HEADERS%\QvisVCRControl.h                   -o %G%\QvisVCRControl_moc.C
 %MOC% %HEADERS%\QvisViewWindow.h                   -o %G%\QvisViewWindow_moc.C
 %MOC% %HEADERS%\QvisWindowBase.h                   -o %G%\QvisWindowBase_moc.C
+%MOC% %HEADERS%\QvisWizard.h                       -o %G%\QvisWizard_moc.C
 %MOC% %HEADERS%\SplashScreen.h                     -o %G%\SplashScreen_moc.C
 
 echo Running moc on the viewer source

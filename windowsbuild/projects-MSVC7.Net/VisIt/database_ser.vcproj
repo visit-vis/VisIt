@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib utility.lib plugin.lib avtexceptions.lib dbatts.lib visitparser.lib visit_vtk_light.lib mir.lib pipeline_ser.lib vtkCommon.lib vtkFiltering.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib utility.lib plugin.lib avtexceptions.lib dbatts.lib visitexpr.lib visitparser.lib visit_vtk_light.lib mir.lib pipeline_ser.lib vtkCommon.lib vtkFiltering.lib"
 				OutputFile=".\Debug\database_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -110,7 +110,7 @@ copy Debug\database_ser.lib ..\..\lib\MSVC7.Net\Debug\database_ser.lib
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib utility.lib plugin.lib avtexceptions.lib dbatts.lib visitparser.lib visit_vtk_light.lib mir.lib pipeline_ser.lib vtkCommon.lib vtkFiltering.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib utility.lib plugin.lib avtexceptions.lib dbatts.lib visitexpr.lib visitparser.lib visit_vtk_light.lib mir.lib pipeline_ser.lib vtkCommon.lib vtkFiltering.lib"
 				OutputFile=".\Release\database_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

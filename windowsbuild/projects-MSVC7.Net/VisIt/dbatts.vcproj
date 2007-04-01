@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib avtexceptions.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib avtexceptions.lib visitexpr.lib"
 				OutputFile=".\Debug\dbatts.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -110,7 +110,7 @@ copy Debug\dbatts.dll ..\..\bin\MSVC7.Net\Debug\dbatts.dll
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib comm.lib state.lib misc.lib avtexceptions.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib comm.lib state.lib misc.lib avtexceptions.lib visitexpr.lib"
 				OutputFile=".\Release\dbatts.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

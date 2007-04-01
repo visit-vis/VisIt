@@ -356,6 +356,10 @@ SOURCE=..\..\visit\common\state\SimpleObserver.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\state\SimulationCommand.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\state\SphereAttributes.C
 # End Source File
 # Begin Source File

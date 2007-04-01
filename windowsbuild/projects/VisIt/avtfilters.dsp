@@ -144,6 +144,10 @@ SOURCE=..\..\visit\components\Filters\avtImageCompositer.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Filters\avtMassVoxelExtractor.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Filters\avtPointToGlyphFilter.C
 # End Source File
 # Begin Source File

@@ -97,6 +97,10 @@ PostBuild_Cmds=copy Debug\libEPseudocolor_ser.dll ..\..\bin\Debug\plots
 # Name "PseudocolorE - Win32 Debug"
 # Begin Source File
 
+SOURCE=..\..\visit\plots\Pseudocolor\avtPseudocolorFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\plots\Pseudocolor\avtPseudocolorPlot.C
 # End Source File
 # Begin Source File

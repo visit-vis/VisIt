@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib plugin.lib enginerpc.lib dbatts.lib avtfilters.lib avtfilewriter.lib pipeline_ser.lib database_ser.lib avtexceptions.lib plotter.lib visit_vtk.lib expression.lib queries.lib viswindow.lib avtview.lib vtkCommon.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib plugin.lib enginerpc.lib visitexpr.lib dbatts.lib avtfilters.lib avtfilewriter.lib pipeline_ser.lib database_ser.lib avtexceptions.lib plotter.lib visit_vtk.lib expression.lib queries.lib viswindow.lib avtview.lib vtkCommon.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Debug\engine.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -104,7 +104,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib plugin.lib enginerpc.lib dbatts.lib avtfilters.lib avtfilewriter.lib pipeline_ser.lib database_ser.lib avtexceptions.lib plotter.lib visit_vtk.lib expression.lib queries.lib viswindow.lib avtview.lib vtkCommon.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib plugin.lib enginerpc.lib dbatts.lib visitexpr.lib avtfilters.lib avtfilewriter.lib pipeline_ser.lib database_ser.lib avtexceptions.lib plotter.lib visit_vtk.lib expression.lib queries.lib viswindow.lib avtview.lib vtkCommon.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Release\engine.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -186,46 +186,6 @@
 			</File>
 			<File
 				RelativePath="..\..\visit\engine\main\Engine.C">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\engine\main\EngineExprNode.C">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\engine\main\EngineExprNodeFactory.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool

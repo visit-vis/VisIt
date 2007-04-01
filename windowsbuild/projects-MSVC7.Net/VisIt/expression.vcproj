@@ -41,7 +41,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib avtfilters.lib pipeline_ser.lib avtexceptions.lib state.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib avtfilters.lib dbatts.lib pipeline_ser.lib avtexceptions.lib state.lib visitexpr.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
 				OutputFile=".\Release\expression.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -110,7 +110,7 @@ copy Release\expression.dll ..\..\bin\MSVC7.Net\Release\expression.dll
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib pipeline_ser.lib avtexceptions.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib dbatts.lib pipeline_ser.lib avtexceptions.lib visitexpr.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
 				OutputFile=".\Debug\expression.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -219,6 +219,36 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Expressions\Abstract\avtExpressionStreamer.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Expressions\Abstract\avtMacroExpressionFilter.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Expressions\Abstract\avtMultipleInputExpressionFilter.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -283,6 +313,21 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 			Name="General"
 			Filter="">
 			<File
+				RelativePath="..\..\visit\components\Expressions\General\avtCurlFilter.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Expressions\General\avtDataIdFilter.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -318,6 +363,21 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Expressions\General\avtDivergenceFilter.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Expressions\General\avtGradientFilter.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -338,6 +398,21 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Expressions\General\avtLaplacianFilter.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Expressions\General\avtMagnitudeFilter.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -354,6 +429,21 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Expressions\General\avtMatErrorFilter.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -394,6 +484,21 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Expressions\General\avtMIRvfFilter.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -489,6 +594,21 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Expressions\General\avtRelativeDifferenceFilter.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -1661,6 +1781,36 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Expressions\Management\avtExprNode.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Expressions\Management\avtExprNodeFactory.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

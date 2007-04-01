@@ -21,6 +21,7 @@ set O=%VISIT%\operators
 %MOC% %O%\Project\QvisProjectWindow.h -o %O%\Project\QvisProjectWindow_moc.C
 %MOC% %O%\Reflect\QvisReflectWindow.h -o %O%\Reflect\QvisReflectWindow_moc.C
 %MOC% %O%\Reflect\QvisReflectWidget.h -o %O%\Reflect\QvisReflectWidget_moc.C
+%MOC% %O%\Revolve\QvisRevolveWindow.h -o %O%\Revolve\QvisRevolveWindow_moc.C
 %MOC% %O%\SiloDump\QvisSiloDumpWindow.h -o %O%\SiloDump\QvisSiloDumpWindow_moc.C
 %MOC% %O%\Slice\QvisSliceWindow.h -o %O%\Slice\QvisSliceWindow_moc.C
 %MOC% %O%\SphereSlice\QvisSphereSliceWindow.h -o %O%\SphereSlice\QvisSphereSliceWindow_moc.C

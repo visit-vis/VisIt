@@ -98,6 +98,10 @@ PostBuild_Cmds=copy Debug\pipeline_ser.lib ..\..\lib\Debug\pipeline_ser.lib	copy
 # Begin Group "Data"
 
 # PROP Default_Filter ""
+# End Group
+# Begin Group "Pipeline"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=..\..\visit\components\Pipeline\Data\avtAverageValueRF.C
@@ -132,6 +136,18 @@ SOURCE=..\..\visit\components\Pipeline\Data\avtDataObjectInformation.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataObjectReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataObjectString.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataObjectWriter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\Data\avtDataRepresentation.C
 # End Source File
 # Begin Source File
@@ -144,7 +160,19 @@ SOURCE=..\..\visit\components\Pipeline\Data\avtDatasetExaminer.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataSetReader.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\Data\avtDatasetVerifier.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataSetWriter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataSpecification.C
 # End Source File
 # Begin Source File
 
@@ -200,7 +228,19 @@ SOURCE=..\..\visit\components\Pipeline\Data\avtImagePartition.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtImageReader.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\Data\avtImageRepresentation.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtImageTiler.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtImageWriter.C
 # End Source File
 # Begin Source File
 
@@ -213,10 +253,6 @@ SOURCE=..\..\visit\components\Pipeline\Data\avtLightingModel.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Pipeline\Data\avtLogicalSelection.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Data\avtMassVoxelExtractor.C
 # End Source File
 # Begin Source File
 
@@ -244,11 +280,27 @@ SOURCE=..\..\visit\components\Pipeline\Data\avtNullData.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtNullDataReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtNullDataWriter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\Data\avtOpacityMap.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtParallel.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\Data\avtPhong.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtPipelineSpecification.C
 # End Source File
 # Begin Source File
 
@@ -305,62 +357,6 @@ SOURCE=..\..\visit\components\Pipeline\Data\avtVolume.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Pipeline\Data\avtWedgeExtractor.C
-# End Source File
-# End Group
-# Begin Group "Pipeline"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataObjectReader.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataObjectString.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataObjectWriter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataSetReader.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataSetWriter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtDataSpecification.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtImageReader.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtImageTiler.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtImageWriter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtNullDataReader.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtNullDataWriter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtParallel.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\Pipeline\Pipeline\avtPipelineSpecification.C
 # End Source File
 # End Group
 # Begin Group "PrivateFilters"

@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib avtexceptions.lib visit_vtk.lib dbatts.lib pipeline_ser.lib parallel_visit_vtk.lib vtkCommon.lib vtkRendering.lib vtkFiltering.lib vtkGraphics.lib vtkHybrid.lib opengl32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib avtexceptions.lib visit_vtk.lib dbatts.lib avtmath_ser.lib pipeline_ser.lib parallel_visit_vtk.lib vtkCommon.lib vtkRendering.lib vtkFiltering.lib vtkGraphics.lib vtkHybrid.lib opengl32.lib"
 				OutputFile=".\Debug\plotter.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -110,7 +110,7 @@ copy Debug\plotter.dll ..\..\bin\MSVC7.Net\Debug\plotter.dll
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib avtexceptions.lib visit_vtk.lib dbatts.lib pipeline_ser.lib parallel_visit_vtk.lib vtkCommon.lib vtkRendering.lib vtkFiltering.lib vtkGraphics.lib vtkHybrid.lib opengl32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib avtexceptions.lib visit_vtk.lib dbatts.lib avtmath_ser.lib pipeline_ser.lib parallel_visit_vtk.lib vtkCommon.lib vtkRendering.lib vtkFiltering.lib vtkGraphics.lib vtkHybrid.lib opengl32.lib"
 				OutputFile=".\Release\plotter.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -498,6 +498,21 @@ copy Release\plotter.dll ..\..\bin\MSVC7.Net\Release\plotter.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Plotter\avtLevelsPointGlyphMapper.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Plotter\avtLightList.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -658,7 +673,7 @@ copy Release\plotter.dll ..\..\bin\MSVC7.Net\Release\plotter.dll
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\components\Plotter\avtPointGlyphMapper.C">
+				RelativePath="..\..\visit\components\Plotter\avtPointGlypher.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -824,6 +839,21 @@ copy Release\plotter.dll ..\..\bin\MSVC7.Net\Release\plotter.dll
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Plotter\avtVariablePointGlyphMapper.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

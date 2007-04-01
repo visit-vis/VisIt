@@ -349,6 +349,10 @@ SOURCE=..\..\visit\gui\QvisPluginWindow.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisPointControl.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisPostableWindow.C
 # End Source File
 # Begin Source File
@@ -425,6 +429,14 @@ SOURCE=..\..\visit\gui\QvisTurnDownButton.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisVariableButton.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisVariableButtonHelper.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisVCRControl.C
 # End Source File
 # Begin Source File
@@ -434,6 +446,10 @@ SOURCE=..\..\visit\gui\QvisViewWindow.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisWindowBase.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisWizard.C
 # End Source File
 # Begin Source File
 
@@ -637,6 +653,10 @@ SOURCE=..\..\visit\gui\QvisPluginWindow_moc.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisPointControl_moc.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisPostableWindow_moc.C
 # End Source File
 # Begin Source File
@@ -709,6 +729,14 @@ SOURCE=..\..\visit\gui\QvisTurnDownButton_moc.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisVariableButton_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisVariableButtonHelper_moc.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisVCRControl_moc.C
 # End Source File
 # Begin Source File
@@ -718,6 +746,10 @@ SOURCE=..\..\visit\gui\QvisViewWindow_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisWindowBase_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisWizard_moc.C
 # End Source File
 # Begin Source File
 

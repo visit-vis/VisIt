@@ -733,26 +733,6 @@ copy Release\pipeline_ser.dll ..\..\bin\MSVC7.Net\Release\pipeline_ser.dll
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\components\Pipeline\Data\avtMassVoxelExtractor.C">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\visit\components\Pipeline\Data\avtMaterial.C">
 				<FileConfiguration
 					Name="Debug|Win32">

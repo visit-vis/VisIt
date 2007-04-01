@@ -699,6 +699,93 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Scatter"=.\Scatter.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ScatterE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ScatterG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ScatterI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ScatterS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ScatterV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ScatterE"=.\ScatterE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ScatterG"=.\ScatterG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ScatterI"=.\ScatterI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ScatterS"=.\ScatterS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ScatterV"=.\ScatterV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "Streamline"=.\Streamline.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1360,6 +1447,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Label
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Scatter
     End Project Dependency
 }}}
 

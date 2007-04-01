@@ -112,6 +112,10 @@ SOURCE=..\..\visit\visitpy\PyKeyframeAttributes.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visitpy\PyLightAttributes.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visitpy\PyMaterialAttributes.C
 # End Source File
 # Begin Source File

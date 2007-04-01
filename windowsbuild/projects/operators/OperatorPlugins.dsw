@@ -1221,6 +1221,93 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Revolve"=.\Revolve.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name RevolveE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name RevolveG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name RevolveI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name RevolveS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name RevolveV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "RevolveE"=.\RevolveE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RevolveG"=.\RevolveG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RevolveI"=.\RevolveI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RevolveS"=.\RevolveS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RevolveV"=.\RevolveV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "SiloDump"=.\SiloDump.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1804,6 +1891,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Project
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Revolve
     End Project Dependency
 }}}
 

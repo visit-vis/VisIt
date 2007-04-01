@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib comm.lib state.lib misc.lib plugin.lib utility.lib proxybase.lib visit_vtk.lib pipeline_ser.lib plotter.lib dbatts.lib viswindow.lib avtexceptions.lib viewerrpc.lib engineproxy.lib enginerpc.lib mdsproxy.lib mdsrpc.lib visitparser.lib qt-mt302.lib winutil.lib avtmath_ser.lib qtviswindow.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib comm.lib state.lib misc.lib plugin.lib utility.lib proxybase.lib visit_vtk.lib pipeline_ser.lib plotter.lib dbatts.lib viswindow.lib avtexceptions.lib viewerrpc.lib engineproxy.lib enginerpc.lib mdsproxy.lib mdsrpc.lib visitexpr.lib visitparser.lib qt-mt302.lib winutil.lib avtmath_ser.lib qtviswindow.lib"
 				OutputFile="Debug\viewer.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -110,7 +110,7 @@ copy Debug\viewer.lib ..\..\lib\MSVC7.Net\Debug\viewer.lib
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib comm.lib state.lib misc.lib plugin.lib utility.lib proxybase.lib visit_vtk.lib pipeline_ser.lib plotter.lib dbatts.lib viswindow.lib avtexceptions.lib viewerrpc.lib engineproxy.lib enginerpc.lib mdsproxy.lib mdsrpc.lib visitparser.lib qt-mt302.lib winutil.lib avtmath_ser.lib avtview.lib avtfilters.lib avtfilewriter.lib qtviswindow.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib comm.lib state.lib misc.lib plugin.lib utility.lib proxybase.lib visit_vtk.lib pipeline_ser.lib plotter.lib dbatts.lib viswindow.lib avtexceptions.lib viewerrpc.lib engineproxy.lib enginerpc.lib mdsproxy.lib mdsrpc.lib visitexpr.lib visitparser.lib qt-mt302.lib winutil.lib avtmath_ser.lib avtview.lib avtfilters.lib avtfilewriter.lib qtviswindow.lib"
 				OutputFile="Release\viewer.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

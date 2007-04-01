@@ -562,6 +562,36 @@ copy Debug\viswindow.dll ..\..\bin\MSVC7.Net\Debug\viswindow.dll
 			Name="Interactors"
 			Filter="">
 			<File
+				RelativePath="..\..\visit\components\VisWindow\Interactors\Dolly3D.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\VisWindow\Interactors\FlyThrough.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\VisWindow\Interactors\Lineout2D.C">
 				<FileConfiguration
 					Name="Release|Win32">

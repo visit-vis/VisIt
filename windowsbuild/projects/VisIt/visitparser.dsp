@@ -108,47 +108,15 @@ SOURCE=..\..\visit\common\parser\ConfiguratingSet.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\common\parser\ExprGrammar.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\common\parser\ExprGrammarNode.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\common\parser\ExprInit.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\common\parser\ExprNode.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\common\parser\ExprParser.C
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\visit\common\parser\Grammar.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\common\parser\InvalidExpressionException.C
+SOURCE=..\..\visit\common\parser\Parser.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\common\parser\ParserBase.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\common\parser\ParserInterface.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\common\parser\ParsingExprList.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\common\parser\RecursiveExpressionException.C
+SOURCE=..\..\visit\common\parser\ParseTreeNode.C
 # End Source File
 # Begin Source File
 
@@ -169,6 +137,10 @@ SOURCE=..\..\visit\common\parser\Symbol.C
 # Begin Source File
 
 SOURCE=..\..\visit\common\parser\Token.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\common\parser\TokenParseTreeNode.C
 # End Source File
 # End Group
 # End Target

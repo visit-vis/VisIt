@@ -222,7 +222,7 @@ Package=<4>
     Project_Dep_Name mir
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name visitparser
+    Project_Dep_Name visitexpr
     End Project Dependency
 }}}
 
@@ -249,7 +249,7 @@ Package=<4>
     Project_Dep_Name state
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name visitparser
+    Project_Dep_Name visitexpr
     End Project Dependency
 }}}
 
@@ -303,9 +303,6 @@ Package=<4>
     Project_Dep_Name viswindow
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name visitparser
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name avtfilters
     End Project Dependency
     Begin Project Dependency
@@ -313,6 +310,12 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name avtfilewriter
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name visitexpr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name visitparser
     End Project Dependency
 }}}
 
@@ -385,6 +388,15 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name pipeline_ser
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name visitexpr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name visitparser
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name dbatts
     End Project Dependency
 }}}
 
@@ -667,6 +679,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name parallel_visit_vtk
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtmath_ser
     End Project Dependency
 }}}
 
@@ -1019,6 +1034,21 @@ Package=<5>
 
 Package=<4>
 {{{
+}}}
+
+###############################################################################
+
+Project: "visitexpr"=.\visitexpr.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name visitparser
+    End Project Dependency
 }}}
 
 ###############################################################################

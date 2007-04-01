@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib avtfilters.lib pipeline_ser.lib avtexceptions.lib state.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib avtfilters.lib pipeline_ser.lib avtexceptions.lib state.lib visitexpr.lib visitparser.lib dbatts.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /machine:I386
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\expression.lib ..\..\lib\Release\expression.lib	copy Release\expression.dll ..\..\bin\Release\expression.dll
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib state.lib pipeline_ser.lib avtexceptions.lib visitparser.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib state.lib pipeline_ser.lib avtexceptions.lib visitexpr.lib visitparser.lib dbatts.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\expression.lib ..\..\lib\Debug\expression.lib	copy Debug\expression.dll ..\..\bin\Debug\expression.dll
@@ -112,6 +112,14 @@ SOURCE=..\..\visit\components\Expressions\Abstract\avtExpressionFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\Abstract\avtExpressionStreamer.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\Abstract\avtMacroExpressionFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\Abstract\avtMultipleInputExpressionFilter.C
 # End Source File
 # Begin Source File
@@ -128,6 +136,10 @@ SOURCE=..\..\visit\components\Expressions\Abstract\avtUnaryMathFilter.C
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\General\avtCurlFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\General\avtDataIdFilter.C
 # End Source File
 # Begin Source File
@@ -136,11 +148,23 @@ SOURCE=..\..\visit\components\Expressions\General\avtDegreeFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\General\avtDivergenceFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\General\avtGradientFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\General\avtLaplacianFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\General\avtMagnitudeFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\General\avtMatErrorFilter.C
 # End Source File
 # Begin Source File
 
@@ -149,6 +173,10 @@ SOURCE=..\..\visit\components\Expressions\General\avtMatvfFilter.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\General\avtMeshCoordinateFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\General\avtMIRvfFilter.C
 # End Source File
 # Begin Source File
 
@@ -169,6 +197,10 @@ SOURCE=..\..\visit\components\Expressions\General\avtRandomFilter.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\General\avtRecenterFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\General\avtRelativeDifferenceFilter.C
 # End Source File
 # Begin Source File
 
@@ -413,6 +445,14 @@ SOURCE=..\..\visit\components\Expressions\Management\avtConstantCreatorFilter.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\Management\avtExpressionEvaluatorFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\Management\avtExprNode.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\Management\avtExprNodeFactory.C
 # End Source File
 # Begin Source File
 

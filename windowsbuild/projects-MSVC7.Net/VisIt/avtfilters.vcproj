@@ -378,6 +378,21 @@ copy Debug\avtfilters.dll ..\..\bin\MSVC7.Net\Debug\avtfilters.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Filters\avtMassVoxelExtractor.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Filters\avtPointToGlyphFilter.C">
 				<FileConfiguration
 					Name="Release|Win32">
