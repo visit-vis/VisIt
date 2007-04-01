@@ -16,7 +16,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt for Windows source code"
-!define PRODUCT_VERSION "1.2.5"
+!define PRODUCT_VERSION "1.2.6"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visitdev${PRODUCT_VERSION}"
@@ -51,8 +51,8 @@ SetCompressor bzip2
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "..\installation\visitdev1.2.5.exe"
-InstallDir "C:\VisItDev1.2.5"
+OutFile "..\installation\visitdev${PRODUCT_VERSION}.exe"
+InstallDir "C:\VisItDev${PRODUCT_VERSION}"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 

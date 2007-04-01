@@ -222,6 +222,10 @@ SOURCE=..\..\visit\components\Exceptions\Pipeline\NoInputException.C
 
 SOURCE=..\..\visit\components\Exceptions\Pipeline\NonQueryableInputException.C
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Exceptions\Pipeline\UnexpectedValueException.C
+# End Source File
 # End Group
 # Begin Group "VisWindow"
 

@@ -1619,6 +1619,9 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name Transform
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name InverseGhostZone
+    End Project Dependency
 }}}
 
 ###############################################################################

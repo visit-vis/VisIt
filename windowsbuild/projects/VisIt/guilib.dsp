@@ -156,6 +156,10 @@ SOURCE=..\..\visit\gui\QvisAbstractOpacityBar.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisAnimationSlider.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisAnimationWindow.C
 # End Source File
 # Begin Source File
@@ -462,6 +466,10 @@ SOURCE=..\..\visit\gui\KFTimeSlider_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisAbstractOpacityBar_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisAnimationSlider_moc.C
 # End Source File
 # Begin Source File
 

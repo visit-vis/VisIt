@@ -4,7 +4,7 @@ set VISIT=%VISITDEVDIR%\visit
 set HEADERS=%VISITDEVDIR%\include\visit
 
 echo ************************************************************************
-echo Preprocessing VisIt source using %MOC%
+echo Preprocessing VisIt source from %VISITDEVDIR% using %MOC%
 echo ...
 
 echo Running moc on the GUI source
@@ -16,6 +16,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\KFListView.h                       -o %G%\KFListView_moc.C
 %MOC% %HEADERS%\KFTimeSlider.h                     -o %G%\KFTimeSlider_moc.C
 %MOC% %HEADERS%\QvisAbstractOpacityBar.h           -o %G%\QvisAbstractOpacityBar_moc.C
+%MOC% %HEADERS%\QvisAnimationSlider.h              -o %G%\QvisAnimationSlider_moc.C
 %MOC% %HEADERS%\QvisAnimationWindow.h              -o %G%\QvisAnimationWindow_moc.C
 %MOC% %HEADERS%\QvisAnnotationObjectInterface.h    -o %G%\QvisAnnotationObjectInterface_moc.C
 %MOC% %HEADERS%\QvisAnnotationWindow.h             -o %G%\QvisAnnotationWindow_moc.C
