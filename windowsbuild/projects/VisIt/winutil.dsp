@@ -100,15 +100,15 @@ PostBuild_Cmds=copy Debug\winutil.dll ..\..\bin\Debug\winutil.dll	copy Debug\win
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=..\..\visit\common\winutil\QvisVariablePopupMenu.C
+SOURCE=..\..\visit\winutil\QvisVariablePopupMenu.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\common\winutil\VariableMenuPopulator.C
+SOURCE=..\..\visit\winutil\VariableMenuPopulator.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\common\winutil\WindowMetrics.C
+SOURCE=..\..\visit\winutil\WindowMetrics.C
 # End Source File
 # End Group
 # Begin Group "moc"
@@ -116,7 +116,7 @@ SOURCE=..\..\visit\common\winutil\WindowMetrics.C
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\..\visit\common\winutil\QvisVariablePopupMenu_moc.C
+SOURCE=..\..\visit\winutil\QvisVariablePopupMenu_moc.C
 # End Source File
 # End Group
 # End Target

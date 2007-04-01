@@ -402,6 +402,10 @@ SOURCE=..\..\visit\components\Expressions\Management\avtConstantCreatorFilter.C
 
 SOURCE=..\..\visit\components\Expressions\Management\avtExpressionEvaluatorFilter.C
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\Management\ExprPipelineState.C
+# End Source File
 # End Group
 # Begin Group "Conditional"
 

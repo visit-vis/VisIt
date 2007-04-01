@@ -124,10 +124,6 @@ SOURCE=..\..\visit\gui\GUIBase.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\gui\Interpreter.C
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\visit\gui\KFBase.C
 # End Source File
 # Begin Source File
@@ -213,10 +209,6 @@ SOURCE=..\..\visit\gui\QvisColorTableButton.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisColorTableWindow.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\gui\QvisCommandLineWindow.C
 # End Source File
 # Begin Source File
 
@@ -534,10 +526,6 @@ SOURCE=..\..\visit\gui\QvisColorTableButton_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisColorTableWindow_moc.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\gui\QvisCommandLineWindow_moc.C
 # End Source File
 # Begin Source File
 

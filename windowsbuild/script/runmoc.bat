@@ -29,7 +29,6 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisColorSelectionWidget.h         -o %G%\QvisColorSelectionWidget_moc.C
 %MOC% %HEADERS%\QvisColorTableButton.h             -o %G%\QvisColorTableButton_moc.C
 %MOC% %HEADERS%\QvisColorTableWindow.h             -o %G%\QvisColorTableWindow_moc.C
-%MOC% %HEADERS%\QvisCommandLineWindow.h            -o %G%\QvisCommandLineWindow_moc.C
 %MOC% %HEADERS%\QvisDatabaseCorrelationWindow.h    -o %G%\QvisDatabaseCorrelationWindow_moc.C
 %MOC% %HEADERS%\QvisDatabaseCorrelationListWindow.h -o %G%\QvisDatabaseCorrelationListWindow_moc.C
 %MOC% %HEADERS%\QvisDelayedWindow.h                -o %G%\QvisDelayedWindow_moc.C
@@ -103,7 +102,7 @@ set Q=%VISIT%\vtkqt
 %MOC% %HEADERS%\vtkQtGLWidget.h                    -o %Q%\vtkQtGLWidget_moc.C
 
 echo Running moc on the winutil source
-set W=%VISIT%\common\winutil
+set W=%VISIT%\winutil
 %MOC% %HEADERS%\QvisVariablePopupMenu.h            -o %W%\QvisVariablePopupMenu_moc.C
 
 echo ...
