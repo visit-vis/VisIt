@@ -164,10 +164,6 @@ SOURCE=..\..\visit\components\VisWindow\Colleagues\VisWinRenderingWithoutWindow.
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\VisWindow\Colleagues\VisWinRenderingWithWindow.C
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\visit\components\VisWindow\Colleagues\VisWinTools.C
 # End Source File
 # Begin Source File

@@ -119,6 +119,10 @@ SOURCE=..\..\visit\mdserver\main\GetSILRPCExecutor.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\mdserver\main\KeepAliveRPCExecutor.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\mdserver\main\LoadPluginsRPCExecutor.C
 # End Source File
 # Begin Source File

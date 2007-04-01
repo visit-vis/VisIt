@@ -216,6 +216,10 @@ SOURCE=..\..\visit\common\state\HostProfileList.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\state\KeepAliveRPC.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\state\KeyframeAttributes.C
 # End Source File
 # Begin Source File
