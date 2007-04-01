@@ -115,5 +115,33 @@ SOURCE=..\..\visit\databases\VTK\VTKEnginePluginInfo.C
 
 SOURCE=..\..\visit\databases\VTK\VTKPluginInfo.C
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\VTK\vtkVisItDataReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\VTK\vtkVisItDataSetReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\VTK\vtkVisItPolyDataReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\VTK\vtkVisItRectilinearGridReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\VTK\vtkVisItStructuredGridReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\VTK\vtkVisItStructuredPointsReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\VTK\vtkVisItUnstructuredGridReader.C
+# End Source File
 # End Target
 # End Project

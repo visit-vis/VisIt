@@ -1145,6 +1145,9 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name Tetrad
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name PDB
+    End Project Dependency
 }}}
 
 ###############################################################################

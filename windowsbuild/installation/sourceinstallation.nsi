@@ -12,13 +12,16 @@
 #
 # Modifications:
 #   Brad Whitlock, Mon Feb 9 14:45:04 PST 2004
-#   Updated for 1.2.7
+#   Updated for 1.2.8
+#
+#   Brad Whitlock, Fri Mar 5 09:40:50 PDT 2004
+#   Updated for 1.2.8.
 #
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt for Windows source code"
-!define PRODUCT_VERSION "1.2.7"
+!define PRODUCT_VERSION "1.2.8"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visitdev${PRODUCT_VERSION}"

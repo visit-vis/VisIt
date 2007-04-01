@@ -132,6 +132,18 @@ SOURCE=..\..\visit\components\Queries\Abstract\avtTwoPassDatasetQuery.C
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\visit\components\Queries\Queries\avtActualDataMinMaxQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtActualDataNumNodesQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtActualDataNumZonesQuery.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Queries\Queries\avtAreaBetweenCurvesQuery.C
 # End Source File
 # Begin Source File
@@ -168,11 +180,31 @@ SOURCE=..\..\visit\components\Queries\Queries\avtLocateCellQuery.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Queries\Queries\avtPickQuery.C
+SOURCE=..\..\visit\components\Queries\Queries\avtMinMaxQuery.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Queries\Queries\avtPlotMinMaxQuery.C
+SOURCE=..\..\visit\components\Queries\Queries\avtNumNodesQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtNumZonesQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtOriginalDataMinMaxQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtOriginalDataNumNodesQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtOriginalDataNumZonesQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtPickQuery.C
 # End Source File
 # Begin Source File
 

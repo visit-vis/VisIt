@@ -12,13 +12,16 @@
 #
 # Modifications:
 #   Brad Whitlock, Mon Feb 9 14:45:04 PST 2004
-#   Updated for 1.2.7
+#   Updated for 1.2.8
+#
+#   Brad Whitlock, Fri Mar 5 09:40:50 PDT 2004
+#   Updated for 1.2.8.
 #
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.2.7"
+!define PRODUCT_VERSION "1.2.8"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit.exe"
@@ -69,7 +72,7 @@ page custom ChooseNetworkConfig
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "..\installations\visit${PRODUCT_VERSION}.exe"
+OutFile "..\installation\visit${PRODUCT_VERSION}.exe"
 InstallDir "$PROGRAMFILES\LLNL\VisIt ${PRODUCT_VERSION}"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -374,10 +377,10 @@ HaveNetworkConfig:
     # If $0=="" then we're going to use the closed config
     Strcmp $0 "1" OpenNetworkConfig ClosedNetworkConfig
 OpenNetworkConfig:
-         WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-open.ini"
+         WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-open"
          Goto SkipNetworkConfig
 ClosedNetworkConfig:
-         WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-closed.ini"
+         WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-closed"
 SkipNetworkConfig:
 
   # If the Python installation path for Python 2.1 does not exist then create it.

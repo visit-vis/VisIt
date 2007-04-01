@@ -132,30 +132,6 @@ SOURCE=..\..\visit\visit_vtk\sl_io\vtkDataWriter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\sl_io\vtkEnSight6BinaryReader.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\sl_io\vtkEnSight6Reader.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\sl_io\vtkEnSightGoldBinaryReader.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\sl_io\vtkEnSightGoldReader.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\sl_io\vtkEnSightReader.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\sl_io\vtkGenericEnSightReader.C
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\visit\visit_vtk\sl_io\vtkOBJReader.C
 # End Source File
 # Begin Source File

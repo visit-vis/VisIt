@@ -111,5 +111,29 @@ SOURCE=..\..\visit\databases\Ensight\EnsightMDServerPluginInfo.C
 
 SOURCE=..\..\visit\databases\Ensight\EnsightPluginInfo.C
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\EnSight\vtkVisItEnSight6BinaryReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\EnSight\vtkVisItEnSight6Reader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\EnSight\vtkVisItEnSightGoldBinaryReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\EnSight\vtkVisItEnSightGoldReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\EnSight\vtkVisItEnSightReader.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\EnSight\vtkVisItGenericEnSightReader.C
+# End Source File
 # End Target
 # End Project
