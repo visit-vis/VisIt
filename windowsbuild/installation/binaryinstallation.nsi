@@ -44,7 +44,8 @@
 #   Updated for 1.4.1.
 #
 #   Brad Whitlock, Thu Feb 24 16:09:17 PST 2005
-#   Updated for 1.4.2.
+#   Updated for 1.4.2. I also added more configuration screens that allow
+#  the user to pick a default database format.
 #
 ##############################################################################
 
@@ -73,6 +74,10 @@ SetCompressor bzip2
 #!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
 ReserveFile "NetworkConfig.ini"
+ReserveFile "WantDatabasePlugin.ini"
+ReserveFile "DefaultDatabasePlugin.ini"
+ReserveFile "ClickInstall.ini"
+
 ; Reserve files
 !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
 
@@ -84,6 +89,8 @@ ReserveFile "NetworkConfig.ini"
 !insertmacro MUI_PAGE_DIRECTORY
 ; Custom
 page custom ChooseNetworkConfig
+page custom WantDefaultDatabasePlugin
+page custom ChooseDefaultDatabasePlugin
 
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
@@ -108,16 +115,80 @@ ShowInstDetails show
 ShowUnInstDetails show
 
 Var CreatedPythonLinks
+Var DefaultDatabase
+Var SelectingDefaultDatabase
+
+###############################################################################
+#
+# Functions
+#
+###############################################################################
 
 Function .onInit
   ;Extract InstallOptions INI files
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT "NetworkConfig.ini"
+  !insertmacro MUI_INSTALLOPTIONS_EXTRACT "WantDatabasePlugin.ini"
+  !insertmacro MUI_INSTALLOPTIONS_EXTRACT "DefaultDatabasePlugin.ini"
+  !insertmacro MUI_INSTALLOPTIONS_EXTRACT "ClickInstall.ini"
+  Strcpy $SelectingDefaultDatabase "no"
+  Strcpy $DefaultDatabase ""
 FunctionEnd
 
+#
+# This function is called when we show the Network configuration screen.
+#
 Function ChooseNetworkConfig
-#  !insertmacro MUI_HEADER_TEXT "Choose Network Configuration"
+  !insertmacro MUI_HEADER_TEXT "Network configuration" "Select the desired network configuration."
   !insertmacro MUI_INSTALLOPTIONS_DISPLAY "NetworkConfig.ini"
 FunctionEnd
+
+#
+# This function is called when we show the WantDatabasePlugin screen. We read whether
+# the user chose yes or no and use that to set a variable that we use to determine the
+# look of the next page.
+#
+Function WantDefaultDatabasePlugin
+  !insertmacro MUI_HEADER_TEXT "Select default database reader plugin" "Do you want to select a default database reader plugin?"
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "WantDatabasePlugin.ini"
+
+  # Get whether or not the user selected a default file format.
+  !insertmacro MUI_INSTALLOPTIONS_READ $0 "WantDatabasePlugin.ini" "Field 1" "State"
+  # If $0=="1" then we're going to have a networkconfig
+  Strcmp $0 "1" NoDefaultDatabase PickedDefaultDatabase
+PickedDefaultDatabase:
+    # We got here because we picked a default database. Enable the database plugin combobox.
+    Strcpy $SelectingDefaultDatabase "yes"
+    Goto EndWantDefaultDatabasePlugin
+NoDefaultDatabase:
+    # We got here because we picked no default database.
+    Strcpy $SelectingDefaultDatabase "no"
+EndWantDefaultDatabasePlugin:
+FunctionEnd
+
+#
+# This function is called when we want to actually choose a database reader plugin. If the
+# user chose not to set up a database reader plugin then we show the "Click install"
+# screen instead.
+#
+Function ChooseDefaultDatabasePlugin
+  Strcmp $SelectingDefaultDatabase "yes" YesPickDatabase NoPickDatabase
+YesPickDatabase:
+  !insertmacro MUI_HEADER_TEXT "Select default database reader plugin" "Select the database reader plugin that VisIt will try first when opening a database."
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "DefaultDatabasePlugin.ini"
+  !insertmacro MUI_INSTALLOPTIONS_READ $0 "DefaultDatabasePlugin.ini" "Field 1" "State"
+   Strcpy $DefaultDatabase "-default_format $0"
+   Goto EndChooseDefaultDatabasePlugin
+NoPickDatabase:
+  !insertmacro MUI_HEADER_TEXT "Install VisIt now" "Click the Install button to install VisIt."
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "ClickInstall.ini"
+EndChooseDefaultDatabasePlugin:
+FunctionEnd
+
+###############################################################################
+#
+# Sections
+#
+###############################################################################
 
 Section "Executable Components" SEC01
   SetOutPath "$INSTDIR"
@@ -426,6 +497,13 @@ ClosedNetworkConfig:
          WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-closed"
          WriteRegStr HKCU "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-closed"
 SkipNetworkConfig:
+
+  # Write any additional arguments, like the default database format, to the VISITARGS key.
+  Strcmp $SelectingDefaultDatabase "yes" HaveDefaultDatabase NoDefaultDatabase
+HaveDefaultDatabase:
+     WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITARGS" $DefaultDatabase
+     WriteRegStr HKCU "VISIT${PRODUCT_VERSION}" "VISITARGS" $DefaultDatabase
+NoDefaultDatabase:
 
   # If the Python installation path for Python 2.1 does not exist then create it.
 #  ReadRegStr $CreatedPythonLinks HKCU "Software\Python\PythonCore\2.1\InstallPath"
