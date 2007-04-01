@@ -30,6 +30,8 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisColorTableButton.h             -o %G%\QvisColorTableButton_moc.C
 %MOC% %HEADERS%\QvisColorTableWindow.h             -o %G%\QvisColorTableWindow_moc.C
 %MOC% %HEADERS%\QvisCommandLineWindow.h            -o %G%\QvisCommandLineWindow_moc.C
+%MOC% %HEADERS%\QvisDatabaseCorrelationWindow.h    -o %G%\QvisDatabaseCorrelationWindow_moc.C
+%MOC% %HEADERS%\QvisDatabaseCorrelationListWindow.h -o %G%\QvisDatabaseCorrelationListWindow_moc.C
 %MOC% %HEADERS%\QvisDelayedWindow.h                -o %G%\QvisDelayedWindow_moc.C
 %MOC% %HEADERS%\QvisDelayedWindowObserver.h        -o %G%\QvisDelayedWindowObserver_moc.C
 %MOC% %HEADERS%\QvisDelayedWindowSimpleObserver.h  -o %G%\QvisDelayedWindowSimpleObserver_moc.C
@@ -65,6 +67,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisPreferencesWindow.h            -o %G%\QvisPreferencesWindow_moc.C
 %MOC% %HEADERS%\QvisRecentPathRemovalWindow.h      -o %G%\QvisRecentPathRemovalWindow_moc.C
 %MOC% %HEADERS%\QvisQueryWindow.h                  -o %G%\QvisQueryWindow_moc.C
+%MOC% %HEADERS%\QvisQueryOverTimeWindow.h          -o %G%\QvisQueryOverTimeWindow_moc.C
 %MOC% %HEADERS%\QvisRenderingWindow.h              -o %G%\QvisRenderingWindow_moc.C
 %MOC% %HEADERS%\QvisSaveWindow.h                   -o %G%\QvisSaveWindow_moc.C
 %MOC% %HEADERS%\QvisScreenPositioner.h             -o %G%\QvisScreenPositioner_moc.C

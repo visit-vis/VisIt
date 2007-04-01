@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comm.lib state.lib misc.lib plugin.lib proxybase.lib visit_vtk.lib pipeline_ser.lib plotter.lib dbatts.lib viswindow.lib avtexceptions.lib viewerrpc.lib engineproxy.lib enginerpc.lib mdsproxy.lib mdsrpc.lib visitparser.lib qt-mt302.lib winutil.lib avtmath_ser.lib avtview.lib avtfilters.lib avtfilewriter.lib qtviswindow.lib /nologo /dll /machine:I386 /out:"Release/viewer.dll"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comm.lib state.lib misc.lib plugin.lib utility.lib proxybase.lib visit_vtk.lib pipeline_ser.lib plotter.lib dbatts.lib viswindow.lib avtexceptions.lib viewerrpc.lib engineproxy.lib enginerpc.lib mdsproxy.lib mdsrpc.lib visitparser.lib qt-mt302.lib winutil.lib avtmath_ser.lib avtview.lib avtfilters.lib avtfilewriter.lib qtviswindow.lib /nologo /dll /machine:I386 /out:"Release/viewer.dll"
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\viewer.dll ..\..\bin\Release\viewer.dll	copy Release\viewer.lib ..\..\lib\Release\viewer.lib
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comm.lib state.lib misc.lib plugin.lib proxybase.lib visit_vtk.lib pipeline_ser.lib plotter.lib dbatts.lib viswindow.lib avtexceptions.lib viewerrpc.lib engineproxy.lib enginerpc.lib mdsproxy.lib mdsrpc.lib visitparser.lib qt-mt302.lib winutil.lib avtmath_ser.lib qtviswindow.lib /nologo /dll /debug /machine:I386 /out:"Debug/viewer.dll" /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comm.lib state.lib misc.lib plugin.lib utility.lib proxybase.lib visit_vtk.lib pipeline_ser.lib plotter.lib dbatts.lib viswindow.lib avtexceptions.lib viewerrpc.lib engineproxy.lib enginerpc.lib mdsproxy.lib mdsrpc.lib visitparser.lib qt-mt302.lib winutil.lib avtmath_ser.lib qtviswindow.lib /nologo /dll /debug /machine:I386 /out:"Debug/viewer.dll" /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\viewer.dll ..\..\bin\Debug\viewer.dll	copy Debug\viewer.lib ..\..\lib\Debug\viewer.lib
@@ -105,6 +105,10 @@ SOURCE=..\..\visit\viewer\main\ActionGroupDescription.C
 # Begin Source File
 
 SOURCE=..\..\visit\viewer\main\AnimationActions.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\viewer\main\EngineKey.C
 # End Source File
 # Begin Source File
 
@@ -133,10 +137,6 @@ SOURCE=..\..\visit\viewer\main\ViewerActionBase.C
 # Begin Source File
 
 SOURCE=..\..\visit\viewer\main\ViewerActionManager.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\viewer\main\ViewerAnimation.C
 # End Source File
 # Begin Source File
 

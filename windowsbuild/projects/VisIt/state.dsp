@@ -176,6 +176,14 @@ SOURCE=..\..\visit\common\state\DatabaseAttributes.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\state\DatabaseCorrelation.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\common\state\DatabaseCorrelationList.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\state\DataNode.C
 # End Source File
 # Begin Source File
@@ -301,6 +309,10 @@ SOURCE=..\..\visit\common\state\QueryAttributes.C
 # Begin Source File
 
 SOURCE=..\..\visit\common\state\QueryList.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\common\state\QueryOverTimeAttributes.C
 # End Source File
 # Begin Source File
 

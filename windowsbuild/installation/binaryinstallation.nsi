@@ -12,16 +12,19 @@
 #
 # Modifications:
 #   Brad Whitlock, Mon Feb 9 14:45:04 PST 2004
-#   Updated for 1.2.8
+#   Updated for 1.2.7
 #
 #   Brad Whitlock, Fri Mar 5 09:40:50 PDT 2004
 #   Updated for 1.2.8.
+#
+#   Brad Whitlock, Wed Apr 14 16:22:49 PST 2004
+#   Updated for 1.3.
 #
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.2.8"
+!define PRODUCT_VERSION "1.3"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit.exe"
@@ -355,6 +358,7 @@ Section DataFiles
   #
   File "..\..\VisItData\*.silo"
   File "..\..\VisItData\wave.visit"
+  File "..\..\VisItData\PDB\db*.pdb"
   File "..\..\VisItData\ANALYZE_test_data\*.hdr"
   File "..\..\VisItData\ANALYZE_test_data\*.img"
   File "..\..\VisItData\ANALYZE_test_data\*.visit"

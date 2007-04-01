@@ -678,7 +678,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "qtviswindow"=.\qtviswindow\qtviswindow.dsp - Package Owner=<4>
+Project: "qtviswindow"=.\qtviswindow.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -907,6 +907,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name avtview
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name qtviswindow
     End Project Dependency
 }}}
 

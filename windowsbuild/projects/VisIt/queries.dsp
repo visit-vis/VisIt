@@ -243,5 +243,17 @@ SOURCE=..\..\visit\components\Queries\Queries\avtVariableSummationQuery.C
 SOURCE=..\..\visit\components\Queries\Queries\avtWeightedVariableSummationQuery.C
 # End Source File
 # End Group
+# Begin Group "Misc"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Misc\avtQueryFactory.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Misc\avtQueryOverTimeFilter.C
+# End Source File
+# End Group
 # End Target
 # End Project

@@ -148,6 +148,10 @@ SOURCE=..\..\visit\gui\mini3D.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\NameSimplifier.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QualifiedFilename.C
 # End Source File
 # Begin Source File
@@ -213,6 +217,14 @@ SOURCE=..\..\visit\gui\QvisColorTableWindow.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisCommandLineWindow.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisDatabaseCorrelationListWindow.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisDatabaseCorrelationWindow.C
 # End Source File
 # Begin Source File
 
@@ -366,6 +378,10 @@ SOURCE=..\..\visit\gui\QvisPostableWindowSimpleObserver.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisPreferencesWindow.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisQueryOverTimeWindow.C
 # End Source File
 # Begin Source File
 
@@ -525,6 +541,14 @@ SOURCE=..\..\visit\gui\QvisCommandLineWindow_moc.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisDatabaseCorrelationListWindow_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisDatabaseCorrelationWindow_moc.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisDelayedWindow_moc.C
 # End Source File
 # Begin Source File
@@ -654,6 +678,10 @@ SOURCE=..\..\visit\gui\QvisPostableWindowSimpleObserver_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisPreferencesWindow_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisQueryOverTimeWindow_moc.C
 # End Source File
 # Begin Source File
 

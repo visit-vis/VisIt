@@ -97,6 +97,10 @@ PostBuild_Cmds=copy Debug\vclrpc.dll ..\..\bin\Debug\vclrpc.dll	copy Debug\vclrp
 # Name "vclrpc - Win32 Debug"
 # Begin Source File
 
+SOURCE=..\..\visit\launcher\rpc\ConnectSimRPC.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\launcher\rpc\LaunchRPC.C
 # End Source File
 # End Target
