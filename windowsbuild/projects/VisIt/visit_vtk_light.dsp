@@ -144,6 +144,10 @@ SOURCE=..\..\visit\visit_vtk\lightweight\vtkUnstructuredGridBoundaryFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visit_vtk\lightweight\vtkVisItPointLocator.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visit_vtk\lightweight\vtkVisItUtility.C
 # End Source File
 # End Group
