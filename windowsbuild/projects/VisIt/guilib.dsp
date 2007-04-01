@@ -104,18 +104,6 @@ SOURCE=..\..\visit\gui\ColorTableObserver.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\gui\ExprDeleteButton.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\gui\ExpressionTable.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\gui\ExprTypeItem.C
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\visit\gui\FileServerList.C
 # End Source File
 # Begin Source File
@@ -455,18 +443,6 @@ SOURCE=..\..\visit\gui\SplashScreen.C
 # Begin Group "moc"
 
 # PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=..\..\visit\gui\ExprDeleteButton_moc.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\gui\ExpressionTable_moc.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\gui\ExprTypeItem_moc.C
-# End Source File
 # Begin Source File
 
 SOURCE=..\..\visit\gui\KFListView_moc.C

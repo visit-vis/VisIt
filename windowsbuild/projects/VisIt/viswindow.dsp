@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib comm.lib misc.lib visit_vtk.lib avtexceptions.lib avtmath_ser.lib plotter.lib pipeline_ser.lib avtview.lib vtkqt.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib vtkRendering.lib qt-mt302.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib comm.lib misc.lib visit_vtk.lib avtexceptions.lib avtmath_ser.lib plotter.lib pipeline_ser.lib avtview.lib vtkqt.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib vtkRendering.lib qt-mt302.lib opengl32.lib MesaGL.lib /nologo /dll /machine:I386
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\viswindow.dll ..\..\bin\Release\viswindow.dll	copy Release\viswindow.lib ..\..\lib\Release\viswindow.lib
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib comm.lib misc.lib visit_vtk.lib avtexceptions.lib avtmath_ser.lib plotter.lib avtview.lib pipeline_ser.lib vtkqt.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib vtkRendering.lib qt-mt302.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib comm.lib misc.lib visit_vtk.lib avtexceptions.lib avtmath_ser.lib plotter.lib avtview.lib pipeline_ser.lib vtkqt.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib vtkRendering.lib qt-mt302.lib opengl32.lib MesaGL.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\viswindow.lib ..\..\lib\Debug\viswindow.lib	copy Debug\viswindow.dll ..\..\bin\Debug\viswindow.dll

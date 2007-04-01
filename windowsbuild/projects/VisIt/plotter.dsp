@@ -204,6 +204,10 @@ SOURCE=..\..\visit\components\Plotter\avtPointGlyphMapper.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Plotter\avtSoftwareShader.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Plotter\avtSurfaceAndWireframeRenderer.C
 # End Source File
 # Begin Source File

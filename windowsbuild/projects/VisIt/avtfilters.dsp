@@ -188,6 +188,10 @@ SOURCE=..\..\visit\components\Filters\avtSummationFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Filters\avtTiledImageCompositor.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Filters\avtTransform.C
 # End Source File
 # Begin Source File
@@ -196,7 +200,11 @@ SOURCE=..\..\visit\components\Filters\avtVertexNormalsFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Filters\avtWholeImageCompositer.C
+SOURCE=..\..\visit\components\Filters\avtWholeImageCompositerNoZ.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Filters\avtWholeImageCompositerWithZ.C
 # End Source File
 # Begin Source File
 

@@ -13,6 +13,7 @@ set G=%VISIT%\plots
 %MOC% %G%\Contour\QvisContourPlotWindow.h               -o %G%\Contour\QvisContourPlotWindow_moc.C
 %MOC% %G%\Curve\QvisCurvePlotWindow.h                   -o %G%\Curve\QvisCurvePlotWindow_moc.C
 %MOC% %G%\FilledBoundary\QvisFilledBoundaryPlotWindow.h -o %G%\FilledBoundary\QvisFilledBoundaryPlotWindow_moc.C
+%MOC% %G%\Label\QvisLabelPlotWindow.h                   -o %G%\Label\QvisLabelPlotWindow_moc.C
 %MOC% %G%\Histogram\QvisHistogramPlotWindow.h           -o %G%\Histogram\QvisHistogramPlotWindow_moc.C
 %MOC% %G%\Mesh\QvisMeshPlotWindow.h                     -o %G%\Mesh\QvisMeshPlotWindow_moc.C
 %MOC% %G%\Pseudocolor\QvisPseudocolorPlotWindow.h       -o %G%\Pseudocolor\QvisPseudocolorPlotWindow_moc.C

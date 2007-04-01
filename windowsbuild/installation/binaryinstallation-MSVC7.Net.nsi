@@ -14,11 +14,14 @@
 #  Brad Whitlock, Thu Sep 23 09:39:53 PDT 2004
 #  Updated for 1.3.5.
 #
+#  Brad Whitlock, Wed Nov 3 14:07:03 PST 2004
+#  Updated for 1.4.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.3.5"
+!define PRODUCT_VERSION "1.4"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit.exe"
@@ -165,6 +168,10 @@ SectionEnd
 Section MyImageDirectory
   # This will hopefully create an image storage directory that VisIt can use.
   SetOutPath "$INSTDIR\My images"
+
+  # Make sure that we're in the VisIt data directory by default when the
+  # application runs for the first time.
+  SetOutPath "$INSTDIR\data"
 SectionEnd
 
 Section AddVisItRegKeys

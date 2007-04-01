@@ -776,6 +776,21 @@ copy Release\visit_vtk.dll ..\..\bin\MSVC7.Net\Release\visit_vtk.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\visit_vtk\full\vtkVisItCellDataToPointData.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\visit_vtk\full\vtkVisItCellLocator.C">
 				<FileConfiguration
 					Name="Debug|Win32">

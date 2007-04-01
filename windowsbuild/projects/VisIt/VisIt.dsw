@@ -576,6 +576,27 @@ Package=<4>
 
 ###############################################################################
 
+Project: "parallel_visit_vtk"=.\parallel_visit_vtk.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name avtexceptions
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name misc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name visit_vtk_light
+    End Project Dependency
+}}}
+
+###############################################################################
+
 Project: "pipeline_ser"=.\pipeline_ser.dsp - Package Owner=<4>
 
 Package=<5>
@@ -643,6 +664,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name avtfilters
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name parallel_visit_vtk
     End Project Dependency
 }}}
 

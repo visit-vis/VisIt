@@ -10,9 +10,6 @@ echo ...
 echo Running moc on the GUI source
 set G=%VISIT%\gui
 
-%MOC% %HEADERS%\ExprDeleteButton.h                 -o %G%\ExprDeleteButton_moc.C
-%MOC% %HEADERS%\ExprTypeItem.h                     -o %G%\ExprTypeItem_moc.C
-%MOC% %HEADERS%\ExpressionTable.h                  -o %G%\ExpressionTable_moc.C
 %MOC% %HEADERS%\KFListView.h                       -o %G%\KFListView_moc.C
 %MOC% %HEADERS%\KFTimeSlider.h                     -o %G%\KFTimeSlider_moc.C
 %MOC% %HEADERS%\QvisAbstractOpacityBar.h           -o %G%\QvisAbstractOpacityBar_moc.C

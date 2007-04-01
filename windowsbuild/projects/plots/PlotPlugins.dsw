@@ -438,6 +438,93 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Label"=.\Label.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name LabelE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LabelG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LabelI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LabelS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LabelV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "LabelE"=.\LabelE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LabelG"=.\LabelG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LabelI"=.\LabelI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LabelS"=.\LabelS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LabelV"=.\LabelV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "Mesh"=.\Mesh.dsp - Package Owner=<4>
 
 Package=<5>
@@ -960,6 +1047,93 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Truecolor"=.\Truecolor.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name TruecolorE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TruecolorG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TruecolorI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TruecolorS
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TruecolorV
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "TruecolorE"=.\TruecolorE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TruecolorG"=.\TruecolorG.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TruecolorI"=.\TruecolorI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TruecolorS"=.\TruecolorS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TruecolorV"=.\TruecolorV.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "Vector"=.\Vector.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1134,93 +1308,6 @@ Package=<4>
 
 ###############################################################################
 
-Project: "Truecolor"=.\Truecolor.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name TruecolorE
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name TruecolorG
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name TruecolorI
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name TruecolorS
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name TruecolorV
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "TruecolorE"=.\TruecolorE.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "TruecolorG"=.\TruecolorG.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "TruecolorI"=.\TruecolorI.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "TruecolorS"=.\TruecolorS.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "TruecolorV"=.\TruecolorV.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
 Project: "_TOP_LEVEL"=.\_TOP_LEVEL.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1270,6 +1357,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Volume
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Label
     End Project Dependency
 }}}
 

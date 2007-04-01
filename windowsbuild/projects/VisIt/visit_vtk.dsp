@@ -228,6 +228,10 @@ SOURCE=..\..\visit\visit_vtk\full\vtkVisItAxisActor2D.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItCellDataToPointData.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visit_vtk\full\vtkVisItCellLocator.C
 # End Source File
 # Begin Source File

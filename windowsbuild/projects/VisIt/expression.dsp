@@ -128,6 +128,10 @@ SOURCE=..\..\visit\components\Expressions\Abstract\avtUnaryMathFilter.C
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\General\avtDataIdFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\General\avtDegreeFilter.C
 # End Source File
 # Begin Source File
@@ -145,6 +149,10 @@ SOURCE=..\..\visit\components\Expressions\General\avtMatvfFilter.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\General\avtMeshCoordinateFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\General\avtNeighborEvaluatorFilter.C
 # End Source File
 # Begin Source File
 
