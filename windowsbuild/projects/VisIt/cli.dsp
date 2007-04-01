@@ -96,6 +96,10 @@ SOURCE=..\..\visit\visitpy\PyGlobalAttributes.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visitpy\PyGlobalLineoutAttributes.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visitpy\PyHostProfile.C
 # End Source File
 # Begin Source File

@@ -224,7 +224,11 @@ SOURCE=..\..\visit\components\Queries\Queries\avtTotalVolumeQuery.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\Queries\Queries\avtVariableQuery.C
+SOURCE=..\..\visit\components\Queries\Queries\avtVariableByNodeQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtVariableByZoneQuery.C
 # End Source File
 # Begin Source File
 

@@ -332,6 +332,10 @@ SOURCE=..\..\visit\components\Pipeline\Pipeline\avtImageReader.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\Pipeline\avtImageTiler.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\Pipeline\avtImageWriter.C
 # End Source File
 # Begin Source File

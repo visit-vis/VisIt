@@ -128,22 +128,6 @@ SOURCE=..\..\visit\visit_vtk\full\vtkDisjointCubesFacelistFilter.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\visit_vtk\full\vtkHankAxisActor2D.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\full\vtkHankTIFFWriter.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\full\vtkKatAxisActor.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\visit_vtk\full\vtkKatCubeAxesActor.C
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\visit\visit_vtk\full\vtkLineoutFilter.C
 # End Source File
 # Begin Source File
@@ -244,6 +228,14 @@ SOURCE=..\..\visit\visit_vtk\full\vtkVerticalScalarBarWithOpacityActor.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItAxisActor.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItAxisActor2D.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visit_vtk\full\vtkVisItCellLocator.C
 # End Source File
 # Begin Source File
@@ -253,6 +245,10 @@ SOURCE=..\..\visit\visit_vtk\full\vtkVisItClipper.C
 # Begin Source File
 
 SOURCE=..\..\visit\visit_vtk\full\vtkVisItContourFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItCubeAxesActor.C
 # End Source File
 # Begin Source File
 
@@ -285,6 +281,10 @@ SOURCE=..\..\visit\visit_vtk\full\vtkVisItSTLWriter.C
 # Begin Source File
 
 SOURCE=..\..\visit\visit_vtk\full\vtkVisItStreamLine.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItTIFFWriter.C
 # End Source File
 # Begin Source File
 

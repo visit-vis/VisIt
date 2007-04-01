@@ -29,11 +29,14 @@
 #   Brad Whitlock, Wed Jul 14 09:34:28 PDT 2004
 #   Updated for 1.3.3 and changed registry keys.
 #
+#   Brad Whitlock, Tue Aug 24 11:37:40 PDT 2004
+#   Updated for 1.3.4. We now have MSVC7.Net specific stuff to distribute.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt for Windows source code"
-!define PRODUCT_VERSION "1.3.3"
+!define PRODUCT_VERSION "1.3.4"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visitdev${PRODUCT_VERSION}"
@@ -76,6 +79,7 @@ ShowInstDetails show
 Section "ProjectFiles" SEC02
   SetOutPath "$INSTDIR"
   File /r "..\projects"
+  File /r "..\projects-MSVC7.Net"
 SectionEnd
 
 Section "IncludeFiles" SEC03
@@ -91,6 +95,7 @@ Section "InstallationFiles" SEC04
   # The installation files that we use to build the binary and source distributions.
   SetOutPath "$INSTDIR\installation"
   File "binaryinstallation.nsi"
+  File "binaryinstallation-MSVC7.Net.nsi"
   File "sourceinstallation.nsi"
   File "copyright.txt"
   File "NetworkConfig.ini"

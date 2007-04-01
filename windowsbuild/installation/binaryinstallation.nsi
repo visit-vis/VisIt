@@ -31,11 +31,14 @@
 #   in order to run to user-accessible registry keys so installing VisIt
 #   without admin access does not prevent VisIt from running at all.
 #
+#   Brad Whitlock, Thu Aug 12 11:11:30 PDT 2004
+#   Updated for 1.3.4.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.3.3"
+!define PRODUCT_VERSION "1.3.4"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit.exe"
@@ -373,6 +376,11 @@ Section DataFiles
   File "..\..\VisItData\ANALYZE_test_data\*.hdr"
   File "..\..\VisItData\ANALYZE_test_data\*.img"
   File "..\..\VisItData\ANALYZE_test_data\*.visit"
+SectionEnd
+
+Section MyImageDirectory
+  # This will hopefully create an image storage directory that VisIt can use.
+  SetOutPath "$INSTDIR\My images"
 SectionEnd
 
 Section AddVisItRegKeys
