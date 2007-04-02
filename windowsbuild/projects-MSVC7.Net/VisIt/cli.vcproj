@@ -209,6 +209,15 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\visitpy\common\PyLegendAttributesObject.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\visitpy\common\PyLineObject.C">
 				<FileConfiguration
 					Name="Release|Win32">
