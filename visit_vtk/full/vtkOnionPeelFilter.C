@@ -206,7 +206,8 @@ vtkOnionPeelFilter::Initialize(const int numIds)
         } 
     }
     // check for out-of-range error on seedcellId;
-    if (this->SeedId < 0 || this->SeedId >= numIds) 
+    if (!this->ReconstructOriginalCells &&
+       (this->SeedId < 0 || this->SeedId >= numIds))
     {
         if (bsc_callback != NULL) 
         {
