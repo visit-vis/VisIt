@@ -40,7 +40,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib avtexceptions.lib pipeline_ser.lib vtkCommon.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib avtexceptions.lib pipeline_ser.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib"
 				OutputFile=".\Debug\ddf.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -111,7 +111,7 @@ copy Debug\ddf.dll ..\..\bin\MSVC7.Net\Debug\ddf.dll
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib avtexceptions.lib pipeline_ser.lib vtkCommon.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib avtexceptions.lib pipeline_ser.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib"
 				OutputFile=".\Release\ddf.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

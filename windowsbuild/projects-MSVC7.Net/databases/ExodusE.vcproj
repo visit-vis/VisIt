@@ -233,7 +233,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\databases\Exodus\vtkExodusReader.C">
+				RelativePath="..\..\visit\databases\Exodus\vtkVisItExodusReader.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool

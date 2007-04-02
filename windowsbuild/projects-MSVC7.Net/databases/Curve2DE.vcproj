@@ -24,12 +24,12 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="..\..\visit\databases\Curve2D;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\silo;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;ENGINE_PLUGIN_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Release\Curve2DE\Curve2DE.pch"
 				AssemblerListingLocation=".\Release\Curve2DE\"
@@ -41,12 +41,12 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib vtkFiltering.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Release\databases\libECurve2DDatabase_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release\Curve2DE\Curve2DE.pdb"
 				AdditionalLibraryDirectories="..\..\lib\MSVC7.Net\Release"
+				ProgramDatabaseFile=".\Release\Curve2DE\Curve2DE.pdb"
 				ImportLibrary=".\Release\Curve2DE\Curve2DE.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -90,13 +90,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="..\..\visit\databases\Curve2D;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\silo;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;ENGINE_PLUGIN_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
 				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="1"
+				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug\Curve2DE\Curve2DE.pch"
 				AssemblerListingLocation=".\Debug\Curve2DE\"
 				ObjectFile=".\Debug\Curve2DE\"
@@ -107,13 +107,13 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib vtkFiltering.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Debug\databases\libECurve2DDatabase_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\Curve2DE\Curve2DE.pdb"
-				AdditionalLibraryDirectories="..\..\lib\MSVC7.Net\Debug"
 				ImportLibrary=".\Debug\Curve2DE\Curve2DE.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -153,7 +153,15 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
-				RelativePath="..\..\visit\databases\Curve2D\Curve2DPluginInfo.C">
+				RelativePath="..\..\visit\databases\Curve2D\avtCurve2DFileFormat.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -161,59 +169,59 @@
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\visit\databases\Curve2D\Curve2DCommonPluginInfo.C">
 				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\visit\databases\Curve2D\Curve2DEnginePluginInfo.C">
 				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\databases\Curve2D\avtCurve2DFileFormat.C">
+				RelativePath="..\..\visit\databases\Curve2D\Curve2DPluginInfo.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -221,14 +229,6 @@
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

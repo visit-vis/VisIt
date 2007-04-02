@@ -22,11 +22,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VTKQT_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug\vtkqt.pch"
 				AssemblerListingLocation=".\Debug\"
@@ -39,13 +39,13 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib vtkCommon.lib vtkRendering.lib vtkIO.lib opengl32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib vtkCommon.lib vtkRendering.lib vtkIO.lib vtkFiltering.lib opengl32.lib"
 				OutputFile=".\Debug\vtkqt.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\vtkqt.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				ImportLibrary=".\Debug\vtkqt.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -93,12 +93,12 @@ copy Debug\vtkqt.lib ..\..\lib\MSVC7.Net\Debug\vtkqt.lib
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VTKQT_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Release\vtkqt.pch"
 				AssemblerListingLocation=".\Release\"
@@ -110,12 +110,12 @@ copy Debug\vtkqt.lib ..\..\lib\MSVC7.Net\Debug\vtkqt.lib
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib vtkCommon.lib vtkRendering.lib vtkIO.lib opengl32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib vtkCommon.lib vtkRendering.lib vtkIO.lib vtkFiltering.lib opengl32.lib"
 				OutputFile=".\Release\vtkqt.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release\vtkqt.pdb"
 				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				ProgramDatabaseFile=".\Release\vtkqt.pdb"
 				ImportLibrary=".\Release\vtkqt.lib"
 				TargetMachine="1"/>
 			<Tool

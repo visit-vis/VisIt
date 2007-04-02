@@ -382,6 +382,21 @@ copy Debug\queries.dll ..\..\bin\MSVC7.Net\Debug\queries.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Queries\Queries\avtAverageMeanCurvatureQuery.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Queries\Queries\avtCentroidQuery.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -438,6 +453,21 @@ copy Debug\queries.dll ..\..\bin\MSVC7.Net\Debug\queries.dll
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Queries\Queries\avtEllipticalCompactnessFactorQuery.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -518,6 +548,21 @@ copy Debug\queries.dll ..\..\bin\MSVC7.Net\Debug\queries.dll
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Queries\Queries\avtLocalizedCompactnessFactorQuery.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

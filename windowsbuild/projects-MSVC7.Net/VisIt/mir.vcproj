@@ -40,7 +40,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib avtexceptions.lib pipeline_ser.lib vtkCommon.lib visit_vtk_light.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib avtexceptions.lib pipeline_ser.lib vtkCommon.lib vtkFiltering.lib visit_vtk_light.lib"
 				OutputFile=".\Release\mir.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -107,7 +107,7 @@ copy Release\mir.lib ..\..\lib\MSVC7.Net\Release\mir.lib
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib avtexceptions.lib pipeline_ser.lib vtkCommon.lib visit_vtk_light.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib avtexceptions.lib pipeline_ser.lib vtkCommon.lib vtkFiltering.lib visit_vtk_light.lib"
 				OutputFile=".\Debug\mir.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -444,46 +444,6 @@ copy Debug\mir.lib ..\..\lib\MSVC7.Net\Debug\mir.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\components\MIR\Zoo\ResampledMat.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\components\MIR\Zoo\ZooMIR.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\visit\components\MIR\Zoo\IsovolumeCellReconstructor.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -505,6 +465,46 @@ copy Debug\mir.lib ..\..\lib\MSVC7.Net\Debug\mir.lib
 			</File>
 			<File
 				RelativePath="..\..\visit\components\MIR\Zoo\RecursiveCellReconstructor.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\MIR\Zoo\ResampledMat.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\MIR\Zoo\ZooMIR.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool

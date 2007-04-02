@@ -156,6 +156,21 @@ copy Debug\utility.dll ..\..\bin\MSVC7.Net\Debug\utility.dll
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
+				RelativePath="..\..\visit\common\utility\AtomicProperties.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\common\utility\BJHash.C">
 				<FileConfiguration
 					Name="Release|Win32">

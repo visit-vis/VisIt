@@ -22,11 +22,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;WINUTIL_EXPORTS;USING_MSVC7"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug\winutil.pch"
 				AssemblerListingLocation=".\Debug\"
@@ -39,13 +39,13 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib dbatts.lib state.lib utility.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib dbatts.lib state.lib utility.lib misc.lib"
 				OutputFile=".\Debug\winutil.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\winutil.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				ImportLibrary=".\Debug\winutil.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -93,12 +93,12 @@ copy Debug\winutil.lib ..\..\lib\MSVC7.Net\Debug\winutil.lib
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				EnableEnhancedInstructionSet="1"
 				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;WINUTIL_EXPORTS;USING_MSVC7"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Release\winutil.pch"
 				AssemblerListingLocation=".\Release\"
@@ -110,12 +110,12 @@ copy Debug\winutil.lib ..\..\lib\MSVC7.Net\Debug\winutil.lib
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib dbatts.lib state.lib utility.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib dbatts.lib state.lib utility.lib misc.lib"
 				OutputFile=".\Release\winutil.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\Release\winutil.pdb"
 				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				ProgramDatabaseFile=".\Release\winutil.pdb"
 				ImportLibrary=".\Release\winutil.lib"
 				TargetMachine="1"/>
 			<Tool

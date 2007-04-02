@@ -16,6 +16,7 @@ set G=%VISIT%\plots
 %MOC% %G%\Label\QvisLabelPlotWindow.h                   -o %G%\Label\QvisLabelPlotWindow_moc.C
 %MOC% %G%\Histogram\QvisHistogramPlotWindow.h           -o %G%\Histogram\QvisHistogramPlotWindow_moc.C
 %MOC% %G%\Mesh\QvisMeshPlotWindow.h                     -o %G%\Mesh\QvisMeshPlotWindow_moc.C
+%MOC% %G%\Molecule\QvisMoleculePlotWindow.h             -o %G%\Molecule\QvisMoleculePlotWindow_moc.C
 %MOC% %G%\Pseudocolor\QvisPseudocolorPlotWindow.h       -o %G%\Pseudocolor\QvisPseudocolorPlotWindow_moc.C
 %MOC% %G%\Scatter\QvisScatterPlotWindow.h               -o %G%\Scatter\QvisScatterPlotWindow_moc.C
 %MOC% %G%\Scatter\QvisScatterPlotWizard.h               -o %G%\Scatter\QvisScatterPlotWizard_moc.C

@@ -41,7 +41,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Release\databases\libMANSYSDatabase.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -107,7 +107,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Debug\databases\libMANSYSDatabase.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -153,26 +153,6 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
-				RelativePath="..\..\visit\databases\ANSYS\avtANSYSFileFormat.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\visit\databases\ANSYS\ANSYSCommonPluginInfo.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -214,6 +194,26 @@
 			</File>
 			<File
 				RelativePath="..\..\visit\databases\ANSYS\ANSYSPluginInfo.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\databases\ANSYS\avtANSYSFileFormat.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool

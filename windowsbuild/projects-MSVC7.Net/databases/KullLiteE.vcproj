@@ -41,7 +41,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib silohdf5.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib vtkFiltering.lib silohdf5.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Release\databases\libEKullLiteDatabase_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -107,7 +107,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib silohdf5.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib vtkFiltering.lib silohdf5.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Debug\databases\libEKullLiteDatabase_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

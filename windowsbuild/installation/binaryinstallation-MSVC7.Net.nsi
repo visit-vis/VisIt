@@ -53,11 +53,14 @@
 #  configs as well as a new screen that lets you pick your default
 #  bank for parallel jobs.
 #
+#  Brad Whitlock, Tue Jun 13 15:12:56 PST 2006
+#  Updated for 1.5.3.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.5.2"
+!define PRODUCT_VERSION "1.5.3"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"
@@ -285,6 +288,10 @@ Section DataFiles SEC07
   File "..\..\VisItData\ANALYZE_test_data\*.hdr"
   File "..\..\VisItData\ANALYZE_test_data\*.img"
   File "..\..\VisItData\ANALYZE_test_data\*.visit"
+  File "..\..\VisItData\FVCOM\*.nc"
+  File "..\..\VisItData\molecules\crotamine.pdb"
+  File "..\..\VisItData\molecules\1NTS.pdb"
+  File "..\..\VisItData\molecules\1UZ9.pdb"
 SectionEnd
 
 Section "Plugin development" SEC08
@@ -396,7 +403,7 @@ YesInstallDevelopmentFiles:
       CreateDirectory "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development"
       CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\XML Edit.lnk" "$INSTDIR\xmledit.exe" "" "" 0 SW_SHOWNORMAL    "" "XMLEdit allows you to edit the XML files that describe VisIt's plugins."
       CreateDirectory "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation"
-      CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation\VTK classes.lnk"    "http://public.kitware.com/VTK/doc/release/3/html/classes.html"
+      CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation\VTK classes.lnk"    "http://www.vtk.org/doc/release/5.0/html/classes.html"
       CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation\Qt classes.lnk"     "http://doc.trolltech.com/3.0/classes.html"
       CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation\OpenGL library.lnk" "http://www.rush3d.com/reference/opengl-bluebook-1.0/"
       CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation\Python library.lnk" "http://docs.python.org/lib/lib.html"

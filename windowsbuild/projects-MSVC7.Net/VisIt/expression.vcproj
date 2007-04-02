@@ -697,6 +697,21 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Expressions\General\avtMinMaxExpression.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Expressions\General\avtMIRvfFilter.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -2507,6 +2522,21 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Expressions\Derivations\avtCurvatureExpression.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Expressions\Derivations\avtEffectiveTensorFilter.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -2523,6 +2553,21 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Expressions\Derivations\avtLocalizedCompactnessExpression.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
