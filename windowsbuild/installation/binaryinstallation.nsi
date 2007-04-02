@@ -50,6 +50,10 @@
 #   Brad Whitlock, Tue May 10 14:13:57 PST 2005
 #   Updated for 1.4.3.
 #
+#   Brad Whitlock, Mon Jun 6 17:01:48 PST 2005
+#   Added support for setting VisIt's install location as a Java preference
+#   using our VIkit plugin.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
@@ -544,6 +548,14 @@ Section AddFileAssociations
   WriteRegStr HKCR "visitSessionFile\shell\open\command" "" '$INSTDIR\visit.exe -sessionfile "%1"'
 SectionEnd
 
+Section AddJavaInstallPath
+   # Call our VIkit DLL to get the $INSTDIR variable formatted as a Java preference.
+   VIkit::GetInstallPathFormattedForJava
+   Pop $R0
+   # Write the reformatted string as a Java preference.
+   WriteRegStr HKLM "SOFTWARE\JavaSoft\Prefs\llnl\visit" "/V/I/S/I/T/H/O/M/E" $R0
+SectionEnd
+
 Section -AdditionalIcons
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
   CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt Home Page.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
@@ -609,5 +621,8 @@ Section Uninstall
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
+
+  DeleteRegKey HKLM "SOFTWARE\JavaSoft\Prefs\llnl"
+
   SetAutoClose true
 SectionEnd
