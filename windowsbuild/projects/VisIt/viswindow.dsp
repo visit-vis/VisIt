@@ -220,11 +220,7 @@ SOURCE=..\..\visit\components\VisWindow\Interactors\NullInteractor.C
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\visit\components\VisWindow\Interactors\Pick2D.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\components\VisWindow\Interactors\Pick3D.C
+SOURCE=..\..\visit\components\VisWindow\Interactors\Pick.C
 # End Source File
 # Begin Source File
 

@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib utility.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib dbatts.lib winutil.lib qt-mt302.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib utility.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib dbatts.lib winutil.lib qt-mt302.lib qui.lib"
 				OutputFile="Debug\gui.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -107,7 +107,7 @@ copy Debug\gui.lib ..\..\lib\MSVC7.Net\Debug\gui.lib
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib utility.lib dbatts.lib winutil.lib qt-mt302.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib utility.lib dbatts.lib winutil.lib qt-mt302.lib qui.lib"
 				OutputFile="Release\gui.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -795,7 +795,7 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\gui\QvisExpressionsWindow.C">
+				RelativePath="..\..\visit\gui\QvisExportDBWindow.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -815,7 +815,7 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\gui\QvisExportDBWindow.C">
+				RelativePath="..\..\visit\gui\QvisExpressionsWindow.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -1030,15 +1030,6 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\gui\QvisInteractorWindow.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\visit\gui\QvisImageAnnotationInterface.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1055,6 +1046,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisInteractorWindow.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -2069,6 +2069,21 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\SimCommandSlots.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\SplashScreen.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -2553,7 +2568,7 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\gui\QvisExpressionsWindow_moc.C">
+				RelativePath="..\..\visit\gui\QvisExportDBWindow_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -2573,7 +2588,7 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\gui\QvisExportDBWindow_moc.C">
+				RelativePath="..\..\visit\gui\QvisExpressionsWindow_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -2768,16 +2783,7 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\gui\QvisInteractorWindow_moc.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\gui\QvisInterpreter_moc.C">
+				RelativePath="..\..\visit\gui\QvisImageAnnotationInterface_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -2797,7 +2803,16 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\gui\QvisImageAnnotationInterface_moc.C">
+				RelativePath="..\..\visit\gui\QvisInteractorWindow_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisInterpreter_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -2977,7 +2992,7 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\gui\QvisMessageWindow_moc.C">
+				RelativePath="..\..\visit\gui\QvisMeshManagementWindow_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -2997,7 +3012,7 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\gui\QvisMeshManagementWindow_moc.C">
+				RelativePath="..\..\visit\gui\QvisMessageWindow_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -3452,7 +3467,7 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\gui\QvisSessionFileDatabaseLoader_moc.C">
+				RelativePath="..\..\visit\gui\QvisScribbleOpacityBar_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -3472,7 +3487,7 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\gui\QvisScribbleOpacityBar_moc.C">
+				RelativePath="..\..\visit\gui\QvisSessionFileDatabaseLoader_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -3733,6 +3748,21 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 			</File>
 			<File
 				RelativePath="..\..\visit\gui\QvisWizard_moc.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\SimCommandSlots_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool

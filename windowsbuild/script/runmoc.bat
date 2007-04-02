@@ -95,6 +95,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisVisItUpdate.h                  -o %G%\QvisVisItUpdate_moc.C
 %MOC% %HEADERS%\QvisWindowBase.h                   -o %G%\QvisWindowBase_moc.C
 %MOC% %HEADERS%\QvisWizard.h                       -o %G%\QvisWizard_moc.C
+%MOC% %HEADERS%\SimCommandSlots.h                  -o %G%\SimCommandSlots_moc.C
 %MOC% %HEADERS%\SplashScreen.h                     -o %G%\SplashScreen_moc.C
 
 echo Running moc on the viewer source

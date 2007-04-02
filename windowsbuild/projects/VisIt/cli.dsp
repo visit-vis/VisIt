@@ -88,6 +88,10 @@ SOURCE=..\..\visit\visitpy\cli.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visitpy\Logging.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visitpy\PyAnnotationAttributes.C
 # End Source File
 # Begin Source File

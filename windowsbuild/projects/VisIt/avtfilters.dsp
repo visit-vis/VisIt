@@ -120,6 +120,10 @@ SOURCE=..\..\visit\components\Filters\avtCurveConstructorFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Filters\avtCustomTransform.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Filters\avtFacelistFilter.C
 # End Source File
 # Begin Source File

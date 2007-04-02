@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib comm.lib misc.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib utility.lib dbatts.lib winutil.lib qt-mt302.lib /nologo /dll /machine:I386 /out:"Release/gui.dll"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib comm.lib misc.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib utility.lib dbatts.lib winutil.lib qt-mt302.lib qui.lib /nologo /dll /machine:I386 /out:"Release/gui.dll"
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\gui.dll ..\..\bin\Release\gui.dll	copy Release\gui.lib ..\..\lib\Release\gui.lib
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib comm.lib misc.lib utility.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib utility.lib dbatts.lib winutil.lib qt-mt302.lib /nologo /dll /debug /machine:I386 /out:"Debug/gui.dll" /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib comm.lib misc.lib utility.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib utility.lib dbatts.lib winutil.lib qt-mt302.lib qui.lib /nologo /dll /debug /machine:I386 /out:"Debug/gui.dll" /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\gui.dll ..\..\bin\Debug\gui.dll	copy Debug\gui.lib ..\..\lib\Debug\gui.lib
@@ -501,6 +501,10 @@ SOURCE=..\..\visit\gui\QvisWizard.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\SimCommandSlots.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\SplashScreen.C
 # End Source File
 # End Group
@@ -846,6 +850,10 @@ SOURCE=..\..\visit\gui\QvisWindowBase_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisWizard_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\SimCommandSlots_moc.C
 # End Source File
 # Begin Source File
 

@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="SiloE"
-	RootNamespace="SiloE"
+	Name="ChomboM"
+	RootNamespace="ChomboM"
 	SccProjectName=""
 	SccLocalPath="">
 	<Platforms>
@@ -13,8 +13,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release\SiloE\"
-			IntermediateDirectory=".\Release\SiloE\"
+			OutputDirectory=".\Release\ChomboM\"
+			IntermediateDirectory=".\Release\ChomboM\"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -24,30 +24,30 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="..\..\visit\databases\Silo;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\silo;..\..\include\zlib"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;ENGINE_PLUGIN_EXPORTS"
+				AdditionalIncludeDirectories="..\..\visit\databases\Chombo;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\silo;..\..\include\zlib;..\..\include\hdf5"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;MDSERVER_PLUGIN_EXPORTS;MDSERVER;_HDF5USEDLL_"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
 				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Release\SiloE\SiloE.pch"
-				AssemblerListingLocation=".\Release\SiloE\"
-				ObjectFile=".\Release\SiloE\"
-				ProgramDataBaseFileName=".\Release\SiloE\"
+				PrecompiledHeaderFile=".\Release\ChomboM\ChomboM.pch"
+				AssemblerListingLocation=".\Release\ChomboM\"
+				ObjectFile=".\Release\ChomboM\"
+				ProgramDataBaseFileName=".\Release\ChomboM\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib visit_vtk.lib vtkCommon.lib silohdf5.lib"
-				OutputFile="..\..\bin\MSVC7.Net\Release\databases\libESiloDatabase_ser.dll"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib hdf5dll.lib"
+				OutputFile="..\..\bin\MSVC7.Net\Release\databases\libMChomboDatabase.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="..\..\lib\MSVC7.Net\Release"
-				ProgramDatabaseFile=".\Release\SiloE\SiloE.pdb"
-				ImportLibrary=".\Release\SiloE\SiloE.lib"
+				ProgramDatabaseFile=".\Release\ChomboM\ChomboM.pdb"
+				ImportLibrary=".\Release\ChomboM\ChomboM.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -55,7 +55,7 @@
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release\SiloE\SiloE.tlb"
+				TypeLibraryName=".\Release\ChomboM\ChomboM.tlb"
 				HeaderFileName=""/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
@@ -80,8 +80,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug\SiloE\"
-			IntermediateDirectory=".\Debug\SiloE\"
+			OutputDirectory=".\Debug\ChomboM\"
+			IntermediateDirectory=".\Debug\ChomboM\"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -90,31 +90,31 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="..\..\visit\databases\Silo;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\silo;..\..\include\zlib"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;ENGINE_PLUGIN_EXPORTS"
+				AdditionalIncludeDirectories="..\..\visit\databases\Chombo;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\silo;..\..\include\zlib;..\..\include\hdf5"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;MDSERVER_PLUGIN_EXPORTS;MDSERVER;_HDF5USEDLL_"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="TRUE"
 				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Debug\SiloE\SiloE.pch"
-				AssemblerListingLocation=".\Debug\SiloE\"
-				ObjectFile=".\Debug\SiloE\"
-				ProgramDataBaseFileName=".\Debug\SiloE\"
+				PrecompiledHeaderFile=".\Debug\ChomboM\ChomboM.pch"
+				AssemblerListingLocation=".\Debug\ChomboM\"
+				ObjectFile=".\Debug\ChomboM\"
+				ProgramDataBaseFileName=".\Debug\ChomboM\"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib visit_vtk.lib vtkCommon.lib silohdf5.lib"
-				OutputFile="..\..\bin\MSVC7.Net\Debug\databases\libESiloDatabase_ser.dll"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib hdf5dll.lib"
+				OutputFile="..\..\bin\MSVC7.Net\Debug\databases\libMChomboDatabase.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\Debug\SiloE\SiloE.pdb"
-				ImportLibrary=".\Debug\SiloE\SiloE.lib"
+				ProgramDatabaseFile=".\Debug\ChomboM\ChomboM.pdb"
+				ImportLibrary=".\Debug\ChomboM\ChomboM.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -122,7 +122,7 @@
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug\SiloE\SiloE.tlb"
+				TypeLibraryName=".\Debug\ChomboM\ChomboM.tlb"
 				HeaderFileName=""/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
@@ -153,7 +153,7 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
-				RelativePath="..\..\visit\databases\Silo\avtSiloFileFormat.C">
+				RelativePath="..\..\visit\databases\Chombo\avtChomboFileFormat.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -173,7 +173,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\databases\Silo\avtSiloWriter.C">
+				RelativePath="..\..\visit\databases\Chombo\ChomboCommonPluginInfo.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -193,7 +193,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\databases\Silo\SiloCommonPluginInfo.C">
+				RelativePath="..\..\visit\databases\Chombo\ChomboMDServerPluginInfo.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -213,27 +213,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\databases\Silo\SiloEnginePluginInfo.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\databases\Silo\SiloPluginInfo.C">
+				RelativePath="..\..\visit\databases\Chombo\ChomboPluginInfo.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool

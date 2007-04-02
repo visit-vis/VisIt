@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib avtfilters.lib pipeline_ser.lib avtexceptions.lib state.lib visitexpr.lib visitparser.lib dbatts.lib visit_vtk.lib database_ser.lib avtfilters.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib avtfilters.lib pipeline_ser.lib avtexceptions.lib state.lib visitexpr.lib visitparser.lib dbatts.lib visit_vtk.lib database_ser.lib avtfilters.lib visit_vtk_light.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /machine:I386
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\expression.lib ..\..\lib\Release\expression.lib	copy Release\expression.dll ..\..\bin\Release\expression.dll
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib state.lib pipeline_ser.lib avtexceptions.lib visitexpr.lib visitparser.lib dbatts.lib visit_vtk.lib database_ser.lib avtfilters.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib state.lib pipeline_ser.lib avtexceptions.lib visitexpr.lib visitparser.lib dbatts.lib visit_vtk.lib database_ser.lib avtfilters.lib visit_vtk_light.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\expression.lib ..\..\lib\Debug\expression.lib	copy Debug\expression.dll ..\..\bin\Debug\expression.dll
@@ -609,6 +609,34 @@ SOURCE=..\..\visit\components\Expressions\CMFE\avtCMFEExpression.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\CMFE\avtConnCMFEExpression.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\CMFE\avtEvalPlaneExpression.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\CMFE\avtEvalTransformExpression.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\CMFE\avtPosCMFEAlgorithm.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\CMFE\avtPosCMFEExpression.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\CMFE\avtSymmEvalExpression.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\CMFE\avtSymmPlaneExpression.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\CMFE\avtSymmTransformExpression.C
 # End Source File
 # End Group
 # End Target
