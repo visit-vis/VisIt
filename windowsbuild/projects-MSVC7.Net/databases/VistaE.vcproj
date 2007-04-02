@@ -25,7 +25,7 @@
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="..\..\visit\databases\Vista;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\silo;..\..\include\zlib;..\..\include\hdf5"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;ENGINE_PLUGIN_EXPORTS;_HDF5USEDLL_;HAVE_HDF5_H=1;HAVE_LIBHDF5=1"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;ENGINE_PLUGIN_EXPORTS;_HDF5USEDLL_;HAVE_HDF5_H=1;HAVE_LIBHDF5=1;_WIN32"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
@@ -41,7 +41,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib silohdf5.lib hdf5dll.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib vtkFiltering.lib silohdf5.lib hdf5dll.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Release\databases\libEVistaDatabase_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -213,26 +213,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\databases\Vista\StringHelpers.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\visit\databases\Vista\VistaCommonPluginInfo.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -293,7 +273,13 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\databases\Vista\win32-regex.c">
+				RelativePath="..\..\visit\common\utility\win32-regex.c">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>

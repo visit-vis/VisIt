@@ -22,7 +22,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="&quot;%QTDIR%\include&quot;;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;&quot;..\..\include\Python-2.3.4&quot;;..\..\include\zlib;..\..\include\bz2"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib;..\..\include\bz2"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;PIPELINE_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -43,7 +43,7 @@
 				OutputFile=".\Debug\pipeline_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\pipeline_ser.pdb"
 				ImportLibrary=".\Debug\pipeline_ser.lib"
@@ -93,7 +93,7 @@ copy Debug\pipeline_ser.dll ..\..\bin\MSVC7.Net\Debug\pipeline_ser.dll
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="&quot;%QTDIR%\include&quot;;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;&quot;..\..\include\Python-2.3.4&quot;;..\..\include\zlib;..\..\include\bz2"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib;..\..\include\bz2"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;PIPELINE_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -114,7 +114,7 @@ copy Debug\pipeline_ser.dll ..\..\bin\MSVC7.Net\Debug\pipeline_ser.dll
 				OutputFile=".\Release\pipeline_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Release"
 				ProgramDatabaseFile=".\Release\pipeline_ser.pdb"
 				ImportLibrary=".\Release\pipeline_ser.lib"
 				TargetMachine="1"/>
@@ -674,6 +674,15 @@ copy Release\pipeline_ser.dll ..\..\bin\MSVC7.Net\Release\pipeline_ser.dll
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Pipeline\Data\avtIntegrationRF.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

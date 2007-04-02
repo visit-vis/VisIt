@@ -23,7 +23,7 @@
 				Optimization="0"
 				OptimizeForProcessor="2"
 				EnableEnhancedInstructionSet="1"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -45,7 +45,7 @@
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\vcl.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Debug"
 				SubSystem="1"
 				TargetMachine="1"/>
 			<Tool
@@ -87,7 +87,7 @@
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
 				EnableEnhancedInstructionSet="1"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -108,7 +108,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				ProgramDatabaseFile=".\Release\vcl/vcl.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Release"
 				SubSystem="1"
 				TargetMachine="1"/>
 			<Tool

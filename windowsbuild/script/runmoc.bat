@@ -32,16 +32,19 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisDelayedWindow.h                -o %G%\QvisDelayedWindow_moc.C
 %MOC% %HEADERS%\QvisDelayedWindowObserver.h        -o %G%\QvisDelayedWindowObserver_moc.C
 %MOC% %HEADERS%\QvisDelayedWindowSimpleObserver.h  -o %G%\QvisDelayedWindowSimpleObserver_moc.C
+%MOC% %HEADERS%\QvisElementButton.h                -o %G%\QvisElementButton_moc.C
 %MOC% %HEADERS%\QvisEngineWindow.h                 -o %G%\QvisEngineWindow_moc.C
 %MOC% %HEADERS%\QvisExportDBWindow.h               -o %G%\QvisExportDBWindow_moc.C
 %MOC% %HEADERS%\QvisExpressionsWindow.h            -o %G%\QvisExpressionsWindow_moc.C
 %MOC% %HEADERS%\QvisFileInformationWindow.h        -o %G%\QvisFileInformationWindow_moc.C
 %MOC% %HEADERS%\QvisFilePanel.h                    -o %G%\QvisFilePanel_moc.C
+%MOC% %HEADERS%\QvisFileOpenWindow.h               -o %G%\QvisFileOpenWindow_moc.C
 %MOC% %HEADERS%\QvisFileSelectionWindow.h          -o %G%\QvisFileSelectionWindow_moc.C
 %MOC% %HEADERS%\QvisFtp.h                          -o %G%\QvisFtp_moc.C
 %MOC% %HEADERS%\QvisGUIApplication.h               -o %G%\QvisGUIApplication_moc.C
 %MOC% %HEADERS%\QvisGaussianOpacityBar.h           -o %G%\QvisGaussianOpacityBar_moc.C
 %MOC% %HEADERS%\QvisGlobalLineoutWindow.h          -o %G%\QvisGlobalLineoutWindow_moc.C
+%MOC% %HEADERS%\QvisGridWidget.h                   -o %G%\QvisGridWidget_moc.C
 %MOC% %HEADERS%\QvisHelpWindow.h                   -o %G%\QvisHelpWindow_moc.C
 %MOC% %HEADERS%\QvisHostProfileWindow.h            -o %G%\QvisHostProfileWindow_moc.C
 %MOC% %HEADERS%\QvisImageAnnotationInterface.h     -o %G%\QvisImageAnnotationInterface_moc.C
@@ -62,6 +65,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisOpacitySlider.h                -o %G%\QvisOpacitySlider_moc.C
 %MOC% %HEADERS%\QvisOperatorWindow.h               -o %G%\QvisOperatorWindow_moc.C
 %MOC% %HEADERS%\QvisOutputWindow.h                 -o %G%\QvisOutputWindow_moc.C
+%MOC% %HEADERS%\QvisPeriodicTableWidget.h          -o %G%\QvisPeriodicTableWidget_moc.C
 %MOC% %HEADERS%\QvisPickWindow.h                   -o %G%\QvisPickWindow_moc.C
 %MOC% %HEADERS%\QvisPlotListBox.h                  -o %G%\QvisPlotListBox_moc.C
 %MOC% %HEADERS%\QvisPlotManagerWidget.h            -o %G%\QvisPlotManagerWidget_moc.C

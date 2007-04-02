@@ -25,7 +25,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib\;..\..\visit\plots\Scatter"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib\;..\..\visit\plots\Scatter"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;GUI_PLUGIN_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -46,7 +46,7 @@
 				OutputFile="..\..\bin\MSVC7.Net\Release\plots\libGScatterPlot.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Release"
 				ProgramDatabaseFile=".\Release\ScatterG\ScatterG.pdb"
 				ImportLibrary=".\Release\ScatterG\ScatterG.lib"
 				TargetMachine="1"/>
@@ -62,9 +62,9 @@
 				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="%QTDIR%\bin\moc.exe ..\..\visit\plots\Scatter\QvisScatterPlotWindow.h -o ..\..\visit\plots\Scatter\QvisScatterPlotWindow_moc.C
-%QTDIR%\bin\moc.exe ..\..\visit\plots\Scatter\QvisScatterPlotWizard.h -o ..\..\visit\plots\Scatter\QvisScatterPlotWizard_moc.C
-%QTDIR%\bin\moc.exe ..\..\visit\plots\Scatter\QvisScatterWidget.h -o ..\..\visit\plots\Scatter\QvisScatterWidget_moc.C"/>
+				CommandLine="$(QTDIR)\bin\moc.exe ..\..\visit\plots\Scatter\QvisScatterPlotWindow.h -o ..\..\visit\plots\Scatter\QvisScatterPlotWindow_moc.C
+$(QTDIR)\bin\moc.exe ..\..\visit\plots\Scatter\QvisScatterPlotWizard.h -o ..\..\visit\plots\Scatter\QvisScatterPlotWizard_moc.C
+$(QTDIR)\bin\moc.exe ..\..\visit\plots\Scatter\QvisScatterWidget.h -o ..\..\visit\plots\Scatter\QvisScatterWidget_moc.C"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -94,7 +94,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib;..\..\visit\plots\Scatter"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib;..\..\visit\plots\Scatter"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;GUI_PLUGIN_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -115,7 +115,7 @@
 				OutputFile="..\..\bin\MSVC7.Net\Debug\plots\libGScatterPlot.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\ScatterG\ScatterG.pdb"
 				ImportLibrary=".\Debug\ScatterG\ScatterG.lib"
@@ -132,7 +132,7 @@
 				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="%QTDIR%\bin\moc.exe ..\..\visit\plots\Scatter\QvisScatterPlotWindow.h -o ..\..\visit\plots\Scatter\QvisScatterPlotWindow_moc.C"/>
+				CommandLine="$(QTDIR)\bin\moc.exe ..\..\visit\plots\Scatter\QvisScatterPlotWindow.h -o ..\..\visit\plots\Scatter\QvisScatterPlotWindow_moc.C"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool

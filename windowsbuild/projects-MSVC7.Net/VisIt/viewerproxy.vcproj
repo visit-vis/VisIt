@@ -24,7 +24,7 @@
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
 				EnableEnhancedInstructionSet="1"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VIEWER_PROXY_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -45,7 +45,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				ProgramDatabaseFile=".\Release\viewerproxy.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Release"
 				ImportLibrary=".\Release\viewerproxy.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -93,7 +93,7 @@ copy Release\viewerproxy.dll ..\..\bin\MSVC7.Net\Release\viewerproxy.dll
 				Optimization="0"
 				OptimizeForProcessor="2"
 				EnableEnhancedInstructionSet="1"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VIEWER_PROXY_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -115,7 +115,7 @@ copy Release\viewerproxy.dll ..\..\bin\MSVC7.Net\Release\viewerproxy.dll
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\viewerproxy.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Debug"
 				ImportLibrary=".\Debug\viewerproxy.lib"
 				TargetMachine="1"/>
 			<Tool

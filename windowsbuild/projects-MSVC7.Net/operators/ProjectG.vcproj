@@ -25,7 +25,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\visit\operators\Project;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\visit\operators\Project;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GUI_PLUGIN_EXPORTS;GENERAL_PLUGIN_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -46,7 +46,7 @@
 				OutputFile="..\..\bin\MSVC7.Net\Release\operators\libGProjectOperator.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Release"
 				ProgramDatabaseFile=".\Release\ProjectG\ProjectG.pdb"
 				ImportLibrary=".\Release\ProjectG\ProjectG.lib"
 				TargetMachine="1"/>
@@ -62,7 +62,7 @@
 				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="%QTDIR%\bin\moc.exe ..\..\visit\operators\Project\QvisProjectWindow.h -o ..\..\visit\operators\Project\QvisProjectWindow_moc.C"/>
+				CommandLine="$(QTDIR)\bin\moc.exe ..\..\visit\operators\Project\QvisProjectWindow.h -o ..\..\visit\operators\Project\QvisProjectWindow_moc.C"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool
@@ -92,7 +92,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\visit\operators\Project;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\visit\operators\Project;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GUI_PLUGIN_EXPORTS;GENERAL_PLUGIN_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -113,7 +113,7 @@
 				OutputFile="..\..\bin\MSVC7.Net\Debug\operators\libGProjectOperator.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\ProjectG\ProjectG.pdb"
 				ImportLibrary=".\Debug\ProjectG\ProjectG.lib"
@@ -130,7 +130,7 @@
 				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="%QTDIR%\bin\moc.exe ..\..\visit\operators\Project\QvisProjectWindow.h -o ..\..\visit\operators\Project\QvisProjectWindow_moc.C"/>
+				CommandLine="$(QTDIR)\bin\moc.exe ..\..\visit\operators\Project\QvisProjectWindow.h -o ..\..\visit\operators\Project\QvisProjectWindow_moc.C"/>
 			<Tool
 				Name="VCPreLinkEventTool"/>
 			<Tool

@@ -24,7 +24,7 @@
 				Optimization="0"
 				OptimizeForProcessor="2"
 				EnableEnhancedInstructionSet="1"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;MISC_EXPORTS;NO_SETBUF"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -46,7 +46,7 @@
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\misc.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Debug"
 				ImportLibrary=".\Debug\misc.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -95,7 +95,7 @@ copy Debug\misc.dll ..\..\bin\MSVC7.Net\Debug\misc.dll
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
 				EnableEnhancedInstructionSet="1"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;MISC_EXPORTS;NO_SETBUF"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -116,7 +116,7 @@ copy Debug\misc.dll ..\..\bin\MSVC7.Net\Debug\misc.dll
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				ProgramDatabaseFile=".\Release\misc.pdb"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Release"
 				ImportLibrary=".\Release\misc.lib"
 				TargetMachine="1"/>
 			<Tool
