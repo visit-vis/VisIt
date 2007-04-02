@@ -109,6 +109,14 @@ SOURCE=..\..\visit\plots\Label\avtLabelRenderer.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\plots\Label\avtLabelsMapper.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\plots\Label\avtLabelSubsetsFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\plots\Label\avtMesaLabelRenderer.C
 # End Source File
 # Begin Source File

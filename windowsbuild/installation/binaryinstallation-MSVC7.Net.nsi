@@ -39,11 +39,14 @@
 #  Added code to move config files if there are any from older versions
 #  of VisIt.
 #
+#  Brad Whitlock, Thu Aug 18 12:00:55 PDT 2005
+#  Updated for version 1.4.5.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.4.4"
+!define PRODUCT_VERSION "1.4.5"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"

@@ -252,6 +252,14 @@ SOURCE=..\..\visit\visit_vtk\full\vtkVisItCutter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItExtractGrid.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItExtractRectilinearGrid.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visit_vtk\full\vtkVisItFeatureEdges.C
 # End Source File
 # Begin Source File

@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib visit_vtk.lib avtmath_ser.lib vtkCommon.lib vtkFiltering.lib vtk_sl_io.lib visit_vtk_light.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib visit_vtk.lib avtmath_ser.lib visitexpr.lib vtkCommon.lib vtkFiltering.lib vtk_sl_io.lib visit_vtk_light.lib"
 				OutputFile=".\Debug\pipeline_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -110,7 +110,7 @@ copy Debug\pipeline_ser.dll ..\..\bin\MSVC7.Net\Debug\pipeline_ser.dll
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib visit_vtk.lib avtmath_ser.lib vtkCommon.lib vtkFiltering.lib vtk_sl_io.lib visit_vtk_light.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib visit_vtk.lib avtmath_ser.lib visitexpr.lib vtkCommon.lib vtkFiltering.lib vtk_sl_io.lib visit_vtk_light.lib"
 				OutputFile=".\Release\pipeline_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

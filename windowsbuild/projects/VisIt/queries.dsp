@@ -168,6 +168,10 @@ SOURCE=..\..\visit\components\Queries\Queries\avtIntegrateQuery.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Queries\Queries\avtKurtosisQuery.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Queries\Queries\avtL2NormBetweenCurvesQuery.C
 # End Source File
 # Begin Source File
@@ -205,6 +209,14 @@ SOURCE=..\..\visit\components\Queries\Queries\avtOriginalDataNumNodesQuery.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Queries\Queries\avtOriginalDataNumZonesQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtSkewnessQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtSphericalCompactnessFactorQuery.C
 # End Source File
 # Begin Source File
 

@@ -349,6 +349,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visit_vtk_light", "visit_vt
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visitparser", "visitparser.vcproj", "{21A1D649-11A7-4C77-BDE9-D517B6865F63}"
 	ProjectSection(ProjectDependencies) = postProject
+		{126C27D6-2DF3-491F-BFC8-8726F5FE382A} = {126C27D6-2DF3-491F-BFC8-8726F5FE382A}
 		{060FF3F8-1AB3-411A-BD69-E95BFBD3745E} = {060FF3F8-1AB3-411A-BD69-E95BFBD3745E}
 	EndProjectSection
 EndProject

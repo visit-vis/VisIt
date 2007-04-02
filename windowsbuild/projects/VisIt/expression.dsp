@@ -136,6 +136,14 @@ SOURCE=..\..\visit\components\Expressions\Abstract\avtUnaryMathFilter.C
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\General\avtArrayComposeFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\General\avtArrayDecomposeFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\General\avtCurlFilter.C
 # End Source File
 # Begin Source File
@@ -557,6 +565,22 @@ SOURCE=..\..\visit\components\Expressions\Derivations\avtPrincipalTensorFilter.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\Derivations\avtTensorMaximumShearFilter.C
+# End Source File
+# End Group
+# Begin Group "ImageProcessing"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\ImageProcessing\avtConservativeSmoothingExpression.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\ImageProcessing\avtMeanFilterExpression.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\ImageProcessing\avtMedianFilterExpression.C
 # End Source File
 # End Group
 # End Target

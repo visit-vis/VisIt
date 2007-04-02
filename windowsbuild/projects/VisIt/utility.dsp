@@ -108,11 +108,19 @@ SOURCE=..\..\visit\common\utility\NamingConvention.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\utility\StringHelpers.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\utility\Utility.C
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\visit\common\utility\void_ref_ptr.C
+# End Source File
+# Begin Source File
+
+SOURCE="..\..\visit\common\utility\win32-regex.c"
 # End Source File
 # End Group
 # End Target

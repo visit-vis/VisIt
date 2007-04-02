@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="NASTRANE"
-	ProjectGUID="{4EA5EDC8-7303-4527-8A35-CE16CE16FC25}"
+	ProjectGUID="{4EA5EDC8-7303-4527-8A35-CE16CE16FC26}"
 	RootNamespace="NASTRANE"
 	SccProjectName=""
 	SccLocalPath="">
