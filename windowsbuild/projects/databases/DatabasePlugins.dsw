@@ -1605,6 +1605,120 @@ Package=<4>
 
 ###############################################################################
 
+Project: "NASTRAN"=.\NASTRAN.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name NASTRANE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name NASTRANI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name NASTRANM
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "NASTRANE"=.\NASTRANE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "NASTRANI"=.\NASTRANI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "NASTRANM"=.\NASTRANM.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Tecplot"=.\Tecplot.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name TecplotE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TecplotI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TecplotM
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "TecplotE"=.\TecplotE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TecplotI"=.\TecplotI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TecplotM"=.\TecplotM.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "_TOP_LEVEL"=.\_TOP_LEVEL.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1693,6 +1807,12 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Shapefile
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name NASTRAN
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Tecplot
     End Project Dependency
 }}}
 
