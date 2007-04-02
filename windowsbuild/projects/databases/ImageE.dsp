@@ -111,5 +111,9 @@ SOURCE=..\..\visit\databases\Image\ImageEnginePluginInfo.C
 
 SOURCE=..\..\visit\databases\Image\ImagePluginInfo.C
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\databases\Image\vtkStimulateReader.C
+# End Source File
 # End Target
 # End Project

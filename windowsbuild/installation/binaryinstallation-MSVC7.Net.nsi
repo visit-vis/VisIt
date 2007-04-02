@@ -35,6 +35,10 @@
 #  Added support for saving movies at the resolution stored in the
 #  session file.
 #
+#  Brad Whitlock, Fri Jul 8 15:40:16 PST 2005
+#  Added code to move config files if there are any from older versions
+#  of VisIt.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
@@ -342,6 +346,27 @@ Section AddJavaInstallPath
    Pop $R0
    # Write the reformatted string as a Java preference.
    WriteRegStr HKLM "SOFTWARE\JavaSoft\Prefs\llnl\visit" "/V/I/S/I/T/H/O/M/E" $R0
+SectionEnd
+
+Section MigrateConfigFiles
+   # Call our VIkit DLL to get see if there are config files to migrate.
+   Push ${PRODUCT_VERSION}
+   VIkit::GetPathToOlderConfigFiles
+   # Install path
+   Pop $R1
+   # Message box prompt
+   Pop $R0
+
+   # If $R1 == "" then no config files
+   Strcmp $R1 "" NoMoveConfigs HaveConfigs
+HaveConfigs:
+   # Ask if the user wants to move the configs
+   MessageBox MB_YESNO $R0 IDYES YesMoveConfigs IDNO NoMoveConfigs
+YesMoveConfigs:
+   # Call our VIkit DLL to migrate the config files.
+   Push $R1
+   VIKit::MigrateConfigFiles
+NoMoveConfigs:
 SectionEnd
 
 Section -AdditionalIcons

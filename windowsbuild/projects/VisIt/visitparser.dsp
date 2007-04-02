@@ -108,6 +108,10 @@ SOURCE=..\..\visit\common\parser\ConfiguratingSet.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\parser\Dictionary.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\parser\Grammar.C
 # End Source File
 # Begin Source File
@@ -137,10 +141,6 @@ SOURCE=..\..\visit\common\parser\Symbol.C
 # Begin Source File
 
 SOURCE=..\..\visit\common\parser\Token.C
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\visit\common\parser\TokenParseTreeNode.C
 # End Source File
 # End Group
 # End Target

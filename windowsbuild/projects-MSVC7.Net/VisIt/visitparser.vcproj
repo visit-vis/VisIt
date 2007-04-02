@@ -189,6 +189,21 @@ copy Release\visitparser.dll ..\..\bin\MSVC7.Net\Release\visitparser.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\common\parser\Dictionary.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\common\parser\Grammar.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -295,21 +310,6 @@ copy Release\visitparser.dll ..\..\bin\MSVC7.Net\Release\visitparser.dll
 			</File>
 			<File
 				RelativePath="..\..\visit\common\parser\Token.C">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\common\parser\TokenParseTreeNode.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool

@@ -96,6 +96,10 @@ SOURCE=..\..\visit\visitpy\PyDatabaseCorrelation.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visitpy\PyExportDBAttributes.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visitpy\PyGlobalAttributes.C
 # End Source File
 # Begin Source File
@@ -105,6 +109,10 @@ SOURCE=..\..\visit\visitpy\PyGlobalLineoutAttributes.C
 # Begin Source File
 
 SOURCE=..\..\visit\visitpy\PyHostProfile.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visitpy\PyImageObject.C
 # End Source File
 # Begin Source File
 
@@ -120,7 +128,15 @@ SOURCE=..\..\visit\visitpy\PyLightAttributes.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visitpy\PyLineObject.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visitpy\PyMaterialAttributes.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visitpy\PyMethodDoc.C
 # End Source File
 # Begin Source File
 

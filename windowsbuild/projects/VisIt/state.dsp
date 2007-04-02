@@ -136,6 +136,18 @@ SOURCE=..\..\visit\common\state\BoxExtents.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\state\ClientInformation.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\common\state\ClientInformationList.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\common\state\ClientMethod.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\state\ColorAttribute.C
 # End Source File
 # Begin Source File
@@ -188,7 +200,19 @@ SOURCE=..\..\visit\common\state\DataNode.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\state\DBOptionsAttributes.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\common\state\DBPluginInfoAttributes.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\state\EngineList.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\common\state\ExportDBAttributes.C
 # End Source File
 # Begin Source File
 
@@ -253,6 +277,10 @@ SOURCE=..\..\visit\common\state\MaterialAttributes.C
 # Begin Source File
 
 SOURCE=..\..\visit\common\state\MessageAttributes.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\common\state\MovieAttributes.C
 # End Source File
 # Begin Source File
 

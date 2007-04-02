@@ -101,6 +101,10 @@ SOURCE=..\..\visit\databases\VTK\avtVTKFileFormat.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\databases\VTK\avtVTKOptions.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\databases\VTK\avtVTKWriter.C
 # End Source File
 # Begin Source File

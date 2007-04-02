@@ -152,6 +152,10 @@ SOURCE=..\..\visit\components\Expressions\General\avtDivergenceFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\General\avtExpressionComponentMacro.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\General\avtGradientFilter.C
 # End Source File
 # Begin Source File
@@ -268,7 +272,15 @@ SOURCE=..\..\visit\components\Expressions\Math\avtBinarySubtractFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\Math\avtCeilingFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\Math\avtCosFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\Math\avtCylindricalCoordinatesFilter.C
 # End Source File
 # Begin Source File
 
@@ -288,11 +300,19 @@ SOURCE=..\..\visit\components\Expressions\Math\avtEigenvectorFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\Math\avtFloorFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\Math\avtIdentityFilter.C
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\Math\avtInverseFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\Math\avtModuloFilter.C
 # End Source File
 # Begin Source File
 
@@ -305,6 +325,10 @@ SOURCE=..\..\visit\components\Expressions\Math\avtPolarCoordinatesFilter.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\Math\avtRadianToDegreeFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\Math\avtRoundFilter.C
 # End Source File
 # Begin Source File
 

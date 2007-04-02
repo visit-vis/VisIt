@@ -103,6 +103,10 @@ SOURCE=..\..\visit\mdserver\main\ExpandPathRPCExecutor.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\mdserver\main\GetDBPluginInfoRPCExecutor.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\mdserver\main\GetDirectoryRPCExecutor.C
 # End Source File
 # Begin Source File

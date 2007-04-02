@@ -120,6 +120,10 @@ SOURCE=..\..\visit\engine\rpc\ExecuteRPC.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\engine\rpc\ExportDatabaseRPC.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\engine\rpc\MakePlotRPC.C
 # End Source File
 # Begin Source File

@@ -144,6 +144,10 @@ SOURCE=..\..\visit\viewer\main\ViewerActionManager.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\viewer\main\ViewerClientConnection.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\viewer\main\ViewerConfigManager.C
 # End Source File
 # Begin Source File
@@ -169,6 +173,10 @@ SOURCE=..\..\visit\viewer\main\ViewerHostProfileSelectorNoWin.C
 # Begin Source File
 
 SOURCE=..\..\visit\viewer\main\ViewerHostProfileSelectorWithWin.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\viewer\main\ViewerMasterXfer.C
 # End Source File
 # Begin Source File
 
@@ -244,6 +252,10 @@ SOURCE=..\..\visit\viewer\main\ViewerSILAttsObserver.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\viewer\main\ViewerState.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\viewer\main\ViewerSubject.C
 # End Source File
 # Begin Source File
@@ -285,6 +297,10 @@ SOURCE=..\..\visit\viewer\main\ViewerAction_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\viewer\main\ViewerActionBase_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\viewer\main\ViewerClientConnection_moc.C
 # End Source File
 # Begin Source File
 

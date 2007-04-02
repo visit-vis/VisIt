@@ -40,7 +40,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib visit_vtk.lib avtexceptions.lib avtmath_ser.lib plotter.lib pipeline_ser.lib avtview.lib vtkqt.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib vtkRendering.lib qt-mt302.lib opengl32.lib MesaGL.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib visit_vtk.lib avtexceptions.lib avtmath_ser.lib plotter.lib pipeline_ser.lib avtview.lib vtkqt.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib vtkRendering.lib vtkImaging.lib vtkIO.lib qt-mt302.lib opengl32.lib MesaGL.lib"
 				OutputFile=".\Release\viswindow.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -109,7 +109,7 @@ copy Release\viswindow.lib ..\..\lib\MSVC7.Net\Release\viswindow.lib
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib visit_vtk.lib avtexceptions.lib avtmath_ser.lib plotter.lib avtview.lib pipeline_ser.lib vtkqt.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib vtkRendering.lib qt-mt302.lib opengl32.lib MesaGL.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib visit_vtk.lib avtexceptions.lib avtmath_ser.lib plotter.lib avtview.lib pipeline_ser.lib vtkqt.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib vtkRendering.lib vtkImaging.lib vtkIO.lib qt-mt302.lib opengl32.lib MesaGL.lib"
 				OutputFile=".\Debug\viswindow.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -159,6 +159,46 @@ copy Debug\viswindow.dll ..\..\bin\MSVC7.Net\Debug\viswindow.dll
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
 				RelativePath="..\..\visit\components\VisWindow\Colleagues\avtAnnotationColleague.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\VisWindow\Colleagues\avtImageColleague.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\VisWindow\Colleagues\avtLine2DColleague.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool

@@ -199,6 +199,21 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath="..\..\visit\visitpy\PyExportDBAttributes.C">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					CompileAs="2"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					CompileAs="2"/>
+			</FileConfiguration>
+		</File>
+		<File
 			RelativePath="..\..\visit\visitpy\PyGlobalAttributes.C">
 			<FileConfiguration
 				Name="Release|Win32">
@@ -250,6 +265,21 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath="..\..\visit\visitpy\PyImageObject.C">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					CompileAs="2"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					CompileAs="2"/>
+			</FileConfiguration>
+		</File>
+		<File
 			RelativePath="..\..\visit\visitpy\PyInteractorAttributes.C">
 			<FileConfiguration
 				Name="Release|Win32">
@@ -295,6 +325,21 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath="..\..\visit\visitpy\PyLineObject.C">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					CompileAs="2"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					CompileAs="2"/>
+			</FileConfiguration>
+		</File>
+		<File
 			RelativePath="..\..\visit\visitpy\PyMaterialAttributes.C">
 			<FileConfiguration
 				Name="Release|Win32">
@@ -313,6 +358,21 @@
 					BasicRuntimeChecks="3"
 					CompileAs="2"
 					UndefinePreprocessorDefinitions=""/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\visit\visitpy\PyMethodDoc.C">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					CompileAs="2"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					CompileAs="2"/>
 			</FileConfiguration>
 		</File>
 		<File

@@ -100,6 +100,10 @@ PostBuild_Cmds=copy Debug\plugin.lib ..\..\lib\Debug\plugin.lib	copy Debug\plugi
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=..\..\visit\common\plugin\DatabasePluginInfo.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\plugin\DatabasePluginManager.C
 # End Source File
 # Begin Source File

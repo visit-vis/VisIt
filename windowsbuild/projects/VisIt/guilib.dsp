@@ -200,6 +200,10 @@ SOURCE=..\..\visit\gui\QvisColorTableWindow.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisCommandWindow.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisDatabaseCorrelationListWindow.C
 # End Source File
 # Begin Source File
@@ -221,6 +225,10 @@ SOURCE=..\..\visit\gui\QvisDelayedWindowSimpleObserver.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisEngineWindow.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisExportDBWindow.C
 # End Source File
 # Begin Source File
 
@@ -268,7 +276,15 @@ SOURCE=..\..\visit\gui\QvisHostProfileWindow.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisImageAnnotationInterface.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisInteractorWindow.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisInterpreter.C
 # End Source File
 # Begin Source File
 
@@ -293,6 +309,10 @@ SOURCE=..\..\visit\gui\QvisLightingWindow.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisLine2DInterface.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisLineStyleWidget.C
 # End Source File
 # Begin Source File
@@ -314,6 +334,10 @@ SOURCE=..\..\visit\gui\QvisMaterialWindow.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisMessageWindow.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisMovieProgressDialog.C
 # End Source File
 # Begin Source File
 
@@ -386,6 +410,10 @@ SOURCE=..\..\visit\gui\QvisRecentPathRemovalWindow.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisRenderingWindow.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisSaveMovieWizard.C
 # End Source File
 # Begin Source File
 
@@ -537,6 +565,10 @@ SOURCE=..\..\visit\gui\QvisColorTableWindow_moc.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisCommandWindow_moc.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisDatabaseCorrelationListWindow_moc.C
 # End Source File
 # Begin Source File
@@ -558,6 +590,10 @@ SOURCE=..\..\visit\gui\QvisDelayedWindowSimpleObserver_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisEngineWindow_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisExportDBWindow_moc.C
 # End Source File
 # Begin Source File
 
@@ -601,7 +637,15 @@ SOURCE=..\..\visit\gui\QvisHostProfileWindow_moc.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisImageAnnotationInterface_moc.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisInteractorWindow_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisInterpreter_moc.C
 # End Source File
 # Begin Source File
 
@@ -614,6 +658,10 @@ SOURCE=..\..\visit\gui\QvisLightingWidget_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisLightingWindow_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisLine2DInterface_moc.C
 # End Source File
 # Begin Source File
 
@@ -634,6 +682,10 @@ SOURCE=..\..\visit\gui\QvisMaterialWindow_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisMessageWindow_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisMovieProgressDialog_moc.C
 # End Source File
 # Begin Source File
 
@@ -702,6 +754,10 @@ SOURCE=..\..\visit\gui\QvisRecentPathRemovalWindow_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisRenderingWindow_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisSaveMovieWizard_moc.C
 # End Source File
 # Begin Source File
 

@@ -148,6 +148,10 @@ SOURCE=..\..\visit\components\Queries\Queries\avtAreaBetweenCurvesQuery.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Queries\Queries\avtCentroidQuery.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Queries\Queries\avtCompactnessQuery.C
 # End Source File
 # Begin Source File
@@ -173,6 +177,10 @@ SOURCE=..\..\visit\components\Queries\Queries\avtL2NormQuery.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Queries\Queries\avtMinMaxQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtMomentOfInertiaQuery.C
 # End Source File
 # Begin Source File
 

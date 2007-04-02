@@ -124,6 +124,10 @@ SOURCE=..\..\visit\mdserver\rpc\ExpandPathRPC.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\mdserver\rpc\GetDBPluginInfoRPC.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\mdserver\rpc\GetDirectoryRPC.C
 # End Source File
 # Begin Source File

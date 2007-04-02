@@ -26,12 +26,14 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisColorSelectionWidget.h         -o %G%\QvisColorSelectionWidget_moc.C
 %MOC% %HEADERS%\QvisColorTableButton.h             -o %G%\QvisColorTableButton_moc.C
 %MOC% %HEADERS%\QvisColorTableWindow.h             -o %G%\QvisColorTableWindow_moc.C
+%MOC% %HEADERS%\QvisCommandWindow.h                -o %G%\QvisCommandWindow_moc.C
 %MOC% %HEADERS%\QvisDatabaseCorrelationWindow.h    -o %G%\QvisDatabaseCorrelationWindow_moc.C
 %MOC% %HEADERS%\QvisDatabaseCorrelationListWindow.h -o %G%\QvisDatabaseCorrelationListWindow_moc.C
 %MOC% %HEADERS%\QvisDelayedWindow.h                -o %G%\QvisDelayedWindow_moc.C
 %MOC% %HEADERS%\QvisDelayedWindowObserver.h        -o %G%\QvisDelayedWindowObserver_moc.C
 %MOC% %HEADERS%\QvisDelayedWindowSimpleObserver.h  -o %G%\QvisDelayedWindowSimpleObserver_moc.C
 %MOC% %HEADERS%\QvisEngineWindow.h                 -o %G%\QvisEngineWindow_moc.C
+%MOC% %HEADERS%\QvisExportDBWindow.h               -o %G%\QvisExportDBWindow_moc.C
 %MOC% %HEADERS%\QvisExpressionsWindow.h            -o %G%\QvisExpressionsWindow_moc.C
 %MOC% %HEADERS%\QvisFileInformationWindow.h        -o %G%\QvisFileInformationWindow_moc.C
 %MOC% %HEADERS%\QvisFilePanel.h                    -o %G%\QvisFilePanel_moc.C
@@ -42,15 +44,19 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisGlobalLineoutWindow.h          -o %G%\QvisGlobalLineoutWindow_moc.C
 %MOC% %HEADERS%\QvisHelpWindow.h                   -o %G%\QvisHelpWindow_moc.C
 %MOC% %HEADERS%\QvisHostProfileWindow.h            -o %G%\QvisHostProfileWindow_moc.C
+%MOC% %HEADERS%\QvisImageAnnotationInterface.h     -o %G%\QvisImageAnnotationInterface_moc.C
 %MOC% %HEADERS%\QvisInteractorWindow.h             -o %G%\QvisInteractorWindow_moc.C
+%MOC% %HEADERS%\QvisInterpreter.h                  -o %G%\QvisInterpreter_moc.C
 %MOC% %HEADERS%\QvisKeyframeWindow.h               -o %G%\QvisKeyframeWindow_moc.C
 %MOC% %HEADERS%\QvisLightingWidget.h               -o %G%\QvisLightingWidget_moc.C
 %MOC% %HEADERS%\QvisLightingWindow.h               -o %G%\QvisLightingWindow_moc.C
+%MOC% %HEADERS%\QvisLine2DInterface.h              -o %G%\QvisLine2DInterface_moc.C
 %MOC% %HEADERS%\QvisLineStyleWidget.h              -o %G%\QvisLineStyleWidget_moc.C
 %MOC% %HEADERS%\QvisLineWidthWidget.h              -o %G%\QvisLineWidthWidget_moc.C
 %MOC% %HEADERS%\QvisMainWindow.h                   -o %G%\QvisMainWindow_moc.C
 %MOC% %HEADERS%\QvisMaterialWindow.h               -o %G%\QvisMaterialWindow_moc.C
 %MOC% %HEADERS%\QvisMessageWindow.h                -o %G%\QvisMessageWindow_moc.C
+%MOC% %HEADERS%\QvisMovieProgressDialog.h          -o %G%\QvisMovieProgressDialog_moc.C
 %MOC% %HEADERS%\QvisNotepadArea.h                  -o %G%\QvisNotepadArea_moc.C
 %MOC% %HEADERS%\QvisOpacitySlider.h                -o %G%\QvisOpacitySlider_moc.C
 %MOC% %HEADERS%\QvisOperatorWindow.h               -o %G%\QvisOperatorWindow_moc.C
@@ -68,6 +74,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisQueryWindow.h                  -o %G%\QvisQueryWindow_moc.C
 %MOC% %HEADERS%\QvisQueryOverTimeWindow.h          -o %G%\QvisQueryOverTimeWindow_moc.C
 %MOC% %HEADERS%\QvisRenderingWindow.h              -o %G%\QvisRenderingWindow_moc.C
+%MOC% %HEADERS%\QvisSaveMovieWizard.h              -o %G%\QvisSaveMovieWizard_moc.C
 %MOC% %HEADERS%\QvisSaveWindow.h                   -o %G%\QvisSaveWindow_moc.C
 %MOC% %HEADERS%\QvisScreenPositioner.h             -o %G%\QvisScreenPositioner_moc.C
 %MOC% %HEADERS%\QvisScreenPositionEdit.h           -o %G%\QvisScreenPositionEdit_moc.C
@@ -90,10 +97,10 @@ set G=%VISIT%\gui
 
 echo Running moc on the viewer source
 set V=%VISIT%\viewer\main
-%MOC% %HEADERS%\LockActions.h                      -o %V%\LockActions_moc.C
 %MOC% %HEADERS%\PlotAndOperatorActions.h           -o %V%\PlotAndOperatorActions_moc.C
 %MOC% %HEADERS%\ViewerAction.h                     -o %V%\ViewerAction_moc.C
 %MOC% %HEADERS%\ViewerActionBase.h                 -o %V%\ViewerActionBase_moc.C
+%MOC% %HEADERS%\ViewerClientConnection.h           -o %V%\ViewerClientConnection_moc.C
 %MOC% %HEADERS%\ViewerConnectionProgressDialog.h   -o %V%\ViewerConnectionProgressDialog_moc.C
 %MOC% %HEADERS%\ViewerHostProfileSelectorWithWin.h -o %V%\ViewerHostProfileSelectorWithWin_moc.C
 %MOC% %HEADERS%\ViewerMetaDataObserver.h           -o %V%\ViewerMetaDataObserver_moc.C
