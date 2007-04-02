@@ -24,7 +24,6 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisColorGridWidget.h              -o %G%\QvisColorGridWidget_moc.C
 %MOC% %HEADERS%\QvisColorManagerWidget.h           -o %G%\QvisColorManagerWidget_moc.C
 %MOC% %HEADERS%\QvisColorSelectionWidget.h         -o %G%\QvisColorSelectionWidget_moc.C
-%MOC% %HEADERS%\QvisColorTableButton.h             -o %G%\QvisColorTableButton_moc.C
 %MOC% %HEADERS%\QvisColorTableWindow.h             -o %G%\QvisColorTableWindow_moc.C
 %MOC% %HEADERS%\QvisCommandWindow.h                -o %G%\QvisCommandWindow_moc.C
 %MOC% %HEADERS%\QvisCompositeTransition.h          -o %G%\QvisCompositeTransition_moc.C
@@ -33,12 +32,12 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisDelayedWindow.h                -o %G%\QvisDelayedWindow_moc.C
 %MOC% %HEADERS%\QvisDelayedWindowObserver.h        -o %G%\QvisDelayedWindowObserver_moc.C
 %MOC% %HEADERS%\QvisDelayedWindowSimpleObserver.h  -o %G%\QvisDelayedWindowSimpleObserver_moc.C
+%MOC% %HEADERS%\QvisDialogLineEdit.h               -o %G%\QvisDialogLineEdit_moc.C
 %MOC% %HEADERS%\QvisElementButton.h                -o %G%\QvisElementButton_moc.C
 %MOC% %HEADERS%\QvisEngineWindow.h                 -o %G%\QvisEngineWindow_moc.C
 %MOC% %HEADERS%\QvisExportDBWindow.h               -o %G%\QvisExportDBWindow_moc.C
 %MOC% %HEADERS%\QvisExpressionsWindow.h            -o %G%\QvisExpressionsWindow_moc.C
 %MOC% %HEADERS%\QvisFileInformationWindow.h        -o %G%\QvisFileInformationWindow_moc.C
-%MOC% %HEADERS%\QvisFileLineEdit.h                 -o %G%\QvisFileLineEdit_moc.C
 %MOC% %HEADERS%\QvisFilePanel.h                    -o %G%\QvisFilePanel_moc.C
 %MOC% %HEADERS%\QvisFileOpenDialog.h               -o %G%\QvisFileOpenDialog_moc.C
 %MOC% %HEADERS%\QvisFileOpenWindow.h               -o %G%\QvisFileOpenWindow_moc.C
@@ -55,6 +54,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisInteractorWindow.h             -o %G%\QvisInteractorWindow_moc.C
 %MOC% %HEADERS%\QvisInterpreter.h                  -o %G%\QvisInterpreter_moc.C
 %MOC% %HEADERS%\QvisKeyframeWindow.h               -o %G%\QvisKeyframeWindow_moc.C
+%MOC% %HEADERS%\QvisLegendAttributesInterface.h    -o %G%\QvisLegendAttributesInterface_moc.C
 %MOC% %HEADERS%\QvisLightingWidget.h               -o %G%\QvisLightingWidget_moc.C
 %MOC% %HEADERS%\QvisLightingWindow.h               -o %G%\QvisLightingWindow_moc.C
 %MOC% %HEADERS%\QvisLine2DInterface.h              -o %G%\QvisLine2DInterface_moc.C
@@ -103,8 +103,6 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisText2DInterface.h              -o %G%\QvisText2DInterface_moc.C
 %MOC% %HEADERS%\QvisTimeSliderInterface.h          -o %G%\QvisTimeSliderInterface_moc.C
 %MOC% %HEADERS%\QvisTurnDownButton.h               -o %G%\QvisTurnDownButton_moc.C
-%MOC% %HEADERS%\QvisVariableButton.h               -o %G%\QvisVariableButton_moc.C
-%MOC% %HEADERS%\QvisVariableButtonHelper.h         -o %G%\QvisVariableButtonHelper_moc.C
 %MOC% %HEADERS%\QvisVCRControl.h                   -o %G%\QvisVCRControl_moc.C
 %MOC% %HEADERS%\QvisViewWindow.h                   -o %G%\QvisViewWindow_moc.C
 %MOC% %HEADERS%\QvisViewportWidget.h               -o %G%\QvisViewportWidget_moc.C
@@ -117,15 +115,19 @@ set G=%VISIT%\gui
 echo Running moc on the viewer source
 set V=%VISIT%\viewer\main
 %MOC% %HEADERS%\PlotAndOperatorActions.h           -o %V%\PlotAndOperatorActions_moc.C
+%MOC% %HEADERS%\ViewerBase.h                       -o %V%\ViewerBase_moc.C
 %MOC% %HEADERS%\ViewerAction.h                     -o %V%\ViewerAction_moc.C
 %MOC% %HEADERS%\ViewerActionBase.h                 -o %V%\ViewerActionBase_moc.C
 %MOC% %HEADERS%\ViewerClientConnection.h           -o %V%\ViewerClientConnection_moc.C
+%MOC% %HEADERS%\ViewerCommandFromSimObserver.h     -o %V%\ViewerCommandFromSimObserver_moc.C
 %MOC% %HEADERS%\ViewerConnectionProgressDialog.h   -o %V%\ViewerConnectionProgressDialog_moc.C
 %MOC% %HEADERS%\ViewerHostProfileSelectorWithWin.h -o %V%\ViewerHostProfileSelectorWithWin_moc.C
 %MOC% %HEADERS%\ViewerMetaDataObserver.h           -o %V%\ViewerMetaDataObserver_moc.C
 %MOC% %HEADERS%\ViewerMultipleAction.h             -o %V%\ViewerMultipleAction_moc.C
+%MOC% %HEADERS%\ViewerObserverToSignal.h           -o %V%\ViewerObserverToSignal_moc.C
 %MOC% %HEADERS%\ViewerPasswordWindow.h             -o %V%\ViewerPasswordWindow_moc.C
-%MOC% %HEADERS%\ViewerRPCObserver.h                -o %V%\ViewerRPCObserver_moc.C
+%MOC% %HEADERS%\ViewerPlot.h                       -o %V%\ViewerPlot_moc.C
+%MOC% %HEADERS%\ViewerPlotList.h                   -o %V%\ViewerPlotList_moc.C
 %MOC% %HEADERS%\ViewerSILAttsObserver.h            -o %V%\ViewerSILAttsObserver_moc.C
 %MOC% %HEADERS%\ViewerSubject.h                    -o %V%\ViewerSubject_moc.C
 %MOC% %HEADERS%\ViewerWindowManager.h              -o %V%\ViewerWindowManager_moc.C
@@ -138,6 +140,9 @@ set Q=%VISIT%\vtkqt
 echo Running moc on the winutil source
 set W=%VISIT%\winutil
 %MOC% %HEADERS%\QvisVariablePopupMenu.h            -o %W%\QvisVariablePopupMenu_moc.C
+%MOC% %HEADERS%\QvisVariableButton.h               -o %W%\QvisVariableButton_moc.C
+%MOC% %HEADERS%\QvisVariableButtonHelper.h         -o %W%\QvisVariableButtonHelper_moc.C
+%MOC% %HEADERS%\QvisColorTableButton.h             -o %W%\QvisColorTableButton_moc.C
 
 echo ...
 echo Done.

@@ -73,8 +73,8 @@ class PLOTTER_API avtCurveLegend : public avtLegend
 
     virtual void               GetLegendSize(double, double &, double &);
 
-    virtual void               SetLabelVisibility(bool);
-    virtual bool               GetLabelVisibility() const;
+    virtual void               SetTitleVisibility(bool);
+    virtual bool               GetTitleVisibility() const;
 
     virtual void               SetLegendScale(double xScale, double yScale);
     virtual void               SetBoundingBoxVisibility(bool);
@@ -89,7 +89,7 @@ class PLOTTER_API avtCurveLegend : public avtLegend
   protected:
     vtkLineLegend             *lineLegend;
     double                     scale[2];
-    bool                       labelVisibility;
+    bool                       titleVisibility;
 
     virtual void               ChangePosition(double, double);
     virtual void               ChangeTitle(const char *);

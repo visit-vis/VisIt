@@ -94,7 +94,7 @@ copy Debug\visit_vtk.lib ..\..\lib\MSVC7.Net\Debug\visit_vtk.lib
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\zlib"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VISIT_VTK_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VISIT_VTK_EXPORTS;_USE_MATH_DEFINES"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"

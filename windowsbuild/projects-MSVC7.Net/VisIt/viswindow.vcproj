@@ -198,6 +198,15 @@ copy Debug\viswindow.dll ..\..\bin\MSVC7.Net\Debug\viswindow.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\VisWindow\Colleagues\avtLegendAttributesColleague.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\VisWindow\Colleagues\avtLine2DColleague.C">
 				<FileConfiguration
 					Name="Release|Win32">

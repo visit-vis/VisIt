@@ -872,6 +872,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisDialogLineEdit.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisElementButton.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -963,15 +972,6 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\gui\QvisFileLineEdit.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -1243,6 +1243,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisLegendAttributesInterface.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -2769,6 +2778,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisDialogLineEdit_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisElementButton_moc.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -2854,15 +2872,6 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\gui\QvisFileLineEdit_moc.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -3114,6 +3123,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisLegendAttributesInterface_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
