@@ -22,7 +22,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VIEWER_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -93,7 +93,7 @@ copy Debug\viewer.lib ..\..\lib\MSVC7.Net\Debug\viewer.lib
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VIEWER_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -373,6 +373,21 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\viewer\main\ViewerBase.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\viewer\main\ViewerClientConnection.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -389,6 +404,21 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\viewer\main\ViewerCommandFromSimObserver.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -573,26 +603,6 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\viewer\main\ViewerMessaging.C">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\visit\viewer\main\ViewerMetaDataObserver.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -622,6 +632,21 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\viewer\main\ViewerObserverToSignal.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\viewer\main\ViewerOperator.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -643,26 +668,6 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 			</File>
 			<File
 				RelativePath="..\..\visit\viewer\main\ViewerOperatorFactory.C">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\viewer\main\ViewerPalette.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -842,26 +847,6 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\viewer\main\ViewerRPCObserver.C">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\visit\viewer\main\ViewerServerManager.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -887,26 +872,6 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\viewer\main\ViewerState.C">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -1135,7 +1100,37 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\viewer\main\ViewerBase_moc.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\viewer\main\ViewerClientConnection_moc.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\viewer\main\ViewerCommandFromSimObserver_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -1219,6 +1214,21 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\viewer\main\ViewerObserverToSignal_moc.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\viewer\main\ViewerPasswordWindow_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1239,22 +1249,32 @@ copy Release\viewer.lib ..\..\lib\MSVC7.Net\Release\viewer.lib
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\viewer\main\ViewerRPCObserver_moc.C">
+				RelativePath="..\..\visit\viewer\main\ViewerPlot_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\viewer\main\ViewerPlotList_moc.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

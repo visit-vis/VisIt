@@ -25,7 +25,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib\;..\..\visit\plots\Scatter"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\zlib\;..\..\visit\plots\Scatter"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;GUI_PLUGIN_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -42,7 +42,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib gui.lib viewerproxy.lib viewerrpc.lib $(QTLIB)"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib winutil.lib gui.lib viewerproxy.lib viewerrpc.lib $(QTLIB)"
 				OutputFile="..\..\bin\MSVC7.Net\Release\plots\libGScatterPlot.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -94,7 +94,7 @@ $(QTDIR)\bin\moc.exe ..\..\visit\plots\Scatter\QvisScatterWidget.h -o ..\..\visi
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib;..\..\visit\plots\Scatter"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\zlib;..\..\visit\plots\Scatter"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS;GUI_PLUGIN_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -111,7 +111,7 @@ $(QTDIR)\bin\moc.exe ..\..\visit\plots\Scatter\QvisScatterWidget.h -o ..\..\visi
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib gui.lib viewerproxy.lib viewerrpc.lib $(QTLIB)"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib winutil.lib gui.lib viewerproxy.lib viewerrpc.lib $(QTLIB)"
 				OutputFile="..\..\bin\MSVC7.Net\Debug\plots\libGScatterPlot.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

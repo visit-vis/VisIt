@@ -21,7 +21,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\python;..\..\include\zlib;..\..\include\Tools;..\..\include\silo"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\zlib;..\..\include\Tools;..\..\include\silo"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="5"
@@ -83,7 +83,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\python;..\..\include\zlib;..\..\include\Tools;..\..\include\silo"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\zlib;..\..\include\Tools;..\..\include\silo"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="TRUE"
 				RuntimeLibrary="4"
