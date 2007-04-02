@@ -59,11 +59,14 @@
 #  Kathleen Bonnell, Wed Oct 18 09:11:31 PDT 2006
 #  Updated for 1.5.4
 #
+#  Brad Whitlock, Tue Nov 21 16:41:49 PST 2006
+#  Upped the version number and added movietemplates directories
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.5.4"
+!define PRODUCT_VERSION "1.5.5"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"
@@ -311,6 +314,16 @@ Section MyImageDirectory
   # Make sure that we're in the VisIt directory by default when the
   # application runs.
   SetOutPath "$INSTDIR"
+SectionEnd
+
+Section MovieTemplates
+  # Copy over the VisIt movie templates.
+  SetOutPath "$INSTDIR\movietemplates"
+
+  File "..\bin\MSVC7.Net\Release\movietemplates\*.mt"
+  File "..\bin\MSVC7.Net\Release\movietemplates\*.py"
+  File "..\bin\MSVC7.Net\Release\movietemplates\*.ui"
+  File "..\bin\MSVC7.Net\Release\movietemplates\*.bmp"
 SectionEnd
 
 Section AddVisItRegKeys
