@@ -155,6 +155,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
+				RelativePath="..\..\visit\gui\AccessViewerSession.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\ColorTableObserver.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -315,6 +324,87 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\MovieSequence.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\MovieSequenceCompositeTransition.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\MovieSequenceCurrentPlots.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\MovieSequenceFactory.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\MovieSequenceRotate.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\MovieSequenceScripting.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\MovieSequenceTransition.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\MovieTemplateConfig.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\MovieUtility.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\NameSimplifier.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -331,6 +421,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QFileSelectionListBoxItem.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -684,6 +783,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisCompositeTransition.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisDatabaseCorrelationListWindow.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -875,6 +983,24 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisFileLineEdit.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisFileOpenDialog.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -1631,6 +1757,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisPredefinedViewports.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisPreferencesWindow.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1727,6 +1862,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisRotationTransition.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -1831,6 +1975,33 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisSequenceButton.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisSequenceTransition.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisSequenceView.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisSessionFileDatabaseLoader.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1847,6 +2018,24 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisSessionSourceChanger.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisSessionSourceChangerDialog.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -2056,6 +2245,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisViewportWidget.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisViewWindow.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -2083,6 +2281,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisWidgetFactory.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -2157,6 +2364,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\WidgetDataNode.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -2505,6 +2721,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisCompositeTransition_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisDatabaseCorrelationListWindow_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -2690,6 +2915,24 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisFileLineEdit_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisFileOpenDialog_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -3380,6 +3623,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisPredefinedViewports_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisPreferencesWindow_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -3580,6 +3832,33 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisSequenceButton_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisSequenceTransition_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisSequenceView_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisSessionFileDatabaseLoader_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -3596,6 +3875,24 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisSessionSourceChanger_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisSessionSourceChangerDialog_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -3781,6 +4078,15 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisViewportWidget_moc.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

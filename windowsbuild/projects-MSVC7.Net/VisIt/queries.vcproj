@@ -868,6 +868,15 @@ copy Debug\queries.dll ..\..\bin\MSVC7.Net\Debug\queries.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Queries\Queries\avtTotalLengthQuery.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Queries\Queries\avtTotalRevolvedSurfaceAreaQuery.C">
 				<FileConfiguration
 					Name="Release|Win32">

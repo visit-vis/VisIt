@@ -25,7 +25,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\visit\plots\Molecule;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
+				AdditionalIncludeDirectories="&quot;$(QTDIR)\include&quot;;..\..\visit\plots\Molecule;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;&quot;..\..\include\Python-2.3.4&quot;;..\..\include\glew;..\..\include\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;_WIN32;GENERAL_PLUGIN_EXPORTS;ENGINE_PLUGIN_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -42,7 +42,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib plotter.lib pipeline_ser.lib avtfilters.lib avtexceptions.lib viewer.lib dbatts.lib visit_vtk.lib avtmath_ser.lib vtkCommon.lib vtkGraphics.lib vtkFiltering.lib vtkRendering.lib opengl32.lib MesaGL.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib utility.lib plotter.lib pipeline_ser.lib avtfilters.lib avtexceptions.lib viewer.lib dbatts.lib visit_vtk.lib avtmath_ser.lib vtkCommon.lib vtkGraphics.lib vtkFiltering.lib vtkRendering.lib opengl32.lib MesaGL.lib glew32d.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Release\plots\libEMoleculePlot_ser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -290,15 +290,6 @@
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\plots\Molecule\glew.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

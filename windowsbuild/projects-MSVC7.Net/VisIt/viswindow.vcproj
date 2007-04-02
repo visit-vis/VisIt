@@ -915,6 +915,15 @@ copy Debug\viswindow.dll ..\..\bin\MSVC7.Net\Debug\viswindow.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\VisWindow\Tools\avtExtentsToolInterface.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\VisWindow\Tools\avtLineToolInterface.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -1031,6 +1040,15 @@ copy Debug\viswindow.dll ..\..\bin\MSVC7.Net\Debug\viswindow.dll
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\VisWindow\Tools\VisitExtentsTool.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

@@ -707,6 +707,15 @@ copy Debug\avtfilters.dll ..\..\bin\MSVC7.Net\Debug\avtfilters.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Filters\avtWarpFilter.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Filters\avtWholeImageCompositerNoZ.C">
 				<FileConfiguration
 					Name="Release|Win32">

@@ -798,6 +798,15 @@ copy Debug\state.lib ..\..\lib\MSVC7.Net\Debug\state.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\common\state\ExtentsAttributes.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\common\state\GaussianControlPoint.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -1250,6 +1259,12 @@ copy Debug\state.lib ..\..\lib\MSVC7.Net\Debug\state.lib
 				RelativePath="..\..\visit\common\state\PlotInfoAttributes.C">
 				<FileConfiguration
 					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						CompileAs="2"/>
