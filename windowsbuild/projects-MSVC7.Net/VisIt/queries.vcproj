@@ -500,6 +500,21 @@ copy Debug\queries.dll ..\..\bin\MSVC7.Net\Debug\queries.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Queries\Queries\avtConnComponentsSummaryQuery.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Queries\Queries\avtConnComponentsVariableQuery.C">
 				<FileConfiguration
 					Name="Release|Win32">
