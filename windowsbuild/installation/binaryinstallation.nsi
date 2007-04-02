@@ -54,11 +54,15 @@
 #   Added support for setting VisIt's install location as a Java preference
 #   using our VIkit plugin.
 #
+#  Brad Whitlock, Fri Jun 24 10:35:49 PDT 2005
+#  Added support for saving movies at the resolution stored in the
+#  session file.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.4.3"
+!define PRODUCT_VERSION "1.4.4"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"
@@ -540,6 +544,7 @@ Section AddFileAssociations
   WriteRegStr HKCR ".vses" "" "visitSessionFile"
   WriteRegStr HKCR "visitSessionFile" "" "VisIt Session File"
   WriteRegStr HKCR "visitSessionFile\DefaultIcon" "" "$INSTDIR\visitsessionfile.ico"
+  WriteRegStr HKCR "visitSessionFile\shell\Make movie\command"          "" '$INSTDIR\visit.exe -movie -format tiff -sessionfile "%1"'
   WriteRegStr HKCR "visitSessionFile\shell\Make 480x480 movie\command"  "" '$INSTDIR\visit.exe -movie -format tiff -geometry 480x480 -sessionfile "%1"'
   WriteRegStr HKCR "visitSessionFile\shell\Make 640x480 movie\command"  "" '$INSTDIR\visit.exe -movie -format tiff -geometry 640x480 -sessionfile "%1"'
   WriteRegStr HKCR "visitSessionFile\shell\Make 800x600 movie\command"  "" '$INSTDIR\visit.exe -movie -format tiff -geometry 800x600 -sessionfile "%1\'
