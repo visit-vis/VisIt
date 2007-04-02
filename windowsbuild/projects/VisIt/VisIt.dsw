@@ -252,6 +252,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "ddf"=.\ddf.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "engine"=.\engine.dsp - Package Owner=<4>
 
 Package=<5>
@@ -400,6 +412,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name avtfilters
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ddf
     End Project Dependency
 }}}
 

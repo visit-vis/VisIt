@@ -180,6 +180,10 @@ SOURCE=..\..\visit\common\state\ConfigManager.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\state\ConstructDDFAttributes.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\state\ContourOpAttributes.C
 # End Source File
 # Begin Source File

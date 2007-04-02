@@ -2,7 +2,7 @@
 
 ##############################################################################
 #
-# File: binaryinstallation.nsi
+# File: binaryinstallation-MSVC7.Net.nsi
 #
 # Purpose: This file contains the instructions that the NSIS installer needs
 #          in order to create an installation program for VisIt.
@@ -48,11 +48,16 @@
 #  Brad Whitlock, Wed Feb 1 09:33:46 PDT 2006
 #  Updated for 1.5.1
 #
+#  Brad Whitlock, Wed Mar 15 9:57:34 PDT 2006
+#  Updated for 1.5.2. I also added support for NERSC and ORNL network
+#  configs as well as a new screen that lets you pick your default
+#  bank for parallel jobs.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.5.1"
+!define PRODUCT_VERSION "1.5.2"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"
@@ -91,6 +96,7 @@ ReserveFile "ClickInstall.ini"
 !insertmacro MUI_PAGE_DIRECTORY
 ; Custom
 page custom ChooseNetworkConfig
+page custom ChooseParallelBank
 page custom WantDefaultDatabasePlugin
 page custom ChooseDefaultDatabasePlugin
 page custom ChooseInstallDevelopmentFiles
@@ -131,6 +137,7 @@ Var InstallDevelopmentFiles
 Function .onInit
   ;Extract InstallOptions INI files
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT "NetworkConfig.ini"
+  !insertmacro MUI_INSTALLOPTIONS_EXTRACT "ParallelBank.ini"
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT "WantDatabasePlugin.ini"
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT "DefaultDatabasePlugin.ini"
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT "ChooseInstallDevelopmentFiles.ini"
@@ -146,6 +153,14 @@ FunctionEnd
 Function ChooseNetworkConfig
   !insertmacro MUI_HEADER_TEXT "Network configuration" "Select the desired network configuration."
   !insertmacro MUI_INSTALLOPTIONS_DISPLAY "NetworkConfig.ini"
+FunctionEnd
+
+#
+# This function is called when we show the Choose parallel bank screen.
+#
+Function ChooseParallelBank
+  !insertmacro MUI_HEADER_TEXT "Parallel bank selection" "Select the desired parallel bank."
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "ParallelBank.ini"
 FunctionEnd
 
 #
@@ -217,8 +232,7 @@ Section "Executable Components" SEC01
   SetOverwrite ifnewer
   File "..\bin\MSVC7.Net\Release\*.dll"
   File "..\bin\MSVC7.Net\Release\*.exe"
-  File "..\bin\MSVC7.Net\Release\visit-config-closed.ini"
-  File "..\bin\MSVC7.Net\Release\visit-config-open.ini"
+  File "..\bin\MSVC7.Net\Release\visit-config-*.ini"
   File "..\bin\MSVC7.Net\Release\xml2plugin.bat"
   File "..\bin\MSVC7.Net\Release\makemovie.py"
   File "..\bin\MSVC7.Net\Release\makemoviemain.py"
@@ -307,14 +321,48 @@ Section AddVisItRegKeys
 HaveNetworkConfig:
     !insertmacro MUI_INSTALLOPTIONS_READ $0 "NetworkConfig.ini" "Field 2" "State"
     # If $0=="" then we're going to use the closed config
-    Strcmp $0 "1" OpenNetworkConfig ClosedNetworkConfig
-OpenNetworkConfig:
-         WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-open"
-         WriteRegStr HKCU "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-open"
-         Goto SkipNetworkConfig
-ClosedNetworkConfig:
-         WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-closed"
-         WriteRegStr HKCU "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" "visit-config-closed"
+    Strcmp $0 "1" If_OpenNetworkConfig Else_If_ClosedNetworkConfig
+If_OpenNetworkConfig:
+    Strcpy $r0 "visit-config-open.ini"
+    Goto EndIfNetworkConfig
+Else_If_ClosedNetworkConfig:
+    !insertmacro MUI_INSTALLOPTIONS_READ $0 "NetworkConfig.ini" "Field 3" "State"
+    # If $0=="" then we're going to use the closed config
+    Strcmp $0 "1" If_ClosedNetworkConfig Else_If_NERSCNetworkConfig
+    If_ClosedNetworkConfig:
+        Strcpy $r0 "visit-config-closed.ini"
+        goto EndIfNetworkConfig
+    Else_If_NERSCNetworkConfig:
+        !insertmacro MUI_INSTALLOPTIONS_READ $0 "NetworkConfig.ini" "Field 4" "State"
+        # If $0=="" then we're going to use the NERSC config
+        Strcmp $0 "1" If_NERSCNetworkConfig Else_If_ORNLNetworkConfig
+        If_NERSCNetworkConfig:
+            Strcpy $r0 "visit-config-nersc.ini"
+            goto EndIfNetworkConfig
+        Else_If_ORNLNetworkConfig:
+            !insertmacro MUI_INSTALLOPTIONS_READ $0 "NetworkConfig.ini" "Field 5" "State"
+            # If $0=="" then we're going to use the ORNL config
+            Strcmp $0 "1" If_ORNLNetworkConfig EndIfNetworkConfig
+            If_ORNLNetworkConfig:
+                Strcpy $r0 "visit-config-ornl.ini"
+                goto EndIfNetworkConfig
+EndIfNetworkConfig:
+    # Store the string from $r0 minus the ".ini" extension in $r2
+    Strlen $r1 $r0
+    IntOp $r1 $r1 - 4
+    StrCpy $r2 $r0 $r1
+    WriteRegStr HKCR "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" $r2
+    WriteRegStr HKCU "VISIT${PRODUCT_VERSION}" "VISITSYSTEMCONFIG" $r2
+    
+    # If the user's chosen bank was not bdivp then replace bdivp in the config files
+    Strcmp $r2 "bdivp" NetworkConfigDone ReplaceBank
+ReplaceBank:
+    !insertmacro MUI_INSTALLOPTIONS_READ $r3 "ParallelBank.ini" "Field 1" "State"
+    Push $r0
+    Push "bdivp"
+    Push $r3
+    VIKit::ReplaceStringInFile
+NetworkConfigDone:
 SkipNetworkConfig:
 
   # Write any additional arguments, like the default database format, to the VISITARGS key.

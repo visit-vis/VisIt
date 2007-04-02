@@ -41,7 +41,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib avtfilters.lib dbatts.lib pipeline_ser.lib avtexceptions.lib state.lib visitexpr.lib visitparser.lib visit_vtk.lib database_ser.lib visit_vtk_light.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib avtfilters.lib dbatts.lib pipeline_ser.lib avtexceptions.lib state.lib visitexpr.lib visitparser.lib visit_vtk.lib database_ser.lib ddf.lib visit_vtk_light.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
 				OutputFile=".\Release\expression.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -110,7 +110,7 @@ copy Release\expression.dll ..\..\bin\MSVC7.Net\Release\expression.dll
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib dbatts.lib pipeline_ser.lib avtexceptions.lib visitexpr.lib visitparser.lib visit_vtk.lib database_ser.lib avtfilters.lib visit_vtk_light.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib misc.lib state.lib dbatts.lib pipeline_ser.lib avtexceptions.lib visitexpr.lib visitparser.lib visit_vtk.lib database_ser.lib avtfilters.lib ddf.lib visit_vtk_light.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib"
 				OutputFile=".\Debug\expression.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -461,6 +461,21 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 		<Filter
 			Name="General"
 			Filter="">
+			<File
+				RelativePath="..\..\visit\components\Expressions\General\avtApplyDDFExpression.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
 			<File
 				RelativePath="..\..\visit\components\Expressions\General\avtCurlFilter.C">
 				<FileConfiguration
@@ -2175,6 +2190,21 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 			</File>
 			<File
 				RelativePath="..\..\visit\components\Expressions\Management\avtExprNodeFactory.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Expressions\Management\avtTimeExpression.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool

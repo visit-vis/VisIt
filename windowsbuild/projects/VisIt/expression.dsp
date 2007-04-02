@@ -136,6 +136,10 @@ SOURCE=..\..\visit\components\Expressions\Abstract\avtUnaryMathFilter.C
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\General\avtApplyDDFExpression.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\General\avtArrayComposeFilter.C
 # End Source File
 # Begin Source File
@@ -513,6 +517,10 @@ SOURCE=..\..\visit\components\Expressions\Management\avtExprNode.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\Management\avtExprNodeFactory.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\Management\avtTimeExpression.C
 # End Source File
 # Begin Source File
 

@@ -96,6 +96,10 @@ SOURCE=..\..\visit\visitpy\PyAnnotationAttributes.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visitpy\PyConstructDDFAttributes.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visitpy\PyDatabaseCorrelation.C
 # End Source File
 # Begin Source File

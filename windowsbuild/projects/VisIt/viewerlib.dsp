@@ -280,6 +280,10 @@ SOURCE=..\..\visit\viewer\main\ViewerWindowManagerAttributes.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\viewer\main\ViewStack.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\viewer\main\WindowActions.C
 # End Source File
 # End Group

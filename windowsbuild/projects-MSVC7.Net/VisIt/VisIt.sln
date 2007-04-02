@@ -129,6 +129,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "enginerpc", "enginerpc.vcpr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "expression", "expression.vcproj", "{6132944D-FCFC-43EC-9DBB-7A44D29DF1B1}"
 	ProjectSection(ProjectDependencies) = postProject
+		{AB3AA31D-B60A-4242-89F5-8C8D95DD95D5} = {AB3AA31D-B60A-4242-89F5-8C8D95DD95D5}
 		{276EAB20-080C-4744-AABB-15423B68E0CB} = {276EAB20-080C-4744-AABB-15423B68E0CB}
 		{E66AD432-E6A3-41AB-8737-474B4FB6D6B6} = {E66AD432-E6A3-41AB-8737-474B4FB6D6B6}
 		{23513843-78F3-4EBF-A8A6-F3BDAE2A4288} = {23513843-78F3-4EBF-A8A6-F3BDAE2A4288}
@@ -391,6 +392,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visitexpr", "visitexpr.vcpr
 		{060FF3F8-1AB3-411A-BD69-E95BFBD3745E} = {060FF3F8-1AB3-411A-BD69-E95BFBD3745E}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ddf", "ddf.vcproj", "{AB3AA31D-B60A-4242-89F5-8C8D95DD95D5}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -577,6 +582,10 @@ Global
 		{276EAB20-080C-4744-AABB-15423B68E0CB}.Debug.Build.0 = Debug|Win32
 		{276EAB20-080C-4744-AABB-15423B68E0CB}.Release.ActiveCfg = Release|Win32
 		{276EAB20-080C-4744-AABB-15423B68E0CB}.Release.Build.0 = Release|Win32
+		{AB3AA31D-B60A-4242-89F5-8C8D95DD95D5}.Debug.ActiveCfg = Debug|Win32
+		{AB3AA31D-B60A-4242-89F5-8C8D95DD95D5}.Debug.Build.0 = Debug|Win32
+		{AB3AA31D-B60A-4242-89F5-8C8D95DD95D5}.Release.ActiveCfg = Release|Win32
+		{AB3AA31D-B60A-4242-89F5-8C8D95DD95D5}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

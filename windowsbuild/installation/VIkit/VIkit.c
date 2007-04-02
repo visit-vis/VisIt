@@ -275,6 +275,118 @@ CopyConfigFiles(const char *oldpath, const char *newpath, FILE *log)
     HandleConfigFiles(oldpath, copy_config_files, (void *)cbData);
 }
 
+/******************************************************************************
+ *
+ * Purpose: Replaces a string in a file and resaves the file.
+ *
+ * Programmer: Brad Whitlock
+ * Date:       Thu Mar 16 11:43:23 PDT 2006
+ *
+ * Modifications:
+ *
+ *****************************************************************************/
+
+static void
+ReplaceStringInFileEx(const char *filename, const char *S, const char *R)
+{
+    FILE *src = NULL;
+#ifdef DEBUG_ReplaceStringInFileEx
+    FILE *log = fopen("C:\\VisItDev1.5.1\\installation\\ReplaceStringInFileEx.log", "wt");
+    fprintf(log, "ReplaceStringInFileEx(\"%s\", \"%s\", \"%s\")\n", filename, S, R);
+#endif
+    src = fopen(filename, "rt");
+    if(src != NULL)
+    {
+        FILE *dest = NULL;
+        int count = 0;
+        char buffer[1024];
+        char destfile[1024];
+        int LS = strlen(S);
+        int LR = (R != NULL) ? strlen(R) : 0;
+
+#ifdef DEBUG_ReplaceStringInFileEx
+        fprintf(log, "We were able to open %s\n", filename);
+#endif
+
+        _snprintf(destfile, 1024, "%s.tmp", filename);
+        dest = fopen(destfile, "wt");
+        if(dest == NULL)
+        {
+#ifdef DEBUG_ReplaceStringInFileEx
+            fprintf(log, "We were not able to open %s\n", destfile);
+            fclose(log);
+#endif
+            fclose(src);
+            return;
+        }
+
+        while(1)
+        {
+            buffer[count] = fgetc(src);
+
+            if(feof(src))
+                break;
+
+            if(count+1 == LS)
+            {
+                /* Our string has reached the size of the string that
+                 * looking for. If it matches, write the replacement
+                 * string. Otherwise, write the string in the buffer.
+                 */
+                if(strncmp(buffer, S, LS) == 0)
+                {
+                    if(R != NULL && LR >= 1)
+                        fwrite(R, LR, 1, dest);
+                }
+                else
+                    fwrite(buffer, LS, 1, dest);
+                count = 0;
+            }
+            else if(buffer[count] != S[count])
+            {
+                /* Our string cannot match the string in the buffer
+                 * so write out the buffer.
+                 */
+                fwrite(buffer, count+1, 1, dest);
+                count = 0;
+            }
+            else
+            {
+                /* keep going. */
+                ++count;
+            }
+        }
+
+        fclose(src);
+        fclose(dest);
+#ifdef DEBUG_ReplaceStringInFileEx
+        fprintf(log, "Closed src and dest\n");
+#endif
+
+        /* Try renaming the files. */
+        if(remove(filename) == 0)
+        {
+            rename(destfile, filename);
+#ifdef DEBUG_ReplaceStringInFileEx
+            fprintf(log, "Renamed %s to %s\n", filename, destfile);
+#endif
+        }
+#ifdef DEBUG_ReplaceStringInFileEx
+        else
+        {
+            fprintf(log, "Could not remove %s\n", filename);
+        }
+#endif
+    }
+#ifdef DEBUG_ReplaceStringInFileEx
+    else
+    {
+        fprintf(log, "Could not open %s\n", filename);
+    }
+
+    fclose(log);
+#endif
+}
 
 /******************************************************************************
  ******************************************************************************
@@ -503,6 +615,71 @@ void __declspec(dllexport) MigrateConfigFiles(
 #endif
 }
 
+
+/******************************************************************************
+ *
+ * Purpose: This function is a custom extension for the NSIS installer that
+ *          allows it to replace a string in a file.
+ *
+ * Programmer: Brad Whitlock
+ * Date:       Thu Mar 16 10:52:54 PDT 2005
+ *
+ * Precondition:
+ *   The strings containing the filename, string to replace, and replacement
+ *   string on the top of the stack.
+ *
+ * Postcondition:
+ *   The arguments used to call this function are popped from the stack.
+ *
+ * Modifications:
+ *
+ *****************************************************************************/
+
+void __declspec(dllexport) ReplaceStringInFile(
+    HWND hwndParent, int string_size, 
+    char *variables, stack_t **stacktop)
+{
+    char *path_file = NULL;
+    char *installdir = NULL;
+    char filename[1024];
+    char stringtoreplace[1024];
+    char replacementstring[1024];
+    FILE *src = NULL;
+    FILE *dest = NULL;
+    int linstalldir;
+    EXDLL_INIT();
+
+    if(!g_stacktop)
+        return;
+
+    /* Replacement string. */
+    popstring(replacementstring);
+    /* String to replace. */
+    popstring(stringtoreplace);
+    /* Filename. */
+    popstring(filename);
+
+    /* Destination directory. */
+    installdir = getuservariable(INST_INSTDIR);
+
+    linstalldir = strlen(installdir);
+    if(installdir[linstalldir-1] == '\\')
+    {
+        path_file = (char *)malloc(linstalldir + strlen(filename) + 1);
+        sprintf(path_file, "%s%s", installdir, filename);
+    }
+    else
+    {
+        path_file = (char *)malloc(linstalldir + strlen(filename) + 1 + 1);
+        sprintf(path_file, "%s\\%s", installdir, filename);
+    }
+
+    /* Replace the string in the specified file. */
+    if(stringtoreplace != NULL && strlen(stringtoreplace) > 0)
+        ReplaceStringInFileEx(path_file, stringtoreplace, replacementstring);
+    
+    free(path_file);
+}
 
 BOOL WINAPI DllMain(HANDLE hInst, ULONG ul_reason_for_call, LPVOID lpReserved)
 {

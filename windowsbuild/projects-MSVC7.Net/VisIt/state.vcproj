@@ -558,6 +558,26 @@ copy Debug\state.lib ..\..\lib\MSVC7.Net\Debug\state.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\common\state\ConstructDDFAttributes.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\common\state\ContourOpAttributes.C">
 				<FileConfiguration
 					Name="Release|Win32">

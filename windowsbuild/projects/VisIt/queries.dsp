@@ -216,6 +216,10 @@ SOURCE=..\..\visit\components\Queries\Queries\avtOriginalDataNumZonesQuery.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Queries\Queries\avtOriginalDataSpatialExtentsQuery.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Queries\Queries\avtSkewnessQuery.C
 # End Source File
 # Begin Source File

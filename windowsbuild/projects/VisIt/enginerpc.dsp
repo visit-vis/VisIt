@@ -112,6 +112,10 @@ SOURCE=..\..\visit\engine\rpc\CloneNetworkRPC.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\engine\rpc\ConstructDDFRPC.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\engine\rpc\DefineVirtualDatabaseRPC.C
 # End Source File
 # Begin Source File

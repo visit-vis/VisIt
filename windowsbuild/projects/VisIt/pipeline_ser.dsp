@@ -260,6 +260,10 @@ SOURCE=..\..\visit\components\Pipeline\Data\avtPointAttribute.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\Data\avtPointExtractor.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\Data\avtPyramidExtractor.C
 # End Source File
 # Begin Source File
