@@ -43,7 +43,8 @@
 				TypeLibraryName=".\Release\_TOP_LEVEL.tlb"
 				HeaderFileName=""/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="..\..\script\runtoolmoc.bat"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 		</Configuration>

@@ -116,8 +116,7 @@
 				TypeLibraryName=".\Release\xml2atts/xml2atts.tlb"
 				HeaderFileName=""/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="../../script/runtoolmoc.bat"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
