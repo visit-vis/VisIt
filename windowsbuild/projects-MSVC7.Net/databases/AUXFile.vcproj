@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="AUXFile"
-	ProjectGUID="{10CC7172-9B88-425C-B7E1-6CF8E16A5993}"
 	SccProjectName=""
 	SccLocalPath=""
 	Keyword="MakeFileProj">

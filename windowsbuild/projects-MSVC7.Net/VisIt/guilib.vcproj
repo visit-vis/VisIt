@@ -1259,6 +1259,26 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisMeshManagementWindow.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisMessageWindow.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1735,6 +1755,26 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 			</File>
 			<File
 				RelativePath="..\..\visit\gui\QvisScribbleOpacityBar.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisSessionFileDatabaseLoader.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -2957,6 +2997,26 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisMeshManagementWindow_moc.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisMovieProgressDialog_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -3373,6 +3433,26 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 			</File>
 			<File
 				RelativePath="..\..\visit\gui\QvisScreenPositioner_moc.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisSessionFileDatabaseLoader_moc.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool

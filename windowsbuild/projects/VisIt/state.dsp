@@ -276,6 +276,10 @@ SOURCE=..\..\visit\common\state\MaterialAttributes.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\state\MeshManagementAttributes.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\state\MessageAttributes.C
 # End Source File
 # Begin Source File

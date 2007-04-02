@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="AUXFileE"
-	ProjectGUID="{EC31EE24-DFBB-47C8-A585-49FAC1C97898}"
 	RootNamespace="AUXFileE"
 	SccProjectName=""
 	SccLocalPath="">

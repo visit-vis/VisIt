@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Boxlib3DI"
-	ProjectGUID="{5A773B1F-77D0-40A9-ABFA-CA611D81460E}"
 	RootNamespace="Boxlib3DI"
 	SccProjectName=""
 	SccLocalPath="">

@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib visit_vtk.lib visitexpr.lib avtmath_ser.lib vtkCommon.lib vtkFiltering.lib vtk_sl_io.lib visit_vtk_light.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib visit_vtk.lib visitexpr.lib avtmath_ser.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib vtkIO.lib visit_vtk_light.lib /nologo /dll /machine:I386
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\pipeline_ser.lib ..\..\lib\Release\pipeline_ser.lib	copy Release\pipeline_ser.dll ..\..\bin\Release\pipeline_ser.dll
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib visit_vtk.lib visitexpr.lib avtmath_ser.lib vtkCommon.lib vtkFiltering.lib vtk_sl_io.lib visit_vtk_light.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib visit_vtk.lib visitexpr.lib avtmath_ser.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib vtkIO.lib visit_vtk_light.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\pipeline_ser.lib ..\..\lib\Debug\pipeline_ser.lib	copy Debug\pipeline_ser.dll ..\..\bin\Debug\pipeline_ser.dll
@@ -277,6 +277,10 @@ SOURCE=..\..\visit\components\Pipeline\Data\avtRayFunction.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Pipeline\Data\avtRelativeValueSamplePointArbitrator.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\Data\avtResampleSelection.C
 # End Source File
 # Begin Source File
 

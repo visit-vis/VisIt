@@ -136,6 +136,10 @@ SOURCE=..\..\visit\visitpy\PyMaterialAttributes.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visitpy\PyMeshManagementAttributes.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visitpy\PyMethodDoc.C
 # End Source File
 # Begin Source File

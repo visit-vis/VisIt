@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib avtfilters.lib pipeline_ser.lib avtexceptions.lib state.lib visitexpr.lib visitparser.lib dbatts.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib avtfilters.lib pipeline_ser.lib avtexceptions.lib state.lib visitexpr.lib visitparser.lib dbatts.lib visit_vtk.lib database_ser.lib avtfilters.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /machine:I386
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\expression.lib ..\..\lib\Release\expression.lib	copy Release\expression.dll ..\..\bin\Release\expression.dll
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib state.lib pipeline_ser.lib avtexceptions.lib visitexpr.lib visitparser.lib dbatts.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib misc.lib state.lib pipeline_ser.lib avtexceptions.lib visitexpr.lib visitparser.lib dbatts.lib visit_vtk.lib database_ser.lib avtfilters.lib vtkCommon.lib vtkFiltering.lib vtkGraphics.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\expression.lib ..\..\lib\Debug\expression.lib	copy Debug\expression.dll ..\..\bin\Debug\expression.dll
@@ -156,11 +156,19 @@ SOURCE=..\..\visit\components\Expressions\General\avtDegreeFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\General\avtDistanceToBestFitLineFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\General\avtDivergenceFilter.C
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\General\avtExpressionComponentMacro.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\General\avtExternalNodeExpression.C
 # End Source File
 # Begin Source File
 
@@ -221,6 +229,10 @@ SOURCE=..\..\visit\components\Expressions\General\avtResradFilter.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\General\avtSpecMFFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\General\avtSurfaceNormalExpression.C
 # End Source File
 # Begin Source File
 
@@ -370,6 +382,10 @@ SOURCE=..\..\visit\components\Expressions\Math\avtVectorCrossProductFilter.C
 # Begin Group "MeshQuality"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\MeshQuality\avtEdgeLength.C
+# End Source File
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\MeshQuality\avtNeighborFilter.C
@@ -581,6 +597,18 @@ SOURCE=..\..\visit\components\Expressions\ImageProcessing\avtMeanFilterExpressio
 # Begin Source File
 
 SOURCE=..\..\visit\components\Expressions\ImageProcessing\avtMedianFilterExpression.C
+# End Source File
+# End Group
+# Begin Group "CMFE"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\CMFE\avtCMFEExpression.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Expressions\CMFE\avtConnCMFEExpression.C
 # End Source File
 # End Group
 # End Target

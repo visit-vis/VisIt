@@ -333,6 +333,10 @@ SOURCE=..\..\visit\gui\QvisMaterialWindow.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisMeshManagementWindow.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisMessageWindow.C
 # End Source File
 # Begin Source File
@@ -430,6 +434,10 @@ SOURCE=..\..\visit\gui\QvisScreenPositioner.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisScribbleOpacityBar.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisSessionFileDatabaseLoader.C
 # End Source File
 # Begin Source File
 
@@ -681,6 +689,10 @@ SOURCE=..\..\visit\gui\QvisMaterialWindow_moc.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisMeshManagementWindow_moc.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisMessageWindow_moc.C
 # End Source File
 # Begin Source File
@@ -774,6 +786,10 @@ SOURCE=..\..\visit\gui\QvisScreenPositioner_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisScribbleOpacityBar_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisSessionFileDatabaseLoader_moc.C
 # End Source File
 # Begin Source File
 

@@ -148,6 +148,10 @@ SOURCE=..\..\visit\components\Queries\Queries\avtAreaBetweenCurvesQuery.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Queries\Queries\avtBestFitLineQuery.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Queries\Queries\avtCentroidQuery.C
 # End Source File
 # Begin Source File
@@ -244,6 +248,14 @@ SOURCE=..\..\visit\components\Queries\Queries\avtTotalVolumeQuery.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Queries\Queries\avtTrajectoryByNode.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtTrajectoryByZone.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Queries\Queries\avtVariableByNodeQuery.C
 # End Source File
 # Begin Source File
@@ -253,6 +265,10 @@ SOURCE=..\..\visit\components\Queries\Queries\avtVariableByZoneQuery.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Queries\Queries\avtVariableSummationQuery.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Queries\Queries\avtWatertightQuery.C
 # End Source File
 # Begin Source File
 

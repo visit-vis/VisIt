@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="ExodusE"
-	ProjectGUID="{2C4C28FA-DD92-43A0-9BDE-47D47C3FEC39}"
 	RootNamespace="ExodusE"
 	SccProjectName=""
 	SccLocalPath="">

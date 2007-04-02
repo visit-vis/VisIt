@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="PixieE"
-	ProjectGUID="{8860FF2A-48BD-4161-BF35-2DAC14B45484}"
 	RootNamespace="PixieE"
 	SccProjectName=""
 	SccLocalPath="">

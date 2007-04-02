@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="ExodusM"
-	ProjectGUID="{A60430DB-853B-4B83-B507-E49B9AE17F49}"
 	RootNamespace="ExodusM"
 	SccProjectName=""
 	SccLocalPath="">

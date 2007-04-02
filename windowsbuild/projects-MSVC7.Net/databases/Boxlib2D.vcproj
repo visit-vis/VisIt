@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Boxlib2D"
-	ProjectGUID="{E2118EA5-89F5-4F53-854F-59A33CBF2B6E}"
 	SccProjectName=""
 	SccLocalPath=""
 	Keyword="MakeFileProj">

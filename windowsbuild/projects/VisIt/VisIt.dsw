@@ -87,9 +87,6 @@ Package=<4>
     Project_Dep_Name visit_vtk
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name vtk_sl_io
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name misc
     End Project Dependency
 }}}
@@ -398,6 +395,12 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name dbatts
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name database_ser
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name avtfilters
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -496,9 +499,6 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name visit_vtk_light
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name vtk_sl_io
     End Project Dependency
 }}}
 
@@ -640,9 +640,6 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name avtmath_ser
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name vtk_sl_io
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name visitexpr
@@ -1115,18 +1112,6 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name avtview
     End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "vtk_sl_io"=.\vtk_sl_io.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
 }}}
 
 ###############################################################################

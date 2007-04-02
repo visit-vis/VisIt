@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="CMATM"
-	ProjectGUID="{72605F9B-6501-406A-BC89-F96AAA572CF6}"
 	RootNamespace="CMATM"
 	SccProjectName=""
 	SccLocalPath="">

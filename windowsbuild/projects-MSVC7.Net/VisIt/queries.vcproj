@@ -802,6 +802,36 @@ copy Debug\queries.dll ..\..\bin\MSVC7.Net\Debug\queries.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Queries\Queries\avtTrajectoryByNode.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Queries\Queries\avtTrajectoryByZone.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Queries\Queries\avtVariableByNodeQuery.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -1008,7 +1038,47 @@ copy Debug\queries.dll ..\..\bin\MSVC7.Net\Debug\queries.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Queries\Queries\avtBestFitLineQuery.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Queries\Pick\avtCurvePickQuery.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Queries\Queries\avtKurtosisQuery.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -1168,26 +1238,6 @@ copy Debug\queries.dll ..\..\bin\MSVC7.Net\Debug\queries.dll
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\components\Queries\Pick\avtZonePickQuery.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="$(Inherit)"
-						BasicRuntimeChecks="3"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\visit\components\Queries\Queries\avtSkewnessQuery.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -1208,7 +1258,7 @@ copy Debug\queries.dll ..\..\bin\MSVC7.Net\Debug\queries.dll
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\components\Queries\Queries\avtKurtosisQuery.C">
+				RelativePath="..\..\visit\components\Queries\Queries\avtSphericalCompactnessFactorQuery.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -1228,7 +1278,27 @@ copy Debug\queries.dll ..\..\bin\MSVC7.Net\Debug\queries.dll
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\visit\components\Queries\Queries\avtSphericalCompactnessFactorQuery.C">
+				RelativePath="..\..\visit\components\Queries\Queries\avtWatertightQuery.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="$(Inherit)"
+						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Queries\Pick\avtZonePickQuery.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool

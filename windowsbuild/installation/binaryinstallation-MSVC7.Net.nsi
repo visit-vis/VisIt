@@ -42,11 +42,14 @@
 #  Brad Whitlock, Thu Aug 18 12:00:55 PDT 2005
 #  Updated for version 1.4.5.
 #
+#  Brad Whitlock, Tue Nov 22 13:53:11 PST 2005
+#  Updated for 1.5.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.4.5"
+!define PRODUCT_VERSION "1.5"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"
@@ -71,6 +74,7 @@ SetCompressor bzip2
 ReserveFile "NetworkConfig.ini"
 ReserveFile "WantDatabasePlugin.ini"
 ReserveFile "DefaultDatabasePlugin.ini"
+ReserveFile "ChooseInstallDevelopmentFiles.ini"
 ReserveFile "ClickInstall.ini"
 
 ; Reserve files
@@ -86,6 +90,7 @@ ReserveFile "ClickInstall.ini"
 page custom ChooseNetworkConfig
 page custom WantDefaultDatabasePlugin
 page custom ChooseDefaultDatabasePlugin
+page custom ChooseInstallDevelopmentFiles
 
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
@@ -112,6 +117,7 @@ ShowUnInstDetails show
 Var CreatedPythonLinks
 Var DefaultDatabase
 Var SelectingDefaultDatabase
+Var InstallDevelopmentFiles
 
 ###############################################################################
 #
@@ -124,9 +130,11 @@ Function .onInit
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT "NetworkConfig.ini"
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT "WantDatabasePlugin.ini"
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT "DefaultDatabasePlugin.ini"
+  !insertmacro MUI_INSTALLOPTIONS_EXTRACT "ChooseInstallDevelopmentFiles.ini"
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT "ClickInstall.ini"
   Strcpy $SelectingDefaultDatabase "no"
   Strcpy $DefaultDatabase ""
+  Strcpy $InstallDevelopmentFiles "yes"
 FunctionEnd
 
 #
@@ -172,11 +180,28 @@ YesPickDatabase:
   !insertmacro MUI_INSTALLOPTIONS_DISPLAY "DefaultDatabasePlugin.ini"
   !insertmacro MUI_INSTALLOPTIONS_READ $0 "DefaultDatabasePlugin.ini" "Field 1" "State"
    Strcpy $DefaultDatabase "-default_format $0"
-   Goto EndChooseDefaultDatabasePlugin
 NoPickDatabase:
-  !insertmacro MUI_HEADER_TEXT "Install VisIt now" "Click the Install button to install VisIt."
-  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "ClickInstall.ini"
-EndChooseDefaultDatabasePlugin:
+FunctionEnd
+
+#
+# Allow the user to choose whether import libraries and header files get installed.
+#
+Function ChooseInstallDevelopmentFiles
+    !insertmacro MUI_HEADER_TEXT "Install plugin development files" "Do you want to want to install files for plugin development?"
+    !insertmacro MUI_INSTALLOPTIONS_DISPLAY "ChooseInstallDevelopmentFiles.ini"
+    
+    # Get whether or not the user wanted plugin development files
+    !insertmacro MUI_INSTALLOPTIONS_READ $0 "ChooseInstallDevelopmentFiles.ini" "Field 1" "State"
+    # If $0=="1" then we're going to install plugin development files
+    Strcmp $0 "1" NoInstallDevelopmentFiles YesInstallDevelopmentFiles
+NoInstallDevelopmentFiles:
+    # We got here because we did not want to install the "plugin dev" section
+    SectionSetFlags 7 0
+    Strcpy $InstallDevelopmentFiles "no"
+    Goto EndInstallDevelopmentFiles
+YesInstallDevelopmentFiles:
+    Strcpy $InstallDevelopmentFiles "yes"
+EndInstallDevelopmentFiles:
 FunctionEnd
 
 ###############################################################################
@@ -205,27 +230,17 @@ SectionEnd
 
 Section "Database plugins" SEC02
   SetOutPath "$INSTDIR\databases"
-  File "..\bin\MSVC7.Net\Release\databases\libI*.dll"
-  File "..\bin\MSVC7.Net\Release\databases\libE*.dll"
-  File "..\bin\MSVC7.Net\Release\databases\libM*.dll"
+  File "..\bin\MSVC7.Net\Release\databases\lib*.dll"
 SectionEnd
 
 Section "Plot plugins" SEC03
   SetOutPath "$INSTDIR\plots"
-  File "..\bin\MSVC7.Net\Release\plots\libI*.dll"
-  File "..\bin\MSVC7.Net\Release\plots\libE*.dll"
-  File "..\bin\MSVC7.Net\Release\plots\libG*.dll"
-  File "..\bin\MSVC7.Net\Release\plots\libS*.dll"
-  File "..\bin\MSVC7.Net\Release\plots\libV*.dll"
+  File "..\bin\MSVC7.Net\Release\plots\lib*.dll"
 SectionEnd
 
 Section "Operator plugins" SEC04
   SetOutPath "$INSTDIR\operators"
-  File "..\bin\MSVC7.Net\Release\operators\libI*.dll"
-  File "..\bin\MSVC7.Net\Release\operators\libE*.dll"
-  File "..\bin\MSVC7.Net\Release\operators\libG*.dll"
-  File "..\bin\MSVC7.Net\Release\operators\libS*.dll"
-  File "..\bin\MSVC7.Net\Release\operators\libV*.dll"
+  File "..\bin\MSVC7.Net\Release\operators\lib*.dll"
 SectionEnd
 
 Section "Python modules" SEC05
@@ -233,14 +248,14 @@ Section "Python modules" SEC05
   File /r "..\bin\MSVC7.Net\Release\Python"
 SectionEnd
 
-Section HelpFiles
+Section HelpFiles SEC06
   SetOutPath "$INSTDIR\help"
   File "..\bin\MSVC7.Net\Release\help\*.html"
   File "..\bin\MSVC7.Net\Release\help\visit.helpml"
   SetOutPath "$INSTDIR"
 SectionEnd
 
-Section DataFiles
+Section DataFiles SEC07
   SetOutPath "$INSTDIR\data"
   #
   # This references Files that are on my local C:\ drive since I don't want to have to
@@ -254,13 +269,20 @@ Section DataFiles
   File "..\..\VisItData\ANALYZE_test_data\*.visit"
 SectionEnd
 
+Section "Plugin development" SEC08
+  SetOutPath "$INSTDIR\lib"
+  File "..\lib\MSVC7.Net\Release\*.lib"
+  SetOutPath "$INSTDIR"
+  File /r "..\include"
+SectionEnd
+
 Section MyImageDirectory
   # This will hopefully create an image storage directory that VisIt can use.
   SetOutPath "$INSTDIR\My images"
 
-  # Make sure that we're in the VisIt data directory by default when the
-  # application runs for the first time.
-  SetOutPath "$INSTDIR\data"
+  # Make sure that we're in the VisIt directory by default when the
+  # application runs.
+  SetOutPath "$INSTDIR"
 SectionEnd
 
 Section AddVisItRegKeys
@@ -311,9 +333,23 @@ SectionEnd
 Section CreateLinks
   CreateDirectory "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}"
   CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt ${PRODUCT_VERSION}.lnk"     "$INSTDIR\visit.exe" ""     "" 0 SW_SHOWMINIMIZED "" "VisIt allows you to visualize simulation data."
+  CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt ${PRODUCT_VERSION} in stereo.lnk" "$INSTDIR\visit.exe" "-stereo"     "" 0 SW_SHOWMINIMIZED "" "VisIt allows you to visualize simulation data in stereo."
   CreateShortCut "$DESKTOP\VisIt ${PRODUCT_VERSION}.lnk"                                 "$INSTDIR\visit.exe" ""     "" 0 SW_SHOWMINIMIZED "" "VisIt allows you to visualize simulation data."
   CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt Command Line Interface.lnk" "$INSTDIR\visit.exe" "-cli" "" 0 SW_SHOWNORMAL    "" "VisIt's command line interface allows you to visualize simulation data via Python scripting."
   CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Silex.lnk"                        "$INSTDIR\silex.exe" ""     "" 0 SW_SHOWNORMAL    "" "Silex allows you to browse the contents of Silo files."
+
+  # Optionally add a link for xmledit.
+  Strcmp $InstallDevelopmentFiles "yes" YesInstallDevelopmentFiles NoInstallDevelopmentFiles
+YesInstallDevelopmentFiles:
+      CreateDirectory "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development"
+      CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\XML Edit.lnk" "$INSTDIR\xmledit.exe" "" "" 0 SW_SHOWNORMAL    "" "XMLEdit allows you to edit the XML files that describe VisIt's plugins."
+      CreateDirectory "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation"
+      CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation\VTK classes.lnk"    "http://public.kitware.com/VTK/doc/release/3/html/classes.html"
+      CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation\Qt classes.lnk"     "http://doc.trolltech.com/3.0/classes.html"
+      CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation\OpenGL library.lnk" "http://www.rush3d.com/reference/opengl-bluebook-1.0/"
+      CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation\Python library.lnk" "http://docs.python.org/lib/lib.html"
+      CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Plugin development\Documentation\HDF5 library.lnk"   "http://hdf.ncsa.uiuc.edu/HDF5/doc/RM_H5Front.html"
+NoInstallDevelopmentFiles:
 SectionEnd
 
 Section AddFileAssociations
@@ -401,14 +437,11 @@ Function un.onInit
 FunctionEnd
 
 Section Uninstall
-  Delete "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Uninstall VisIt ${PRODUCT_VERSION}.lnk"
-  Delete "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt Home Page.lnk"
-  Delete "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Silex.lnk"
-  Delete "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt Command Line Interface.lnk"
+  # Remove the desktop shortcut
   Delete "$DESKTOP\VisIt ${PRODUCT_VERSION}.lnk"
-  Delete "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt ${PRODUCT_VERSION}.lnk"
 
-  RMDir "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}"
+  # Remove the Start menu program group
+  RMDir /r "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}"
 
   # Remove all of the VisIt software components
   RMDir /r "$INSTDIR"

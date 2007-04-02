@@ -112,6 +112,10 @@ SOURCE=..\..\visit\components\Plotter\avtColorTables.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Plotter\avtCurveLegend.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Plotter\avtCustomRenderer.C
 # End Source File
 # Begin Source File

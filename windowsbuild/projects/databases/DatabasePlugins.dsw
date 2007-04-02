@@ -288,63 +288,6 @@ Package=<4>
 
 ###############################################################################
 
-Project: "Dune"=.\Dune.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name DuneE
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name DuneI
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name DuneM
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "DuneE"=.\DuneE.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "DuneI"=.\DuneI.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "DuneM"=.\DuneM.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
 Project: "Ensight"=.\Ensight.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1957,9 +1900,6 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name Pixie
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name Dune
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name SAR

@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="CMAT"
-	ProjectGUID="{01E1DC88-656B-4336-A0FF-BB8D89EFCC6C}"
 	SccProjectName=""
 	SccLocalPath=""
 	Keyword="MakeFileProj">

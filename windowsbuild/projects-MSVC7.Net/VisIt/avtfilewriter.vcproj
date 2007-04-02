@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib pipeline_ser.lib vtk_sl_io.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib pipeline_ser.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib"
 				OutputFile=".\Debug\avtfilewriter.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -110,7 +110,7 @@ copy Debug\avtfilewriter.dll ..\..\bin\MSVC7.Net\Debug\avtfilewriter.dll
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib pipeline_ser.lib vtk_sl_io.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib utility.lib avtexceptions.lib dbatts.lib pipeline_ser.lib visit_vtk.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib"
 				OutputFile=".\Release\avtfilewriter.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

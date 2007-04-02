@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="TimeVaryingExodusE"
-	ProjectGUID="{E7DBF22C-9BB0-4592-977A-C5EBE021F577}"
 	RootNamespace="TimeVaryingExodusE"
 	SccProjectName=""
 	SccLocalPath="">

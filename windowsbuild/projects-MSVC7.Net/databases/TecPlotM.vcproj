@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="TecPlotM"
-	ProjectGUID="{72605F9B-6501-406A-BC89-F96AAA572CF6}"
 	RootNamespace="TecPlotM"
 	SccProjectName=""
 	SccLocalPath="">

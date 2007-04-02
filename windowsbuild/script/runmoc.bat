@@ -55,6 +55,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisLineWidthWidget.h              -o %G%\QvisLineWidthWidget_moc.C
 %MOC% %HEADERS%\QvisMainWindow.h                   -o %G%\QvisMainWindow_moc.C
 %MOC% %HEADERS%\QvisMaterialWindow.h               -o %G%\QvisMaterialWindow_moc.C
+%MOC% %HEADERS%\QvisMeshManagementWindow.h         -o %G%\QvisMeshManagementWindow_moc.C
 %MOC% %HEADERS%\QvisMessageWindow.h                -o %G%\QvisMessageWindow_moc.C
 %MOC% %HEADERS%\QvisMovieProgressDialog.h          -o %G%\QvisMovieProgressDialog_moc.C
 %MOC% %HEADERS%\QvisNotepadArea.h                  -o %G%\QvisNotepadArea_moc.C
@@ -76,6 +77,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisRenderingWindow.h              -o %G%\QvisRenderingWindow_moc.C
 %MOC% %HEADERS%\QvisSaveMovieWizard.h              -o %G%\QvisSaveMovieWizard_moc.C
 %MOC% %HEADERS%\QvisSaveWindow.h                   -o %G%\QvisSaveWindow_moc.C
+%MOC% %HEADERS%\QvisSessionFileDatabaseLoader.h    -o %G%\QvisSessionFileDatabaseLoader_moc.C
 %MOC% %HEADERS%\QvisScreenPositioner.h             -o %G%\QvisScreenPositioner_moc.C
 %MOC% %HEADERS%\QvisScreenPositionEdit.h           -o %G%\QvisScreenPositionEdit_moc.C
 %MOC% %HEADERS%\QvisScribbleOpacityBar.h           -o %G%\QvisScribbleOpacityBar_moc.C

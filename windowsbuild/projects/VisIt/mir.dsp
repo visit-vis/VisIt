@@ -164,6 +164,14 @@ SOURCE=..\..\visit\components\MIR\Zoo\CellReconstructor.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\MIR\Zoo\IsovolumeCellReconstructor.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\MIR\Zoo\RecursiveCellReconstructor.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\MIR\Zoo\ResampledMat.C
 # End Source File
 # Begin Source File

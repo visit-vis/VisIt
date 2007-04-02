@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib vtkHybrid.lib vtkRendering.lib misc.lib avtexceptions.lib visit_vtk_light.lib vtktiff.lib MesaGL.lib opengl32.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib vtkHybrid.lib vtkRendering.lib misc.lib avtexceptions.lib visit_vtk_light.lib vtktiff.lib vtkImaging.lib MesaGL.lib opengl32.lib /nologo /dll /machine:I386
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Release\visit_vtk.lib ..\..\lib\Release\visit_vtk.lib	copy Release\visit_vtk.dll ..\..\bin\Release\visit_vtk.dll
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib vtkHybrid.lib vtkRendering.lib misc.lib avtexceptions.lib visit_vtk_light.lib vtktiff.lib MesaGL.lib opengl32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib vtkCommon.lib vtkFiltering.lib vtkIO.lib vtkGraphics.lib vtkHybrid.lib vtkRendering.lib misc.lib avtexceptions.lib visit_vtk_light.lib vtktiff.lib vtkImaging.lib MesaGL.lib opengl32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy Debug\visit_vtk.dll ..\..\bin\Debug\visit_vtk.dll	copy Debug\visit_vtk.lib ..\..\lib\Debug\visit_vtk.lib
@@ -116,6 +116,14 @@ SOURCE=..\..\visit\visit_vtk\full\vtkConnectedTubeFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visit_vtk\full\vtkCSGCell.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visit_vtk\full\vtkCSGGrid.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visit_vtk\full\vtkDashedXorGridMapper2D.C
 # End Source File
 # Begin Source File
@@ -125,6 +133,10 @@ SOURCE=..\..\visit\visit_vtk\full\vtkDataSetRemoveGhostCells.C
 # Begin Source File
 
 SOURCE=..\..\visit\visit_vtk\full\vtkDisjointCubesFacelistFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visit_vtk\full\vtkLineLegend.C
 # End Source File
 # Begin Source File
 
@@ -141,6 +153,10 @@ SOURCE=..\..\visit\visit_vtk\full\vtkOBJWriter.C
 # Begin Source File
 
 SOURCE=..\..\visit\visit_vtk\full\vtkOnionPeelFilter.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visit_vtk\full\vtkPolyDataOnionPeelFilter.C
 # End Source File
 # Begin Source File
 
@@ -252,6 +268,10 @@ SOURCE=..\..\visit\visit_vtk\full\vtkVisItCutter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItDataSetMapper.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visit_vtk\full\vtkVisItExtractGrid.C
 # End Source File
 # Begin Source File
@@ -289,6 +309,10 @@ SOURCE=..\..\visit\visit_vtk\full\vtkVisItSTLWriter.C
 # Begin Source File
 
 SOURCE=..\..\visit\visit_vtk\full\vtkVisItStreamLine.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visit_vtk\full\vtkVisItTensorGlyph.C
 # End Source File
 # Begin Source File
 
