@@ -68,11 +68,14 @@
 #   Brad Whitlock, Tue Nov 22 13:40:59 PST 2005
 #   Updated for 1.5.
 #
+#   Brad Whitlock, Wed Feb 1 11:48:25 PDT 2006
+#   Updated for 1.5.1.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.5"
+!define PRODUCT_VERSION "1.5.1"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"
@@ -220,6 +223,7 @@ Section "Executable Components" SEC01
   File "..\bin\Release\visit-config-open.ini"
   File "..\bin\Release\xml2plugin.bat"
   File "..\bin\Release\makemovie.py"
+  File "..\bin\Release\makemoviemain.py"
         
   CreateDirectory "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}"
   CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt ${PRODUCT_VERSION}.lnk"     "$INSTDIR\visit.exe" ""     "" 0 SW_SHOWMINIMIZED "" "VisIt allows you to visualize simulation data."

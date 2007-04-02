@@ -45,11 +45,14 @@
 #  Brad Whitlock, Tue Nov 22 13:53:11 PST 2005
 #  Updated for 1.5.
 #
+#  Brad Whitlock, Wed Feb 1 09:33:46 PDT 2006
+#  Updated for 1.5.1
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.5"
+!define PRODUCT_VERSION "1.5.1"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"
@@ -218,6 +221,7 @@ Section "Executable Components" SEC01
   File "..\bin\MSVC7.Net\Release\visit-config-open.ini"
   File "..\bin\MSVC7.Net\Release\xml2plugin.bat"
   File "..\bin\MSVC7.Net\Release\makemovie.py"
+  File "..\bin\MSVC7.Net\Release\makemoviemain.py"
 
   # Icon files
   File "..\resources\*.ico"
