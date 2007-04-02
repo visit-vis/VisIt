@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="ParallelAxisI"
-	ProjectGUID="{1A43873F-EDAC-44EF-82BD-347EE21B984D}"
 	RootNamespace="ParallelAxisI"
 	SccProjectName=""
 	SccLocalPath="">

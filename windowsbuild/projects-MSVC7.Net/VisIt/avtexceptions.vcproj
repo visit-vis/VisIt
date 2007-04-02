@@ -318,6 +318,15 @@ copy Debug\avtexceptions.dll ..\..\bin\MSVC7.Net\Release\avtexceptions.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\common\Exceptions\Database\PointerNotInCacheException.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\common\Exceptions\Database\SiloException.C">
 				<FileConfiguration
 					Name="Release|Win32">

@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="PseudocolorI"
-	ProjectGUID="{1A43873F-EDAC-44EF-82BD-347EE21B984D}"
 	RootNamespace="PseudocolorI"
 	SccProjectName=""
 	SccLocalPath="">

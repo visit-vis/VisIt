@@ -80,11 +80,14 @@
 #   Kathleen Bonnell, Wed Oct 18 09:11:31 PDT 2006
 #   Updated for 1.5.4
 #
+#   Kathleen Bonnell, Tue Dec 12 16:35:43 PST 2006 
+#   Updated version to  1.5.5
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.5.4"
+!define PRODUCT_VERSION "1.5.5"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"

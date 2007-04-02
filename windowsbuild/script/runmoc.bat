@@ -97,6 +97,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisSessionSourceChanger.h         -o %G%\QvisSessionSourceChanger_moc.C
 %MOC% %HEADERS%\QvisSimulationWindow.h             -o %G%\QvisSimulationWindow_moc.C
 %MOC% %HEADERS%\QvisSpectrumBar.h                  -o %G%\QvisSpectrumBar_moc.C
+%MOC% %HEADERS%\QvisStripChart.h                   -o %G%\QvisStripChart_moc.C
 %MOC% %HEADERS%\QvisSubsetListView.h               -o %G%\QvisSubsetListView_moc.C
 %MOC% %HEADERS%\QvisSubsetWindow.h                 -o %G%\QvisSubsetWindow_moc.C
 %MOC% %HEADERS%\QvisText2DInterface.h              -o %G%\QvisText2DInterface_moc.C
