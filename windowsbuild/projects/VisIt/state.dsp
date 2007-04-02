@@ -308,6 +308,10 @@ SOURCE=..\..\visit\common\state\PrinterAttributes.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\common\state\ProcessAttributes.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\common\state\QueryAttributes.C
 # End Source File
 # Begin Source File

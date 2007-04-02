@@ -178,6 +178,21 @@ copy Release\dbatts.lib ..\..\lib\MSVC7.Net\Release\dbatts.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\DBAtts\MetaData\avtSimulationCommandSpecification.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\DBAtts\MetaData\avtSimulationInformation.C">
 				<FileConfiguration
 					Name="Release|Win32">

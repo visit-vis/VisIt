@@ -132,6 +132,10 @@ SOURCE=..\..\visit\engine\rpc\PickRPC.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\engine\rpc\ProcInfoRPC.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\engine\rpc\QueryRPC.C
 # End Source File
 # Begin Source File
@@ -152,7 +156,15 @@ SOURCE=..\..\visit\engine\rpc\SetWinAnnotAttsRPC.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\engine\rpc\SimulationCommandRPC.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\engine\rpc\StartPickRPC.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\engine\rpc\StartQueryRPC.C
 # End Source File
 # Begin Source File
 

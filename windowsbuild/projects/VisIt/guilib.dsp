@@ -405,6 +405,10 @@ SOURCE=..\..\visit\gui\QvisScribbleOpacityBar.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\gui\QvisSimulationWindow.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\gui\QvisSpectrumBar.C
 # End Source File
 # Begin Source File
@@ -714,6 +718,10 @@ SOURCE=..\..\visit\gui\QvisScreenPositioner_moc.C
 # Begin Source File
 
 SOURCE=..\..\visit\gui\QvisScribbleOpacityBar_moc.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\gui\QvisSimulationWindow_moc.C
 # End Source File
 # Begin Source File
 

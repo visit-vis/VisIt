@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib plugin.lib enginerpc.lib visitexpr.lib dbatts.lib avtfilters.lib avtfilewriter.lib pipeline_ser.lib database_ser.lib avtexceptions.lib plotter.lib visit_vtk.lib expression.lib queries.lib viswindow.lib avtview.lib vtkCommon.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib plugin.lib enginerpc.lib visitexpr.lib dbatts.lib avtfilters.lib avtfilewriter.lib pipeline_ser.lib database_ser.lib avtexceptions.lib plotter.lib visit_vtk.lib expression.lib queries.lib viswindow.lib avtview.lib vtkCommon.lib wsock32.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Debug\engine.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -104,7 +104,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib plugin.lib enginerpc.lib dbatts.lib visitexpr.lib avtfilters.lib avtfilewriter.lib pipeline_ser.lib database_ser.lib avtexceptions.lib plotter.lib visit_vtk.lib expression.lib queries.lib viswindow.lib avtview.lib vtkCommon.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib comm.lib plugin.lib enginerpc.lib dbatts.lib visitexpr.lib avtfilters.lib avtfilewriter.lib pipeline_ser.lib database_ser.lib avtexceptions.lib plotter.lib visit_vtk.lib expression.lib queries.lib viswindow.lib avtview.lib vtkCommon.lib wsock32.lib"
 				OutputFile="..\..\bin\MSVC7.Net\Release\engine.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

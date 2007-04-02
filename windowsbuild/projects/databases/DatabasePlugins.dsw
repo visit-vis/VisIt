@@ -1143,6 +1143,63 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Shapefile"=.\Shapefile.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ShapefileE
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ShapefileI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ShapefileM
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ShapefileE"=.\ShapefileE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ShapefileI"=.\ShapefileI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ShapefileM"=.\ShapefileM.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "Silo"=.\Silo.dsp - Package Owner=<4>
 
 Package=<5>
@@ -1633,6 +1690,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name TFT
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Shapefile
     End Project Dependency
 }}}
 

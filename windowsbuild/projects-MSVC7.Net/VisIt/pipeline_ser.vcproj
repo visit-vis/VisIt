@@ -1755,6 +1755,21 @@ copy Release\pipeline_ser.dll ..\..\bin\MSVC7.Net\Release\pipeline_ser.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Pipeline\PrivateFilters\avtMultiResolutionPartitionStrategy.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Pipeline\PrivateFilters\avtPluginStreamer.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1771,6 +1786,21 @@ copy Release\pipeline_ser.dll ..\..\bin\MSVC7.Net\Release\pipeline_ser.dll
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Pipeline\PrivateFilters\avtPluginStructuredChunkStreamer.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -1891,6 +1921,66 @@ copy Release\pipeline_ser.dll ..\..\bin\MSVC7.Net\Release\pipeline_ser.dll
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Pipeline\PrivateFilters\avtStructuredChunkStreamer.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Pipeline\PrivateFilters\avtStructuredMeshChunker.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Pipeline\PrivateFilters\avtStructuredMeshPartitionStrategy.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Pipeline\PrivateFilters\avtSweepPlanePartitionStrategy.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

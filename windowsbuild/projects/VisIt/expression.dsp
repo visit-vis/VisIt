@@ -212,6 +212,10 @@ SOURCE=..\..\visit\components\Expressions\General\avtSpecMFFilter.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Expressions\General\avtVariableSkewFilter.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Expressions\General\avtVectorComposeFilter.C
 # End Source File
 # Begin Source File

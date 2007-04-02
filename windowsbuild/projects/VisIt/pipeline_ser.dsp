@@ -432,7 +432,15 @@ SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtMultipleInputToDatasetF
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtMultiResolutionPartitionStrategy.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtPluginStreamer.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtPluginStructuredChunkStreamer.C
 # End Source File
 # Begin Source File
 
@@ -457,6 +465,22 @@ SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtSingleFilterFacade.C
 # Begin Source File
 
 SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtStreamer.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtStructuredChunkStreamer.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtStructuredMeshChunker.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtStructuredMeshPartitionStrategy.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\components\Pipeline\PrivateFilters\avtSweepPlanePartitionStrategy.C
 # End Source File
 # Begin Source File
 

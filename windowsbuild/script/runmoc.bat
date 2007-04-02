@@ -72,6 +72,7 @@ set G=%VISIT%\gui
 %MOC% %HEADERS%\QvisScreenPositioner.h             -o %G%\QvisScreenPositioner_moc.C
 %MOC% %HEADERS%\QvisScreenPositionEdit.h           -o %G%\QvisScreenPositionEdit_moc.C
 %MOC% %HEADERS%\QvisScribbleOpacityBar.h           -o %G%\QvisScribbleOpacityBar_moc.C
+%MOC% %HEADERS%\QvisSimulationWindow.h             -o %G%\QvisSimulationWindow_moc.C
 %MOC% %HEADERS%\QvisSpectrumBar.h                  -o %G%\QvisSpectrumBar_moc.C
 %MOC% %HEADERS%\QvisSubsetListView.h               -o %G%\QvisSubsetListView_moc.C
 %MOC% %HEADERS%\QvisSubsetWindow.h                 -o %G%\QvisSubsetWindow_moc.C
@@ -89,6 +90,7 @@ set G=%VISIT%\gui
 
 echo Running moc on the viewer source
 set V=%VISIT%\viewer\main
+%MOC% %HEADERS%\LockActions.h                      -o %V%\LockActions_moc.C
 %MOC% %HEADERS%\PlotAndOperatorActions.h           -o %V%\PlotAndOperatorActions_moc.C
 %MOC% %HEADERS%\ViewerAction.h                     -o %V%\ViewerAction_moc.C
 %MOC% %HEADERS%\ViewerActionBase.h                 -o %V%\ViewerActionBase_moc.C

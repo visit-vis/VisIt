@@ -1614,6 +1614,21 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\gui\QvisSimulationWindow.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\gui\QvisSpectrumBar.C">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -3113,6 +3128,21 @@ copy Release\gui.lib ..\..\lib\MSVC7.Net\Release\gui.lib
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\gui\QvisSimulationWindow_moc.C">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

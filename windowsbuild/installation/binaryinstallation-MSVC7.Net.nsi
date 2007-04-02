@@ -24,11 +24,14 @@
 #  Updated for 1.4.2. I also added more configuration screens that allow
 #  the user to pick a default database format.
 #
+#  Brad Whitlock, Tue May 10 14:13:33 PST 2005
+#  Updated for 1.4.3.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.4.2"
+!define PRODUCT_VERSION "1.4.3"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"

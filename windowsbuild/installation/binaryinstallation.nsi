@@ -45,13 +45,16 @@
 #
 #   Brad Whitlock, Thu Feb 24 16:09:17 PST 2005
 #   Updated for 1.4.2. I also added more configuration screens that allow
-#  the user to pick a default database format.
+#   the user to pick a default database format.
+#
+#   Brad Whitlock, Tue May 10 14:13:57 PST 2005
+#   Updated for 1.4.3.
 #
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.4.2"
+!define PRODUCT_VERSION "1.4.3"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"
@@ -108,7 +111,7 @@ page custom ChooseDefaultDatabasePlugin
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "..\installation\visit${PRODUCT_VERSION}.exe"
+OutFile "..\installation\visit${PRODUCT_VERSION}-win98.exe"
 InstallDir "$PROGRAMFILES\LLNL\VisIt ${PRODUCT_VERSION}"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show

@@ -104,6 +104,10 @@ SOURCE=..\..\visit\components\DBAtts\MetaData\avtDatabaseMetaData.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\components\DBAtts\MetaData\avtSimulationCommandSpecification.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\components\DBAtts\MetaData\avtSimulationInformation.C
 # End Source File
 # Begin Source File

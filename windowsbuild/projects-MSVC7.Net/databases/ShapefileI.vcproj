@@ -2,7 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="viewerrpc"
+	Name="ShapefileI"
+	RootNamespace="ShapefileI"
 	SccProjectName=""
 	SccLocalPath="">
 	<Platforms>
@@ -12,8 +13,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
+			OutputDirectory=".\Release\ShapefileI\"
+			IntermediateDirectory=".\Release\ShapefileI\"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -23,30 +24,30 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VIEWER_RPC_EXPORTS"
+				EnableEnhancedInstructionSet="1"
+				AdditionalIncludeDirectories="..\..\visit\databases\Shapefile;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\silo;..\..\include\zlib"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
-				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Release\viewerrpc.pch"
-				AssemblerListingLocation=".\Release\"
-				ObjectFile=".\Release\"
-				ProgramDataBaseFileName=".\Release\"
+				PrecompiledHeaderFile=".\Release\ShapefileI\ShapefileI.pch"
+				AssemblerListingLocation=".\Release\ShapefileI\"
+				ObjectFile=".\Release\ShapefileI\"
+				ProgramDataBaseFileName=".\Release\ShapefileI\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib"
-				OutputFile=".\Release\viewerrpc.dll"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib"
+				OutputFile="..\..\bin\MSVC7.Net\Release\databases\libIShapefileDatabase.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Release"
-				ProgramDatabaseFile=".\Release\viewerrpc.pdb"
-				ImportLibrary=".\Release\viewerrpc.lib"
+				ProgramDatabaseFile=".\Release\ShapefileI\ShapefileI.pdb"
+				AdditionalLibraryDirectories="..\..\lib\MSVC7.Net\Release"
+				ImportLibrary=".\Release\ShapefileI\ShapefileI.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -54,13 +55,10 @@
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release\viewerrpc.tlb"
+				TypeLibraryName=".\Release\ShapefileI\ShapefileI.tlb"
 				HeaderFileName=""/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="copy Release\viewerrpc.lib ..\..\lib\MSVC7.Net\Release\viewerrpc.lib
-copy Release\viewerrpc.dll ..\..\bin\MSVC7.Net\Release\viewerrpc.dll
-"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -82,8 +80,8 @@ copy Release\viewerrpc.dll ..\..\bin\MSVC7.Net\Release\viewerrpc.dll
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
+			OutputDirectory=".\Debug\ShapefileI\"
+			IntermediateDirectory=".\Debug\ShapefileI\"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -92,31 +90,31 @@ copy Release\viewerrpc.dll ..\..\bin\MSVC7.Net\Release\viewerrpc.dll
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="%QTDIR%\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;VIEWER_RPC_EXPORTS"
+				EnableEnhancedInstructionSet="1"
+				AdditionalIncludeDirectories="..\..\visit\databases\Shapefile;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\silo;..\..\include\zlib"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;USING_MSVC7;GENERAL_PLUGIN_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Debug\viewerrpc.pch"
-				AssemblerListingLocation=".\Debug\"
-				ObjectFile=".\Debug\"
-				ProgramDataBaseFileName=".\Debug\"
-				WarningLevel="3"
+				EnableFunctionLevelLinking="TRUE"
+				PrecompiledHeaderFile=".\Debug\ShapefileI\ShapefileI.pch"
+				AssemblerListingLocation=".\Debug\ShapefileI\"
+				ObjectFile=".\Debug\ShapefileI\"
+				ProgramDataBaseFileName=".\Debug\ShapefileI\"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib"
-				OutputFile=".\Debug\viewerrpc.dll"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib pipeline_ser.lib dbatts.lib database_ser.lib avtexceptions.lib vtkCommon.lib"
+				OutputFile="..\..\bin\MSVC7.Net\Debug\databases\libIShapefileDatabase.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="%QTDIR%\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\Debug\viewerrpc.pdb"
-				ImportLibrary=".\Debug\viewerrpc.lib"
+				ProgramDatabaseFile=".\Debug\ShapefileI\ShapefileI.pdb"
+				AdditionalLibraryDirectories="..\..\lib\MSVC7.Net\Debug"
+				ImportLibrary=".\Debug\ShapefileI\ShapefileI.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -124,13 +122,10 @@ copy Release\viewerrpc.dll ..\..\bin\MSVC7.Net\Release\viewerrpc.dll
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug\viewerrpc.tlb"
+				TypeLibraryName=".\Debug\ShapefileI\ShapefileI.tlb"
 				HeaderFileName=""/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="copy Debug\viewerrpc.dll ..\..\bin\MSVC7.Net\Debug\viewerrpc.dll
-copy Debug\viewerrpc.lib ..\..\lib\MSVC7.Net\Debug\viewerrpc.lib
-"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -158,30 +153,7 @@ copy Debug\viewerrpc.lib ..\..\lib\MSVC7.Net\Debug\viewerrpc.lib
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
-				RelativePath="..\..\visit\viewer\rpc\PostponedAction.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						CompileAs="2"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\visit\viewer\rpc\ViewerRPC.C">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions="$(Inherit)"
-						CompileAs="2"/>
-				</FileConfiguration>
+				RelativePath="..\..\visit\databases\Shapefile\ShapefilePluginInfo.C">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -189,6 +161,14 @@ copy Debug\viewerrpc.lib ..\..\lib\MSVC7.Net\Debug\viewerrpc.lib
 						Optimization="0"
 						PreprocessorDefinitions="$(Inherit)"
 						BasicRuntimeChecks="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions="$(Inherit)"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>

@@ -92,6 +92,10 @@ SOURCE=..\..\visit\visitpy\PyAnnotationAttributes.C
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\visit\visitpy\PyDatabaseCorrelation.C
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\visit\visitpy\PyGlobalAttributes.C
 # End Source File
 # Begin Source File
@@ -125,6 +129,10 @@ SOURCE=..\..\visit\visitpy\PyPickAttributes.C
 # Begin Source File
 
 SOURCE=..\..\visit\visitpy\PyPrinterAttributes.C
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\visit\visitpy\PyProcessAttributes.C
 # End Source File
 # Begin Source File
 
