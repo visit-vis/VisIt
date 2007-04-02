@@ -1187,6 +1187,22 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VASPM", "VASPM.vcproj", "{A
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Miranda", "Miranda.vcproj", "{D50061F9-079A-4716-8937-F675B209221F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MirandaE", "MirandaE.vcproj", "{E6C5BCC7-5846-4F28-92E5-07B572155FC1}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MirandaI", "MirandaI.vcproj", "{5193A313-E9E5-4224-9C7F-2C8BE4A03F85}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MirandaM", "MirandaM.vcproj", "{BB9E809F-A137-4B1D-AD43-7BD4747195FB}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -2141,6 +2157,22 @@ Global
 		{A20E0EBF-0EEC-4442-848E-E1DD7FFF30C2}.Debug.Build.0 = Debug|Win32
 		{A20E0EBF-0EEC-4442-848E-E1DD7FFF30C2}.Release.ActiveCfg = Release|Win32
 		{A20E0EBF-0EEC-4442-848E-E1DD7FFF30C2}.Release.Build.0 = Release|Win32
+		{D50061F9-079A-4716-8937-F675B209221F}.Debug.ActiveCfg = Debug|Win32
+		{D50061F9-079A-4716-8937-F675B209221F}.Debug.Build.0 = Debug|Win32
+		{D50061F9-079A-4716-8937-F675B209221F}.Release.ActiveCfg = Release|Win32
+		{D50061F9-079A-4716-8937-F675B209221F}.Release.Build.0 = Release|Win32
+		{E6C5BCC7-5846-4F28-92E5-07B572155FC1}.Debug.ActiveCfg = Debug|Win32
+		{E6C5BCC7-5846-4F28-92E5-07B572155FC1}.Debug.Build.0 = Debug|Win32
+		{E6C5BCC7-5846-4F28-92E5-07B572155FC1}.Release.ActiveCfg = Release|Win32
+		{E6C5BCC7-5846-4F28-92E5-07B572155FC1}.Release.Build.0 = Release|Win32
+		{5193A313-E9E5-4224-9C7F-2C8BE4A03F85}.Debug.ActiveCfg = Debug|Win32
+		{5193A313-E9E5-4224-9C7F-2C8BE4A03F85}.Debug.Build.0 = Debug|Win32
+		{5193A313-E9E5-4224-9C7F-2C8BE4A03F85}.Release.ActiveCfg = Release|Win32
+		{5193A313-E9E5-4224-9C7F-2C8BE4A03F85}.Release.Build.0 = Release|Win32
+		{BB9E809F-A137-4B1D-AD43-7BD4747195FB}.Debug.ActiveCfg = Debug|Win32
+		{BB9E809F-A137-4B1D-AD43-7BD4747195FB}.Debug.Build.0 = Debug|Win32
+		{BB9E809F-A137-4B1D-AD43-7BD4747195FB}.Release.ActiveCfg = Release|Win32
+		{BB9E809F-A137-4B1D-AD43-7BD4747195FB}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

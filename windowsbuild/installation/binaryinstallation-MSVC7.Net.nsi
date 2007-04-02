@@ -62,11 +62,15 @@
 #  Brad Whitlock, Tue Nov 21 16:41:49 PST 2006
 #  Upped the version number and added movietemplates directories
 #
+#  Kathleen Bonnell, Fri Mar 16 11:13:24 PDT 2007 
+#  Upped the version number, the qt versions and ensure start location is
+#  VisIt root.
+#
 ##############################################################################
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "VisIt"
-!define PRODUCT_VERSION "1.5.5"
+!define PRODUCT_VERSION "1.6"
 !define PRODUCT_PUBLISHER "LLNL"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}.exe"
@@ -74,8 +78,8 @@
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
 # Define macros for Qt.
-!define QTPATH "C:\Qt\3.0.2"
-!define QTDLL  "qt-mt302.dll"
+!define QTPATH "C:\Qt\3.3.8"
+!define QTDLL  "qt-mt338.dll"
 
 SetCompressor bzip2
 
@@ -324,6 +328,10 @@ Section MovieTemplates
   File "..\bin\MSVC7.Net\Release\movietemplates\*.py"
   File "..\bin\MSVC7.Net\Release\movietemplates\*.ui"
   File "..\bin\MSVC7.Net\Release\movietemplates\*.bmp"
+
+  # Make sure that we're in the VisIt directory by default when the
+  # application runs.
+  SetOutPath "$INSTDIR"
 SectionEnd
 
 Section AddVisItRegKeys
