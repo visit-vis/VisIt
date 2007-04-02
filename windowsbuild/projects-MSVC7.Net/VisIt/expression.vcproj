@@ -368,6 +368,15 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Expressions\Cmfe\avtEvalPointExpression.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Expressions\Cmfe\avtEvalTransformExpression.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -443,6 +452,15 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\visit\components\Expressions\Cmfe\avtSymmPointExpression.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\visit\components\Expressions\Cmfe\avtSymmTransformExpression.C">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -472,6 +490,15 @@ copy Debug\expression.dll ..\..\bin\MSVC7.Net\Debug\expression.dll
 			</File>
 			<File
 				RelativePath="..\..\visit\components\Expressions\General\avtArrayComposeFilter.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Expressions\General\avtArrayComposeWithBinsFilter.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool

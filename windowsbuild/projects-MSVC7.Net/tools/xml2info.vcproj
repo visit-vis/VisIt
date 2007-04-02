@@ -23,7 +23,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="C:\Qt\3.0.2\include;..\..\include\VisIt;..\..\include\vtk;..\..include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\python;..\..\include\zlib;..\..\include\Tools"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\python;..\..\include\zlib;..\..\include\Tools"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;GENERATE_INFO;USING_MSVC7"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -40,11 +40,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib $(QTLIB)"
 				OutputFile="..\..\bin\MSVC7.Net\Release\xml2info.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="C:\Qt\3.0.2\lib;..\..\lib\MSVC7.Net\Release"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Release"
 				ProgramDatabaseFile=".\Release\xml2info/xml2info.pdb"
 				SubSystem="1"
 				TargetMachine="1"/>
@@ -85,7 +85,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
-				AdditionalIncludeDirectories="C:\Qt\3.0.2\include;..\..\include\VisIt;..\..\include\vtk;..\..include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\python;..\..\include\zlib;..\..\include\Tools"
+				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\python;..\..\include\zlib;..\..\include\Tools"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;GENERATE_INFO;USING_MSVC7"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -102,11 +102,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib $(QTLIB)"
 				OutputFile="..\..\bin\MSVC7.Net\Debug\xml2info.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="C:\Qt\3.0.2\lib;..\..\lib\MSVC7.Net\Debug"
+				AdditionalLibraryDirectories="$(QTDIR)\lib;..\..\lib\MSVC7.Net\Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug\xml2info/xml2info.pdb"
 				SubSystem="1"

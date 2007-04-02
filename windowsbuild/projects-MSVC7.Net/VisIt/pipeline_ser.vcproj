@@ -1494,6 +1494,15 @@ copy Release\pipeline_ser.dll ..\..\bin\MSVC7.Net\Release\pipeline_ser.dll
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath="..\..\visit\components\Pipeline\Pipeline\avtWebpage.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 		<Filter
 			Name="PrivateFilters"

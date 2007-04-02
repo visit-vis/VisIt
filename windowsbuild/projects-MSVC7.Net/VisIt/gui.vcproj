@@ -40,7 +40,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib gui.lib misc.lib plugin.lib qt-mt302.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib gui.lib misc.lib plugin.lib $(QTLIB)"
 				OutputFile="..\..\bin\MSVC7.Net\Release\gui.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -102,7 +102,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib gui.lib misc.lib plugin.lib qt-mt302.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib gui.lib misc.lib plugin.lib $(QTLIB)"
 				OutputFile="..\..\bin\MSVC7.Net\Debug\gui.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

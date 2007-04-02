@@ -41,7 +41,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib gui.lib viewerproxy.lib viewerrpc.lib dbatts.lib qt-mt302.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib gui.lib viewerproxy.lib viewerrpc.lib dbatts.lib $(QTLIB)"
 				OutputFile="..\..\bin\MSVC7.Net\Release\operators\libGSliceOperator.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -108,7 +108,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib gui.lib viewerproxy.lib viewerrpc.lib dbatts.lib qt-mt302.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib misc.lib plugin.lib gui.lib viewerproxy.lib viewerrpc.lib dbatts.lib $(QTLIB)"
 				OutputFile="..\..\bin\MSVC7.Net\Debug\operators\libGSliceOperator.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

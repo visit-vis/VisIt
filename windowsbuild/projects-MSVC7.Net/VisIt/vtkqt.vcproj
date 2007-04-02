@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib vtkCommon.lib vtkRendering.lib vtkIO.lib vtkFiltering.lib opengl32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib $(QTLIB) vtkCommon.lib vtkRendering.lib vtkIO.lib vtkFiltering.lib opengl32.lib"
 				OutputFile=".\Debug\vtkqt.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -110,7 +110,7 @@ copy Debug\vtkqt.lib ..\..\lib\MSVC7.Net\Debug\vtkqt.lib
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib qt-mt302.lib vtkCommon.lib vtkRendering.lib vtkIO.lib vtkFiltering.lib opengl32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib $(QTLIB) vtkCommon.lib vtkRendering.lib vtkIO.lib vtkFiltering.lib opengl32.lib"
 				OutputFile=".\Release\vtkqt.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

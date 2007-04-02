@@ -38,7 +38,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib avtview.lib viswindow.lib vtkqt.lib qt-mt302.lib vtkCommon.lib vtkRendering.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib avtview.lib viswindow.lib vtkqt.lib $(QTLIB) vtkCommon.lib vtkRendering.lib"
 				OutputFile=".\Release\qtviswindow.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

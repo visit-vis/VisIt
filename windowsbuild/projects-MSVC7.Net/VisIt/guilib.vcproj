@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib utility.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib dbatts.lib winutil.lib qt-mt302.lib qui.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib utility.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib dbatts.lib winutil.lib $(QTLIB) qui.lib"
 				OutputFile="Debug\gui.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -107,7 +107,7 @@ copy Debug\gui.lib ..\..\lib\MSVC7.Net\Debug\gui.lib
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib utility.lib dbatts.lib winutil.lib qt-mt302.lib qui.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib state.lib comm.lib misc.lib plugin.lib viewerproxy.lib viewerrpc.lib mdsrpc.lib mdsproxy.lib proxybase.lib utility.lib dbatts.lib winutil.lib $(QTLIB) qui.lib"
 				OutputFile="Release\gui.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

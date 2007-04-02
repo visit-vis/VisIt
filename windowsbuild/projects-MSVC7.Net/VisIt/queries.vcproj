@@ -24,7 +24,7 @@
 				InlineFunctionExpansion="1"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="$(QTDIR)\include;..\..\include\VisIt;..\..\include\vtk;..\..\include\vtk\MSVC7.Net;..\..\include\mesa;..\..\include\Python-2.3.4;..\..\include\zlib"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;QUERY_EXPORTS;USING_MSVC7"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;QUERY_EXPORTS;USING_MSVC7;_USE_MATH_DEFINES"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
@@ -520,6 +520,15 @@ copy Debug\queries.dll ..\..\bin\MSVC7.Net\Debug\queries.dll
 			</File>
 			<File
 				RelativePath="..\..\visit\components\Queries\Queries\avtExpectedValueQuery.C">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\visit\components\Queries\Queries\avtHohlraumFluxQuery.C">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
