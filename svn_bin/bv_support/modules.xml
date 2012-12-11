@@ -165,6 +165,7 @@
             <lib name="hdf5"/>
             <lib name="icet"/>
             <lib name="pyqt"/>
+            <lib name="yt"/>
         </optional>
 
         <!-- thirdparty flag -->
