@@ -46,37 +46,12 @@
 #include <string>
 #include <VisItException.h>
 
-typedef enum time_Units {
-    time_Seconds = 1, time_Minutes, time_Hours, time_Days,
-    time_Weeks, time_Months, time_Seasons, time_Years
-} time_Units;
+typedef avtCalendar::time_Units time_Units;
+typedef avtCalendar::TimeObject TimeObject;
+typedef avtCalendar::ReltimeObject ReltimeObject;
+typedef avtCalendar::ComptimeObject ComptimeObject;
 
-struct TimeObject
-{
-    int type;
-};
-
-struct ReltimeObject : public TimeObject
-{                 /* reltime instance object */
-    double value;
-    //char units[CD_MAX_RELUNITS+1];
-    std::string units;
-    ReltimeObject() { type = 0; }
-};
-
-struct ComptimeObject : public TimeObject
-{                 /* comptime instance object */
-    long year;
-    int month;
-    int day;
-    int hour;
-    int minute;
-    double second;
-    double absvalue;			     /* abstime value */
-    std::string absunits;
-    double fraction;			     /* abstime fractional part */
-    ComptimeObject() { type = 1; }
-};
+avtCalendar::Calendar avtCalendar::defaultCalendar = avtCalendar::Default;
 
 extern int cdParseRelunits(cdCalenType timetype, char* relunits, int* unit, cdCompTime* base_comptime);
 extern int cdValidateTime(cdCalenType timetype, cdCompTime comptime);
@@ -103,34 +78,66 @@ bool is_comptimeobject(const TimeObject& object)
  * Helper functions
  *****************************************************************************/
 
-//TODO: Convert to Member Variable..
-cdCalenType GET_CALENDAR = cdMixed;
-
-inline void SET_CALENDAR(cdCalenType type)
-{
-    GET_CALENDAR = type;
-}
-
-inline void SET_CALENDAR(int type)
-{
-    SET_CALENDAR((cdCalenType)type);
-}
-
 inline void onError(const char* msg)
 {
-    //(msg);
     RETHROW VisItException(msg);
 }
 
+cdCalenType convertCalendar(const avtCalendar::Calendar& calendar)
+{
+    cdCalenType calentype = cdMixed;
+
+    switch(calendar)
+    {
+        case avtCalendar::Standard: { calentype = cdStandard; break; }
+        case avtCalendar::Gregorian: { calentype = cdStandard; break; }
+        case avtCalendar::Julian: { calentype = cdJulian; break; }
+        case avtCalendar::Mixed: { calentype = cdMixed; break; }
+
+        case avtCalendar::NoLeap: { calentype = cdNoLeap; break; }
+
+        case avtCalendar::ThreeSixty: { calentype = cd360; break; }
+        case avtCalendar::Clim: { calentype = cdClim; break; }
+        case avtCalendar::ClimLeap: { calentype = cdClimLeap; break; }
+        case avtCalendar::Default: { calentype = cdMixed; break; }
+        default: { calentype = cdMixed; }
+    };
+
+    return calentype;
+}
+
+avtCalendar::Calendar convertCalendar(const cdCalenType& calentype)
+{
+    avtCalendar::Calendar calendar = avtCalendar::Mixed;
+
+    switch(calentype)
+    {
+        case cdStandard : { calendar = avtCalendar::Standard; break; }
+        //case cdStandard: { calendar = avtCalendar::Gregorian; break; }
+        case cdJulian: { calendar = avtCalendar::Julian; break; }
+        case cdMixed: { calendar = avtCalendar::Mixed; break; }
+
+        case cdNoLeap: { calendar = avtCalendar::NoLeap; break; }
+
+        case cd360: { calendar = avtCalendar::ThreeSixty; break; }
+        case cdClim: { calendar = avtCalendar::Clim; break; }
+        case cdClimLeap: { calendar = avtCalendar::ClimLeap; break; }
+        //case cdMixed: { calendar = avtCalendar::Default; break; }
+        default: { calendar = avtCalendar::Mixed; }
+    };
+
+    return calendar;
+}
+
 static ReltimeObject
-newreltimeobject(double value, const char *units)                 /* instance constructor function */
+newreltimeobject(double value, const char *units)/* instance constructor function */
 {                                /* these don't get an 'args' input */
     ReltimeObject self;
     cdCalenType calendar;
     cdUnitTime relunits;
     cdCompTime basetime;
 
-    calendar = GET_CALENDAR;
+    calendar = convertCalendar(avtCalendar::getDefaultCalendar());
 
     /* Check that the relative time units will parse */
     if (cdParseRelunits(calendar, const_cast<char*>(units), &relunits, &basetime))
@@ -206,7 +213,7 @@ Reltime_Compare(const ReltimeObject &v, const ReltimeObject &w)
     cdCalenType calendar;
     double v_days, w_days;
 
-    calendar = GET_CALENDAR;
+    calendar = convertCalendar(avtCalendar::getDefaultCalendar());
                          /* Convert both values to "days", then compare */
     cdRel2Rel(calendar, const_cast<char*>(v.units.c_str()), v.value, "days", &v_days);
     cdRel2Rel(calendar, const_cast<char*>(w.units.c_str()), w.value, "days", &w_days);
@@ -234,27 +241,26 @@ Comptime_Compare(const ComptimeObject &v, const ComptimeObject &w)
 
 /// Helper Functions
 static ReltimeObject
-reltime_add(const ReltimeObject &self, double value, time_Units units, cdCalenType calendar){
+reltime_add(const ReltimeObject &self, double value, const time_Units& units, cdCalenType calendar){
     double result, reltime;
     long incr;
     cdCompTime ct, ctmp;
 
                          /* Increment in integer months */
-    if(units >= time_Months){
+    if(units >= avtCalendar::time_Months){
 
         switch(units){
-        case time_Years:
+        case avtCalendar::time_Years:
             incr = (long)(12.0*value);
             break;
-        case time_Seasons:
+        case avtCalendar::time_Seasons:
             incr = (long)(3.0*value);
             break;
-        case time_Months:
+        case avtCalendar::time_Months:
             incr = (long)value;
             break;
         default:
-            //VisIt Exception..
-            //onError("Invalid units indicator");
+            onError("Invalid units indicator");
             break;
         }
         cdRel2Rel(calendar, const_cast<char*>(self.units.c_str()), self.value, "months", &reltime);
@@ -265,18 +271,18 @@ reltime_add(const ReltimeObject &self, double value, time_Units units, cdCalenTy
                          /* Increment in floating-point hours */
     else {
         switch(units){
-        case time_Weeks:
+        case avtCalendar::time_Weeks:
             value *= 168.0;
             break;
-        case time_Days:
+        case avtCalendar::time_Days:
             value *= 24.0;
             break;
-        case time_Hours:
+        case avtCalendar::time_Hours:
             break;
-        case time_Minutes:
+        case avtCalendar::time_Minutes:
             value /= 60.0;
             break;
-        case time_Seconds:
+        case avtCalendar::time_Seconds:
             value /= 3600.0;
             break;
         default:
@@ -340,7 +346,7 @@ comptime_torel(const ComptimeObject &self, const char *outunits, cdCalenType cal
 
 static int
 reltime_cmp(const ReltimeObject &self, const TimeObject &other, cdCalenType calendar){
-    int saveCalendar;
+    cdCalenType saveCalendar;
     int result;
     ReltimeObject otherReltime;
 
@@ -348,23 +354,23 @@ reltime_cmp(const ReltimeObject &self, const TimeObject &other, cdCalenType cale
                             get the value of the calendar from "DefaultCalendar",
                         so temporarily override this. */
 
-    saveCalendar = GET_CALENDAR;
-    SET_CALENDAR(calendar);
+    saveCalendar = convertCalendar(avtCalendar::getDefaultCalendar());
+    avtCalendar::setDefaultCalendar(convertCalendar(calendar));
 
     if (is_reltimeobject(other)){
         result = Reltime_Compare(self,static_cast<const ReltimeObject&>(other));
-        SET_CALENDAR(saveCalendar);
+        avtCalendar::setDefaultCalendar(convertCalendar(saveCalendar));
         return result;
     }
     else if (is_comptimeobject(other)){
                          /* Coerce comptime to reltime */
         otherReltime = comptime_torel(static_cast<const ComptimeObject&>(other), const_cast<char*>(self.units.c_str()), calendar);
         result = Reltime_Compare(self,otherReltime);
-        SET_CALENDAR(saveCalendar);
+        avtCalendar::setDefaultCalendar(convertCalendar(saveCalendar));
         return result;
     }
     else {
-        SET_CALENDAR(saveCalendar);
+        avtCalendar::setDefaultCalendar(convertCalendar(saveCalendar));
         onError("Cannot compare a time and non-time object");
     }
     return -1;
@@ -380,16 +386,16 @@ comptime_add(const ComptimeObject &self, double value, time_Units units, cdCalen
 
 
                          /* Increment in integer months */
-    if(units >= time_Months){
+    if(units >= avtCalendar::time_Months){
 
         switch(units){
-        case time_Years:
+        case avtCalendar::time_Years:
             incr = (long)(12.0*value);
             break;
-        case time_Seasons:
+        case avtCalendar::time_Seasons:
             incr = (long)(3.0*value);
             break;
-        case time_Months:
+        case avtCalendar::time_Months:
             incr = (long)value;
             break;
         default:
@@ -412,18 +418,18 @@ comptime_add(const ComptimeObject &self, double value, time_Units units, cdCalen
                          /* Increment in floating-point hours */
     else {
         switch(units){
-        case time_Weeks:
+        case avtCalendar::time_Weeks:
             value *= 168.0;
             break;
-        case time_Days:
+        case avtCalendar::time_Days:
             value *= 24.0;
             break;
-        case time_Hours:
+        case avtCalendar::time_Hours:
             break;
-        case time_Minutes:
+        case avtCalendar::time_Minutes:
             value /= 60.0;
             break;
-        case time_Seconds:
+        case avtCalendar::time_Seconds:
             value /= 3600.0;
             break;
         default:
@@ -464,43 +470,156 @@ comptime_tocomp(const ComptimeObject &self, cdCalenType calendar){
 
 static int
 comptime_cmp(const ComptimeObject &self, const TimeObject &other, cdCalenType calendar){
-    int saveCalendar;
+    cdCalenType saveCalendar;
     ComptimeObject otherComptime;
     int result;
 
                          /* The comparisons are done by the module functions, which
                             get the calendar from the value of "DefaultCalendar", so
                         set this temporarily */
-    saveCalendar = GET_CALENDAR;
-    SET_CALENDAR(calendar);
+    saveCalendar = convertCalendar(avtCalendar::getDefaultCalendar());
+    avtCalendar::setDefaultCalendar(convertCalendar(calendar));
 
     if (is_comptimeobject(other)){
         result = Comptime_Compare(self, static_cast<const ComptimeObject&>(other));
-        SET_CALENDAR(saveCalendar);
+        avtCalendar::setDefaultCalendar(convertCalendar(saveCalendar));
         return result;
     }
     else if (is_reltimeobject(other)){
                          /* Coerce reltime to comptime */
         otherComptime = reltime_tocomp(static_cast<const ReltimeObject&>(other), calendar);
         result = Comptime_Compare(self, otherComptime);
-        SET_CALENDAR(saveCalendar);
+        avtCalendar::setDefaultCalendar(convertCalendar(saveCalendar));
         return result;
     }
     else {
-        SET_CALENDAR(saveCalendar);
+        avtCalendar::setDefaultCalendar(convertCalendar(saveCalendar));
         onError("Cannot compare a time and non-time object");
     }
     return -1;
 }
 
-/// Actual Functions ...
+
+/// RelTime functions
+
+/* Add a time increment to a relative time,
+   e.g., rnew = r.add(3, Months [, calendar]) */
+
+ReltimeObject
+ReltimeObject::add(double value, const time_Units &units, const Calendar& calendar)
+{
+    //calendar = GET_CALENDAR;
+    return reltime_add(*this, value, units, convertCalendar(calendar));
+}
+
+/* Subtract a time increment from a relative time
+   e.g., rnew = r.sub(3, Months [, calendar]) */
+
+ReltimeObject
+ReltimeObject::sub(double value,const time_Units& units,const Calendar& calendar)
+{
+    //calendar = GET_CALENDAR;
+    return reltime_add(*this, -value, units, convertCalendar(calendar));
+}
+
+/* Convert a relative time to component time
+   e.g., r.tocomp([calendar])*/
+
+ComptimeObject
+ReltimeObject::toComponentTime(const Calendar& calendar)
+{
+    //calentype = GET_CALENDAR;
+    return reltime_tocomp(*this, convertCalendar(calendar));
+}
+
+/* Convert a relative time to a relative time
+   with different units, e.g.,
+rnew = r.torel("days since 1997" [, calendar])*/
+
+ReltimeObject
+ReltimeObject::toRelativeTime(char *outunits,const Calendar& calendar)
+{
+    //calentype = GET_CALENDAR;
+    return reltime_torel(*this, outunits, convertCalendar(calendar));
+}
+
+/* Return -1, 0, or 1 as self is less than, equal to,
+   or greater than other. Syntax is r.cmp(other [,calendar])
+other may be a reltime or a comptime. */
+int
+ReltimeObject::compare(TimeObject& other, const Calendar& calendar)
+{
+    //calendar = GET_CALENDAR;
+    return reltime_cmp(*this, other, convertCalendar(calendar));
+}
+
+/// Comptime functions
+
+ComptimeObject
+ComptimeObject::add(double value,const time_Units& units,const Calendar& calendar)
+{
+    //calendar = GET_CALENDAR;
+    return comptime_add(*this, value, units, convertCalendar(calendar));
+}
+
+/* Subtract a time increment from a component time
+   e.g., cnew = c.sub(3, Months [, calendar]) */
+
+ComptimeObject
+ComptimeObject::sub(double value,const time_Units& units,const Calendar& calendar)
+{
+    //calendar = GET_CALENDAR;
+    return comptime_add(*this, -value, units, convertCalendar(calendar));
+}
+
+                         /* Convert a component time to a relative time, e.g.,
+                        rnew = c.torel("days since 1997" [, calendar])*/
+
+ReltimeObject
+ComptimeObject::toRelativeTime(char* outunits, const Calendar& calendar)
+{
+    //calentype = GET_CALENDAR;
+    return comptime_torel(*this, outunits, convertCalendar(calendar));
+}
+
+                         /* Copy a component time. This function is provided
+                        so that tocomp() can be used for both types.
+                        cnew = c.torel([calendar])*/
+
+ComptimeObject
+ComptimeObject::toComponentTime(const Calendar& calendar)
+{
+    //calentype = GET_CALENDAR;
+    return comptime_tocomp(*this, convertCalendar(calendar));
+}
+
+int
+ComptimeObject::compare(TimeObject& other, const Calendar& calendar)
+{
+    //calendar = GET_CALENDAR;
+    return comptime_cmp(*this, other, convertCalendar(calendar));
+}
+
+//static struct PyMethodDef comptime_instance_methods[] = {     /* instance methods */
+//    { "add", (PyCFunction)PyCdComptime_Add, 1},
+//    { "sub", (PyCFunction)PyCdComptime_Sub, 1},
+//    { "torel", (PyCFunction)PyCdComptime_Torel, 1},
+//    { "torelative", (PyCFunction)PyCdComptime_Torel, 1},
+//    { "tocomp", (PyCFunction)PyCdComptime_Tocomp, 1},
+//    { "tocomponent", (PyCFunction)PyCdComptime_Tocomp, 1},
+//    { "cmp", (PyCFunction)PyCdComptime_Cmp, 1},
+//    {NULL,         NULL}
+//};
+
+
+/// External Functions ...
 
 /* Character string -> component time */
 
-static char doc_char2comp[] = "s2c(string [,calendar])";
+//static char doc_char2comp[] = "s2c(string [,calendar])";
 
 static ComptimeObject
-s2c(char* ctime, cdCalenType calentype = cdMixed)
+s2c_h(char* ctime, cdCalenType calentype = cdMixed)
 {
     cdCompTime compTime;
     int hour, min;
@@ -518,10 +637,10 @@ s2c(char* ctime, cdCalenType calentype = cdMixed)
 
 /* Character string -> relative time */
 
-static char doc_char2rel[] = "s2r(string, relunits [, calendar])";
+//static char doc_char2rel[] = "s2r(string, relunits [, calendar])";
 
 static ReltimeObject
-s2r(char* ctime, char* runits, cdCalenType calentype = cdMixed)
+s2r_h(char* ctime, char* runits, cdCalenType calentype = cdMixed)
 {
     double rtime;
 
@@ -532,21 +651,22 @@ s2r(char* ctime, char* runits, cdCalenType calentype = cdMixed)
 
 /* Component time -> relative time */
 
-static char doc_comp2rel[] = "c2r( comptime, relunits [,calendar])";
+//static char doc_comp2rel[] = "c2r( comptime, relunits [,calendar])";
 
 static ReltimeObject
-c2r(const ComptimeObject &compTime, const char* relUnits, cdCalenType calentype = cdMixed)
+c2r_h(const ComptimeObject &compTime, const char* relUnits, cdCalenType calentype = cdMixed)
 {
     //calentype = GET_CALENDAR;
     return comptime_torel(compTime, relUnits, calentype);
 }
 
+
 /* Relative time -> component time */
 
-static char doc_rel2comp[] = "r2c( reltime [, calendar])";
+//static char doc_rel2comp[] = "r2c( reltime [, calendar])";
 
 static ComptimeObject
-r2c(const ReltimeObject &relTime, cdCalenType calentype = cdMixed)
+r2c_h(const ReltimeObject &relTime, cdCalenType calentype = cdMixed)
 {
     //calentype = GET_CALENDAR;
     return reltime_tocomp(relTime, calentype);
@@ -554,19 +674,18 @@ r2c(const ReltimeObject &relTime, cdCalenType calentype = cdMixed)
 
 /* Relative time -> relative time */
 
-static char doc_rel2rel[] = "r2r( reltime, newunits [, calendar])";
+//static char doc_rel2rel[] = "r2r( reltime, newunits [, calendar])";
 
 static ReltimeObject
-r2r(const ReltimeObject &relTime, char *outUnits, cdCalenType calentype = cdMixed)
+r2r_h(const ReltimeObject &relTime, char *outUnits, cdCalenType calentype = cdMixed)
 {
     //calentype = GET_CALENDAR;
     return reltime_torel(relTime, outUnits, calentype);
 }
-
-static char doc_cmp[] = "cmp( time, time [, calendar])";
+//static char doc_cmp[] = "cmp( time, time [, calendar])";
 
 static int
-cmp(const TimeObject& t1, const TimeObject& t2, cdCalenType calendar = cdMixed)
+cmp_h(const TimeObject& t1, const TimeObject& t2, cdCalenType calendar = cdMixed)
 {
 
     //calendar = GET_CALENDAR;
@@ -583,21 +702,73 @@ cmp(const TimeObject& t1, const TimeObject& t2, cdCalenType calendar = cdMixed)
     return -1;
 }
 
-static ReltimeObject
-New_ReltimeObject(double value, char* units)
+
+/// Calendar API..
+
+ComptimeObject
+avtCalendar::s2c(char* ctime, const Calendar &calendar)
+{
+    return s2c_h(ctime,convertCalendar(calendar));
+}
+
+ReltimeObject
+avtCalendar::s2r(char* ctime, char* runits, const Calendar &calendar)
+{
+    return s2r_h(ctime,runits,convertCalendar(calendar));
+}
+
+ReltimeObject
+avtCalendar::c2r(const ComptimeObject &compTime, const char* relUnits, const Calendar& calendar)
+{
+    return c2r_h(compTime,relUnits,convertCalendar(calendar));
+}
+ComptimeObject
+avtCalendar::r2c(const ReltimeObject &relTime, const Calendar& calendar)
+{
+    return r2c_h(relTime,convertCalendar(calendar));
+}
+
+ReltimeObject
+avtCalendar::r2r(const ReltimeObject &relTime, char *outUnits, const Calendar& calendar)
+{
+    return r2r_h(relTime,outUnits,convertCalendar(calendar));
+}
+
+int
+avtCalendar::compare(const TimeObject& t1, const TimeObject& t2, const Calendar &calendar)
+{
+    return cmp_h(t1,t2,convertCalendar(calendar));
+}
+
+
+ReltimeObject
+avtCalendar::reltime(double value, char* units)
 {
     return newreltimeobject(value, units);  /* make a new type-instance object */
 }                                         /* the hook from module to type... */
 
-static ComptimeObject
-New_ComptimeObject(long year, int month = 0, int day = 0,
-                        int hour = -1, int minute = -1, double second = -1.0)
+ReltimeObject
+avtCalendar::relativetime(double value, char* units)
+{
+    return reltime(value, units);  /* make a new type-instance object */
+}                                         /* the hook from module to type... */
+
+ComptimeObject
+avtCalendar::comptime(long year, int month, int day,
+                        int hour, int minute, double second)
 {
     return newcomptimeobject(year, month, day, hour, minute, second);  /* make a new type-instance object */
 }
 
-static ComptimeObject
-New_AbstimeNew(double absvalue,char *absunits)
+ComptimeObject
+avtCalendar::componenttime(long year, int month, int day,
+                        int hour, int minute, double second)
+{
+    return comptime(year, month, day, hour, minute, second);  /* make a new type-instance object */
+}
+
+ComptimeObject
+avtCalendar::abstime(double absvalue,char *absunits)
 {
     cdCompTime comptime;
     double fraction;

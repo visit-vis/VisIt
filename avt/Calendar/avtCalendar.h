@@ -53,18 +53,99 @@
 // ****************************************************************************
 class CALENDAR_API avtCalendar
 {
-
 public:
-    enum Units { Seconds = 1, Minutes, Hours, Days,
-                 Weeks, Months, Seasons, Years};
+    enum time_Units {
+        time_Seconds = 1, time_Minutes, time_Hours, time_Days,
+        time_Weeks, time_Months, time_Seasons, time_Years
+    };
 
-    enum Unit { Second = 1, Minute, Hour, Day,
-                 Week, Month, Season, Year};
-
-    enum Calendar { Standard, Gregorian, Julian, Mixed, 
+    enum Calendar { Standard, Gregorian, Julian, Mixed,
                     NoLeap, ThreeSixty, Clim, ClimLeap, Default };
+
+    struct TimeObject
+    {
+        int type;
+    };
+
+    struct ComptimeObject;
+
+    struct ReltimeObject : public TimeObject
+    {                 /* reltime instance object */
+        double value;
+        //char units[CD_MAX_RELUNITS+1];
+        std::string units;
+        ReltimeObject() { type = 0; }
+
+        int compare(TimeObject& other, const Calendar& calendar);
+
+        ReltimeObject add(double value, const time_Units &units, const Calendar& calendar);
+        ReltimeObject sub(double value,const time_Units &units,const Calendar& calendar);
+        ReltimeObject toRelativeTime(char *outunits,const Calendar& calendar);
+        ComptimeObject toComponentTime(const Calendar& calendar);
+    };
+
+    struct ComptimeObject : public TimeObject
+    {                 /* comptime instance object */
+        long year;
+        int month;
+        int day;
+        int hour;
+        int minute;
+        double second;
+        double absvalue;			     /* abstime value */
+        std::string absunits;
+        double fraction;			     /* abstime fractional part */
+        ComptimeObject() { type = 1; }
+
+        int compare(TimeObject& other, const Calendar& calendar);
+
+        ComptimeObject add(double value,const time_Units& units,const Calendar& calendar);
+        ComptimeObject sub(double value,const time_Units& units,const Calendar& calendar);
+        ReltimeObject toRelativeTime(char* outunits, const Calendar& calendar);
+        ComptimeObject toComponentTime(const Calendar& calendar);
+    };
+
+    static ComptimeObject
+    s2c(char* ctime, const Calendar& calendar);
+
+    static ReltimeObject
+    s2r(char* ctime, char* runits, const Calendar& calendar = Mixed);
+
+    static ReltimeObject
+    c2r(const ComptimeObject &compTime, const char* relUnits, const Calendar &calendar = Mixed);
+
+    static ComptimeObject
+    r2c(const ReltimeObject &relTime, const Calendar &calendar = Mixed);
+
+    static ReltimeObject
+    r2r(const ReltimeObject &relTime, char *outUnits, const Calendar& calendar = Mixed);
+
+    static int
+    compare(const TimeObject& t1, const TimeObject& t2, const Calendar& calendar = Mixed);
+
+    /// static functions..
+    static ReltimeObject reltime(double value, char* units);
+
+    static ReltimeObject relativetime(double value, char* units);
+
+    static ComptimeObject comptime(long year, int month = 0, int day = 0,
+                            int hour = -1, int minute = -1, double second = -1.0);
+
+    static ComptimeObject componenttime(long year, int month = 0, int day = 0,
+                            int hour = -1, int minute = -1, double second = -1.0);
+
+    static ComptimeObject abstime(double absvalue,char *absunits);
+
+    /// static member..
+
+    static Calendar getDefaultCalendar() { return defaultCalendar; }
+    static void setDefaultCalendar(const Calendar& calendar) { defaultCalendar = calendar; }
+
+private:
     avtCalendar();
     ~avtCalendar();
+
+    static Calendar defaultCalendar;
 };
 
 #endif
