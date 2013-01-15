@@ -35,41 +35,31 @@
 # DAMAGE.
 #
 # Modifications:
-#   Hank Childs, Sat Aug 21 11:53:13 PDT 2010
-#   Rename directory DDF to DataBinning.
-#
-#   Brad Whitlock, Thu Jan 20 08:48:38 PST 2011
-#   Do not build QtVisWindow on engine-only or server-components-only builds.
 #
 #****************************************************************************/
 
-IF(VISIT_DBIO_ONLY)
-    ADD_SUBDIRECTORY(DBAtts)
-    ADD_SUBDIRECTORY(Pipeline)
-    ADD_SUBDIRECTORY(Database)
-ELSE(VISIT_DBIO_ONLY)
-    ADD_SUBDIRECTORY(DBAtts)
-    ADD_SUBDIRECTORY(Math)
-    ADD_SUBDIRECTORY(IVP)
-    ADD_SUBDIRECTORY(Pipeline)
-    ADD_SUBDIRECTORY(DataBinning)
-    ADD_SUBDIRECTORY(MIR)
-    ADD_SUBDIRECTORY(Shapelets)
-    ADD_SUBDIRECTORY(View)
-    ADD_SUBDIRECTORY(Filters)
-    ADD_SUBDIRECTORY(Database)
-    ADD_SUBDIRECTORY(Plotter)
-    ADD_SUBDIRECTORY(Expressions)
-    ADD_SUBDIRECTORY(Queries)
-    ADD_SUBDIRECTORY(FileWriter)
-    ADD_SUBDIRECTORY(VisWindow)
-    IF(NOT VISIT_SERVER_COMPONENTS_ONLY AND NOT VISIT_ENGINE_ONLY)
-        ADD_SUBDIRECTORY(QtVisWindow)
-    ENDIF(NOT VISIT_SERVER_COMPONENTS_ONLY AND NOT VISIT_ENGINE_ONLY)
-    IF(VISIT_PYTHON_FILTERS)
-        ADD_SUBDIRECTORY(PythonFilters)
-    ENDIF(VISIT_PYTHON_FILTERS)
-ENDIF(VISIT_DBIO_ONLY)
+SET(AVTCALENDAR_SOURCES
+avtCalendar.C
+cdtime/cdRegTrfm.c  
+cdtime/cdTimeConv.c  
+cdtime/cdUtil.c  
+#fcdTimeConv.c  
+cdtime/reg_trfm.c  
+cdtime/timeArith.c  
+cdtime/timeConv.c
+)
 
-ADD_SUBDIRECTORY(Calendar)
-ADD_SUBDIRECTORY(TECA)
+INCLUDE_DIRECTORIES(
+${CMAKE_CURRENT_SOURCE_DIR}
+${CMAKE_CURRENT_SOURCE_DIR}/cdtime
+${VISIT_COMMON_INCLUDES}
+${VTK_INCLUDE_DIRS}
+)
+
+# Add link directories
+LINK_DIRECTORIES(${LIBRARY_OUTPUT_DIRECTORY} ${VTK_LIBRARY_DIRS})
+
+ADD_LIBRARY(avtcalendar ${AVTCALENDAR_SOURCES})
+TARGET_LINK_LIBRARIES(avtcalendar visitcommon vtkCommon)
+
+VISIT_INSTALL_TARGETS(avtcalendar)
