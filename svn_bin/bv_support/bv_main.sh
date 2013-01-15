@@ -540,6 +540,99 @@ function enable_dependent_libraries
     done
 }
 
+## checks to ensure that libraries that are getting updated then 
+## dependent libraries must also be getting updated. (Error if this is the case)
+function check_updating_libraries
+{
+    local depends_on=""
+    local haserrors="no"
+    for (( bv_i=0; bv_i<${#reqlibs[*]}; ++bv_i ))
+    do
+        $"bv_${reqlibs[$bv_i]}_is_enabled"
+
+        #if not enabled then skip
+        if [[ $? == 0 ]]; then
+            continue
+        fi
+
+        $"bv_${reqlibs[$bv_i]}_is_installed"
+        #if already installed then skip..
+        if [[ $? == 1 ]]; then
+            continue
+        fi
+
+        info "checking ${reqlibs[$bv_i]} ..."
+        for (( bv_j=0; bv_j<${#reqlibs[*]}; ++bv_j ))
+        do
+            if [[ "$bv_i" == "$bv_j" ]]; then
+                continue
+            fi
+            depends_on=$("bv_${reqlibs[$bv_j]}_depends_on")
+
+            if [[ "$depends_on" == *"${reqlibs[$bv_i]}"* ]]; then
+                #if enabled check if not already installed..
+                $"bv_${reqlibs[$bv_j]}_is_installed"
+                if [[ $? == 1 ]]; then
+                    haserrors="yes"
+                    warn "warning: ${reqlibs[$bv_j]} has already been installed but ${reqlibs[$bv_i]} is getting an update."
+                fi
+            fi
+        done
+
+        for (( bv_j=0; bv_j<${#optlibs[*]}; ++bv_j ))
+        do
+            depends_on=$("bv_${optlibs[$bv_j]}_depends_on")
+
+            if [[ "$depends_on" == *"${reqlibs[$bv_i]}"* ]]; then
+                #if enabled check if not already installed..
+                $"bv_${optlibs[$bv_j]}_is_installed"
+                if [[ $? == 1 ]]; then
+                    haserrors="yes"
+                    warn "warning: ${optlibs[$bv_j]} has already been installed but ${reqlibs[$bv_i]} is getting an update."
+                fi
+            fi
+        done
+    done
+
+    for (( bv_i=0; bv_i<${#optlibs[*]}; ++bv_i ))
+    do
+        $"bv_${optlibs[$bv_i]}_is_enabled"
+        #if not enabled then skip
+        if [[ $? == 0 ]]; then
+            continue
+        fi
+
+        $"bv_${optlibs[$bv_i]}_is_installed"
+        #if already installed then skip..
+        if [[ $? == 1 ]]; then
+            continue
+        fi
+
+        for (( bv_j=0; bv_j<${#optlibs[*]}; ++bv_j ))
+        do
+            if [[ "$bv_i" == "$bv_j" ]]; then
+                continue
+            fi
+            #enabled library, check dependencies..
+            depends_on=$("bv_${optlibs[$bv_j]}_depends_on")
+
+            if [[ "$depends_on" == *"${optlibs[$bv_i]}"* ]]; then
+                #if enabled check if not already installed..
+                $"bv_${optlibs[$bv_j]}_is_installed"
+                if [[ $? == 1 ]]; then
+                    haserrors="yes"
+                    warn "warning: ${optlibs[$bv_j]} has already been installed but ${optlibs[$bv_i]} is getting an update."
+                fi
+            fi
+        done
+    done
+
+    if [[ "$haserrors" == "yes" ]]; then
+        error "Errors occurred while checking VisIt installation stability..."
+    fi
+}
+
+
 #TODO: enable this feature and remove this from ensure..
 function initialize_module_variables
 {
@@ -561,6 +654,46 @@ function initialize_module_variables
         if [[ $? == 0 ]]; then
             info "initialize module variables for ${optlibs[$bv_i]}"
             $"bv_${optlibs[$bv_i]}_initialize_vars"
+        fi
+    done
+}
+
+#execute any sub-commands that require built libraries
+#for example installing pip requires python to be built
+#but we also want to ensure that we can add pip even if 
+#python has already been installed..
+function execute_module_subcommands
+{
+    info "executing sub commands for built libraries"
+    for (( bv_i=0; bv_i<${#reqlibs[*]}; ++bv_i ))
+    do
+        $"bv_${reqlibs[$bv_i]}_is_enabled"
+
+        #if not enabled then skip
+        if [[ $? == 0 ]]; then
+            continue
+        fi
+
+        declare -F "bv_${reqlibs[$bv_i]}_execute_subcommands" &>/dev/null
+
+        if [[ $? == 0 ]]; then
+            $"bv_${reqlibs[$bv_i]}_execute_subcommands"
+        fi
+    done
+
+    for (( bv_i=0; bv_i<${#optlibs[*]}; ++bv_i ))
+    do
+        $"bv_${optlibs[$bv_i]}_is_enabled"
+
+        #if not enabled then skip
+        if [[ $? == 0 ]]; then
+            continue
+        fi
+
+        declare -F "bv_${optlibs[$bv_i]}_execute_subcommands" &>/dev/null
+
+        if [[ $? == 0 ]]; then
+            $"bv_${optlibs[$bv_i]}_execute_subcommands"
         fi
     done
 }
@@ -1406,6 +1539,11 @@ cd "$START_DIR"
 
 #initialize module variables, since all of VisIt's variables should be set by now..
 initialize_module_variables
+
+#before we start building ensure libraries that build will not adversely affect
+#already installed libraries
+#check_updating_libraries
+
 #
 # Later we will build Qt.  We are going to bypass their licensing agreement,
 # so echo it here.
@@ -1466,6 +1604,10 @@ if [[ "$DO_SUPER_BUILD" == "yes" ]]; then
 else
     build_libraries_serial
 fi
+
+#execute any custom flags that might have required libraries to
+#be built
+execute_module_subcommands
 
 #
 # Create the host.conf file

@@ -3356,7 +3356,7 @@ OpenClientHelper(PyObject *self, PyObject *args, int componentNumber)
 
         PyErr_Clear();
     }
-    if(componentNumber == 2)
+    else if(componentNumber == 2)
     {
         clientName = "CLI";
         program = "visit";
@@ -3385,6 +3385,11 @@ OpenClientHelper(PyObject *self, PyObject *args, int componentNumber)
                     VisItErrorFunc(OCEError);
                     return NULL;
                 }
+            }
+            else
+            {
+                VisItErrorFunc(OCEError);
+                return NULL;
             }
         }
         else
@@ -15656,6 +15661,12 @@ visit_exec_client_method(void *data)
         keepGoing = false;
         // Make the interpreter quit.
         viewerInitiatedQuit = true;
+        if(acquireLock)
+            VisItUnlockPythonInterpreter(myThreadState);
+        PyRun_SimpleString("import readline");
+        PyRun_SimpleString("readline.set_startup_hook(None)");
+        PyRun_SimpleString("readline.set_pre_input_hook(None)");
+        PyRun_SimpleString("readline.set_completer(None)");
         PyRun_SimpleString("import sys; sys.exit(0)");
     }
     else if(m->GetMethodName() == "Interpret")
@@ -17754,10 +17765,19 @@ LaunchViewer(const char *visitProgram)
 //   we can later terminate it, if necessary.
 //
 // ****************************************************************************
-
+int quit_function()
+{
+    if(viewerInitiatedQuit)
+    {
+        std::cout << "meow" << std::endl;
+        PyRun_SimpleString("print hello");
+    }
+    return 0;
+}
 static void
 CreateListenerThread()
 {
+    //PyOS_InputHook = quit_function;
     keepGoing = true;
 
 #ifdef THREADS

@@ -6,13 +6,13 @@ function bv_yt_initialize
     #[ -z "$HDF5_DIR" ] && get_ytproject hdf5-1.8.7.tar.gz
     INST_HG=1       # Install Mercurial or not?  If hg is not already
                     # installed, yt cannot be installed.
-    INST_ZLIB=1     # On some systems (Kraken) matplotlib has issues with 
+    INST_ZLIB=0 #1  # On some systems (Kraken) matplotlib has issues with 
                     # the system zlib, which is compiled statically.
                     # If need be, you can turn this off.
     INST_BZLIB=1    # On some systems, libbzip2 is missing.  This can
                     # lead to broken mercurial installations.
-    INST_PNG=1      # Install a local libpng?  Same things apply as with zlib.
-    INST_FTYPE=1    # Install FreeType2 locally?
+    INST_PNG=1 #1   # Install a local libpng?  Same things apply as with zlib.
+    INST_FTYPE=1 #1 # Install FreeType2 locally?
     INST_ENZO=0     # Clone a copy of Enzo?
     INST_SQLITE3=1  # Install a local version of SQLite3?
     INST_PYX=0      # Install PyX?  Sometimes PyX can be problematic without a
@@ -53,7 +53,7 @@ ON_YT="off"
 
 function bv_yt_depends_on
 {
-echo "szip hdf5"
+echo "python szip hdf5"
 }
 
 function bv_yt_info
@@ -69,6 +69,9 @@ export YT_SHA256_CHECKSUM=""
 function bv_yt_initialize_vars
 {
 export YT_INSTALL_DIR="${VISITDIR}/yt/$YT_VERSION/${VISITARCH}"
+
+#enable distribute and pip within python..
+bv_python_python_install_pip
 }
 
 function bv_yt_print
@@ -300,7 +303,8 @@ if [ $INST_HG -eq 1 ]
 then
     info "Installing Mercurial."
     do_setup_py mercurial-2.2.2
-    export HG_EXEC=${VISIT_PYTHON_DIR}/bin/hg
+    #export HG_EXEC=${VISIT_PYTHON_DIR}/bin/hg
+    export HG_EXEC="$START_DIR/${THIRD_PARTY_PATH}/virtualenv/bin/hg"
 else
     # We assume that hg can be found in the path.
     if type -P hg &>/dev/null
@@ -390,7 +394,7 @@ function build_yt
 
     build_yt_sqlite
 
-    PYTHONPATH="${VISIT_PYTHON_DIR}/lib/python${PYTHON_COMPATIBILITY_VERSION}/site-packages/"
+    #PYTHONPATH="${VISIT_PYTHON_DIR}/lib/python${PYTHON_COMPATIBILITY_VERSION}/site-packages/"
     info "Setting PYTHONPATH=${PYTHONPATH}"
     
     build_yt_hg
@@ -426,11 +430,11 @@ fi
     CFLAGS="$CFLAGS -I${DEST_DIR}/include"
     CXXFLAGS="$CXXFLAGS -I${DEST_DIR}/include"
 
-    info "Installing distribute "
-    ( ${PYTHON_COMMAND} ${YT_DIR}/distribute_setup.py 2>&1 ) 1>> ${LOG_FILE} || do_exit
+    #info "Installing distribute "
+    #( ${PYTHON_COMMAND} ${YT_DIR}/distribute_setup.py 2>&1 ) 1>> ${LOG_FILE} || do_exit
   
-    info "Installing pip"
-( ${VISIT_PYTHON_DIR}/bin/easy_install pip 2>&1 ) 1>> ${LOG_FILE} || do_exit
+    #info "Installing pip"
+    #( ${VISIT_PYTHON_DIR}/bin/easy_install pip 2>&1 ) 1>> ${LOG_FILE} || do_exit
 
     do_setup_py numpy-1.6.1 ${NUMPY_ARGS}
 
