@@ -15663,11 +15663,16 @@ visit_exec_client_method(void *data)
         viewerInitiatedQuit = true;
         if(acquireLock)
             VisItUnlockPythonInterpreter(myThreadState);
-        PyRun_SimpleString("import readline");
-        PyRun_SimpleString("readline.set_startup_hook(None)");
-        PyRun_SimpleString("readline.set_pre_input_hook(None)");
-        PyRun_SimpleString("readline.set_completer(None)");
+        PyGILState_STATE state = PyGILState_Ensure();
+        if(PyOS_ReadlineFunctionPointer || _PyOS_ReadlineTState)
+        {
+            PyOS_Readline(0,0,0);
+            PyOS_ReadlineFunctionPointer = NULL;
+            if(_PyOS_ReadlineTState) PyThreadState_Delete(_PyOS_ReadlineTState);
+
+        }
         PyRun_SimpleString("import sys; sys.exit(0)");
+        PyGILState_Release(state);
     }
     else if(m->GetMethodName() == "Interpret")
     {
@@ -17765,19 +17770,10 @@ LaunchViewer(const char *visitProgram)
 //   we can later terminate it, if necessary.
 //
 // ****************************************************************************
-int quit_function()
-{
-    if(viewerInitiatedQuit)
-    {
-        std::cout << "meow" << std::endl;
-        PyRun_SimpleString("print hello");
-    }
-    return 0;
-}
+
 static void
 CreateListenerThread()
 {
-    //PyOS_InputHook = quit_function;
     keepGoing = true;
 
 #ifdef THREADS
