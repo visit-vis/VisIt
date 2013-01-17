@@ -41,7 +41,19 @@
 // ************************************************************************* //
 
 #include <avtRFilter.h>
-
+#include <avtTMP.h>
+#include <avtDatasetExaminer.h>
+#include <avtContract.h>
+#include <avtSourceFromAVTDataset.h>
+#include <vtkDataSet.h>
+#include <vtkPointData.h>
+#include <vtkCellData.h>
+#include <vtkFloatArray.h>
+#include <string.h>
+#include <DebugStream.h>
+#include <InstallationFunctions.h>
+#include <string>
+#include <InvalidFilesException.h>
 
 // ****************************************************************************
 //  Method: avtRFilter constructor
@@ -53,6 +65,8 @@
 
 avtRFilter::avtRFilter()
 {
+    //RegisterOperation("monthlyMax", MonthlyMaxOperation);
+    //RegisterOperation("exceed",Exceed
 }
 
 
@@ -127,7 +141,7 @@ avtRFilter::Equivalent(const AttributeGroup *a)
 
 
 // ****************************************************************************
-//  Method: avtRFilter::ExecuteData
+//  Method: avtRFilter::Execute
 //
 //  Purpose:
 //      Sends the specified input and output through the R filter.
@@ -144,10 +158,34 @@ avtRFilter::Equivalent(const AttributeGroup *a)
 //
 // ****************************************************************************
 
-vtkDataSet *
-avtRFilter::ExecuteData(vtkDataSet *in_ds, int, std::string)
+void
+avtRFilter::Execute()
 {
-    YOUR CODE TO MODIFY THE DATASET GOES HERE
+    avtMonthlyIteratorOperation *f = new avtMonthlyIteratorOperation();
+
+    //f->atts = atts;
+    f->SetInput(GetInput());
+
+    avtContract_p spec = GetInput()->GetOriginatingSource()->GetGeneralContract();
+    avtDataObject_p dob = f->GetOutput();
+
+    dob->Update(spec);
+    avtDataTree_p tree = f->GetTypedOutput()->GetDataTree();
+
+    //Set the output variable properly.
+    int nleaves;
+    vtkDataSet **leaves = tree->GetAllLeaves(nleaves);
+    for (int i = 0; i < nleaves; i++)
+    {
+        if (leaves[i]->GetPointData()->GetScalars())
+            leaves[i]->GetPointData()->GetScalars()->SetName(pipelineVariable);
+        else if (leaves[i]->GetCellData()->GetScalars())
+            leaves[i]->GetCellData()->GetScalars()->SetName(pipelineVariable);
+    }
+    delete [] leaves;
+
+    SetOutputDataTree(tree);
+    delete f;
 }
 
 

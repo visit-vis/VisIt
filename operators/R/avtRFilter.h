@@ -62,7 +62,17 @@ class vtkDataSet;
 //
 // ****************************************************************************
 
-class avtRFilter : public avtPluginDataTreeIterator
+/*
+class Operation
+{
+  public:
+    virtual vtkDataArray* operator()() = 0;
+    virtual std::string GetName() = 0;
+};
+*/
+
+class avtRFilter : virtual public avtPluginFilter,
+                   virtual public avtDatasetToDatasetFilter
 {
   public:
                          avtRFilter();
@@ -76,11 +86,16 @@ class avtRFilter : public avtPluginDataTreeIterator
 
     virtual void         SetAtts(const AttributeGroup*);
     virtual bool         Equivalent(const AttributeGroup*);
+    //virtual void   RegisterOperation(Operation* op);
 
   protected:
     RAttributes   atts;
 
-    virtual vtkDataSet   *ExecuteData(vtkDataSet *, int, std::string);
+    virtual   void Execute();
+
+    //    std::map<std::string,Operation*> m_operations;
+
+    //    virtual void ParseInput(const MapNode& m);
 };
 
 

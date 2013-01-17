@@ -30,6 +30,7 @@ ${COMMON_SOURCES}
 SET(LIBE_SOURCES
 REnginePluginInfo.C
 avtRFilter.C
+avtTMP.C
 ${COMMON_SOURCES}
 )
 
