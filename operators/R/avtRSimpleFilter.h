@@ -1,17 +1,16 @@
-#ifndef AVT_R_EXTREMES_FILTER_H
-#define AVT_R_EXTREMES_FILTER_H
+#ifndef AVT_R_SIMPLE_FILTER_H
+#define AVT_R_SIMPLE_FILTER_H
 
 #include <filters_exports.h>
 #include <avtDatasetToDatasetFilter.h>
 #include <avtTimeLoopFilter.h>
-#include <PeaksOverThresholdAttributes.h>
 #include <string>
 #include <vector>
 
 class vtkDataSet;
 
 // ****************************************************************************
-// Class:  avtRPOTFilter
+// Class:  avtRSimpleFilter
 //
 //
 // Programmer:  Dave Pugmire
@@ -19,17 +18,17 @@ class vtkDataSet;
 //
 // ****************************************************************************
 
-class AVTFILTERS_API avtRPOTFilter : virtual public avtDatasetToDatasetFilter,
-                                     virtual public avtTimeLoopFilter
+class AVTFILTERS_API avtRSimpleFilter : virtual public avtDatasetToDatasetFilter,
+                                        virtual public avtTimeLoopFilter
 {
   public:
-    avtRPOTFilter();
-    virtual ~avtRPOTFilter();
-    virtual const char* GetType() {return "avtRPOTFilter";}
+    avtRSimpleFilter();
+    virtual ~avtRSimpleFilter();
+    virtual const char* GetType() {return "avtRSimpleFilter";}
 
-    std::string newVarName, codeDir;
-    PeaksOverThresholdAttributes atts;
-    
+    float cutoff, percentile;
+    std::string rscript;
+
   protected:
     void                    Initialize();
     virtual void            Execute();
@@ -41,31 +40,14 @@ class AVTFILTERS_API avtRPOTFilter : virtual public avtDatasetToDatasetFilter,
     virtual bool            FilterSupportsTimeParallelization();
     virtual bool            DataCanBeParallelizedOverTime(void);
 
-    float                   CalculateThreshold(int loc, int arr);
-    int                     GetIndexFromDay(int t);
-    int                     GetMonthFromDay(int t);
-    int                     GetYearFromDay(int t);
-    int                     GetSeasonFromDay(int t);
-    std::string             CreateQuantileCommand(const char *var, const char *in, int aggregationIdx);
-    std::string             GetDumpFileName(int idx, int yr, int var);
+    float                   CalculateThreshold(int loc);
 
     vtkDataSet *outDS;
-    int numTuples, numTimes, numYears, numBins;
+    int numTuples;
     bool nodeCenteredData, initialized;
     int idx0, idxN;
 
-    class sample
-    {
-    public:
-        sample() {val=-1; time=-1;}
-        sample(float v, int t) {val=v; time=t;}
-        float val;
-        int time;
-    };
-    //values[location][aggregation][time_i]    
-    std::vector<std::vector<std::vector<sample> > > values;
-
-    void DebugData(int loc, std::string nm);
+    std::vector<std::vector<float> > values;
 };
 
 #endif

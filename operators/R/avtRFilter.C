@@ -54,6 +54,8 @@
 #include <InstallationFunctions.h>
 #include <string>
 #include <InvalidFilesException.h>
+#include <avtRExtremesFilter.h>
+#include <avtRSimpleFilter.h>
 
 // ****************************************************************************
 //  Method: avtRFilter constructor
@@ -161,16 +163,46 @@ avtRFilter::Equivalent(const AttributeGroup *a)
 void
 avtRFilter::Execute()
 {
-    avtMonthlyIteratorOperation *f = new avtMonthlyIteratorOperation();
+    avtRScriptWithArgsFilter *f1 = new avtRScriptWithArgsFilter();
+    f1->argNames.push_back("val1");
+    f1->arguments.push_back(1.0);
+    
+    f1->inputName = "inData";
+    f1->outputName = "output";
 
+    f1->rcode = "output <- inData[1] * val1";
+
+
+    avtOpOverTimeFilter *f2 = new avtOpOverTimeFilter();
+    f2->operation = MAX_OPERATOR;
+
+    f2->SetInput(GetInput());
+    
+
+    /*
+    avtRSimpleFilter *f = new avtRSimpleFilter();
+    f->cutoff = 0.00025;
+    f->percentile = 0.9;
+    */
+
+    /*
+    //Do extremes..
+    avtRExtremesFilter *f = new avtRExtremesFilter();
+    f->codeDir = "/apps/visit/branches/VisIt/lib/r_support/Rscripts";
+    */
+
+    /*
+    //avtMonthlyIteratorOperation *f = new avtMonthlyIteratorOperation();
+    avtMonthlyExceedencesOperation *f = new avtMonthlyExceedencesOperation();
+    f->operation = MAX_OPERATOR;
     //f->atts = atts;
-    f->SetInput(GetInput());
+    */
 
     avtContract_p spec = GetInput()->GetOriginatingSource()->GetGeneralContract();
-    avtDataObject_p dob = f->GetOutput();
+    avtDataObject_p dob = f2->GetOutput();
 
     dob->Update(spec);
-    avtDataTree_p tree = f->GetTypedOutput()->GetDataTree();
+    avtDataTree_p tree = f2->GetTypedOutput()->GetDataTree();
 
     //Set the output variable properly.
     int nleaves;
@@ -185,7 +217,7 @@ avtRFilter::Execute()
     delete [] leaves;
 
     SetOutputDataTree(tree);
-    delete f;
+    //delete f;
 }
 
 

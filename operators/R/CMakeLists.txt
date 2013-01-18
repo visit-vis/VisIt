@@ -7,6 +7,7 @@ SET(COMMON_SOURCES
 RPluginInfo.C
 RCommonPluginInfo.C
 RAttributes.C
+ExtremeValueAnalysisAttributes.C
 )
 
 SET(LIBI_SOURCES 
@@ -31,6 +32,8 @@ SET(LIBE_SOURCES
 REnginePluginInfo.C
 avtRFilter.C
 avtTMP.C
+avtRExtremesFilter.C
+avtRSimpleFilter.C
 ${COMMON_SOURCES}
 )
 
