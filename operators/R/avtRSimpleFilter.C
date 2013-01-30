@@ -284,6 +284,7 @@ avtRSimpleFilter::CreateFinalOutput()
 {
     avtCallback::ResetTimeout(0);
 
+    int numTimes = 1;
     //Exchange data....
 #ifdef PARALLEL
     float *tmp = new float[numTimes];

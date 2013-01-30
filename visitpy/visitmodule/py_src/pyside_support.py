@@ -89,12 +89,14 @@ class ProcessCLIInput(Thread):
                                 if s == sys.stdin:
                                     self.qtapp.exit(0)
                         except:
+                            if sys.stdin.closed : break
                             pass
                     else:
                         import msvcrt
                         if msvcrt.kbhit():
                             self.qtapp.exit(0)
             except:
+                if sys.stdin.closed : break
                 pass
 
 def GetPySideViewerInstance():

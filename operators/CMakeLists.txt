@@ -116,6 +116,7 @@ Revolve
 Slice
 Smooth
 SphereSlice
+Script
 Stagger
 SurfaceNormal
 ThreeSlice
