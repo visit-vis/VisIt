@@ -84,7 +84,7 @@ class avtScriptFilter : public avtPluginDataTreeIterator
 
     virtual vtkDataSet   *ExecuteData(vtkDataSet *, int, std::string);
     
-    avtPythonFilterEnvironment* pyenv;
+    avtPythonFilterEnvironment* pyEnv;
 };
 
 

@@ -42,6 +42,8 @@
 
 #include <avtScriptFilter.h>
 #include <avtPythonFilterEnvironment.h>
+#include <Python.h>
+#include <vtkDataSet.h>
 
 // ****************************************************************************
 //  Method: avtScriptFilter constructor
@@ -52,20 +54,23 @@
 // ****************************************************************************
 
 avtScriptFilter::avtScriptFilter()
+:pyEnv(NULL)
 {
-    pyenv = new avtPythonFilterEnvironment();
+    pyEnv = new avtPythonFilterEnvironment();
 
     std::cout << "executing.." << std::endl;
-    if(!pyenv->Initialize(false))
+    if(!pyEnv->Initialize())
         std::cout << "Failed to initialize python environment.." << std::endl;
 
     std::string script = "";
-    script += "import os,sys\n";
+    script += "import sys\n";
+    script  = "import os\n";
+    script += "import json\n";
     script += "from flow import *\n";
-    script += "from visit_flow_vpe import *\n";
+    script += "from flow.filters import spipeline\n";
 
     /// initialize environment
-    if(!pyenv->Interpreter()->RunScript(script))
+    if(!pyEnv->Interpreter()->RunScript(script))
         std::cout << "Script Failed.." << std::endl;
 }
 
@@ -82,8 +87,8 @@ avtScriptFilter::avtScriptFilter()
 
 avtScriptFilter::~avtScriptFilter()
 {
-    if(pyenv)
-        delete pyenv;
+    if(pyEnv)
+        delete pyEnv;
 }
 
 
@@ -159,15 +164,55 @@ avtScriptFilter::Equivalent(const AttributeGroup *a)
 //  Creation:   Wed Jan 16 18:16:39 PST 2013
 //
 // ****************************************************************************
-#include <vtkRectilinearGrid.h>
 vtkDataSet *
 avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int, std::string)
 {
-
+    std::string script = "";
     /// Setup input dataset to python registry..
     MapNode node = atts.GetScriptMap();
     //std::cout << node.ToXML() << std::endl;
-    return vtkRectilinearGrid::New();
+    std::string json_string = node["filter"].AsString();
+    std::cout << json_string << std::endl;
+    // create python string
+    PyObject *py_json_str = PyString_FromString(json_string.c_str());
+    pyEnv->Interpreter()->SetGlobalObject(py_json_str,"sdef_json");
+    script   = "sdef = json.loads(sdef_json)\n";
+    script  += "print json.dumps(sdef,indent=2)\n";
+    /// initialize environment
+    if(!pyEnv->Interpreter()->RunScript(script))
+    {
+        std::cout << "Script Failed.." << std::endl;
+        std::cout << pyEnv->Interpreter()->ErrorMessage() << std::endl;
+    }
+    // create a workspace
+    script  = "w = Workspace()\n";
+    // register the scripts
+    script += "spipeline.register_user_scripts(sdef['scripts'])\n";
+    script += "w.register_filters(spipeline)\n";
+    // put the input mesh into the registry
+    PyObject* py_ds_in = pyEnv->WrapVTKObject(in_ds,"vtkDataSet");
+    pyEnv->Interpreter()->SetGlobalObject(py_ds_in,"ds_in");
+    script += "w.register_filters(spipeline)\n";
+    // load the data flow
+    script += "w.load_dict(sdef)\n";
+    script += "w.registry_add(':src_a',2)\n";
+    script += "w.registry_add(':src_b',3)\n";
+    // get the visit vars
+    script += "res = ds_in\n";
+    script += "print w.execute()\n";
+    script += "print (2+3)*(2+3) + (3-2)*(3-2)\n";    
+    if(!pyEnv->Interpreter()->RunScript(script))
+    {
+        std::cout << "Script Failed.." << std::endl;
+        std::cout << pyEnv->Interpreter()->ErrorMessage() << std::endl;
+    }
+    PyObject *py_res = pyEnv->Interpreter()->GetGlobalObject("res");
+    if(py_ds_in == NULL)
+        std::cout << "BAD ERROR" <<std::endl;
+    vtkDataSet *res = (vtkDataSet*)pyEnv->UnwrapVTKObject(py_res,"vtkDataSet");
+    res->Register(NULL);
+    return in_ds;
+
 }
 
 

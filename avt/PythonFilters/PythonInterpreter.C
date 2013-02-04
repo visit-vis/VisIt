@@ -363,6 +363,7 @@ PythonInterpreter::CheckError()
         }
         PyErr_Restore(py_etype,py_eval,py_etrace);
         PyErr_Clear();
+        cout << "ERROR: " << errorMsg <<endl;
     }
 
     return error;
