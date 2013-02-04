@@ -221,56 +221,7 @@ QvisScriptWindow::UpdateWindow(bool doAll)
 void
 QvisScriptWindow::GetCurrentValues(int which_widget)
 {
-    JSONNode master;
-
-    JSONNode scripts, nodes, conns;
-
-    JSONNode addscript, evalscript;
-    JSONNode f1, f2;
-    JSONNode conn1, conn2, conn3;
-
-
-    addscript["vars"]  = "";
-    addscript["source"] = "<source>";
-
-    evalscript["vars"] = "";
-    evalscript["source"] = "source";
-
-    scripts["add"] = addscript;
-    scripts["eval"] = evalscript;
-
-    f1["type"] = "add";
-    nodes["f1"] = f1;
-
-    f2["type"] = "eval";
-    nodes["f2"] = f2;
-
-    conn1["from"] = ":a";
-    conn1["to"] = "f1";
-    conn1["port"] = "0";
-
-    conn2["from"] = ":b";
-    conn2["to"] = "f1";
-    conn2["port"] = "1";
-
-    conn3["from"] = "f1";
-    conn3["to"] = "f2";
-    conn3["port"] = "0";
-
-    conns["a0"] = conn1;
-    conns["a1"] = conn2;
-    conns["b0"] = conn2;
-
-    master["scripts"] = scripts;
-    master["nodes"] = nodes;
-    master["connections"] = conns;
-
-    std::cout << master.ToString() << std::endl;
-    MapNode mapnode;
-    mapnode["filter"] = master.ToString();
-
-    atts->SetScriptMap(mapnode);
-}
+ }
 
 
 //

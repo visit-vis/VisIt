@@ -38,7 +38,7 @@
 
 #include <ScriptAttributes.h>
 #include <DataNode.h>
-
+#include <JSONNode.h>
 // ****************************************************************************
 // Method: ScriptAttributes::ScriptAttributes
 //
@@ -56,6 +56,99 @@
 
 void ScriptAttributes::Init()
 {
+    JSONNode master;
+
+     JSONNode scripts, nodes, conns;
+
+     JSONNode addScript, subScript, multScript;
+     JSONNode vars = JSONNode::JSONArray();
+
+     vars.GetArray().push_back("a");
+     vars.GetArray().push_back("b");
+
+
+ //    sdef["scripts"] = {"add":{"source":"r=a+b\nsetout(r)",
+ //    "vars":["a","b"]},
+     addScript["source"] = "r=a+b\nsetout(r)";
+     addScript["vars"] = vars;
+
+ //    "sub":{"source":"r=a-b\nsetout(r)",
+ //        "vars":["a","b"]},
+     subScript["source"] = "r=a-b\nsetout(r)";
+     subScript["vars"] = vars;
+ //    "mult":{"source":"r=a*b\nsetout(r)",
+ //        "vars":["a","b"]}}
+     multScript["source"] = "r=a*b\nsetout(r)";
+     multScript["vars"] = vars;
+
+     scripts["addScript"] = addScript;
+     scripts["subScript"] = subScript;
+     scripts["multScript"] = multScript;
+
+     JSONNode node;
+ //    sdef["nodes"] = {"f1":{"type":"add"},
+     node["type"] = "add"; nodes["f1"] = node;
+ //    "f2":{"type":"sub"},
+     node["type"] = "sub"; nodes["f2"] = node;
+ //    "f3":{"type":"mult"},
+     node["type"] = "mult"; nodes["f3"] = node;
+ //    "f4":{"type":"mult"},
+     node["type"] = "mult"; nodes["f4"] = node;
+ //    "f5":{"type":"add"}}
+     node["type"] = "add"; nodes["f5"] = node;
+
+     conns = JSONNode::JSONArray();
+
+     JSONNode conn;
+
+ //    sdef["connections"] = [{"from":":src_a","to":"f1","port":"a"},
+     conn["from"] = ":src_a"; conn["to"] = "f1"; conn["port"] = "a";
+     conns.GetArray().push_back(conn);
+
+ //    {"from":":src_b","to":"f1","port":"b"},
+     conn["from"] = ":src_b"; conn["to"] = "f1"; conn["port"] = "b";
+     conns.GetArray().push_back(conn);
+
+ //    {"from":":src_b","to":"f2","port":"a"},
+     conn["from"] = ":src_b"; conn["to"] = "f2"; conn["port"] = "a";
+     conns.GetArray().push_back(conn);
+
+ //    {"from":":src_a","to":"f2","port":"b"},
+     conn["from"] = ":src_a"; conn["to"] = "f2"; conn["port"] = "b";
+     conns.GetArray().push_back(conn);
+
+ //    {"from":"f1","to":"f3","port":"a"},
+     conn["from"] = "f1"; conn["to"] = "f3"; conn["port"] = "a";
+     conns.GetArray().push_back(conn);
+
+ //    {"from":"f1","to":"f3","port":"b"},
+     conn["from"] = "f1"; conn["to"] = "f3"; conn["port"] = "b";
+     conns.GetArray().push_back(conn);
+
+ //    {"from":"f2","to":"f4","port":"a"},
+     conn["from"] = "f2"; conn["to"] = "f4"; conn["port"] = "a";
+     conns.GetArray().push_back(conn);
+
+ //    {"from":"f2","to":"f4","port":"b"},
+     conn["from"] = "f2"; conn["to"] = "f4"; conn["port"] = "b";
+     conns.GetArray().push_back(conn);
+
+ //    {"from":"f3","to":"f5","port":"a"},
+     conn["from"] = "f3"; conn["to"] = "f5"; conn["port"] = "a";
+     conns.GetArray().push_back(conn);
+
+ //    {"from":"f4","to":"f5","port":"b"}]
+     conn["from"] = "f3"; conn["to"] = "f5"; conn["port"] = "a";
+     conns.GetArray().push_back(conn);
+
+     master["scripts"] = scripts;
+     master["nodes"] = nodes;
+     master["conns"] = conns;
+
+     MapNode mapnode;
+     mapnode["filter"] = master.ToString();
+
+     SetScriptMap(mapnode);
 
     ScriptAttributes::SelectAll();
 }
