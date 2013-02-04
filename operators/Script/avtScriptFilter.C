@@ -53,6 +53,20 @@
 
 avtScriptFilter::avtScriptFilter()
 {
+    pyenv = new avtPythonFilterEnvironment();
+
+    std::cout << "executing.." << std::endl;
+    if(!pyenv->Initialize(false))
+        std::cout << "Failed to initialize python environment.." << std::endl;
+
+    std::string script = "";
+    script += "import os,sys\n";
+    script += "from flow import *\n";
+    script += "from visit_flow_vpe import *\n";
+
+    /// initialize environment
+    if(!pyenv->Interpreter()->RunScript(script))
+        std::cout << "Script Failed.." << std::endl;
 }
 
 
@@ -68,6 +82,8 @@ avtScriptFilter::avtScriptFilter()
 
 avtScriptFilter::~avtScriptFilter()
 {
+    if(pyenv)
+        delete pyenv;
 }
 
 
@@ -147,7 +163,10 @@ avtScriptFilter::Equivalent(const AttributeGroup *a)
 vtkDataSet *
 avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int, std::string)
 {
-    //YOUR CODE TO MODIFY THE DATASET GOES HERE
+
+    /// Setup input dataset to python registry..
+    MapNode node = atts.GetScriptMap();
+    std::cout << node.ToXML() << std::endl;
     return vtkRectilinearGrid::New();
 }
 

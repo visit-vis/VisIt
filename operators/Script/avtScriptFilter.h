@@ -62,6 +62,8 @@ class vtkDataSet;
 //
 // ****************************************************************************
 
+class avtPythonFilterEnvironment;
+
 class avtScriptFilter : public avtPluginDataTreeIterator
 {
   public:
@@ -81,6 +83,8 @@ class avtScriptFilter : public avtPluginDataTreeIterator
     ScriptAttributes   atts;
 
     virtual vtkDataSet   *ExecuteData(vtkDataSet *, int, std::string);
+    
+    avtPythonFilterEnvironment* pyenv;
 };
 
 

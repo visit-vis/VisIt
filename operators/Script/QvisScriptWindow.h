@@ -59,7 +59,6 @@ class QvisColorButton;
 class QvisLineStyleWidget;
 class QvisLineWidthWidget;
 class QvisVariableButton;
-class avtPythonFilterEnvironment;
 
 // ****************************************************************************
 // Class: QvisScriptWindow
@@ -106,6 +105,7 @@ class QvisScriptWindow : public QvisOperatorWindow
         QString type;
         int type_index;
         bool isExecutable;
+        MapNode contents;
     };
 
     ScriptAttributes *atts;
@@ -114,7 +114,6 @@ class QvisScriptWindow : public QvisOperatorWindow
     QMap< QString, scriptAtts> scriptContentsMap;
 
     Ui::Form* form;
-    avtPythonFilterEnvironment* pyenv;
     void showChildWidget(const QString& name);
 };
 

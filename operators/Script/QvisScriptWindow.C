@@ -57,17 +57,9 @@
 #include <QvisVariableButton.h>
 
 #include <avtPythonFilterEnvironment.h>
-#include <QvisScriptConstantWidget.h>
-#include <QvisScriptVariableWidget.h>
 #include <QvisScriptBuiltInFunctionsWidget.h>
-
-#ifdef HAVE_SCRIPT_R_WIDGET
-    #include <QvisScriptRWidget.h>
-#endif
-
-#ifdef HAVE_SCRIPT_PYTHON_WIDGET
-    #include <QvisScriptPythonWidget.h>
-#endif
+#include <QvisScriptRWidget.h>
+#include <QvisScriptPythonWidget.h>
 
 
 #include "ui_Script.h"
@@ -100,23 +92,15 @@ QvisScriptWindow::QvisScriptWindow(const int type,
     atts = subj;
 
     /// move to another class that initializes..
-    scripts.push_back(new QvisScriptConstantWidget(this));
-    scripts.push_back(new QvisScriptVariableWidget(this));
+
     scripts.push_back(new QvisScriptBuiltinFunctionsWidget(this));
-
-#ifdef HAVE_SCRIPT_PYTHON_WIDGET
     scripts.push_back(new QvisScriptPythonWidget(this));
-#endif
-
-#ifdef HAVE_SCRIPT_R_WIDGET
     scripts.push_back(new QvisScriptRWidget(this));
-#endif
 
     for(int i = 0; i < scripts.size(); ++i)
         scriptMap[scripts.at(i)->GetName()] = scripts.at(i);
 
     form = new Ui::Form();
-    pyenv = new avtPythonFilterEnvironment();
 }
 
 
@@ -180,20 +164,6 @@ QvisScriptWindow::CreateWindowContents()
     connect(form->scripts,SIGNAL(clicked(QModelIndex)),this,SLOT(scriptSelected(QModelIndex)));
     connect(form->addScript,SIGNAL(clicked()),this,SLOT(addScript()));
     connect(form->removeScript,SIGNAL(clicked()),this,SLOT(removeScript()));
-
-    if(!pyenv->Initialize(false))
-    {
-        std::cout << "Failed to initialize python environment.." << std::endl;
-    }
-
-    std::string script = "";
-    script += "import site,os,sys\n";
-    script += "from flow import *\n";
-    script += "from visit_flow_vpe import *\n";
-
-    /// initialize environment
-    if(!pyenv->Interpreter()->RunScript(script))
-        std::cout << "Script Failed.." << std::endl;
 }
 
 
@@ -251,6 +221,22 @@ QvisScriptWindow::UpdateWindow(bool doAll)
 void
 QvisScriptWindow::GetCurrentValues(int which_widget)
 {
+    MapNode master;
+
+//    MapNode scripts;
+//    foreach(const scriptAtts& s, scriptContentsMap)
+//        scripts[s.name] = s.contents;
+
+//    master["scripts"] = scripts;
+
+//    MapNode nodes;
+//    foreach(const scriptAtts& s, scriptContentsMap)
+//        scripts[s.name] = s.contents;
+
+//    master["scripts"] = scripts;
+
+
+    atts->SetScriptMap(master);
 }
 
 
