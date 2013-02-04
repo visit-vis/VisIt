@@ -36,75 +36,29 @@
 *
 *****************************************************************************/
 
-#ifndef PYTHON_INTERPRETER_H
-#define PYTHON_INTERPRETER_H
-#include <python_filters_exports.h>
-#include <iostream>
+#ifndef PY_SCRIPTATTRIBUTES_H
+#define PY_SCRIPTATTRIBUTES_H
+#include <Python.h>
+#include <ScriptAttributes.h>
 
-// Forward Declare PyObject*
-#ifndef PyObject_HEAD
-struct _object;
-typedef _object PyObject;
+//
+// Functions exposed to the VisIt module.
+//
+#define SCRIPTATTRIBUTES_NMETH 2
+void           PyScriptAttributes_StartUp(ScriptAttributes *subj, void *data);
+void           PyScriptAttributes_CloseDown();
+PyMethodDef *  PyScriptAttributes_GetMethodTable(int *nMethods);
+bool           PyScriptAttributes_Check(PyObject *obj);
+ScriptAttributes *  PyScriptAttributes_FromPyObject(PyObject *obj);
+PyObject *     PyScriptAttributes_New();
+PyObject *     PyScriptAttributes_Wrap(const ScriptAttributes *attr);
+void           PyScriptAttributes_SetParent(PyObject *obj, PyObject *parent);
+void           PyScriptAttributes_SetDefaults(const ScriptAttributes *atts);
+std::string    PyScriptAttributes_GetLogString();
+std::string    PyScriptAttributes_ToString(const ScriptAttributes *, const char *);
+PyObject *     PyScriptAttributes_getattr(PyObject *self, char *name);
+int            PyScriptAttributes_setattr(PyObject *self, char *name, PyObject *args);
+extern PyMethodDef PyScriptAttributes_methods[SCRIPTATTRIBUTES_NMETH];
+
 #endif
 
-
-// ****************************************************************************
-//  Class:  PythonInterpreter
-//
-//  Purpose:
-//    Simple embeddable python interprter.
-//
-//  Programmer:  Cyrus Harrison
-//  Creation:    May 2, 2008
-//
-// ****************************************************************************
-class AVTPYTHON_FILTERS_API PythonInterpreter
-{
-public:
-                 PythonInterpreter();
-    virtual     ~PythonInterpreter();
-
-    bool         Initialize(int argc=0,char **argv=NULL);
-    bool         IsRunning() { return running;}
-    void         Reset();
-    void         Shutdown();
-
-    bool         AddSystemPath(const std::string &path);
-    bool         AddSystemDir(const std::string &path);
-    bool         RunScript(const std::string &script);
-    bool         RunScriptFile(const std::string &fname);
-
-    bool         SetGlobalObject(PyObject *obj,
-                                 const std::string &name);
-    PyObject    *GetGlobalObject(const std::string &name);
-
-    PyObject    *GlobalDict() {return globalDict;}
-
-    bool         CheckError();
-    void         ClearError();
-    std::string  ErrorMessage() const { return errorMsg; }
-
-    static bool  PyObjectToDouble(PyObject *,double &);
-    static bool  PyObjectToString(PyObject *,std::string &);
-    static bool  PyObjectToInteger(PyObject *,int &);
-
-private:
-    bool         PyTracebackToString(PyObject *,PyObject *,PyObject *,
-                                     std::string &);
-
-    bool         running;
-    bool         error;
-    std::string  errorMsg;
-
-    PyObject    *mainModule;
-    PyObject    *globalDict;
-
-    PyObject    *traceModule;
-    PyObject    *sioModule;
-    PyObject    *tracePrintException;
-    PyObject    *sioClass;
-
-};
-
-
-#endif

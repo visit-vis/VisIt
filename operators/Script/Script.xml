@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+  <Plugin name="Script" type="operator" label="Script" version="1.0" enabled="true" mdspecificcode="false" engspecificcode="false" onlyengine="false" noengine="false">
+    <Attribute name="ScriptAttributes" purpose="ScriptAttributes" persistent="true" keyframe="true" exportAPI="" exportInclude="">
+      <Field name="ScriptMap" label="ScriptMap" type="MapNode">
+      </Field>
+    </Attribute>
+  </Plugin>

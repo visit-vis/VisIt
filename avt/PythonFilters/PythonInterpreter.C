@@ -203,6 +203,16 @@ PythonInterpreter::AddSystemPath(const std::string &path)
     return RunScript("sys.path.insert(1,r'" + path + "')\n");
 }
 
+/// the directory version is able to add python eggs into the path
+/// while the system path version does not seem to handle it.
+bool
+PythonInterpreter::AddSystemDir(const std::string &path)
+{
+    std::string dir = "import site\n";
+    dir += "site.addsitedir(r'" + path + "')\n";
+    return RunScript(dir);
+}
+
 // ****************************************************************************
 //  Method: PythonInterpreter::RunScript
 //

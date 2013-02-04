@@ -116,7 +116,6 @@ Revolve
 Slice
 Smooth
 SphereSlice
-Script
 Stagger
 SurfaceNormal
 ThreeSlice
@@ -127,6 +126,11 @@ TriangulateRegularPoints
 Tube
 ZoneDump
 )
+
+#adding programmable operator only if Python is available..
+IF(VISIT_PYTHON_FILTERS)
+    LIST(APPEND REQUIRED_OPERATOR_PLUGINS Script)
+ENDIF(VISIT_PYTHON_FILTERS)
 
 LIST(FIND VTK_KITS "GEOVIS" ADD_CARTOGRAPHIC)
 IF(ADD_CARTOGRAPHIC GREATER "-1")

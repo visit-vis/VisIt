@@ -35,76 +35,46 @@
 * DAMAGE.
 *
 *****************************************************************************/
+#ifndef QVISRHIGHLIGHTER_H
+#define QVISRHIGHLIGHTER_H
 
-#ifndef PYTHON_INTERPRETER_H
-#define PYTHON_INTERPRETER_H
-#include <python_filters_exports.h>
-#include <iostream>
+#include <QSyntaxHighlighter>
 
-// Forward Declare PyObject*
-#ifndef PyObject_HEAD
-struct _object;
-typedef _object PyObject;
-#endif
+#include <QHash>
+#include <QTextCharFormat>
 
+class QTextDocument;
 
-// ****************************************************************************
-//  Class:  PythonInterpreter
-//
-//  Purpose:
-//    Simple embeddable python interprter.
-//
-//  Programmer:  Cyrus Harrison
-//  Creation:    May 2, 2008
-//
-// ****************************************************************************
-class AVTPYTHON_FILTERS_API PythonInterpreter
+class QvisRSyntaxHighlighter : public QSyntaxHighlighter
 {
+    //Q_OBJECT
+
 public:
-                 PythonInterpreter();
-    virtual     ~PythonInterpreter();
+    QvisRSyntaxHighlighter(QTextDocument *parent = 0);
 
-    bool         Initialize(int argc=0,char **argv=NULL);
-    bool         IsRunning() { return running;}
-    void         Reset();
-    void         Shutdown();
-
-    bool         AddSystemPath(const std::string &path);
-    bool         AddSystemDir(const std::string &path);
-    bool         RunScript(const std::string &script);
-    bool         RunScriptFile(const std::string &fname);
-
-    bool         SetGlobalObject(PyObject *obj,
-                                 const std::string &name);
-    PyObject    *GetGlobalObject(const std::string &name);
-
-    PyObject    *GlobalDict() {return globalDict;}
-
-    bool         CheckError();
-    void         ClearError();
-    std::string  ErrorMessage() const { return errorMsg; }
-
-    static bool  PyObjectToDouble(PyObject *,double &);
-    static bool  PyObjectToString(PyObject *,std::string &);
-    static bool  PyObjectToInteger(PyObject *,int &);
+protected:
+    void highlightBlock(const QString &text);
 
 private:
-    bool         PyTracebackToString(PyObject *,PyObject *,PyObject *,
-                                     std::string &);
+    void setupRules();
+    bool checkOpen(const QRegExp &regx,const QString &text,bool open);
+    bool checkClosed(const QRegExp &regx,const QString &text);
 
-    bool         running;
-    bool         error;
-    std::string  errorMsg;
+    struct HighlightingRule
+    {
+        QRegExp         pattern;
+        QTextCharFormat format;
+    };
 
-    PyObject    *mainModule;
-    PyObject    *globalDict;
+    QVector<HighlightingRule> rules;
 
-    PyObject    *traceModule;
-    PyObject    *sioModule;
-    PyObject    *tracePrintException;
-    PyObject    *sioClass;
+    QMap<QString,QTextCharFormat> formats;
+    QMap<QString,QStringList>     patterns;
+    QStringList                   order;
+    
+    QRegExp                       tripleSingleQuote;
+    QRegExp                       tripleDoubleQuote;
 
 };
-
 
 #endif
