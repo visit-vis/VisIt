@@ -166,7 +166,7 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int, std::string)
 
     /// Setup input dataset to python registry..
     MapNode node = atts.GetScriptMap();
-    std::cout << node.ToXML() << std::endl;
+    //std::cout << node.ToXML() << std::endl;
     return vtkRectilinearGrid::New();
 }
 

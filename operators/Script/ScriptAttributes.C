@@ -67,23 +67,23 @@ void ScriptAttributes::Init()
      vars.GetArray().push_back("b");
 
 
- //    sdef["scripts"] = {"add":{"source":"r=a+b\nsetout(r)",
+ //    sdef["scripts"] = {"add":{"source":"r=a+b\\nsetout(r)",
  //    "vars":["a","b"]},
-     addScript["source"] = "r=a+b\nsetout(r)";
+     addScript["source"] = "r=a+b\\nsetout(r)";
      addScript["vars"] = vars;
 
  //    "sub":{"source":"r=a-b\nsetout(r)",
  //        "vars":["a","b"]},
-     subScript["source"] = "r=a-b\nsetout(r)";
+     subScript["source"] = "r=a-b\\nsetout(r)";
      subScript["vars"] = vars;
  //    "mult":{"source":"r=a*b\nsetout(r)",
  //        "vars":["a","b"]}}
-     multScript["source"] = "r=a*b\nsetout(r)";
+     multScript["source"] = "r=a*b\\nsetout(r)";
      multScript["vars"] = vars;
 
-     scripts["addScript"] = addScript;
-     scripts["subScript"] = subScript;
-     scripts["multScript"] = multScript;
+     scripts["add"] = addScript;
+     scripts["sub"] = subScript;
+     scripts["mult"] = multScript;
 
      JSONNode node;
  //    sdef["nodes"] = {"f1":{"type":"add"},
@@ -143,7 +143,7 @@ void ScriptAttributes::Init()
 
      master["scripts"] = scripts;
      master["nodes"] = nodes;
-     master["conns"] = conns;
+     master["connections"] = conns;
 
      MapNode mapnode;
      mapnode["filter"] = master.ToString();
