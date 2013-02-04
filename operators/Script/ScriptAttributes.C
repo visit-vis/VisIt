@@ -138,7 +138,7 @@ void ScriptAttributes::Init()
      conns.GetArray().push_back(conn);
 
  //    {"from":"f4","to":"f5","port":"b"}]
-     conn["from"] = "f3"; conn["to"] = "f5"; conn["port"] = "a";
+     conn["from"] = "f4"; conn["to"] = "f5"; conn["port"] = "b";
      conns.GetArray().push_back(conn);
 
      master["scripts"] = scripts;
