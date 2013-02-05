@@ -87,6 +87,9 @@ void ScriptAttributes::Init()
 
      JSONNode node;
  //    sdef["nodes"] = {"f1":{"type":"add"},
+     node["type"] = "as_ndarray"; nodes["np_d"] = node;
+     node["type"] = "as_ndarray"; nodes["np_p"] = node;
+    
      node["type"] = "add"; nodes["f1"] = node;
  //    "f2":{"type":"sub"},
      node["type"] = "sub"; nodes["f2"] = node;
@@ -96,25 +99,35 @@ void ScriptAttributes::Init()
      node["type"] = "mult"; nodes["f4"] = node;
  //    "f5":{"type":"add"}}
      node["type"] = "add"; nodes["f5"] = node;
+ //    "sink":{"type":"<sink>"}}
+     node["type"] = "<sink>"; nodes["sink"] = node;
+
 
      conns = JSONNode::JSONArray();
 
      JSONNode conn;
 
  //    sdef["connections"] = [{"from":":src_a","to":"f1","port":"a"},
-     conn["from"] = ":src_a"; conn["to"] = "f1"; conn["port"] = "a";
+     conn["from"] = ":d"; conn["to"] = "np_d"; conn["port"] = "in";
      conns.GetArray().push_back(conn);
 
+     conn["from"] = ":p"; conn["to"] = "np_p"; conn["port"] = "in";
+     conns.GetArray().push_back(conn);
+
+     conn["from"] = "np_d"; conn["to"] = "f1"; conn["port"] = "a";
+     conns.GetArray().push_back(conn);
+
+
  //    {"from":":src_b","to":"f1","port":"b"},
-     conn["from"] = ":src_b"; conn["to"] = "f1"; conn["port"] = "b";
+     conn["from"] = "np_p"; conn["to"] = "f1"; conn["port"] = "b";
      conns.GetArray().push_back(conn);
 
  //    {"from":":src_b","to":"f2","port":"a"},
-     conn["from"] = ":src_b"; conn["to"] = "f2"; conn["port"] = "a";
+     conn["from"] = "np_d"; conn["to"] = "f2"; conn["port"] = "a";
      conns.GetArray().push_back(conn);
 
  //    {"from":":src_a","to":"f2","port":"b"},
-     conn["from"] = ":src_a"; conn["to"] = "f2"; conn["port"] = "b";
+     conn["from"] = "np_p"; conn["to"] = "f2"; conn["port"] = "b";
      conns.GetArray().push_back(conn);
 
  //    {"from":"f1","to":"f3","port":"a"},
@@ -139,6 +152,9 @@ void ScriptAttributes::Init()
 
  //    {"from":"f4","to":"f5","port":"b"}]
      conn["from"] = "f4"; conn["to"] = "f5"; conn["port"] = "b";
+     conns.GetArray().push_back(conn);
+
+     conn["from"] = "f5"; conn["to"] = "sink"; conn["port"] = "in";
      conns.GetArray().push_back(conn);
 
      master["scripts"] = scripts;

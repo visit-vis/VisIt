@@ -45,6 +45,8 @@
 #include <Python.h>
 #include <vtkDataSet.h>
 
+using namespace std;
+
 // ****************************************************************************
 //  Method: avtScriptFilter constructor
 //
@@ -58,20 +60,20 @@ avtScriptFilter::avtScriptFilter()
 {
     pyEnv = new avtPythonFilterEnvironment();
 
-    std::cout << "executing.." << std::endl;
+    cout << "executing.." << endl;
     if(!pyEnv->Initialize())
-        std::cout << "Failed to initialize python environment.." << std::endl;
+        cout << "Failed to initialize python environment.." << endl;
 
-    std::string script = "";
+    string script = "";
     script += "import sys\n";
     script  = "import os\n";
     script += "import json\n";
     script += "from flow import *\n";
-    script += "from flow.filters import spipeline\n";
+    script += "from flow.filters import script_pipeline\n";
 
     /// initialize environment
     if(!pyEnv->Interpreter()->RunScript(script))
-        std::cout << "Script Failed.." << std::endl;
+        cout << "Script Failed.." << endl;
 }
 
 
@@ -165,14 +167,41 @@ avtScriptFilter::Equivalent(const AttributeGroup *a)
 //
 // ****************************************************************************
 vtkDataSet *
-avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int, std::string)
+avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, string s)
 {
-    std::string script = "";
+    SetupFlowWorkspace();
+    PyObject* py_ds_in = pyEnv->WrapVTKObject(in_ds,"vtkDataSet");
+    pyEnv->Interpreter()->SetGlobalObject(py_ds_in,"ds_in");
+    pyEnv->Interpreter()->SetGlobalObject(PyString_FromString(primaryVariable.c_str()),
+                                          "pvar");
+    string script = "";
+    script += "ctx.init(ds_in,pvar)\n";
+    script += "w.registry_add(':mesh',ds_in)\n";
+    script += "res = w.execute()\n";
+    if(!pyEnv->Interpreter()->RunScript(script))
+    {
+        cout << "Script Failed.." << endl;
+        cout << pyEnv->Interpreter()->ErrorMessage() << endl;
+    }
+    // we can assume a vtkDataSet as output
+    PyObject *py_res = pyEnv->Interpreter()->GetGlobalObject("res");
+    if(py_ds_in == NULL)
+        cout << "BAD ERROR" <<endl;
+    vtkDataSet *res = (vtkDataSet*)pyEnv->UnwrapVTKObject(py_res,"vtkDataSet");
+    res->Register(NULL);
+    return res;
+
+}
+
+vtkDataSet *
+avtScriptFilter::ExecuteDataOld(vtkDataSet *in_ds, int, string)
+{
+    string script = "";
     /// Setup input dataset to python registry..
     MapNode node = atts.GetScriptMap();
-    //std::cout << node.ToXML() << std::endl;
-    std::string json_string = node["filter"].AsString();
-    std::cout << json_string << std::endl;
+    //cout << node.ToXML() << endl;
+    string json_string = node["filter"].AsString();
+    cout << json_string << endl;
     // create python string
     PyObject *py_json_str = PyString_FromString(json_string.c_str());
     pyEnv->Interpreter()->SetGlobalObject(py_json_str,"sdef_json");
@@ -181,38 +210,132 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int, std::string)
     /// initialize environment
     if(!pyEnv->Interpreter()->RunScript(script))
     {
-        std::cout << "Script Failed.." << std::endl;
-        std::cout << pyEnv->Interpreter()->ErrorMessage() << std::endl;
+        cout << "Script Failed.." << endl;
+        cout << pyEnv->Interpreter()->ErrorMessage() << endl;
     }
     // create a workspace
     script  = "w = Workspace()\n";
     // register the scripts
-    script += "spipeline.register_user_scripts(sdef['scripts'])\n";
-    script += "w.register_filters(spipeline)\n";
+    script += "script_pipeline.register_scripts(sdef['scripts'])\n";
+    script += "w.register_filters(script_pipeline)\n";
     // put the input mesh into the registry
     PyObject* py_ds_in = pyEnv->WrapVTKObject(in_ds,"vtkDataSet");
     pyEnv->Interpreter()->SetGlobalObject(py_ds_in,"ds_in");
-    script += "w.register_filters(spipeline)\n";
+    script += "w.registry_add(':mesh',ds_in)\n";
     // load the data flow
     script += "w.load_dict(sdef)\n";
-    script += "w.registry_add(':src_a',2)\n";
-    script += "w.registry_add(':src_b',3)\n";
+    //script += "w.registry_add(':src_a',2)\n";
+    //script += "w.registry_add(':src_b',3)\n";
     // get the visit vars
     script += "res = ds_in\n";
     script += "print w.execute()\n";
     script += "print (2+3)*(2+3) + (3-2)*(3-2)\n";    
     if(!pyEnv->Interpreter()->RunScript(script))
     {
-        std::cout << "Script Failed.." << std::endl;
-        std::cout << pyEnv->Interpreter()->ErrorMessage() << std::endl;
+        cout << "Script Failed.." << endl;
+        cout << pyEnv->Interpreter()->ErrorMessage() << endl;
     }
     PyObject *py_res = pyEnv->Interpreter()->GetGlobalObject("res");
     if(py_ds_in == NULL)
-        std::cout << "BAD ERROR" <<std::endl;
+        cout << "BAD ERROR" <<endl;
     vtkDataSet *res = (vtkDataSet*)pyEnv->UnwrapVTKObject(py_res,"vtkDataSet");
     res->Register(NULL);
-    return in_ds;
+    return res;
 
 }
 
 
+void
+avtScriptFilter::SetupFlowWorkspace()
+{
+    string script = "";
+    MapNode node = atts.GetScriptMap();
+    string json_string = node["filter"].AsString();
+    cout << json_string << endl;
+    // create python string
+    PyObject *py_json_str = PyString_FromString(json_string.c_str());
+    pyEnv->Interpreter()->SetGlobalObject(py_json_str,"sdef_json");
+    script  = "sdef = json.loads(sdef_json)\n";
+    script += "print json.dumps(sdef,indent=2)\n";
+    // create a workspace
+    script += "w = Workspace()\n";
+    // register the scripts
+    script += "script_pipeline.register_scripts(sdef['scripts'])\n";
+    script += "w.register_filters(script_pipeline)\n";
+    script += "ctx = w.add_context('script_pipeline','<default_context>')\n";
+    // put the input mesh into the registry
+    // load the data flow
+    script += "w.load_dict(sdef)\n";
+    if(!pyEnv->Interpreter()->RunScript(script))
+    {
+        cout << "Script Failed.." << endl;
+        cout << pyEnv->Interpreter()->ErrorMessage() << endl;
+    }    
+}
+
+
+// ****************************************************************************
+//  Method:  avtScriptFilter::ModifyContract
+//
+//  Purpose:
+//    Adds secondary variable request.
+//
+//  Arguments:
+//    spec       the pipeline specification
+//
+//  Programmer:  Cyrus Harrison
+//  Creation:    Mon Feb  4 15:26:10 PST 2013
+//
+//  Modifications:
+//
+// ****************************************************************************
+avtContract_p
+avtScriptFilter::ModifyContract(avtContract_p spec)
+{
+    //
+    // Get the old specification.
+    //
+    avtDataRequest_p ds = spec->GetDataRequest();
+    
+    // set this so we can use the name in exec data
+    primaryVariable = string(ds->GetVariable());
+    cout <<"primaryVariable = " << primaryVariable <<endl;
+    //
+    // Make a new one
+    //
+    avtDataRequest_p nds = new avtDataRequest(ds);
+
+    // we need to find out what visit vars we need to request
+    SetupFlowWorkspace();
+    string script = "";
+    script += "__vars = w.filter_names()\n";
+    script += "__vars = [ var[1:] for var in __vars if var[0] == ':' and var != ':mesh']";
+    if(!pyEnv->Interpreter()->RunScript(script))
+    {
+        cout << "Script Failed.." << endl;
+        cout << pyEnv->Interpreter()->ErrorMessage() << endl;
+    }
+    
+    PyObject *py_vars   = pyEnv->Interpreter()->GetGlobalObject("__vars");
+    PyObject *py_r_vars = PySequence_Fast(py_vars,"Expected Sequence");
+
+    int n_vars          = PySequence_Size(py_r_vars);    
+    // process all vars
+    for(int i = 0; i < n_vars ; i++)
+    {
+        PyObject *py_var_str = PySequence_Fast_GET_ITEM(py_r_vars,i);  // borrowed
+        string var_str = string(PyString_AsString(py_var_str));
+        if (primaryVariable != var_str && var_str != string("default"))
+        {
+            cout << "Adding \"" << var_str << "\" as secondary var" <<endl;
+            nds->AddSecondaryVariable(var_str.c_str());
+        }
+    }
+    
+    //
+    // Create the new pipeline spec from the data spec, and return
+    //
+    avtContract_p rv = new avtContract(spec, nds);
+
+    return rv;
+}
