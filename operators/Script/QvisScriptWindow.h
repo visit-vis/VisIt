@@ -105,12 +105,19 @@ class QvisScriptWindow : public QvisOperatorWindow
         QString type;
         int type_index;
         bool isExecutable;
-        MapNode contents;
+        QvisScriptWidgetInterface* interface;
+    public:
+        scriptAtts()
+        {
+            name = type = "";
+            type_index = -1;
+            isExecutable = false;
+            interface = NULL;
+        }
     };
 
     ScriptAttributes *atts;
-    QList< QvisScriptWidgetInterface* > scripts;
-    QMap< QString, QvisScriptWidgetInterface*> scriptMap;
+    QList < QString > name;
     QMap< QString, scriptAtts> scriptContentsMap;
 
     Ui::Form* form;

@@ -93,12 +93,12 @@ QvisScriptWindow::QvisScriptWindow(const int type,
 
     /// move to another class that initializes..
 
-    scripts.push_back(new QvisScriptBuiltinFunctionsWidget(this));
-    scripts.push_back(new QvisScriptPythonWidget(this));
-    scripts.push_back(new QvisScriptRWidget(this));
+//    scripts.push_back(new QvisScriptBuiltinFunctionsWidget(this));
+//    scripts.push_back(new QvisScriptPythonWidget(this));
+//    scripts.push_back(new QvisScriptRWidget(this));
 
-    for(int i = 0; i < scripts.size(); ++i)
-        scriptMap[scripts.at(i)->GetName()] = scripts.at(i);
+//    for(int i = 0; i < scripts.size(); ++i)
+//        scriptContentsMap[scripts.at(i)->GetName()] = scripts.at(i);
 
     form = new Ui::Form();
 }
@@ -152,8 +152,8 @@ QvisScriptWindow::CreateWindowContents()
 
     form->childWidget->setLayout(childLayout);
 
-    for(int i = 0; i < scripts.size(); ++i)
-        form->scriptType->addItem(scripts.at(i)->GetName());
+//    for(int i = 0; i < scripts.size(); ++i)
+//        form->scriptType->addItem(scripts.at(i)->GetName());
 
     form->scriptWidget->widget(0)->setEnabled(false);
     form->scripts->setRootIsDecorated(false);
@@ -324,7 +324,7 @@ QvisScriptWindow::showChildWidget(const QString &name)
     QLayoutItem* item = layout->takeAt(0);
     if(item) item->widget()->setVisible(false);
 
-    layout->addWidget(scriptMap[atts.type]->GetRenderWidget());
+    layout->addWidget(atts.interface->GetRenderWidget());
 
     form->isScriptExecutable->setChecked(atts.isExecutable);
     form->scriptName->setText(atts.name);

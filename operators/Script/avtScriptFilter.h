@@ -87,7 +87,7 @@ class avtScriptFilter : public avtPluginDataTreeIterator
     virtual avtContract_p
                           ModifyContract(avtContract_p spec);
     
-    void                  SetupFlowWorkspace();
+    bool                  SetupFlowWorkspace();
     avtPythonFilterEnvironment* pyEnv;
     std::string                 primaryVariable;
 };

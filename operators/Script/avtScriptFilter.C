@@ -66,14 +66,15 @@ avtScriptFilter::avtScriptFilter()
 
     string script = "";
     script += "import sys\n";
-    script  = "import os\n";
+    script += "import os\n";
     script += "import json\n";
+
     script += "from flow import *\n";
     script += "from flow.filters import script_pipeline\n";
 
     /// initialize environment
     if(!pyEnv->Interpreter()->RunScript(script))
-        cout << "Script Failed.." << endl;
+        cout << "Initialization Script Failed.." << endl;
 }
 
 
@@ -166,10 +167,17 @@ avtScriptFilter::Equivalent(const AttributeGroup *a)
 //  Creation:   Wed Jan 16 18:16:39 PST 2013
 //
 // ****************************************************************************
+
+#include <vtkDataArray.h>
+#include <vtkPointData.h>
+#include <vtkCellData.h>
+
 vtkDataSet *
 avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, string s)
 {
-    SetupFlowWorkspace();
+    if(!SetupFlowWorkspace())
+        return in_ds;
+
     PyObject* py_ds_in = pyEnv->WrapVTKObject(in_ds,"vtkDataSet");
     pyEnv->Interpreter()->SetGlobalObject(py_ds_in,"ds_in");
     pyEnv->Interpreter()->SetGlobalObject(PyString_FromString(primaryVariable.c_str()),
@@ -177,11 +185,13 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, string s)
     string script = "";
     script += "ctx.init(ds_in,pvar)\n";
     script += "w.registry_add(':mesh',ds_in)\n";
+    script += "w.registry_add(':pvar',pvar)\n";
     script += "res = w.execute()\n";
     if(!pyEnv->Interpreter()->RunScript(script))
     {
         cout << "Script Failed.." << endl;
         cout << pyEnv->Interpreter()->ErrorMessage() << endl;
+        throw VisItException("Script failed to run properly");
     }
     // we can assume a vtkDataSet as output
     PyObject *py_res = pyEnv->Interpreter()->GetGlobalObject("res");
@@ -189,6 +199,38 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, string s)
         cout << "BAD ERROR" <<endl;
     vtkDataSet *res = (vtkDataSet*)pyEnv->UnwrapVTKObject(py_res,"vtkDataSet");
     res->Register(NULL);
+
+    /// get data array for active variable..
+    vtkDataArray* array = res->GetPointData()->GetScalars(primaryVariable.c_str());
+
+    double range[2] = { 0, 0 };
+    if(array)
+    {
+        array->GetRange(range);
+    }
+    else
+    {
+        array = res->GetCellData()->GetScalars(primaryVariable.c_str());
+        if(array)
+        {
+            array->GetRange(range);
+        }
+    }
+
+    avtDataAttributes &dataatts = GetOutput()->GetInfo().GetAttributes();
+    avtExtents* e;
+
+    e = dataatts.GetThisProcsOriginalDataExtents();
+    e->Set(range);
+
+    e = dataatts.GetThisProcsActualSpatialExtents();
+    e->Set(range);
+
+    e = dataatts.GetThisProcsOriginalSpatialExtents();
+    e->Set(range);
+
+    std::cout << "setting: " << range[0] << " " << range[1] << std::endl;
+
     return res;
 
 }
@@ -206,7 +248,7 @@ avtScriptFilter::ExecuteDataOld(vtkDataSet *in_ds, int, string)
     PyObject *py_json_str = PyString_FromString(json_string.c_str());
     pyEnv->Interpreter()->SetGlobalObject(py_json_str,"sdef_json");
     script   = "sdef = json.loads(sdef_json)\n";
-    script  += "print json.dumps(sdef,indent=2)\n";
+    //script  += "print json.dumps(sdef,indent=2)\n";
     /// initialize environment
     if(!pyEnv->Interpreter()->RunScript(script))
     {
@@ -239,24 +281,55 @@ avtScriptFilter::ExecuteDataOld(vtkDataSet *in_ds, int, string)
     if(py_ds_in == NULL)
         cout << "BAD ERROR" <<endl;
     vtkDataSet *res = (vtkDataSet*)pyEnv->UnwrapVTKObject(py_res,"vtkDataSet");
+
+    /// get data array for active variable..
+    vtkDataArray* array = res->GetPointData()->GetScalars(primaryVariable.c_str());
+
+    double minv =0, maxv = 0;
+    if(array)
+    {
+        minv = array->GetDataTypeMin();
+        maxv = array->GetDataTypeMax();
+    }
+    else
+    {
+        array = res->GetCellData()->GetScalars(primaryVariable.c_str());
+        if(array)
+        {
+            minv = array->GetDataTypeMin();
+            maxv = array->GetDataTypeMax();
+        }
+    }
+
+    avtDataAttributes &dataatts = GetOutput()->GetInfo().GetAttributes();
+    avtExtents* e = dataatts.GetThisProcsActualDataExtents();
+
+    double range[2];
+    range[0] = minv;
+    range[1] = maxv;
+    e->Set(range);
+    std::cout << "setting: " << minv << " " << maxv << std::endl;
+
     res->Register(NULL);
     return res;
 
 }
 
 
-void
-avtScriptFilter::SetupFlowWorkspace()
+bool avtScriptFilter::SetupFlowWorkspace()
 {
     string script = "";
     MapNode node = atts.GetScriptMap();
+
+    if(!node.HasEntry("filter")) return false;
+
     string json_string = node["filter"].AsString();
-    cout << json_string << endl;
+
     // create python string
     PyObject *py_json_str = PyString_FromString(json_string.c_str());
     pyEnv->Interpreter()->SetGlobalObject(py_json_str,"sdef_json");
     script  = "sdef = json.loads(sdef_json)\n";
-    script += "print json.dumps(sdef,indent=2)\n";
+    //script += "print json.dumps(sdef,indent=2)\n";
     // create a workspace
     script += "w = Workspace()\n";
     // register the scripts
@@ -270,7 +343,9 @@ avtScriptFilter::SetupFlowWorkspace()
     {
         cout << "Script Failed.." << endl;
         cout << pyEnv->Interpreter()->ErrorMessage() << endl;
-    }    
+        throw VisItException("Workspace setup has failed");
+    }
+    return true;
 }
 
 
@@ -305,15 +380,18 @@ avtScriptFilter::ModifyContract(avtContract_p spec)
     //
     avtDataRequest_p nds = new avtDataRequest(ds);
 
+    /// if setup has failed then return immediately...
+    if(!SetupFlowWorkspace()) return new avtContract(spec, nds);
+
     // we need to find out what visit vars we need to request
-    SetupFlowWorkspace();
     string script = "";
     script += "__vars = w.filter_names()\n";
-    script += "__vars = [ var[1:] for var in __vars if var[0] == ':' and var != ':mesh']";
+    script += "__vars = [ var[1:] for var in __vars if var[0] == ':' and var != ':mesh' and var != ':pvar']";
     if(!pyEnv->Interpreter()->RunScript(script))
     {
         cout << "Script Failed.." << endl;
         cout << pyEnv->Interpreter()->ErrorMessage() << endl;
+        throw VisItException("Contract extraction failed..");
     }
     
     PyObject *py_vars   = pyEnv->Interpreter()->GetGlobalObject("__vars");
