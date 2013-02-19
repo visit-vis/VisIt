@@ -169,6 +169,8 @@ class PIPELINE_API avtDataset : public avtDataObject
     friend                   class  avtExtremeValueAnalysisFilter;
     friend                   class  avtPeaksOverThresholdFilter;
     friend                   class  avtModelBasedClusteringFilter;
+    friend                   class  avtRFilter;
+    friend                   class  avtScriptFilter;
 #endif
 
   public:

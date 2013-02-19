@@ -70,6 +70,7 @@ public:
     void         Shutdown();
 
     bool         AddSystemPath(const std::string &path);
+    bool         AddSystemDir(const std::string &path);
     bool         RunScript(const std::string &script);
     bool         RunScriptFile(const std::string &fname);
 

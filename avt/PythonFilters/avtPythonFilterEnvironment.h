@@ -70,7 +70,7 @@ public:
                  avtPythonFilterEnvironment();
     virtual     ~avtPythonFilterEnvironment();
 
-    bool         Initialize();
+    bool         Initialize(bool shouldImportVTK = true);
     bool         LoadFilter(const std::string &py_script);
     bool         FetchPythonError(std::string &msg_out);
 

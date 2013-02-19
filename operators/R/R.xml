@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+  <Plugin name="R" type="operator" label="R" version="1.0" enabled="true" mdspecificcode="false" engspecificcode="false" onlyengine="false" noengine="false">
+    <Attribute name="RAttributes" purpose="RAttributes" persistent="true" keyframe="true" exportAPI="" exportInclude="">
+      <Field name="Rmap" label="Rmap" type="MapNode">
+      </Field>
+    </Attribute>
+  </Plugin>

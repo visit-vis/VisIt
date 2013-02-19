@@ -75,23 +75,44 @@
 # Copy necessary bin files & directories to the build dir.
 #----------------------------------------------------------------------------
 
+IF(VISIT_PYTHON_SCRIPTING)
+    GET_FILENAME_COMPONENT(VISIT_PY_EXEC ${PYTHON_EXECUTABLE} NAME)
+    FILE(COPY ${PYTHON_EXECUTABLE} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+    SET(VISIT_PYTHON_HOME ${VISIT_PYTHON_DIR})
+    SET(VISIT_PYTHON_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${VISIT_PY_EXEC})
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/frontendlauncher.cmake.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/frontendlauncher @ONLY)
+
+    SET(VISIT_PYTHON_HOME ${CMAKE_INSTALL_PREFIX}/${VISIT_INSTALLED_VERSION_LIB}/python)
+    SET(VISIT_PYTHON_EXECUTABLE ${CMAKE_INSTALL_PREFIX}/${VISIT_VERSION}/bin/${VISIT_PY_EXEC})
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/frontendlauncher.cmake.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/frontendlauncher_install @ONLY)
+
+ELSE(VISIT_PYTHON_SCRIPTING)
+    FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/frontendlauncher DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+ENDIF(VISIT_PYTHON_SCRIPTING)
+
 SET(VISIT_BIN_DIRECTORIES shaders)
 
 SET(VISIT_BIN_FILES
         Doxyfile
-        curv3dprep
-        frontendlauncher
-        makemili
         mkgrdbl
-        mpeg2encode
         regen-ajp
         run_doxygen
+        visit_plugin
+        xml2plugin)
+
+SET(VISIT_FRONTENDLAUNCHER_BIN_FILES
+        curv3dprep
+        makemili
+        mpeg2encode
+        mpeg_encode
         surfcomp
         text2polys
         time_annotation
         visit
         visit_composite
-        visit_plugin
         visit_transition
         visitconvert
         visitprotocol
@@ -100,7 +121,6 @@ SET(VISIT_BIN_FILES
         xml2cmake
         xml2info
         xml2java
-        xml2plugin
         xml2python
         xml2window
         xmledit
@@ -122,12 +142,25 @@ IF (NOT WIN32)
                                 ${CMAKE_CURRENT_BINARY_DIR}/${VISIT_BIN_ITEM})
     ENDFOREACH(VISIT_BIN_ITEM)
 
+    FOREACH(VISIT_BIN_ITEM ${VISIT_FRONTENDLAUNCHER_BIN_FILES})
+        EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E copy
+                                ${CMAKE_CURRENT_BINARY_DIR}/frontendlauncher
+                                ${CMAKE_CURRENT_BINARY_DIR}/${VISIT_BIN_ITEM})
+    ENDFOREACH(VISIT_BIN_ITEM)
 
-    INSTALL(FILES ${VISIT_BIN_FILES}
+    INSTALL(FILES ${VISIT_BIN_FILES} ${PYTHON_EXECUTABLE}
             DESTINATION bin
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
                         GROUP_READ GROUP_WRITE GROUP_EXECUTE
                         WORLD_READ             WORLD_EXECUTE) 
+
+    FOREACH(VISIT_BIN_ITEM ${VISIT_FRONTENDLAUNCHER_BIN_FILES})
+
+    INSTALL(CODE 
+        "EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E copy 
+                        ${CMAKE_CURRENT_BINARY_DIR}/frontendlauncher_install 
+                        ${CMAKE_INSTALL_PREFIX}/bin/${VISIT_BIN_ITEM})")
+    ENDFOREACH(VISIT_BIN_ITEM)
 
     INSTALL(FILES internallauncher
         DESTINATION ${VISIT_VERSION}/bin
