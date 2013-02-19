@@ -3356,7 +3356,7 @@ OpenClientHelper(PyObject *self, PyObject *args, int componentNumber)
 
         PyErr_Clear();
     }
-    if(componentNumber == 2)
+    else if(componentNumber == 2)
     {
         clientName = "CLI";
         program = "visit";
@@ -3385,6 +3385,11 @@ OpenClientHelper(PyObject *self, PyObject *args, int componentNumber)
                     VisItErrorFunc(OCEError);
                     return NULL;
                 }
+            }
+            else
+            {
+                VisItErrorFunc(OCEError);
+                return NULL;
             }
         }
         else
@@ -15797,7 +15802,18 @@ visit_exec_client_method(void *data)
         keepGoing = false;
         // Make the interpreter quit.
         viewerInitiatedQuit = true;
+        if(acquireLock)
+            VisItUnlockPythonInterpreter(myThreadState);
+        PyGILState_STATE state = PyGILState_Ensure();
+        if(PyOS_ReadlineFunctionPointer || _PyOS_ReadlineTState)
+        {
+            PyOS_Readline(0,0,0);
+            PyOS_ReadlineFunctionPointer = NULL;
+            if(_PyOS_ReadlineTState) PyThreadState_Delete(_PyOS_ReadlineTState);
+
+        }
         PyRun_SimpleString("import sys; sys.exit(0)");
+        PyGILState_Release(state);
     }
     else if(m->GetMethodName() == "Interpret")
     {

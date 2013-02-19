@@ -167,7 +167,6 @@ IF(HAVE_LIB_R)
   LIST(APPEND BUILD_PLUGINS ExtremeValueAnalysis)
   LIST(APPEND BUILD_PLUGINS PeaksOverThreshold)
   LIST(APPEND BUILD_PLUGINS ModelBasedClustering)
-  #LIST(APPEND BUILD_PLUGINS R)
 ENDIF(HAVE_LIB_R)
 
 # Add the plugin directories

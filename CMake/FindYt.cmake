@@ -38,7 +38,7 @@
 #
 #****************************************************************************/
 
-# Use the R_DIR hint from the config-site .cmake file
+# Use the VISIT_YT_DIR hint from the config-site .cmake file
 
 INCLUDE(${VISIT_SOURCE_DIR}/CMake/SetUpThirdParty.cmake)
 
@@ -46,24 +46,25 @@ IF (WIN32)
   # TODO, Windows R Support.
   #SET_UP_THIRD_PARTY(R "lib/${VISIT_MSVC_VERSION};lib" include R Rblase Rlapack)
 ELSE (WIN32)
-  SET_UP_THIRD_PARTY(R lib include R Rblas Rlapack)
-  MESSAGE(STATUS "Installing R directory ${VISIT_INSTALLED_VERSION_LIB}")
-  FILE(COPY ${VISIT_R_DIR}
-        DESTINATION ${CMAKE_BINARY_DIR}/lib/r_support/
-    FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
-                     GROUP_READ GROUP_WRITE GROUP_EXECUTE
-                     WORLD_READ             WORLD_EXECUTE
-    DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE 
-                          GROUP_READ GROUP_WRITE GROUP_EXECUTE 
-                          WORLD_READ             WORLD_EXECUTE)
+  #SET_UP_THIRD_PARTY(YT lib include R Rblas Rlapack)
+  MESSAGE(STATUS "Installing Yt directory ${VISIT_INSTALLED_VERSION_LIB}")
+
+  FILE(COPY ${VISIT_YT_DIR}/lib/
+            DESTINATION ${CMAKE_BINARY_DIR}/lib
+        FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+                         GROUP_READ GROUP_WRITE GROUP_EXECUTE
+                         WORLD_READ             WORLD_EXECUTE
+        DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE 
+                              GROUP_READ GROUP_WRITE GROUP_EXECUTE 
+                              WORLD_READ             WORLD_EXECUTE)
 
 
     #copy to dev branch..
-    IF(VISIT_R_SKIP_INSTALL)
-      MESSAGE("Skipping installation of R libraries")
-    ELSE(VISIT_R_SKIP_INSTALL)
-        INSTALL(DIRECTORY ${VISIT_R_DIR}
-                  DESTINATION ${VISIT_INSTALLED_VERSION_LIB}/r_support/
+    IF(VISIT_YT_SKIP_INSTALL)
+      MESSAGE("Skipping installation of Yt libraries")
+    ELSE(VISIT_YT_SKIP_INSTALL)
+        INSTALL(DIRECTORY ${VISIT_YT_DIR}
+                  DESTINATION ${VISIT_INSTALLED_VERSION_LIB}
             FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
                              GROUP_READ GROUP_WRITE GROUP_EXECUTE
                              WORLD_READ             WORLD_EXECUTE
@@ -71,7 +72,7 @@ ELSE (WIN32)
                                   GROUP_READ GROUP_WRITE GROUP_EXECUTE 
                                   WORLD_READ             WORLD_EXECUTE
             CONFIGURATIONS "";None;Debug;Release;RelWithDebInfo;MinSizeRel)
-    ENDIF(VISIT_R_SKIP_INSTALL)
+    ENDIF(VISIT_YT_SKIP_INSTALL)
 ENDIF (WIN32)
 
-SET(HAVE_LIB_R 1)
+SET(HAVE_LIB_YT 1)

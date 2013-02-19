@@ -922,6 +922,11 @@ IF(VISIT_R_DIR)
     INCLUDE(${VISIT_SOURCE_DIR}/CMake/FindR.cmake)
 ENDIF(VISIT_R_DIR)
 
+IF(VISIT_YT_DIR)
+    #Configure Yt support.
+    INCLUDE(${VISIT_SOURCE_DIR}/CMake/FindYt.cmake)
+ENDIF(VISIT_YT_DIR)
+
 # Configure VTK support.
 INCLUDE(${VISIT_SOURCE_DIR}/CMake/FindVisItVTK.cmake)
 

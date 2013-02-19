@@ -117,6 +117,7 @@ function build_exodus
     cd cbind/src
     export NETCDFLIB="$VISITDIR/netcdf/$NETCDF_VERSION/$VISITARCH/lib"
     export NETCDFINC="$VISITDIR/netcdf/$NETCDF_VERSION/$VISITARCH/include"
+    info "${C_COMPILER} $CFLAGS $C_OPT_FLAGS -I../include -I"$NETCDFINC" -c *.c"
     ${C_COMPILER} $CFLAGS $C_OPT_FLAGS -I../include -I"$NETCDFINC" -c *.c
     if [[ $? != 0 ]] ; then
         warn "Exodus build failed.  Giving up"
