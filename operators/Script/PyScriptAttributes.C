@@ -128,7 +128,6 @@ struct ScriptAttributesObject
 {
     PyObject_HEAD
     ScriptAttributes *data;
-    JSONNode    node;
     bool        owns;
     PyObject   *parent;
 };
@@ -156,25 +155,8 @@ ScriptAttributes_Notify(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-enum ScriptType{
-    VISIT_SCRIPT_R,
-    VISIT_SCRIPT_PYTHON,
-    VISIT_SCRIPT_FUNCTION,
-    VISIT_SCRIPT_CONSTANT
-};
-
-void replace(std::string& str, const std::string& oldStr, const std::string& newStr)
-{
-  size_t pos = 0;
-  while((pos = str.find(oldStr, pos)) != std::string::npos)
-  {
-     str.replace(pos, oldStr.length(), newStr);
-     pos += newStr.length();
-  }
-}
-
 /*static*/ PyObject *
-AddScript(PyObject *self, PyObject *args, ScriptType type)
+ScriptAttributes_AddPythonScript(PyObject *self, PyObject *args)
 {
     ScriptAttributesObject *obj = (ScriptAttributesObject *)self;
 
@@ -183,106 +165,98 @@ AddScript(PyObject *self, PyObject *args, ScriptType type)
     PyObject* arglist = 0;
     stringVector vec;
 
-    if(type == VISIT_SCRIPT_CONSTANT)
+    if(!PyArg_ParseTuple(args, "sOs", &name,&arglist,&code))
     {
-        //wrap this in a function..
-        if(!PyArg_ParseTuple(args, "ss", &name,&code))
-        {
-            VisItErrorFunc("Arguments are ('name', 'constant')");
-            return NULL;
-        }
-    }
-    else
-    {
-        if(!PyArg_ParseTuple(args, "sOs", &name,&arglist,&code))
-        {
-            VisItErrorFunc("Arguments are ('name',('arg1','arg2',...), 'code')");
-            return NULL;
-        }
-
-        if(!GetStringVectorFromPyObject(arglist,vec))
-        {
-            VisItErrorFunc("Arguments are ('name',('arg1','arg2',...), 'code')");
-            return NULL;
-        }
+        VisItErrorFunc("Arguments are ('name',('arg1','arg2',...), 'code')");
+        return NULL;
     }
 
-    JSONNode vars = JSONNode::JSONArray();
-    for(int i = 0; i < vec.size(); ++i)
-        vars.Append(vec[i]);
-
-    JSONNode node;
-    node["vars"] = vars;
-
-    std::string escapedCode = code;
-    replace(escapedCode, "\n", "\\n");
-
-    if(type == VISIT_SCRIPT_PYTHON)
-        node["source"] = escapedCode;
-    else if(type == VISIT_SCRIPT_R)
+    if(!GetStringVectorFromPyObject(arglist,vec))
     {
-        std::string argstring = "";
-        for(size_t i = 0; i < vec.size(); ++i)
-            argstring += vec[i] + (i == vec.size()-1 ? "" : ",");
-        std::string rwrapper = "";
-        rwrapper += "import numpy\\n";
-        rwrapper += "import rpy2.robjects as robjects\\n";
-        rwrapper += "import rpy2.robjects.numpy2ri\\n";
-        rwrapper += "rpy2.robjects.numpy2ri.activate()\\n";
-        rwrapper += "r_f = robjects.r('''\\n";
-        rwrapper += "(function(" + argstring + ") { \\n";
-        rwrapper += escapedCode;
-        rwrapper += "})\\n";
-        rwrapper += "''')\\n";
-        rwrapper += "r=r_f("+ argstring + ")\\n";
-        //rwrapper += "print 'meow',r\\n";
-        rwrapper += "setout(numpy.asarray(r))\\n";
-        node["source"] = rwrapper;
-    }
-    if(type == VISIT_SCRIPT_CONSTANT)
-    {
-        char buf[1024];
-        sprintf(buf,"r=%s\\nsetout(r)\\n",code);
-        node["source"] = buf;
-
-        /// register constant also as a node..
-        JSONNode cnode;
-        cnode["type"] = name;
-        obj->node["nodes"][name] = cnode;
+        VisItErrorFunc("Arguments are ('name',('arg1','arg2',...), 'code')");
+        return NULL;
     }
 
-    obj->node["scripts"][name] = node;
-
-    MapNode mapnode;
-    mapnode["filter"] = obj->node.ToString();
-    obj->data->SetScriptMap(mapnode);
+    obj->data->AddPythonScript(name,vec,code);
 
     Py_INCREF(Py_None);
     return Py_None;
-}
-/*static*/ PyObject *
-ScriptAttributes_AddPythonScript(PyObject *self, PyObject *args)
-{
-    return AddScript(self,args,VISIT_SCRIPT_PYTHON);
 }
 
 /*static*/ PyObject *
 ScriptAttributes_AddRScript(PyObject *self, PyObject *args)
 {
-    return AddScript(self,args,VISIT_SCRIPT_R);
+    ScriptAttributesObject *obj = (ScriptAttributesObject *)self;
+
+    const char *name = 0;
+    const char *code = 0;
+    PyObject* arglist = 0;
+    stringVector vec;
+
+    if(!PyArg_ParseTuple(args, "sOs", &name,&arglist,&code))
+    {
+        VisItErrorFunc("Arguments are ('name',('arg1','arg2',...), 'code')");
+        return NULL;
+    }
+
+    if(!GetStringVectorFromPyObject(arglist,vec))
+    {
+        VisItErrorFunc("Arguments are ('name',('arg1','arg2',...), 'code')");
+        return NULL;
+    }
+
+    obj->data->AddRScript(name,vec,code);
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 
 /*static*/ PyObject *
-ScriptAttributes_AddVisItFunctionScript(PyObject *self, PyObject *args)
+ScriptAttributes_AddFunction(PyObject *self, PyObject *args)
 {
-    return AddScript(self,args,VISIT_SCRIPT_FUNCTION);
+    ScriptAttributesObject *obj = (ScriptAttributesObject *)self;
+
+    const char *name = 0;
+    PyObject* arglist = 0;
+    stringVector vec;
+
+    if(!PyArg_ParseTuple(args, "sO", &name,&arglist))
+    {
+        VisItErrorFunc("Arguments are ('name',('arg1','arg2',...))");
+        return NULL;
+    }
+
+    if(!GetStringVectorFromPyObject(arglist,vec))
+    {
+        VisItErrorFunc("Arguments are ('name',('arg1','arg2',...))");
+        return NULL;
+    }
+
+    obj->data->AddFunction(name,vec);
+
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 /*static*/ PyObject *
 ScriptAttributes_AddConstant(PyObject *self, PyObject *args)
 {
-    return AddScript(self,args,VISIT_SCRIPT_CONSTANT);
+    ScriptAttributesObject *obj = (ScriptAttributesObject *)self;
+
+    const char *name = 0;
+    const char *constant = 0;
+
+
+    if(!PyArg_ParseTuple(args, "ss", &name,&constant))
+    {
+        VisItErrorFunc("Arguments are ('name', 'constant')");
+        return NULL;
+    }
+
+    obj->data->AddConstant(name,constant);
+
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 
@@ -299,6 +273,9 @@ ScriptAttributes_AddNode(PyObject *self, PyObject *args)
         return NULL;
     }
 
+    obj->data->AddNode(name,type);
+
+    /*
     std::string node_type = type;
     if(!obj->node["scripts"].HasKey(node_type) &&
              node_type != "as_ndarray" &&
@@ -316,7 +293,7 @@ ScriptAttributes_AddNode(PyObject *self, PyObject *args)
     MapNode mapnode;
     mapnode["filter"] = obj->node.ToString();
     obj->data->SetScriptMap(mapnode);
-
+    */
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -336,22 +313,8 @@ ScriptAttributes_AddConnection(PyObject *self, PyObject *args)
         return NULL;
     }
 
-
+    obj->data->AddConnection(from,to,port);
     /// TODO: error check input & output ports..
-
-    JSONNode conn;
-    conn["from"] = from;
-    conn["to"] = to;
-    conn["port"] = port;
-
-    if(!obj->node.HasKey("connections"))
-        obj->node["connections"] = JSONNode::JSONArray();
-
-    obj->node["connections"].Append(conn);
-
-    MapNode mapnode;
-    mapnode["filter"] = obj->node.ToString();
-    obj->data->SetScriptMap(mapnode);
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -369,31 +332,17 @@ ScriptAttributes_AddFinalOutputConnection(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    JSONNode node;
-    node["type"] = "<sink>";
-    obj->node["nodes"]["sink"] = node;
+    obj->data->AddFinalOutputConnection(from);
 
-    JSONNode conn;
-    conn["from"] = from;
-    conn["to"] = "sink";
-    conn["port"] = "in";
-
-    if(!obj->node.HasKey("connections"))
-        obj->node["connections"] = JSONNode::JSONArray();
-
-    obj->node["connections"].Append(conn);
-
-    MapNode mapnode;
-    mapnode["filter"] = obj->node.ToString();
-    obj->data->SetScriptMap(mapnode);
-    obj->data->SelectAll();
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 /*static*/ PyObject *
 ScriptAttributes_GetScriptMap(PyObject *self, PyObject *args)
 {
     ScriptAttributesObject *obj = (ScriptAttributesObject *)self;
-    PyObject *retval = PyString_FromString(obj->node.ToString().c_str());
+    PyObject *retval = PyString_FromString(obj->data->GetScriptMap().AsString().c_str());
     return retval;
 }
 
@@ -404,7 +353,7 @@ PyMethodDef PyScriptAttributes_methods[SCRIPTATTRIBUTES_NMETH] = {
     /// script functions..
     {"AddPythonScript", ScriptAttributes_AddPythonScript, METH_VARARGS},
     {"AddRScript", ScriptAttributes_AddRScript, METH_VARARGS},
-    {"AddVisItFunctionScript", ScriptAttributes_AddVisItFunctionScript, METH_VARARGS},
+    {"AddVisItFunction", ScriptAttributes_AddFunction, METH_VARARGS},
     {"AddConstant", ScriptAttributes_AddConstant, METH_VARARGS},
 
     {"AddNode", ScriptAttributes_AddNode, METH_VARARGS},

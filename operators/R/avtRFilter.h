@@ -47,6 +47,7 @@
 #include <avtPluginDataTreeIterator.h>
 #include <RAttributes.h>
 
+#include <ScriptOperation.h>
 
 class vtkDataSet;
 
@@ -62,40 +63,110 @@ class vtkDataSet;
 //
 // ****************************************************************************
 
-/*
-class Operation
-{
-  public:
-    virtual vtkDataArray* operator()() = 0;
-    virtual std::string GetName() = 0;
-};
-*/
-
 class avtRFilter : virtual public avtPluginFilter,
                    virtual public avtDatasetToDatasetFilter
 {
+
+    class avtROperation : public ScriptOperation
+    {
+        avtRFilter* rfilter;
+    public:
+        void setRFilter(avtRFilter* f) { rfilter = f; }
+        avtRFilter* getRFilter() { return rfilter; }
+    };
+    class avtRTimeOperation : public avtROperation
+    {
+    public:
+        virtual avtDataset_p func(avtDataObject_p input,
+                                avtContract_p contract,
+                                std::vector<Variant>& args)
+        {
+            //getRFilter()->SetInput(input);
+            //return getRFilter()->GetOutput(contract);
+            return NULL;
+        }
+
+        virtual void GetSignature(std::string& name,
+                                  stringVector& argnames,
+                                  std::vector<ScriptVariantTypeEnum>& argtypes)
+        {
+            name = "r_time_op";
+        }
+    };
+
+    class avtRSimpleOperation : public avtROperation
+    {
+    public:
+        virtual avtDataset_p func(avtDataObject_p input,
+                                avtContract_p contract,
+                                std::vector<Variant>& args)
+        {
+            return NULL;
+        }
+
+        virtual void GetSignature(std::string& name,
+                                  stringVector& argnames,
+                                  std::vector<ScriptVariantTypeEnum>& argtypes)
+        {
+            name = "r_simple_op";
+        }
+    };
+
+    class avtRExtremeValueOperation : public avtROperation
+    {
+    public:
+        virtual avtDataset_p func(avtDataObject_p input,
+                                avtContract_p contract,
+                                std::vector<Variant>& args);
+
+        virtual void GetSignature(std::string& name,
+                                  stringVector& argnames,
+                                  std::vector<ScriptVariantTypeEnum>& argtypes)
+        {
+            name = "r_extreme_values";
+        }
+    };
+
+    class avtRMonthlyIteratorOperation : public avtROperation
+    {
+    public:
+        virtual avtDataset_p func(avtDataObject_p input,
+                                avtContract_p contract,
+                                std::vector<Variant>& args)
+        {
+            return NULL;
+        }
+
+        virtual void GetSignature(std::string& name,
+                                  stringVector& argnames,
+                                  std::vector<ScriptVariantTypeEnum>& argtypes)
+        {
+            name = "r_monthly_iterator";
+        }
+    };
   public:
                          avtRFilter();
     virtual             ~avtRFilter();
 
     static avtFilter    *Create();
 
-    virtual const char  *GetType(void)  { return "avtRFilter"; };
+    virtual const char  *GetType(void)  { return "avtRFilter"; }
     virtual const char  *GetDescription(void)
-                             { return "R"; };
+                             { return "R"; }
 
     virtual void         SetAtts(const AttributeGroup*);
     virtual bool         Equivalent(const AttributeGroup*);
-    //virtual void   RegisterOperation(Operation* op);
+    void RegisterOperations(ScriptManager* manager);
 
   protected:
     RAttributes   atts;
 
     virtual   void Execute();
 
-    //    std::map<std::string,Operation*> m_operations;
-
-    //    virtual void ParseInput(const MapNode& m);
+    avtRTimeOperation rtimeOp;
+    avtRSimpleOperation rsimpleOp;
+    avtRExtremeValueOperation revOp;
+    avtRMonthlyIteratorOperation rmiOp;
 };
 
 

@@ -44,8 +44,25 @@
 #include <avtPythonFilterEnvironment.h>
 #include <Python.h>
 #include <vtkDataSet.h>
+#include <avtRFilter.h>
+#include <vector>
+#include <map>
+#include <ScriptOperation.h>
 
-using namespace std;
+struct ScriptData
+{
+    avtRFilter* rfilter;
+    std::map<std::string,ScriptOperation*> operations;
+};
+
+PyObject *
+visit_functions(PyObject *self, PyObject *args);
+
+static PyMethodDef myMethods[] =
+{
+    {"visit_functions",visit_functions},
+    {NULL,NULL}
+};
 
 // ****************************************************************************
 //  Method: avtScriptFilter constructor
@@ -54,29 +71,48 @@ using namespace std;
 //  Creation:   Wed Jan 16 18:16:39 PST 2013
 //
 // ****************************************************************************
-
+/*
+PyMethodDef conv(const char* name, PyObject* (*func)(PyObject*,PyObject*))
+{
+    PyMethodDef def;
+    def.ml_name = name;
+    def.ml_meth = func;
+    def.ml_flags = 0;
+    def.ml_doc = 0;
+    return def;
+}
+*/
 avtScriptFilter::avtScriptFilter()
 :pyEnv(NULL)
 {
+
+    scriptData = new ScriptData();
+
     pyEnv = new avtPythonFilterEnvironment();
 
-    cout << "executing.." << endl;
     if(!pyEnv->Initialize())
         cout << "Failed to initialize python environment.." << endl;
 
-    string script = "";
+    PyObject* module = Py_InitModule("visit_internal_funcs",myMethods);
+    PyObject* script_object = PyCObject_FromVoidPtr(this,NULL);
+    PyModule_AddObject(module,"_C_API",script_object);
+
+    std::string script = "";
     script += "import sys\n";
     script += "import os\n";
     script += "import json\n";
 
     script += "from flow import *\n";
     script += "from flow.filters import script_pipeline\n";
+    script += "import visit_internal_funcs\n";
+
+    scriptData->rfilter = dynamic_cast<avtRFilter*>(avtRFilter::Create());
+    scriptData->rfilter->RegisterOperations(this);
 
     /// initialize environment
     if(!pyEnv->Interpreter()->RunScript(script))
         cout << "Initialization Script Failed.." << endl;
 }
-
 
 // ****************************************************************************
 //  Method: avtScriptFilter destructor
@@ -90,11 +126,53 @@ avtScriptFilter::avtScriptFilter()
 
 avtScriptFilter::~avtScriptFilter()
 {
+    if(scriptData)
+        delete scriptData;
     if(pyEnv)
         delete pyEnv;
 }
 
 
+void
+avtScriptFilter::RegisterOperation(ScriptOperation *op)
+{
+    ///
+    std::string name;
+    stringVector args;
+    std::vector<ScriptOperation::ScriptVariantTypeEnum> argtypes;
+
+    op->GetSignature(name,args,argtypes);
+
+    /// do not register blank..
+    if(name == "") return;
+
+    scriptData->operations[name] = op;
+
+    /// create a definition in the modules..
+    std::string argstring = "";
+
+    for(size_t i = 0; i < args.size(); ++i)
+    {
+        std::string arg = args[i];
+        argstring += arg + (i == args.size() - 1 ? "" : ",");
+    }
+    std::ostringstream str;
+
+    str << "def " << name << "( " << argstring << "):\n"
+        << "  print 'calling: ', '" << name << "'\n"
+        << "  print visit_internal_funcs.visit_functions\n"
+        << "  print \"visit_internal_funcs.visit_functions('"
+        << name << (argstring.size() == 0 ? "'": "',") << argstring << ")\"\n"
+        << "  return visit_internal_funcs.visit_functions('"
+        << name << (argstring.size() == 0 ? "'": "',") << argstring << ")\n"
+        << "sys.modules['visit_internal_funcs'].__dict__['"
+        << name << "'] = " << name << "\n";
+
+    //std::cout << str.str() << std::endl;
+    pyEnv->Interpreter()->RunScript(str.str());
+
+
+}
 // ****************************************************************************
 //  Method:  avtScriptFilter::Create
 //
@@ -173,7 +251,7 @@ avtScriptFilter::Equivalent(const AttributeGroup *a)
 #include <vtkCellData.h>
 
 vtkDataSet *
-avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, string s)
+avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
 {
     if(!SetupFlowWorkspace())
         return in_ds;
@@ -182,7 +260,7 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, string s)
     pyEnv->Interpreter()->SetGlobalObject(py_ds_in,"ds_in");
     pyEnv->Interpreter()->SetGlobalObject(PyString_FromString(primaryVariable.c_str()),
                                           "pvar");
-    string script = "";
+    std::string script = "";
     script += "ctx.init(ds_in,pvar)\n";
     script += "w.registry_add(':mesh',ds_in)\n";
     script += "w.registry_add(':pvar',pvar)\n";
@@ -236,13 +314,13 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, string s)
 }
 
 vtkDataSet *
-avtScriptFilter::ExecuteDataOld(vtkDataSet *in_ds, int, string)
+avtScriptFilter::ExecuteDataOld(vtkDataSet *in_ds, int, std::string)
 {
-    string script = "";
+    std::string script = "";
     /// Setup input dataset to python registry..
     MapNode node = atts.GetScriptMap();
     //cout << node.ToXML() << endl;
-    string json_string = node["filter"].AsString();
+    std::string json_string = node["filter"].AsString();
     cout << json_string << endl;
     // create python string
     PyObject *py_json_str = PyString_FromString(json_string.c_str());
@@ -318,12 +396,12 @@ avtScriptFilter::ExecuteDataOld(vtkDataSet *in_ds, int, string)
 
 bool avtScriptFilter::SetupFlowWorkspace()
 {
-    string script = "";
+    std::string script = "";
     MapNode node = atts.GetScriptMap();
 
     if(!node.HasEntry("filter")) return false;
 
-    string json_string = node["filter"].AsString();
+    std::string json_string = node["filter"].AsString();
 
     // create python string
     PyObject *py_json_str = PyString_FromString(json_string.c_str());
@@ -373,7 +451,7 @@ avtScriptFilter::ModifyContract(avtContract_p spec)
     avtDataRequest_p ds = spec->GetDataRequest();
     
     // set this so we can use the name in exec data
-    primaryVariable = string(ds->GetVariable());
+    primaryVariable = std::string(ds->GetVariable());
     cout <<"primaryVariable = " << primaryVariable <<endl;
     //
     // Make a new one
@@ -384,7 +462,7 @@ avtScriptFilter::ModifyContract(avtContract_p spec)
     if(!SetupFlowWorkspace()) return new avtContract(spec, nds);
 
     // we need to find out what visit vars we need to request
-    string script = "";
+    std::string script = "";
     script += "__vars = w.filter_names()\n";
     script += "__vars = [ var[1:] for var in __vars if var[0] == ':' and var != ':mesh' and var != ':pvar']";
     if(!pyEnv->Interpreter()->RunScript(script))
@@ -402,8 +480,8 @@ avtScriptFilter::ModifyContract(avtContract_p spec)
     for(int i = 0; i < n_vars ; i++)
     {
         PyObject *py_var_str = PySequence_Fast_GET_ITEM(py_r_vars,i);  // borrowed
-        string var_str = string(PyString_AsString(py_var_str));
-        if (primaryVariable != var_str && var_str != string("default"))
+        std::string var_str = std::string(PyString_AsString(py_var_str));
+        if (primaryVariable != var_str && var_str != std::string("default"))
         {
             cout << "Adding \"" << var_str << "\" as secondary var" <<endl;
             nds->AddSecondaryVariable(var_str.c_str());
@@ -416,4 +494,92 @@ avtScriptFilter::ModifyContract(avtContract_p spec)
     avtContract_p rv = new avtContract(spec, nds);
 
     return rv;
+}
+
+
+/// Python script filter functions..
+PyObject *
+visit_foreach_file(PyObject *self, PyObject *args)
+{
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject *
+visit_foreach_location(PyObject *self, PyObject *args)
+{
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject *
+visit_functions(PyObject *self, PyObject *args)
+{
+    char* name = 0;
+    std::cout << self << " " << args << std::endl;
+
+    ///if args is just the function call..
+    if(PyString_Check(args))
+    {
+        name = PyString_AsString(args);
+    }
+    else
+    {
+//        PyArg_ParseTuple(args,"s",&name);
+
+    }
+
+
+    if(!name) return NULL;
+
+    /// Get reference to module..
+    PyObject *m = PyImport_ImportModule("visit_internal_funcs");
+
+    /// TODO: return error..
+    if (!m) { Py_INCREF(Py_None); return Py_None; }
+
+    PyObject *c_api_object = PyObject_GetAttrString(m, "_C_API");
+    /// TODO: return error..
+    if (!c_api_object) { Py_INCREF(Py_None); return Py_None; }
+
+    avtScriptFilter *scriptFilter = (avtScriptFilter *)PyCObject_AsVoidPtr(c_api_object);
+
+    /// Parse arguments..
+
+    //std::cout << "running: " << scriptFilter << std::endl;
+
+    ScriptData* sd = scriptFilter->GetScriptData();
+
+    if(sd->operations.count(name) == 0) return NULL;
+
+    ScriptOperation* op = sd->operations[name];
+
+    std::vector<Variant> variantArgs;
+
+    avtDataset_p result = op->func(scriptFilter->GetInput(),
+                                   scriptFilter->GetGeneralContract(),
+                                   variantArgs);
+
+    avtDataTree_p tree = scriptFilter->GetDataTree(result);
+
+    int leaves = 0;
+    vtkDataSet** datasets = tree->GetAllLeaves(leaves);
+
+    //std::cout << leaves << std::endl;
+    if(leaves != -1)
+    {
+        PyObject* out = scriptFilter->GetPythonEnvironment()->WrapVTKObject(datasets[0],"vtkDataSet");
+        //std::cout << out << std::endl;
+
+        Py_DECREF(c_api_object);
+        Py_DECREF(m);
+
+        return out;
+    }
+
+    Py_DECREF(c_api_object);
+    Py_DECREF(m);
+
+    Py_INCREF(Py_None);
+    return Py_None;
 }

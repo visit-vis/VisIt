@@ -91,7 +91,7 @@ public:
 
     // Property getting methods
     const MapNode &GetScriptMap() const;
-          MapNode &GetScriptMap();
+    MapNode &GetScriptMap();
 
     // Persistence methods
     virtual bool CreateNode(DataNode *node, bool completeSave, bool forceAdd);
@@ -105,6 +105,19 @@ public:
     virtual bool                      FieldsEqual(int index, const AttributeGroup *rhs) const;
 
 
+    /// Interface to help Script class..
+    void AddConstant(const std::string& name, const std::string& constant);
+    void AddFunction(const std::string& name, const stringVector& atts);
+    void AddRScript(const std::string& name, const stringVector& atts, const std::string& code);
+    void AddPythonScript(const std::string& name, const stringVector& atts, const std::string& code);
+
+    void AddNode(const std::string& name, const std::string& type);
+    void AddConnection(const std::string& from, const std::string& to, const std::string& portName);
+    void AddFinalOutputConnection(const std::string &from);
+
+    void LoadSingleRKernel(const std::string& name, const stringVector& atts, const std::string& code);
+    void LoadSinglePythonKernel(const std::string& name, const stringVector& atts, const std::string& code);
+
     // IDs that can be used to identify fields in case statements
     enum {
         ID_ScriptMap = 0,
@@ -113,6 +126,7 @@ public:
 
 private:
     MapNode ScriptMap;
+    JSONNode   script;
 
     // Static class format string for type map.
     static const char *TypeMapFormatString;

@@ -46,7 +46,8 @@
 
 #include <avtPluginDataTreeIterator.h>
 #include <ScriptAttributes.h>
-
+#include <ScriptOperation.h>
+#include <vector>
 
 class vtkDataSet;
 
@@ -61,10 +62,10 @@ class vtkDataSet;
 //  Creation:   Wed Jan 16 18:16:39 PST 2013
 //
 // ****************************************************************************
-
+class ScriptData;
 class avtPythonFilterEnvironment;
 
-class avtScriptFilter : public avtPluginDataTreeIterator
+class avtScriptFilter : public avtPluginDataTreeIterator,  public ScriptManager
 {
   public:
                          avtScriptFilter();
@@ -72,12 +73,17 @@ class avtScriptFilter : public avtPluginDataTreeIterator
 
     static avtFilter    *Create();
 
-    virtual const char  *GetType(void)  { return "avtScriptFilter"; };
+    virtual const char  *GetType(void)  { return "avtScriptFilter"; }
     virtual const char  *GetDescription(void)
-                             { return "Script"; };
+                             { return "Script"; }
 
     virtual void         SetAtts(const AttributeGroup*);
     virtual bool         Equivalent(const AttributeGroup*);
+    avtPythonFilterEnvironment* GetPythonEnvironment() { return pyEnv; }
+    avtDataTree_p GetDataTree(avtDataset_p val) { return val->GetDataTree(); }
+    ScriptData*          GetScriptData() { return scriptData; }
+
+    void RegisterOperation(ScriptOperation* op);
 
   protected:
     ScriptAttributes   atts;
@@ -90,6 +96,7 @@ class avtScriptFilter : public avtPluginDataTreeIterator
     bool                  SetupFlowWorkspace();
     avtPythonFilterEnvironment* pyEnv;
     std::string                 primaryVariable;
+    ScriptData*                 scriptData;
 };
 
 

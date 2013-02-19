@@ -57,6 +57,8 @@
 #include <avtRExtremesFilter.h>
 #include <avtRSimpleFilter.h>
 
+#include <ScriptOperation.h>
+
 // ****************************************************************************
 //  Method: avtRFilter constructor
 //
@@ -69,6 +71,10 @@ avtRFilter::avtRFilter()
 {
     //RegisterOperation("monthlyMax", MonthlyMaxOperation);
     //RegisterOperation("exceed",Exceed
+    rtimeOp.setRFilter(this);
+    revOp.setRFilter(this);
+    rmiOp.setRFilter(this);
+    rsimpleOp.setRFilter(this);
 }
 
 
@@ -162,7 +168,7 @@ avtRFilter::Equivalent(const AttributeGroup *a)
 
 void
 avtRFilter::Execute()
-{
+{        
     avtRScriptWithArgsFilter *f1 = new avtRScriptWithArgsFilter();
     f1->argNames.push_back("val1");
     f1->arguments.push_back(1.0);
@@ -220,4 +226,28 @@ avtRFilter::Execute()
     //delete f;
 }
 
+void
+avtRFilter::RegisterOperations(ScriptManager *manager)
+{
+    manager->RegisterOperation(&rtimeOp);
+    manager->RegisterOperation(&rsimpleOp);
+    manager->RegisterOperation(&revOp);
+    manager->RegisterOperation(&rmiOp);
+}
 
+#include <vector>
+
+avtDataset_p
+avtRFilter::avtRExtremeValueOperation::func(avtDataObject_p input, avtContract_p contract, std::vector<Variant> &args)
+{
+    avtRFilter* filter = getRFilter();
+
+    atts.SetDisplayMonth();
+    filter->ExtremeValueAnalysis(true);
+
+    filter->SetInput(input);
+    filter->Update(contract);
+
+    avtDataset_p result = filter->GetTypedOutput();
+    return result;
+}

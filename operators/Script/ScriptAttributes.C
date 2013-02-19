@@ -39,6 +39,7 @@
 #include <ScriptAttributes.h>
 #include <DataNode.h>
 #include <JSONNode.h>
+
 // ****************************************************************************
 // Method: ScriptAttributes::ScriptAttributes
 //
@@ -610,3 +611,205 @@ ScriptAttributes::FieldsEqual(int index_, const AttributeGroup *rhs) const
 // User-defined methods.
 ///////////////////////////////////////////////////////////////////////////////
 
+void replace(std::string& str, const std::string& oldStr, const std::string& newStr)
+{
+  size_t pos = 0;
+  while((pos = str.find(oldStr, pos)) != std::string::npos)
+  {
+     str.replace(pos, oldStr.length(), newStr);
+     pos += newStr.length();
+  }
+}
+
+
+void
+ScriptAttributes::AddConstant(const std::string& name, const std::string& constant)
+{
+    JSONNode node;
+
+    JSONNode vars = JSONNode::JSONArray();
+    node["vars"] = vars;
+
+    char buf[1024];
+    sprintf(buf,"setout(%s)",constant.c_str());
+    node["source"] = buf;
+
+    /// register constant also as a node..
+    JSONNode cnode;
+    cnode["type"] = name;
+
+    script["nodes"][name] = cnode;
+    script["scripts"][name] = node;
+
+    //update scriptmap
+    ScriptMap["filter"] = script.ToString();
+    Select(ID_ScriptMap, (void *)&ScriptMap);
+}
+
+void
+ScriptAttributes::AddFunction(const std::string& name, const stringVector& atts)
+{
+    JSONNode vars = JSONNode::JSONArray();
+    for(int i = 0; i < atts.size(); ++i)
+        vars.Append(atts[i]);
+
+    JSONNode node;
+    node["vars"] = vars;
+
+    std::string argstring = "";
+    for(size_t i = 0; i < atts.size(); ++i)
+        argstring += atts[i] + (i == atts.size()-1 ? "" : ",");
+
+   // char buf[1024];
+   // sprintf(buf,"import visit_internal_funcs\nsetout(visit_internal_funcs.%s(%s))",name.c_str(),argstring.c_str());
+
+    std::ostringstream ostr;
+
+    ostr << "import visit_internal_funcs\n"
+         << "print dir(visit_internal_funcs)\n"
+         << "setout(visit_internal_funcs." << name << "(" << argstring << "))" << std::endl;
+
+    std::string escapedCode = ostr.str();
+    std::cout << escapedCode << std::endl;
+    replace(escapedCode, "\n", "\\n");
+
+    node["source"] = escapedCode;
+
+    script["scripts"][name] = node;
+
+    //update scriptmap
+    ScriptMap["filter"] = script.ToString();
+    Select(ID_ScriptMap, (void *)&ScriptMap);
+}
+
+
+void
+ScriptAttributes::AddNode(const std::string& name, const std::string& type)
+{
+    JSONNode node;
+    node["type"] = type;
+    script["nodes"][name] = node;
+
+    ScriptMap["filter"] = script.ToString();
+    Select(ID_ScriptMap, (void *)&ScriptMap);
+}
+
+void
+ScriptAttributes::AddConnection(const std::string& from, const std::string& to, const std::string& portName)
+{
+    JSONNode conn;
+    conn["from"] = from;
+    conn["to"] = to;
+    conn["port"] = portName;
+
+    if(!script.HasKey("connections"))
+        script["connections"] = JSONNode::JSONArray();
+
+    script["connections"].Append(conn);
+
+    ScriptMap["filter"] = script.ToString();
+    Select(ID_ScriptMap, (void *)&ScriptMap);
+}
+
+void
+ScriptAttributes::AddFinalOutputConnection(const std::string &from)
+{
+    JSONNode node;
+    node["type"] = "<sink>";
+    script["nodes"]["sink"] = node;
+
+    JSONNode conn;
+    conn["from"] = from;
+    conn["to"] = "sink";
+    conn["port"] = "in";
+
+    if(!script.HasKey("connections"))
+        script["connections"] = JSONNode::JSONArray();
+
+    script["connections"].Append(conn);
+
+    ScriptMap["filter"] = script.ToString();
+    Select(ID_ScriptMap, (void *)&ScriptMap);
+}
+
+void
+ScriptAttributes::AddRScript(const std::string& name, const stringVector& atts, const std::string& code)
+{
+    JSONNode vars = JSONNode::JSONArray();
+    for(int i = 0; i < atts.size(); ++i)
+        vars.Append(atts[i]);
+
+    JSONNode node;
+    node["vars"] = vars;
+
+    std::string escapedCode = code;
+    std::string argstring = "";
+    for(size_t i = 0; i < atts.size(); ++i)
+        argstring += atts[i] + (i == atts.size()-1 ? "" : ",");
+
+    std::string rwrapper = "";
+
+    rwrapper += "import numpy\n";
+    rwrapper += "import rpy2.robjects as robjects\n";
+    rwrapper += "import rpy2.robjects.numpy2ri\n";
+    rwrapper += "rpy2.robjects.numpy2ri.activate()\n";
+    rwrapper += "r_f = robjects.r('''\n";
+    rwrapper += "(function(" + argstring + ") { \n";
+    rwrapper += escapedCode;
+    rwrapper += "})\n";
+    rwrapper += "''')\n";
+    rwrapper += "r=r_f("+ argstring + ")\n";
+    //rwrapper += "print 'meow',r\n";
+    rwrapper += "setout(numpy.asarray(r))\n";
+
+    replace(rwrapper, "\n", "\\n");
+
+    node["source"] = rwrapper;
+
+    script["scripts"][name] = node;
+
+    //update scriptmap
+    ScriptMap["filter"] = script.ToString();
+    Select(ID_ScriptMap, (void *)&ScriptMap);
+}
+
+void ScriptAttributes::AddPythonScript(const std::string& name, const stringVector& atts, const std::string& code)
+{
+    JSONNode vars = JSONNode::JSONArray();
+    for(int i = 0; i < atts.size(); ++i)
+        vars.Append(atts[i]);
+
+    JSONNode node;
+    node["vars"] = vars;
+
+    std::string escapedCode = code;
+    replace(escapedCode, "\n", "\\n");
+
+    node["source"] = escapedCode;
+
+    script["scripts"][name] = node;
+
+    //update scriptmap
+    ScriptMap["filter"] = script.ToString();
+    Select(ID_ScriptMap, (void *)&ScriptMap);
+}
+
+void
+ScriptAttributes::LoadSingleRKernel(const std::string& name, const stringVector& atts, const std::string& code)
+{
+    script = JSONNode();
+    ScriptMap = MapNode();
+
+    AddRScript(name,atts,code);
+    AddFinalOutputConnection(name);
+}
+
+void
+ScriptAttributes::LoadSinglePythonKernel(const std::string& name, const stringVector& atts, const std::string& code)
+{
+    script = JSONNode();
+    ScriptMap = MapNode();
+
+    AddPythonScript(name,atts,code);
+    AddFinalOutputConnection(name);
+}
