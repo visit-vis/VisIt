@@ -242,9 +242,6 @@ avtRFilter::avtRExtremeValueOperation::func(avtDataObject_p input, avtContract_p
 {
     avtRFilter* filter = getRFilter();
 
-    atts.SetDisplayMonth();
-    filter->ExtremeValueAnalysis(true);
-
     filter->SetInput(input);
     filter->Update(contract);
 
