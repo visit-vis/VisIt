@@ -749,17 +749,19 @@ ScriptAttributes::AddRScript(const std::string& name, const stringVector& atts, 
 
     std::string rwrapper = "";
 
-    rwrapper += "import numpy\n";
+    rwrapper += "import rpy2,numpy\n";
     rwrapper += "import rpy2.robjects as robjects\n";
     rwrapper += "import rpy2.robjects.numpy2ri\n";
     rwrapper += "rpy2.robjects.numpy2ri.activate()\n";
+    //rwrapper += "def _r_setout(out): setout(numpy.asarray(r))\n";
+    //rwrapper += "r_setout = rpy2.rinterface.rternalize(_r_setout)\n";
+    //rwrapper += "rpy2.robjects.globalenv['setout'] = r_setout\n";
     rwrapper += "r_f = robjects.r('''\n";
     rwrapper += "(function(" + argstring + ") { \n";
     rwrapper += escapedCode;
     rwrapper += "})\n";
     rwrapper += "''')\n";
     rwrapper += "r=r_f("+ argstring + ")\n";
-    //rwrapper += "print 'meow',r\n";
     rwrapper += "setout(numpy.asarray(r))\n";
 
     replace(rwrapper, "\n", "\\n");
@@ -795,7 +797,7 @@ void ScriptAttributes::AddPythonScript(const std::string& name, const stringVect
 }
 
 void
-ScriptAttributes::LoadSingleRKernel(const std::string& name, const stringVector& atts, const std::string& code)
+ScriptAttributes::LoadRKernel(const std::string& name, const stringVector& atts, const std::string& code)
 {
     script = JSONNode();
     ScriptMap = MapNode();
@@ -805,11 +807,28 @@ ScriptAttributes::LoadSingleRKernel(const std::string& name, const stringVector&
 }
 
 void
-ScriptAttributes::LoadSinglePythonKernel(const std::string& name, const stringVector& atts, const std::string& code)
+ScriptAttributes::LoadPythonKernel(const std::string& name, const stringVector& atts, const std::string& code)
 {
     script = JSONNode();
     ScriptMap = MapNode();
 
-    AddPythonScript(name,atts,code);
+    JSONNode vars = JSONNode::JSONArray();
+    for(int i = 0; i < atts.size(); ++i)
+        vars.Append(atts[i]);
+
+    JSONNode node;
+    node["vars"] = vars;
+
+    std::string escapedCode = code;
+    replace(escapedCode, "\n", "\\n");
+
+    node["source"] = escapedCode;
+
+    script["scripts"][name] = node;
+
+    //update scriptmap
+    ScriptMap["filter"] = script.ToString();
+    Select(ID_ScriptMap, (void *)&ScriptMap);
+
     AddFinalOutputConnection(name);
 }

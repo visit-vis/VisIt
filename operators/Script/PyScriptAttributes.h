@@ -44,7 +44,7 @@
 //
 // Functions exposed to the VisIt module.
 //
-#define SCRIPTATTRIBUTES_NMETH 10
+#define SCRIPTATTRIBUTES_NMETH 12
 void           PyScriptAttributes_StartUp(ScriptAttributes *subj, void *data);
 void           PyScriptAttributes_CloseDown();
 PyMethodDef *  PyScriptAttributes_GetMethodTable(int *nMethods);

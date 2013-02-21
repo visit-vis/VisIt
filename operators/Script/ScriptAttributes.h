@@ -115,8 +115,8 @@ public:
     void AddConnection(const std::string& from, const std::string& to, const std::string& portName);
     void AddFinalOutputConnection(const std::string &from);
 
-    void LoadSingleRKernel(const std::string& name, const stringVector& atts, const std::string& code);
-    void LoadSinglePythonKernel(const std::string& name, const stringVector& atts, const std::string& code);
+    void LoadRKernel(const std::string& name, const stringVector& atts, const std::string& code);
+    void LoadPythonKernel(const std::string& name, const stringVector& atts, const std::string& code);
 
     // IDs that can be used to identify fields in case statements
     enum {

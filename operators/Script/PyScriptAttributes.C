@@ -54,6 +54,89 @@ VisItErrorFunc(const char *errString)
 }
 
 bool
+GetJSONVectorFromPyObject(PyObject *obj, JSONNode &vec)
+{
+    bool retval = true;
+
+    if(obj == 0)
+    {
+        retval = false;
+    }
+    else if(PyTuple_Check(obj))
+    {
+        // Extract arguments from the tuple.
+        vec = JSONNode::JSONArray();
+
+        for(int i = 0; i < PyTuple_Size(obj); ++i)
+        {
+            PyObject *item = PyTuple_GET_ITEM(obj, i);
+            JSONNode node;
+            if(!GetJSONVectorFromPyObject(item,node))
+                return false;
+            vec.Append(node);
+        }
+    }
+    else if(PyList_Check(obj))
+    {
+        vec = JSONNode::JSONArray();
+
+        // Extract arguments from the list.
+        for(int i = 0; i < PyList_Size(obj); ++i)
+        {
+            PyObject *item = PyList_GET_ITEM(obj, i);
+            JSONNode node;
+            if(!GetJSONVectorFromPyObject(item,node))
+                return false;
+            vec.Append(node);
+        }
+    }
+    else if(PyString_Check(obj))
+    {
+        vec = PyString_AS_STRING(obj);
+    }
+    else if(PyInt_Check(obj))
+    {
+        vec = PyInt_AsLong(obj);
+    }
+    else if(PyFloat_Check(obj))
+    {
+        vec = PyFloat_AsDouble(obj);
+    }
+    else if(PyDict_Check(obj))
+    {
+        vec = JSONNode::JSONObject();
+
+        PyObject* keys = PyDict_Keys(obj);
+        for(int i = 0; i < PyList_Size(keys); ++i)
+        {
+            PyObject *item = PyList_GET_ITEM(keys, i);
+            if(!PyString_Check(item))
+            {
+                std::cerr << "unknown element type, skipping " << std::endl;
+                continue;
+            }
+
+            JSONNode node;
+
+            std::string key = PyString_AsString(item);
+
+            PyObject *value = PyDict_GetItem(obj,item);
+            if(!GetJSONVectorFromPyObject(value,node))
+                return false;
+            vec[key] = node;
+        }
+    }
+    else
+    {
+        retval = false;
+        VisItErrorFunc("The object could not be converted to a "
+                       "vector of strings.");
+    }
+
+    return retval;
+}
+
+bool
 GetStringVectorFromPyObject(PyObject *obj, stringVector &vec)
 {
     bool retval = true;
@@ -154,6 +237,67 @@ ScriptAttributes_Notify(PyObject *self, PyObject *args)
     Py_INCREF(Py_None);
     return Py_None;
 }
+
+/*static*/ PyObject *
+ScriptAttributes_LoadPythonKernel(PyObject *self, PyObject *args)
+{
+    ScriptAttributesObject *obj = (ScriptAttributesObject *)self;
+
+    const char *name = 0;
+    const char *code = 0;
+    PyObject* arglist = 0;
+
+    if(!PyArg_ParseTuple(args, "sOs", &name,&arglist,&code))
+    {
+        VisItErrorFunc("Arguments are ('name',('arg1','arg2',...), 'code')");
+        return NULL;
+    }
+
+    JSONNode node;
+    if(!GetJSONVectorFromPyObject(arglist,node))
+    {
+        VisItErrorFunc("Arguments are ('name',('arg1','arg2',...), 'code')");
+        return NULL;
+    }
+
+    std::cout << node.ToString() << std::endl;
+
+//    obj->data->AddPythonScript(name,vec,code);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+/*static*/ PyObject *
+ScriptAttributes_LoadRKernel(PyObject *self, PyObject *args)
+{
+    ScriptAttributesObject *obj = (ScriptAttributesObject *)self;
+
+    const char *name = 0;
+    const char *code = 0;
+    PyObject* arglist = 0;
+
+    if(!PyArg_ParseTuple(args, "sOs", &name,&arglist,&code))
+    {
+        VisItErrorFunc("Arguments are ('name',('arg1','arg2',...), 'code')");
+        return NULL;
+    }
+
+    JSONNode node;
+    if(!GetJSONVectorFromPyObject(arglist,node))
+    {
+        VisItErrorFunc("Arguments are ('name',('arg1','arg2',...), 'code')");
+        return NULL;
+    }
+
+    std::cout << node.ToString() << std::endl;
+
+//    obj->data->AddPythonScript(name,vec,code);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
 
 /*static*/ PyObject *
 ScriptAttributes_AddPythonScript(PyObject *self, PyObject *args)
@@ -363,6 +507,9 @@ PyMethodDef PyScriptAttributes_methods[SCRIPTATTRIBUTES_NMETH] = {
 
     /// GetScriptMap
     {"GetScriptMap", ScriptAttributes_GetScriptMap, METH_VARARGS},
+
+    {"LoadPythonKernel", ScriptAttributes_LoadPythonKernel, METH_VARARGS},
+    {"LoadRKernel", ScriptAttributes_LoadRKernel, METH_VARARGS},
 
     {NULL, NULL}
 };

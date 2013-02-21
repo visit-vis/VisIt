@@ -97,21 +97,41 @@ avtScriptFilter::avtScriptFilter()
     PyObject* script_object = PyCObject_FromVoidPtr(this,NULL);
     PyModule_AddObject(module,"_C_API",script_object);
 
-    std::string script = "";
-    script += "import sys\n";
-    script += "import os\n";
-    script += "import json\n";
+    std::ostringstream script;
+    script  << "import sys\n"
+            << "import os\n"
+            << "import json\n"
+            << "from flow import *\n"
+            << "from flow.filters import script_pipeline\n"
+            << "import visit_internal_funcs\n";
 
-    script += "from flow import *\n";
-    script += "from flow.filters import script_pipeline\n";
-    script += "import visit_internal_funcs\n";
 
+    /// if R is available..
+    script  << "import rpy2,numpy\n"
+            << "import rpy2.robjects as robjects\n"
+            << "import rpy2.robjects.numpy2ri\n"
+            << "import rpy2.rinterface as ri\n"
+            << "rpy2.robjects.numpy2ri.activate()\n"
+               /// register r version of same python definition..
+               /// setout will be available
+            << "def _r_setout(output):\n"
+               "  global setout\n"
+               "  print 'hello!'\n"
+               "  setout(output)\n"
+            << "  return 1\n"
+            << "sys.modules['visit_internal_funcs'].__dict__['_r_setout'] = _r_setout\n"
+            << "_rxp_setout = ri.rternalize(visit_internal_funcs._r_setout)\n"
+            << "ri.globalenv['setout'] = _rxp_setout\n";
+
+    /// register VisIt scriptable functions..
     scriptData->rfilter = dynamic_cast<avtRFilter*>(avtRFilter::Create());
     scriptData->rfilter->RegisterOperations(this);
 
     /// initialize environment
-    if(!pyEnv->Interpreter()->RunScript(script))
+    if(!pyEnv->Interpreter()->RunScript(script.str()))
         cout << "Initialization Script Failed.." << endl;
+
+
 }
 
 // ****************************************************************************
@@ -159,19 +179,44 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
     std::ostringstream str;
 
     str << "def " << name << "( " << argstring << "):\n"
-        << "  print 'calling: ', '" << name << "'\n"
-        << "  print visit_internal_funcs.visit_functions\n"
-        << "  print \"visit_internal_funcs.visit_functions('"
+
+        << "  print \"calling: visit_internal_funcs.visit_functions('"
         << name << (argstring.size() == 0 ? "'": "',") << argstring << ")\"\n"
+
         << "  return visit_internal_funcs.visit_functions('"
         << name << (argstring.size() == 0 ? "'": "',") << argstring << ")\n"
         << "sys.modules['visit_internal_funcs'].__dict__['"
         << name << "'] = " << name << "\n";
 
-    //std::cout << str.str() << std::endl;
-    pyEnv->Interpreter()->RunScript(str.str());
+    /// if R is there..
+    /// register r version of same python definition..
+    str << "import rpy2\n"
+        << "import rpy2.robjects as robjects\n"
+        << "import rpy2.robjects.numpy2ri\n"
+        << "rpy2.robjects.numpy2ri.activate()\n"
+        << "import rpy2.rinterface as ri\n"
+        << "import visit_internal_funcs\n"
 
+        << "def _r_" << name << "( " << argstring << "):\n"
 
+         //<< "  print \"calling: visit_internal_funcs.visit_functions('"
+        //<< name << (argstring.size() == 0 ? "'": "',") << argstring << ")\"\n"
+
+        << "  res = visit_internal_funcs.visit_functions('"
+        << name << (argstring.size() == 0 ? "'": "',") << argstring << ")\n"
+        << "  print res\n"
+        << "  return rpy2.robjects.vectors.IntVector([1,2,3])\n"
+
+        << "sys.modules['visit_internal_funcs'].__dict__['_r_"
+        << name << "'] = _r_" << name << "\n"
+
+        << "_rxp_" << name << "= ri.rternalize(visit_internal_funcs._r_" << name << ")\n"
+        << "ri.globalenv['" << name << "'] = _rxp_" << name << "\n";
+
+    std::cout << str.str() << std::endl;
+
+    if(!pyEnv->Interpreter()->RunScript(str.str()))
+        std::cerr << "function : " << name << " registeration failed" << std::endl;
 }
 // ****************************************************************************
 //  Method:  avtScriptFilter::Create
@@ -535,12 +580,14 @@ visit_functions(PyObject *self, PyObject *args)
     /// Get reference to module..
     PyObject *m = PyImport_ImportModule("visit_internal_funcs");
 
+
     /// TODO: return error..
-    if (!m) { Py_INCREF(Py_None); return Py_None; }
+    if (!m) { Py_INCREF(Py_None); return NULL; }
 
     PyObject *c_api_object = PyObject_GetAttrString(m, "_C_API");
+
     /// TODO: return error..
-    if (!c_api_object) { Py_INCREF(Py_None); return Py_None; }
+    if (!c_api_object) { Py_INCREF(Py_None); return NULL; }
 
     avtScriptFilter *scriptFilter = (avtScriptFilter *)PyCObject_AsVoidPtr(c_api_object);
 
