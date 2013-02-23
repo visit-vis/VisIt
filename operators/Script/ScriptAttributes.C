@@ -742,31 +742,34 @@ ScriptAttributes::AddRScript(const std::string& name, const stringVector& atts, 
     JSONNode node;
     node["vars"] = vars;
 
-    std::string escapedCode = code;
     std::string argstring = "";
     for(size_t i = 0; i < atts.size(); ++i)
         argstring += atts[i] + (i == atts.size()-1 ? "" : ",");
 
-    std::string rwrapper = "";
+    std::ostringstream rwrapper;
 
-    rwrapper += "import rpy2,numpy\n";
-    rwrapper += "import rpy2.robjects as robjects\n";
-    rwrapper += "import rpy2.robjects.numpy2ri\n";
-    rwrapper += "rpy2.robjects.numpy2ri.activate()\n";
-    //rwrapper += "def _r_setout(out): setout(numpy.asarray(r))\n";
-    //rwrapper += "r_setout = rpy2.rinterface.rternalize(_r_setout)\n";
-    //rwrapper += "rpy2.robjects.globalenv['setout'] = r_setout\n";
-    rwrapper += "r_f = robjects.r('''\n";
-    rwrapper += "(function(" + argstring + ") { \n";
-    rwrapper += escapedCode;
-    rwrapper += "})\n";
-    rwrapper += "''')\n";
-    rwrapper += "r=r_f("+ argstring + ")\n";
-    rwrapper += "setout(numpy.asarray(r))\n";
+    rwrapper << "import rpy2,numpy\n"
+             << "import rpy2.robjects as robjects\n"
+             << "import rpy2.robjects.numpy2ri\n"
+             << "rpy2.robjects.numpy2ri.activate()\n"
+             << "_r_output = None\n"
+             << "def _r_setout(out):\n"
+             << "  global _r_output\n"
+             << "  _r_output = out\n"
+             << "r_setout = rpy2.rinterface.rternalize(_r_setout)\n"
+             << "rpy2.robjects.globalenv['setout'] = r_setout\n"
+             << "r_f = robjects.r('''\n"
+             << "(function(" + argstring + ") { \n"
+             << code
+             << "})\n"
+             << "''')\n"
+             << "r=r_f("+ argstring + ")\n"
+             << "setout(numpy.asarray(_r_output))\n";
 
-    replace(rwrapper, "\n", "\\n");
+    std::string escapedCode = rwrapper.str();
+    replace(escapedCode, "\n", "\\n");
 
-    node["source"] = rwrapper;
+    node["source"] = escapedCode;
 
     script["scripts"][name] = node;
 
@@ -784,7 +787,12 @@ void ScriptAttributes::AddPythonScript(const std::string& name, const stringVect
     JSONNode node;
     node["vars"] = vars;
 
-    std::string escapedCode = code;
+    std::ostringstream pwrapper;
+
+    pwrapper << "from visit_internal_funcs import *\n"
+             << code
+             << "\n";
+    std::string escapedCode = pwrapper.str();
     replace(escapedCode, "\n", "\\n");
 
     node["source"] = escapedCode;
@@ -797,38 +805,88 @@ void ScriptAttributes::AddPythonScript(const std::string& name, const stringVect
 }
 
 void
-ScriptAttributes::LoadRKernel(const std::string& name, const stringVector& atts, const std::string& code)
+ScriptAttributes::LoadRKernel(const std::string& name, const JSONNode &atts, const std::string& code)
 {
-    script = JSONNode();
-    ScriptMap = MapNode();
+//    script = JSONNode();
+//    ScriptMap = MapNode();
 
-    AddRScript(name,atts,code);
-    AddFinalOutputConnection(name);
+//    AddRScript(name,atts,code);
+//    AddFinalOutputConnection(name);
+}
+
+/// convert json object to set up pipeline..
+
+bool
+ScriptAttributes::SetupPipeline(const JSONNode& atts, stringVector& args, const std::string& parent)
+{
+    if(atts.GetType() != JSONNode::JSONARRAY)
+        return false;
+
+    const JSONNode::JSONArray& array = atts.GetArray();
+
+    for(int i = 0; i < array.size(); ++i)
+    {
+        /// need key, value pair
+        /// this can be in the form of a dictionary, "a = b", pair tuple (a,b), or a pair array [a,b]
+        JSONNode node = array[i];
+        JSONNode key,value;
+        if(node.GetType() == JSONNode::JSONARRAY)
+        {
+            if(node.GetArray().size() != 2) continue;
+
+            key = node.GetArray()[0];
+            value = node.GetArray()[1];
+        }
+        else if(node.GetType() == JSONNode::JSONOBJECT)
+        {
+            /// parse through dictionary and compute arguments from names..
+            const JSONNode::JSONObject& obj = node.GetJsonObject();
+            if(obj.size() != 1) continue;
+
+            const JSONNode::JSONObject::const_iterator itr = obj.begin();
+            key = itr->first;
+            value = itr->second;
+        }
+        else if(node.GetType() == JSONNode::JSONSTRING)
+        {
+            std::string pair = node.GetString();
+            int index = pair.find("=");
+            if(index == std::string::npos) continue;
+            key = pair.substr(0,index);
+            value = pair.substr(index+1);
+         }
+
+        if(key.GetType() != JSONNode::JSONSTRING) continue;
+
+        std::string keystr = key.GetString();
+
+        std::ostringstream str;
+        str << "import json\n"
+            << "setout(json.loads(\"" << value.ToString()
+            << "\"))\n";
+
+        //std::cout << "output = " << keystr << " " << str.str() << std::endl;
+        AddPythonScript(keystr,stringVector(),str.str());
+        AddNode(keystr,keystr);
+        AddConnection(keystr,parent,keystr);
+        args.push_back(keystr);
+    }
+    return true;
 }
 
 void
-ScriptAttributes::LoadPythonKernel(const std::string& name, const stringVector& atts, const std::string& code)
+ScriptAttributes::LoadPythonKernel(const std::string& name, const JSONNode& atts, const std::string& code)
 {
     script = JSONNode();
     ScriptMap = MapNode();
 
-    JSONNode vars = JSONNode::JSONArray();
-    for(int i = 0; i < atts.size(); ++i)
-        vars.Append(atts[i]);
+    stringVector args;
+    SetupPipeline(atts,args,name);
 
-    JSONNode node;
-    node["vars"] = vars;
+    for(int i = 0; i < args.size(); ++i)
+        std::cout << args[i] << std::endl;
 
-    std::string escapedCode = code;
-    replace(escapedCode, "\n", "\\n");
-
-    node["source"] = escapedCode;
-
-    script["scripts"][name] = node;
-
-    //update scriptmap
-    ScriptMap["filter"] = script.ToString();
-    Select(ID_ScriptMap, (void *)&ScriptMap);
-
+    AddPythonScript(name,args,code);
+    AddNode(name,name);
     AddFinalOutputConnection(name);
 }

@@ -235,16 +235,81 @@ avtRFilter::RegisterOperations(ScriptManager *manager)
     manager->RegisterOperation(&rmiOp);
 }
 
-#include <vector>
-
-avtDataset_p
-avtRFilter::avtRExtremeValueOperation::func(avtDataObject_p input, avtContract_p contract, std::vector<Variant> &args)
+ScriptOperation::ScriptOperationResponse
+avtRFilter::avtRExtremeValueAnalysisOperation::GetSignature(std::string& name,
+                          stringVector& argnames,
+                          std::vector<ScriptOperation::ScriptVariantTypeEnum>& argtypes)
 {
-    avtRFilter* filter = getRFilter();
+    name = "r_extreme_value_analysis";
 
-    filter->SetInput(input);
-    filter->Update(contract);
+    argnames.push_back("aggregation");
+    argtypes.push_back(ScriptOperation::INT_TYPE);
 
-    avtDataset_p result = filter->GetTypedOutput();
-    return result;
+    argnames.push_back("monthtly");
+    argtypes.push_back(ScriptOperation::INT_TYPE);
+
+    argnames.push_back("seasonal");
+    argtypes.push_back(ScriptOperation::INT_TYPE);
+
+    argnames.push_back("dumpData");
+    argtypes.push_back(ScriptOperation::BOOL_TYPE);
+
+    argnames.push_back("dataScaling");
+    argtypes.push_back(ScriptOperation::DOUBLE_TYPE);
+
+    return ScriptOperation::AVT_DATA_SET;
+}
+
+bool
+avtRFilter::avtRExtremeValueAnalysisOperation::func(avtDataObject_p input,
+                                            avtContract_p contract,
+                                            std::vector<Variant> &args,
+                                            avtDataset_p &result)
+{
+
+
+//    avtRFilter* filter = getRFilter();
+
+//    filter->SetInput(input);
+//    filter->Update(contract);
+
+//    result = filter->GetTypedOutput();
+
+    avtRExtremesFilter *f = new avtRExtremesFilter();
+    f->aggregation = (ExtremeValueAnalysisAttributes::AggregationType)args[0].AsInt();
+    f->displayMonth = (ExtremeValueAnalysisAttributes::MonthType)args[1].AsInt();
+    f->displaySeason = (ExtremeValueAnalysisAttributes::SeasonType)args[2].AsInt();
+
+    std::string vlibdir = GetVisItLibraryDirectory() + VISIT_SLASH_CHAR + "r_support";
+    std::string vlibrdir  = vlibdir  + VISIT_SLASH_CHAR + "Rscripts" + VISIT_SLASH_CHAR;
+    f->codeDir = vlibrdir;
+    f->dumpData = args[3].AsBool();
+    f->scalingVal = args[4].AsDouble();
+
+    f->SetInput(input);
+
+    avtContract_p spec = contract; //GetInput()->GetOriginatingSource()->GetGeneralContract();
+    avtDataObject_p dob = f->GetOutput();
+
+    dob->Update(spec);
+
+    result = f->GetTypedOutput();
+//    avtDataTree_p tree = f->GetTypedOutput()->GetDataTree();
+
+//    //Set the output variable properly.
+//    int nleaves;
+//    vtkDataSet **leaves = tree->GetAllLeaves(nleaves);
+//    for (int i = 0; i < nleaves; i++)
+//    {
+//        if (leaves[i]->GetPointData()->GetScalars())
+//            leaves[i]->GetPointData()->GetScalars()->SetName(pipelineVariable);
+//        else if (leaves[i]->GetCellData()->GetScalars())
+//            leaves[i]->GetCellData()->GetScalars()->SetName(pipelineVariable);
+//    }
+//    delete [] leaves;
+
+
+//    SetOutputDataTree(tree);
+
+    return true;
 }

@@ -12,6 +12,13 @@
 class ScriptOperation
 {
 public:
+    enum ScriptOperationResponse
+    {
+        VTK_DATA_ARRAY,
+        VTK_DATA_SET,
+        AVT_DATA_SET
+    };
+
     typedef enum
     {
         EMPTY_TYPE = 0,
@@ -23,11 +30,22 @@ public:
         VTK_DATA_ARRAY_TYPE, VTK_DATASET_ARRAY_TYPE
     } ScriptVariantTypeEnum;
 
-    virtual avtDataset_p func(avtDataObject_p input,
-                            avtContract_p contract,
-                            std::vector<Variant>& args) = 0;
+    virtual bool func(avtDataObject_p input,
+                      avtContract_p contract,
+                      std::vector<Variant>& args,
+                      vtkDataArray*& result){ return false; }
 
-    virtual void GetSignature(std::string& name,
+    virtual bool func(avtDataObject_p input,
+                      avtContract_p contract,
+                      std::vector<Variant>& args,
+                      vtkDataSet*& result){ return false; }
+
+    virtual bool func(avtDataObject_p input,
+                      avtContract_p contract,
+                      std::vector<Variant>& args,
+                      avtDataset_p& result){ return false; }
+
+    virtual ScriptOperationResponse GetSignature(std::string& name,
                               stringVector& argnames,
                               std::vector<ScriptVariantTypeEnum>& argtypes) = 0;
 };

@@ -263,6 +263,7 @@ ScriptAttributes_LoadPythonKernel(PyObject *self, PyObject *args)
     std::cout << node.ToString() << std::endl;
 
 //    obj->data->AddPythonScript(name,vec,code);
+    obj->data->LoadPythonKernel(name,node,code);
 
     Py_INCREF(Py_None);
     return Py_None;

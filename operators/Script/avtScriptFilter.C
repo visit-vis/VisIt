@@ -105,24 +105,6 @@ avtScriptFilter::avtScriptFilter()
             << "from flow.filters import script_pipeline\n"
             << "import visit_internal_funcs\n";
 
-
-    /// if R is available..
-    script  << "import rpy2,numpy\n"
-            << "import rpy2.robjects as robjects\n"
-            << "import rpy2.robjects.numpy2ri\n"
-            << "import rpy2.rinterface as ri\n"
-            << "rpy2.robjects.numpy2ri.activate()\n"
-               /// register r version of same python definition..
-               /// setout will be available
-            << "def _r_setout(output):\n"
-               "  global setout\n"
-               "  print 'hello!'\n"
-               "  setout(output)\n"
-            << "  return 1\n"
-            << "sys.modules['visit_internal_funcs'].__dict__['_r_setout'] = _r_setout\n"
-            << "_rxp_setout = ri.rternalize(visit_internal_funcs._r_setout)\n"
-            << "ri.globalenv['setout'] = _rxp_setout\n";
-
     /// register VisIt scriptable functions..
     scriptData->rfilter = dynamic_cast<avtRFilter*>(avtRFilter::Create());
     scriptData->rfilter->RegisterOperations(this);
@@ -130,8 +112,6 @@ avtScriptFilter::avtScriptFilter()
     /// initialize environment
     if(!pyEnv->Interpreter()->RunScript(script.str()))
         cout << "Initialization Script Failed.." << endl;
-
-
 }
 
 // ****************************************************************************
@@ -147,7 +127,10 @@ avtScriptFilter::avtScriptFilter()
 avtScriptFilter::~avtScriptFilter()
 {
     if(scriptData)
+    {
+        delete scriptData->rfilter;
         delete scriptData;
+    }
     if(pyEnv)
         delete pyEnv;
 }
@@ -178,14 +161,14 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
     }
     std::ostringstream str;
 
-    str << "def " << name << "( " << argstring << "):\n"
+    str << "def " << name << "( " << argstring << "):\n";
 
-        << "  print \"calling: visit_internal_funcs.visit_functions('"
-        << name << (argstring.size() == 0 ? "'": "',") << argstring << ")\"\n"
+    if(argstring.size() == 0)
+        str << "  return visit_internal_funcs.visit_functions('" << name << "')\n";
+    else
+        str << "  return visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
 
-        << "  return visit_internal_funcs.visit_functions('"
-        << name << (argstring.size() == 0 ? "'": "',") << argstring << ")\n"
-        << "sys.modules['visit_internal_funcs'].__dict__['"
+    str << "sys.modules['visit_internal_funcs'].__dict__['"
         << name << "'] = " << name << "\n";
 
     /// if R is there..
@@ -197,26 +180,26 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
         << "import rpy2.rinterface as ri\n"
         << "import visit_internal_funcs\n"
 
-        << "def _r_" << name << "( " << argstring << "):\n"
+        << "def _r_" << name << "( " << argstring << "):\n";
 
-         //<< "  print \"calling: visit_internal_funcs.visit_functions('"
-        //<< name << (argstring.size() == 0 ? "'": "',") << argstring << ")\"\n"
+    if(argstring.size() == 0)
+        str << "  res = visit_internal_funcs.visit_functions('" << name << "')\n";
+    else
+        str << "  res = visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
 
-        << "  res = visit_internal_funcs.visit_functions('"
-        << name << (argstring.size() == 0 ? "'": "',") << argstring << ")\n"
-        << "  print res\n"
-        << "  return rpy2.robjects.vectors.IntVector([1,2,3])\n"
+//        << "  print res\n"
+    str  << "  return rpy2.robjects.vectors.IntVector([1,2,3])\n"
 
-        << "sys.modules['visit_internal_funcs'].__dict__['_r_"
-        << name << "'] = _r_" << name << "\n"
+         << "sys.modules['visit_internal_funcs'].__dict__['_r_"
+         << name << "'] = _r_" << name << "\n"
 
-        << "_rxp_" << name << "= ri.rternalize(visit_internal_funcs._r_" << name << ")\n"
-        << "ri.globalenv['" << name << "'] = _rxp_" << name << "\n";
+         << "_rxp_" << name << "= ri.rternalize(visit_internal_funcs._r_" << name << ")\n"
+         << "ri.globalenv['" << name << "'] = _rxp_" << name << "\n";
 
-    std::cout << str.str() << std::endl;
+    //std::cout << str.str() << std::endl;
 
     if(!pyEnv->Interpreter()->RunScript(str.str()))
-        std::cerr << "function : " << name << " registeration failed" << std::endl;
+        std::cerr << "function : " << name << " registration failed" << std::endl;
 }
 // ****************************************************************************
 //  Method:  avtScriptFilter::Create
@@ -557,29 +540,133 @@ visit_foreach_location(PyObject *self, PyObject *args)
     return Py_None;
 }
 
+
+bool convert(ScriptOperation::ScriptVariantTypeEnum& type, PyObject* obj, Variant& result)
+{
+    bool success = true;
+    switch(type)
+    {
+        case ScriptOperation::BOOL_TYPE:
+        {
+        std::cout << "meow?" << PyBool_Check(obj) << std::endl;
+            PyBool_Check(obj) ? result = (obj == Py_False ? false: true ) : success = false;
+            break;
+        }
+        case ScriptOperation::CHAR_TYPE:
+        {
+            PyString_Check(obj) ? result = PyString_AsString(obj) : success = false;
+            break;
+        }
+        case ScriptOperation::UNSIGNED_CHAR_TYPE:
+        {
+            PyString_Check(obj) ? result = PyString_AsString(obj) : success = false;
+            break;
+        }
+        case ScriptOperation::INT_TYPE:
+    {
+        PyInt_Check(obj) ? result = (int)PyInt_AsLong(obj) : success = false;
+        break;
+    }
+
+        case ScriptOperation::LONG_TYPE:
+    {
+        PyLong_Check(obj) ? result = (long)PyLong_AsLong(obj) : success = false;
+        break;
+    }
+        case ScriptOperation::FLOAT_TYPE:
+    {
+        PyFloat_Check(obj) ? result = (float)PyFloat_AsDouble(obj) : success = false;
+        break;
+    }
+        case ScriptOperation::DOUBLE_TYPE:
+    {
+        PyFloat_Check(obj) ? result = (double)PyFloat_AsDouble(obj) : success = false;
+        break;
+    }
+        case ScriptOperation::STRING_TYPE:
+    {
+        PyString_Check(obj) ? result = (const char*)PyString_AsString(obj) : success = false;
+        break;
+    }
+        case ScriptOperation::BOOL_VECTOR_TYPE:
+        case ScriptOperation::CHAR_VECTOR_TYPE:
+        case ScriptOperation::UNSIGNED_CHAR_VECTOR_TYPE:
+        case ScriptOperation::INT_VECTOR_TYPE:
+        case ScriptOperation::LONG_VECTOR_TYPE:
+        case ScriptOperation::FLOAT_VECTOR_TYPE:
+        case ScriptOperation::DOUBLE_VECTOR_TYPE:
+        case ScriptOperation::STRING_VECTOR_TYPE:
+    {
+        if(PyTuple_Check(obj)  == 0 || PyList_Check(obj) == 0)
+        {
+            success = false;
+            break;
+        }
+        /*
+        switch(type)
+        {
+            case BOOL_VECTOR_TYPE: { subtype = BOOL_TYPE; result = boolVector(); break; }
+            case CHAR_VECTOR_TYPE: { result = charsVector(); break; }
+            case UNSIGNED_CHAR_VECTOR_TYPE: { result = unsignedCharVector(); break; }
+            case INT_VECTOR_TYPE: { result = intVector(); break; }
+            case LONG_VECTOR_TYPE: { result = longVector(); break; }
+            case FLOAT_VECTOR_TYPE: { result = floatVector(); break; }
+            case DOUBLE_VECTOR_TYPE:{ result = doubleVector(); break; }
+            case STRING_VECTOR_TYPE:{ result = stringVector(); break; }
+        };
+
+        if(PyTuple_Check(obj))
+        {
+            // Extract arguments from the tuple.
+
+            for(int i = 0; i < PyTuple_Size(obj); ++i)
+            {
+                PyObject *item = PyTuple_GET_ITEM(obj, i);
+                Variant v;
+                convert(subtype)
+            }
+        }
+        else
+        {
+            // Extract arguments from the list.
+            for(int i = 0; i < PyList_Size(obj); ++i)
+            {
+                PyObject *item = PyList_GET_ITEM(obj, i);
+            }
+        }
+        */
+        break;
+    }
+    case ScriptOperation::VTK_DATA_ARRAY_TYPE:
+    case ScriptOperation::VTK_DATASET_ARRAY_TYPE:
+    default: break;
+    };
+    return success;
+}
 PyObject *
 visit_functions(PyObject *self, PyObject *args)
 {
     char* name = 0;
-    std::cout << self << " " << args << std::endl;
+    PyObject* scriptArgs = NULL;
+
+    std::cout << " called: " << self << " " << args << std::endl;
 
     ///if args is just the function call..
     if(PyString_Check(args))
     {
+        std::cout << "NAME!" << std::endl;
         name = PyString_AsString(args);
     }
     else
     {
-//        PyArg_ParseTuple(args,"s",&name);
-
+        PyArg_ParseTuple(args,"sO",&name,&scriptArgs);
+        std::cout << "NAME: " << name << std::endl;
     }
-
 
     if(!name) return NULL;
 
     /// Get reference to module..
     PyObject *m = PyImport_ImportModule("visit_internal_funcs");
-
 
     /// TODO: return error..
     if (!m) { Py_INCREF(Py_None); return NULL; }
@@ -587,13 +674,13 @@ visit_functions(PyObject *self, PyObject *args)
     PyObject *c_api_object = PyObject_GetAttrString(m, "_C_API");
 
     /// TODO: return error..
-    if (!c_api_object) { Py_INCREF(Py_None); return NULL; }
+    if (!c_api_object) { Py_INCREF(Py_None); Py_DECREF(m); return NULL; }
 
     avtScriptFilter *scriptFilter = (avtScriptFilter *)PyCObject_AsVoidPtr(c_api_object);
 
     /// Parse arguments..
 
-    //std::cout << "running: " << scriptFilter << std::endl;
+    std::cout << "running: " << scriptFilter << std::endl;
 
     ScriptData* sd = scriptFilter->GetScriptData();
 
@@ -601,30 +688,68 @@ visit_functions(PyObject *self, PyObject *args)
 
     ScriptOperation* op = sd->operations[name];
 
+    std::string op_name;
+    stringVector op_argnames;
+    std::vector<ScriptOperation::ScriptVariantTypeEnum> op_argtypes;
+
+    ScriptOperation::ScriptOperationResponse op_resp = op->GetSignature(op_name,op_argnames,op_argtypes);
+
     std::vector<Variant> variantArgs;
 
-    avtDataset_p result = op->func(scriptFilter->GetInput(),
-                                   scriptFilter->GetGeneralContract(),
-                                   variantArgs);
-
-    avtDataTree_p tree = scriptFilter->GetDataTree(result);
-
-    int leaves = 0;
-    vtkDataSet** datasets = tree->GetAllLeaves(leaves);
-
-    //std::cout << leaves << std::endl;
-    if(leaves != -1)
+    // Extract arguments from the tuple.
+    if(PyTuple_Size(scriptArgs) != op_argtypes.size())
     {
-        PyObject* out = scriptFilter->GetPythonEnvironment()->WrapVTKObject(datasets[0],"vtkDataSet");
-        //std::cout << out << std::endl;
+        std::cerr << "sizes do not match!" << std::endl;
+        return NULL;
+    }
+    for(int i = 0; i < PyTuple_Size(scriptArgs); ++i)
+    {
+        Variant v;
+        PyObject *item = PyTuple_GET_ITEM(scriptArgs, i);
+        std::cout << op_argnames[i] << " " << op_argtypes[i] << " " << convert(op_argtypes[i],item,v) << std::endl;
 
-        Py_DECREF(c_api_object);
-        Py_DECREF(m);
-
-        return out;
+        variantArgs.push_back(v);
     }
 
-    Py_DECREF(c_api_object);
+    for(int i = 0; i < variantArgs.size(); ++i)
+    {
+        Variant v = variantArgs[i];
+        std::cout << v.ToJSON() << std::endl;
+    }
+
+
+//    avtDataset_p result;
+
+//    if(!op->func(scriptFilter->GetInput(),
+//             scriptFilter->GetGeneralContract(),
+//             variantArgs, result))
+
+//    {
+//        std::cerr << "operation failed!" << std::endl;
+//        Py_DECREF(c_api_object);
+//        Py_DECREF(m);
+//        return NULL;
+//    }
+
+//    avtDataTree_p tree = scriptFilter->GetDataTree(result);
+
+//    int leaves = 0;
+//    vtkDataSet** datasets = tree->GetAllLeaves(leaves);
+
+//    //std::cout << leaves << std::endl;
+//    if(leaves != -1)
+//    {
+//        PyObject* out = scriptFilter->GetPythonEnvironment()->WrapVTKObject(datasets[0],"vtkDataSet");
+//        //std::cout << out << std::endl;
+
+//        Py_DECREF(c_api_object);
+//        Py_DECREF(m);
+
+//        return out;
+//    }
+
+    Py_INCREF(scriptArgs);
+    //Py_DECREF(c_api_object);
     Py_DECREF(m);
 
     Py_INCREF(Py_None);

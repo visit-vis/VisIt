@@ -3,6 +3,7 @@ PROJECT(Script)
 
 INCLUDE(${VISIT_SOURCE_DIR}/CMake/PluginMacros.cmake)
 
+SET(COMMON_QTCREATOR_HEADER ScriptOperation.h)
 SET(COMMON_SOURCES
 ScriptPluginInfo.C
 ScriptCommonPluginInfo.C

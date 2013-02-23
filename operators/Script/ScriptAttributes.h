@@ -115,8 +115,10 @@ public:
     void AddConnection(const std::string& from, const std::string& to, const std::string& portName);
     void AddFinalOutputConnection(const std::string &from);
 
-    void LoadRKernel(const std::string& name, const stringVector& atts, const std::string& code);
-    void LoadPythonKernel(const std::string& name, const stringVector& atts, const std::string& code);
+
+    bool SetupPipeline(const JSONNode& atts, stringVector& args, const std::string &parent);
+    void LoadRKernel(const std::string& name, const JSONNode& atts, const std::string& code);
+    void LoadPythonKernel(const std::string& name, const JSONNode& atts, const std::string& code);
 
     // IDs that can be used to identify fields in case statements
     enum {

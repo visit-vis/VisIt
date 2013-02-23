@@ -77,71 +77,75 @@ class avtRFilter : virtual public avtPluginFilter,
     class avtRTimeOperation : public avtROperation
     {
     public:
-        virtual avtDataset_p func(avtDataObject_p input,
+        virtual bool func(avtDataObject_p input,
                                 avtContract_p contract,
-                                std::vector<Variant>& args)
+                                std::vector<Variant>& args,
+                                vtkDataArray*& result)
         {
             //getRFilter()->SetInput(input);
             //return getRFilter()->GetOutput(contract);
-            return NULL;
+            return false;
         }
 
-        virtual void GetSignature(std::string& name,
+        virtual ScriptOperationResponse GetSignature(std::string& name,
                                   stringVector& argnames,
                                   std::vector<ScriptVariantTypeEnum>& argtypes)
         {
             name = "r_time_op";
+            return ScriptOperation::VTK_DATA_ARRAY;
         }
     };
 
     class avtRSimpleOperation : public avtROperation
     {
     public:
-        virtual avtDataset_p func(avtDataObject_p input,
-                                avtContract_p contract,
-                                std::vector<Variant>& args)
+        virtual bool func(avtDataObject_p input,
+                          avtContract_p contract,
+                          std::vector<Variant>& args,
+                          vtkDataArray*& result)
         {
-            return NULL;
+            return false;
         }
 
-        virtual void GetSignature(std::string& name,
+        virtual ScriptOperationResponse GetSignature(std::string& name,
                                   stringVector& argnames,
                                   std::vector<ScriptVariantTypeEnum>& argtypes)
         {
             name = "r_simple_op";
+            return ScriptOperation::VTK_DATA_ARRAY;
         }
     };
 
-    class avtRExtremeValueOperation : public avtROperation
+    class avtRExtremeValueAnalysisOperation : public avtROperation
     {
     public:
-        virtual avtDataset_p func(avtDataObject_p input,
-                                avtContract_p contract,
-                                std::vector<Variant>& args);
+        virtual bool func(avtDataObject_p input,
+                                  avtContract_p contract,
+                                  std::vector<Variant>& args,
+                                  avtDataset_p& result);
 
-        virtual void GetSignature(std::string& name,
+        virtual ScriptOperationResponse GetSignature(std::string& name,
                                   stringVector& argnames,
-                                  std::vector<ScriptVariantTypeEnum>& argtypes)
-        {
-            name = "r_extreme_values";
-        }
+                                  std::vector<ScriptVariantTypeEnum>& argtypes);
     };
 
     class avtRMonthlyIteratorOperation : public avtROperation
     {
     public:
-        virtual avtDataset_p func(avtDataObject_p input,
+        virtual bool func(avtDataObject_p input,
                                 avtContract_p contract,
-                                std::vector<Variant>& args)
+                                std::vector<Variant>& args,
+                                vtkDataArray*& result)
         {
-            return NULL;
+            return false;
         }
 
-        virtual void GetSignature(std::string& name,
-                                  stringVector& argnames,
-                                  std::vector<ScriptVariantTypeEnum>& argtypes)
+        virtual ScriptOperationResponse GetSignature(std::string& name,
+                                                     stringVector& argnames,
+                                                     std::vector<ScriptVariantTypeEnum>& argtypes)
         {
             name = "r_monthly_iterator";
+            return ScriptOperation::VTK_DATA_ARRAY;
         }
     };
   public:
@@ -165,7 +169,7 @@ class avtRFilter : virtual public avtPluginFilter,
 
     avtRTimeOperation rtimeOp;
     avtRSimpleOperation rsimpleOp;
-    avtRExtremeValueOperation revOp;
+    avtRExtremeValueAnalysisOperation revOp;
     avtRMonthlyIteratorOperation rmiOp;
 };
 
