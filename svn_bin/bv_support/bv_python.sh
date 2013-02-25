@@ -567,7 +567,11 @@ function bv_python_execute_subcommands
 
     if [[ "$VISIT_INSTALL_PYTHON_RPY2" == "yes" ]]; then
         info "Installing python-rpy2..."
-        env PATH="$R_INSTALL_DIR/bin:$PATH" ${PYTHON_PIP_COMMAND} install rpy2 --global-option=build_ext --global-option=--undef=HAS_READLINE
+        if [[ "$OPSYS" == "Darwin" && -e "$R_INSTALL_DIR/R.framework/" ]]; then
+            env PATH="$R_INSTALL_DIR/R.framework/Versions/Current/Resources/:$PATH" ${PYTHON_PIP_COMMAND} install rpy2 --global-option=build_ext --global-option=--undef=HAS_READLINE
+        else
+            env PATH="$R_INSTALL_DIR/bin:$PATH" ${PYTHON_PIP_COMMAND} install rpy2 --global-option=build_ext --global-option=--undef=HAS_READLINE
+        fi
     fi
 
     if [[ "$VISIT_INSTALL_PYTHON_MPI4PY" == "yes" ]]; then

@@ -85,7 +85,7 @@ function bv_R_host_profile
             >> $HOSTCONF
             fi
         else
-            if [[ "$OPSYS" == "Darwin"  && -e "$VISITHOME/R/$R_VERSION/$VISITARCH/R.framework/" ]]; then
+            if [[ "$OPSYS" == "Darwin"  && -e "$R_INSTALL_DIR/R.framework" ]]; then
             echo \
             "VISIT_OPTION_DEFAULT(VISIT_R_DIR \${VISITHOME}/R/$R_VERSION/\${VISITARCH}/R.framework/Versions/Current/Resources)" \
             >> $HOSTCONF
