@@ -297,11 +297,21 @@ function build_vtk
     if test "$DO_R" = "yes" ; then
         vopts="${vopts} -D${VTK_PREFIX}_USE_GNU_R:BOOL=ON"
         vopts="${vopts} -DR_COMMAND:PATH=${R_INSTALL_DIR}/bin/R"
-        vopts="${vopts} -D${VTK_PREFIX}_R_HOME:PATH=${R_INSTALL_DIR}/lib/R"
-        vopts="${vopts} -DR_INCLUDE_DIR:PATH=${R_INSTALL_DIR}/lib/R/include"
-        vopts="${vopts} -DR_LIBRARY_BASE:PATH=${R_INSTALL_DIR}/lib/R/lib/libR.${SO_EXT}"
-        vopts="${vopts} -DR_LIBRARY_LAPACK:PATH=${R_INSTALL_DIR}/lib/R/lib/libRlapack.${SO_EXT}"
-        vopts="${vopts} -DR_LIBRARY_BLAS:PATH=${R_INSTALL_DIR}/lib/R/lib/libRblas.${SO_EXT}"
+        if [[ "$OPSYS" == "Darwin" && -e "$R_INSTALL_DIR/R.framework" ]] ; then
+            vopts="${vopts} -DR_COMMAND:PATH=${R_INSTALL_DIR}/R.framwork/Resources/bin/R"
+            vopts="${vopts} -D${VTK_PREFIX}_R_HOME:PATH=${R_INSTALL_DIR}/R.framework/Resources"
+            vopts="${vopts} -DR_INCLUDE_DIR:PATH=${R_INSTALL_DIR}/R.framework/Headers"
+            vopts="${vopts} -DR_LIBRARY_BASE:PATH=${R_INSTALL_DIR}/R.framework/Resources/lib/libR.${SO_EXT}"
+            vopts="${vopts} -DR_LIBRARY_LAPACK:PATH=${R_INSTALL_DIR}/R.framework/Resources/lib/libRlapack.${SO_EXT}"
+            vopts="${vopts} -DR_LIBRARY_BLAS:PATH=${R_INSTALL_DIR}/R.framework/Resources/lib/libRblas.${SO_EXT}"
+        else
+            vopts="${vopts} -DR_COMMAND:PATH=${R_INSTALL_DIR}/bin/R"
+            vopts="${vopts} -D${VTK_PREFIX}_R_HOME:PATH=${R_INSTALL_DIR}/lib/R"
+            vopts="${vopts} -DR_INCLUDE_DIR:PATH=${R_INSTALL_DIR}/lib/R/include"
+            vopts="${vopts} -DR_LIBRARY_BASE:PATH=${R_INSTALL_DIR}/lib/R/lib/libR.${SO_EXT}"
+            vopts="${vopts} -DR_LIBRARY_LAPACK:PATH=${R_INSTALL_DIR}/lib/R/lib/libRlapack.${SO_EXT}"
+            vopts="${vopts} -DR_LIBRARY_BLAS:PATH=${R_INSTALL_DIR}/lib/R/lib/libRblas.${SO_EXT}"
+        fi
     else
         vopts="${vopts} -D${VTK_PREFIX}_USE_CHARTS:BOOL=OFF"
     fi
