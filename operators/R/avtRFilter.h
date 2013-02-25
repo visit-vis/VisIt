@@ -77,10 +77,7 @@ class avtRFilter : virtual public avtPluginFilter,
     class avtRTimeOperation : public avtROperation
     {
     public:
-        virtual bool func(avtDataObject_p input,
-                                avtContract_p contract,
-                                std::vector<Variant>& args,
-                                vtkDataArray*& result)
+        virtual bool func(ScriptArguments&, vtkDataArray*&)
         {
             //getRFilter()->SetInput(input);
             //return getRFilter()->GetOutput(contract);
@@ -99,9 +96,7 @@ class avtRFilter : virtual public avtPluginFilter,
     class avtRSimpleOperation : public avtROperation
     {
     public:
-        virtual bool func(avtDataObject_p input,
-                          avtContract_p contract,
-                          std::vector<Variant>& args,
+        virtual bool func(ScriptArguments& args,
                           vtkDataArray*& result)
         {
             return false;
@@ -119,9 +114,7 @@ class avtRFilter : virtual public avtPluginFilter,
     class avtRExtremeValueAnalysisOperation : public avtROperation
     {
     public:
-        virtual bool func(avtDataObject_p input,
-                                  avtContract_p contract,
-                                  std::vector<Variant>& args,
+        virtual bool func(ScriptArguments& args,
                                   avtDataset_p& result);
 
         virtual ScriptOperationResponse GetSignature(std::string& name,
@@ -132,10 +125,7 @@ class avtRFilter : virtual public avtPluginFilter,
     class avtRMonthlyIteratorOperation : public avtROperation
     {
     public:
-        virtual bool func(avtDataObject_p input,
-                                avtContract_p contract,
-                                std::vector<Variant>& args,
-                                vtkDataArray*& result)
+        virtual bool func(ScriptArguments& args, vtkDataArray*& result)
         {
             return false;
         }

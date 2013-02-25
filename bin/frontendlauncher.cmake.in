@@ -1,6 +1,6 @@
 #!/bin/sh
 # Do a little magic to run python from anywhere in your path.
-export PYTHONHOME=@VISIT_PYTHON_HOME@
+export PYTHONUSERBASE=@VISIT_PYTHON_HOME@
 @VIRTUALENV_ENVIRONMENT@
 lines=`cat $0 | wc -l`
 lines=`expr $lines - 20`

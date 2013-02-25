@@ -558,6 +558,14 @@ function bv_python_is_installed
 
 function bv_python_execute_subcommands
 {
+    export PYTHON_COMMAND="$VISITDIR/virtualenv/bin/python"
+    export PYTHON_PIP_COMMAND="$VISITDIR/virtualenv/bin/pip"
+    export PYTHONPATH="$VISITDIR/virtualenv/lib/python${PYTHON_COMPATIBILITY_VERSION}/site-packages/"
+
+    info "Installing ply & numpy libraries"
+    $PYTHON_PIP_COMMAND install ply
+    $PYTHON_PIP_COMMAND install numpy
+
     #these options are run outside to enable installation of pip, readline,
     #, and rpy2 even after python has been installed
     if [[ "$VISIT_INSTALL_PYTHON_READLINE" == "yes" ]]; then
@@ -565,7 +573,7 @@ function bv_python_execute_subcommands
         ${PYTHON_PIP_COMMAND} install readline
     fi
 
-    if [[ "$VISIT_INSTALL_PYTHON_RPY2" == "yes" ]]; then
+    if [[ "$DO_R" == "yes" ||  "$VISIT_INSTALL_PYTHON_RPY2" == "yes" ]]; then
         info "Installing python-rpy2..."
         if [[ "$OPSYS" == "Darwin" && -e "$R_INSTALL_DIR/R.framework/" ]]; then
             env PATH="$R_INSTALL_DIR/R.framework/Versions/Current/Resources/:$PATH" ${PYTHON_PIP_COMMAND} install rpy2 --global-option=build_ext --global-option=--undef=HAS_READLINE

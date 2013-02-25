@@ -261,9 +261,7 @@ avtRFilter::avtRExtremeValueAnalysisOperation::GetSignature(std::string& name,
 }
 
 bool
-avtRFilter::avtRExtremeValueAnalysisOperation::func(avtDataObject_p input,
-                                            avtContract_p contract,
-                                            std::vector<Variant> &args,
+avtRFilter::avtRExtremeValueAnalysisOperation::func(ScriptArguments &args,
                                             avtDataset_p &result)
 {
 
@@ -276,19 +274,19 @@ avtRFilter::avtRExtremeValueAnalysisOperation::func(avtDataObject_p input,
 //    result = filter->GetTypedOutput();
 
     avtRExtremesFilter *f = new avtRExtremesFilter();
-    f->aggregation = (ExtremeValueAnalysisAttributes::AggregationType)args[0].AsInt();
-    f->displayMonth = (ExtremeValueAnalysisAttributes::MonthType)args[1].AsInt();
-    f->displaySeason = (ExtremeValueAnalysisAttributes::SeasonType)args[2].AsInt();
+    f->aggregation = (ExtremeValueAnalysisAttributes::AggregationType)args.getArg(0).AsInt();
+    f->displayMonth = (ExtremeValueAnalysisAttributes::MonthType)args.getArg(1).AsInt();
+    f->displaySeason = (ExtremeValueAnalysisAttributes::SeasonType)args.getArg(2).AsInt();
 
     std::string vlibdir = GetVisItLibraryDirectory() + VISIT_SLASH_CHAR + "r_support";
     std::string vlibrdir  = vlibdir  + VISIT_SLASH_CHAR + "Rscripts" + VISIT_SLASH_CHAR;
     f->codeDir = vlibrdir;
-    f->dumpData = args[3].AsBool();
-    f->scalingVal = args[4].AsDouble();
+    f->dumpData = args.getArg(3).AsBool();
+    f->scalingVal = args.getArg(4).AsDouble();
 
-    f->SetInput(input);
+    f->SetInput(args.GetInput());
 
-    avtContract_p spec = contract; //GetInput()->GetOriginatingSource()->GetGeneralContract();
+    avtContract_p spec = args.GetContract(); //GetInput()->GetOriginatingSource()->GetGeneralContract();
     avtDataObject_p dob = f->GetOutput();
 
     dob->Update(spec);

@@ -48,8 +48,8 @@ IF (WIN32)
 ELSE (WIN32)
   SET_UP_THIRD_PARTY(R lib include R Rblas Rlapack)
   MESSAGE(STATUS "Installing R directory ${VISIT_INSTALLED_VERSION_LIB}")
-  FILE(COPY ${VISIT_R_DIR}
-        DESTINATION ${CMAKE_BINARY_DIR}/lib/r_support/
+  FILE(COPY ${VISIT_R_DIR}/
+        DESTINATION ${CMAKE_BINARY_DIR}/lib/r_support/R #mac has Resources dir
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
                      GROUP_READ GROUP_WRITE GROUP_EXECUTE
                      WORLD_READ             WORLD_EXECUTE
@@ -62,8 +62,8 @@ ELSE (WIN32)
     IF(VISIT_R_SKIP_INSTALL)
       MESSAGE("Skipping installation of R libraries")
     ELSE(VISIT_R_SKIP_INSTALL)
-        INSTALL(DIRECTORY ${VISIT_R_DIR}
-                  DESTINATION ${VISIT_INSTALLED_VERSION_LIB}/r_support/
+        INSTALL(DIRECTORY ${VISIT_R_DIR}/
+                  DESTINATION ${VISIT_INSTALLED_VERSION_LIB}/r_support/R
             FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
                              GROUP_READ GROUP_WRITE GROUP_EXECUTE
                              WORLD_READ             WORLD_EXECUTE
