@@ -48,10 +48,13 @@
 #include <vector>
 #include <map>
 #include <ScriptOperation.h>
+#include <avtOriginatingSource.h>
+#include <avtScriptOperation.h>
 
 struct ScriptData
 {
     avtRFilter* rfilter;
+    avtScriptOperation* sfilter;
     std::map<std::string,ScriptOperation*> operations;
 };
 
@@ -105,13 +108,16 @@ avtScriptFilter::avtScriptFilter()
             << "from flow.filters import script_pipeline\n"
             << "import visit_internal_funcs\n";
 
+    /// initialize environment
+    if(!pyEnv->Interpreter()->RunScript(script.str()))
+        cout << "Initialization Script Failed.." << endl;
+
     /// register VisIt scriptable functions..
     scriptData->rfilter = dynamic_cast<avtRFilter*>(avtRFilter::Create());
     scriptData->rfilter->RegisterOperations(this);
 
-    /// initialize environment
-    if(!pyEnv->Interpreter()->RunScript(script.str()))
-        cout << "Initialization Script Failed.." << endl;
+    scriptData->sfilter = new avtScriptOperation();
+    scriptData->sfilter->RegisterOperations(this);
 }
 
 // ****************************************************************************
@@ -129,6 +135,7 @@ avtScriptFilter::~avtScriptFilter()
     if(scriptData)
     {
         delete scriptData->rfilter;
+        delete scriptData->sfilter;
         delete scriptData;
     }
     if(pyEnv)
@@ -152,21 +159,35 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
     scriptData->operations[name] = op;
 
     /// create a definition in the modules..
+    std::ostringstream cast_to_numpy;
     std::string argstring = "";
 
     for(size_t i = 0; i < args.size(); ++i)
     {
         std::string arg = args[i];
         argstring += arg + (i == args.size() - 1 ? "" : ",");
+
+        /// convert numpy to vtk...
+        if(argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
+        {
+            cast_to_numpy << "    if not isinstance(" << args[i] << ", vtk.vtkDataArray):\n";
+            cast_to_numpy << "        " << args[i] << " = vtk.util.numpy_support.numpy_to_vtk(" << args[i] << ")\n";
+        }
     }
     std::ostringstream str;
 
-    str << "def " << name << "( " << argstring << "):\n";
+    str << "def " << name << "(" << argstring << "):\n";
+    str << "    import vtk,vtk.util.numpy_support\n";
+    if(cast_to_numpy.str().size() > 0)
+        str << cast_to_numpy.str();
 
     if(argstring.size() == 0)
-        str << "  return visit_internal_funcs.visit_functions('" << name << "')\n";
+        str << "    res = visit_internal_funcs.visit_functions('" << name << "')\n";
     else
-        str << "  return visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
+        str << "    res = visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
+    str << "    return res\n";
+
+    /// convert from vtk to numpy if needed..
 
     str << "sys.modules['visit_internal_funcs'].__dict__['"
         << name << "'] = " << name << "\n";
@@ -180,7 +201,7 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
         << "import rpy2.rinterface as ri\n"
         << "import visit_internal_funcs\n"
 
-        << "def _r_" << name << "( " << argstring << "):\n";
+        << "def _r_" << name << "(" << argstring << "):\n";
 
     if(argstring.size() == 0)
         str << "  res = visit_internal_funcs.visit_functions('" << name << "')\n";
@@ -188,7 +209,7 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
         str << "  res = visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
 
 //        << "  print res\n"
-    str  << "  return rpy2.robjects.vectors.IntVector([1,2,3])\n"
+    str  << "  return rpy2.robjects.default_py2ri(res)\n"
 
          << "sys.modules['visit_internal_funcs'].__dict__['_r_"
          << name << "'] = _r_" << name << "\n"
@@ -197,6 +218,7 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
          << "ri.globalenv['" << name << "'] = _rxp_" << name << "\n";
 
     //std::cout << str.str() << std::endl;
+    //std::cout << "--------------------------------" << std::endl;
 
     if(!pyEnv->Interpreter()->RunScript(str.str()))
         std::cerr << "function : " << name << " registration failed" << std::endl;
@@ -526,68 +548,85 @@ avtScriptFilter::ModifyContract(avtContract_p spec)
 
 
 /// Python script filter functions..
-PyObject *
-visit_foreach_file(PyObject *self, PyObject *args)
+
+void addToVariant(ScriptOperation::ScriptVariantTypeEnum& subtype, Variant& result, Variant& v)
 {
-    Py_INCREF(Py_None);
-    return Py_None;
+    if(subtype == ScriptOperation::BOOL_TYPE)
+        result.AsBoolVector().push_back(v.AsBool());
+    else if(subtype == ScriptOperation::CHAR_TYPE)
+        result.AsCharVector().push_back(v.AsChar());
+    else if(subtype == ScriptOperation::UNSIGNED_CHAR_TYPE)
+        result.AsUnsignedCharVector().push_back(v.AsUnsignedChar());
+    else if(subtype == ScriptOperation::INT_TYPE)
+        result.AsIntVector().push_back(v.AsInt());
+    else if(subtype == ScriptOperation::LONG_TYPE)
+        result.AsLongVector().push_back(v.AsLong());
+    else if(subtype == ScriptOperation::FLOAT_TYPE)
+        result.AsFloatVector().push_back(v.AsFloat());
+    else if(subtype == ScriptOperation::DOUBLE_TYPE)
+        result.AsDoubleVector().push_back(v.AsDouble());
+    else if(subtype == ScriptOperation::STRING_TYPE)
+        result.AsStringVector().push_back(v.AsString());
 }
 
-PyObject *
-visit_foreach_location(PyObject *self, PyObject *args)
-{
-    Py_INCREF(Py_None);
-    return Py_None;
-}
-
-
-bool convert(ScriptOperation::ScriptVariantTypeEnum& type, PyObject* obj, Variant& result)
+bool convert(const ScriptOperation::ScriptVariantTypeEnum& type, PyObject* obj, Variant& result)
 {
     bool success = true;
     switch(type)
     {
         case ScriptOperation::BOOL_TYPE:
         {
-        std::cout << "meow?" << PyBool_Check(obj) << std::endl;
             PyBool_Check(obj) ? result = (obj == Py_False ? false: true ) : success = false;
             break;
         }
         case ScriptOperation::CHAR_TYPE:
         {
-            PyString_Check(obj) ? result = PyString_AsString(obj) : success = false;
+            PyString_Check(obj) && PyString_Size(obj) > 0 ? result = PyString_AsString(obj)[0] : success = false;
             break;
         }
         case ScriptOperation::UNSIGNED_CHAR_TYPE:
         {
-            PyString_Check(obj) ? result = PyString_AsString(obj) : success = false;
+            PyString_Check(obj)  && PyString_Size(obj) > 0 ? result = (unsigned char) PyString_AsString(obj)[0] : success = false;
             break;
         }
         case ScriptOperation::INT_TYPE:
-    {
-        PyInt_Check(obj) ? result = (int)PyInt_AsLong(obj) : success = false;
-        break;
-    }
-
+        {
+            PyInt_Check(obj) ? result = (int)PyInt_AsLong(obj) : success = false;
+            break;
+        }
         case ScriptOperation::LONG_TYPE:
-    {
-        PyLong_Check(obj) ? result = (long)PyLong_AsLong(obj) : success = false;
-        break;
-    }
+        {
+            PyLong_Check(obj) ? result = (long)PyLong_AsLong(obj) : success = false;
+            break;
+        }
         case ScriptOperation::FLOAT_TYPE:
-    {
-        PyFloat_Check(obj) ? result = (float)PyFloat_AsDouble(obj) : success = false;
-        break;
-    }
+        {
+            PyFloat_Check(obj) ? result = (float)PyFloat_AsDouble(obj) : success = false;
+            break;
+        }
         case ScriptOperation::DOUBLE_TYPE:
-    {
-        PyFloat_Check(obj) ? result = (double)PyFloat_AsDouble(obj) : success = false;
-        break;
-    }
+        {
+            PyFloat_Check(obj) ? result = (double)PyFloat_AsDouble(obj) : success = false;
+            break;
+        }
         case ScriptOperation::STRING_TYPE:
-    {
-        PyString_Check(obj) ? result = (const char*)PyString_AsString(obj) : success = false;
-        break;
-    }
+        {
+            PyString_Check(obj) ? result = (const char*)PyString_AsString(obj) : success = false;
+            break;
+        }
+        case ScriptOperation::VARIANT_TYPE:
+        {
+            if (PyBool_Check(obj)) result = (obj == Py_False ? false: true );
+            else if(PyInt_Check(obj)) result = (int)PyInt_AsLong(obj);
+            else if(PyLong_Check(obj)) result = (long)PyLong_AsLong(obj);
+            else if(PyFloat_Check(obj)) result = (double)PyFloat_AsDouble(obj);
+            else if(PyString_Check(obj)) result = (const char*)PyString_AsString(obj);
+            else
+            {
+                success = false;
+            }
+            break;
+        }
         case ScriptOperation::BOOL_VECTOR_TYPE:
         case ScriptOperation::CHAR_VECTOR_TYPE:
         case ScriptOperation::UNSIGNED_CHAR_VECTOR_TYPE:
@@ -597,71 +636,75 @@ bool convert(ScriptOperation::ScriptVariantTypeEnum& type, PyObject* obj, Varian
         case ScriptOperation::DOUBLE_VECTOR_TYPE:
         case ScriptOperation::STRING_VECTOR_TYPE:
     {
-        if(PyTuple_Check(obj)  == 0 || PyList_Check(obj) == 0)
+        if(!PyTuple_Check(obj) && !PyList_Check(obj))
         {
             success = false;
             break;
         }
-        /*
+
+        ScriptOperation::ScriptVariantTypeEnum subtype;
         switch(type)
         {
-            case BOOL_VECTOR_TYPE: { subtype = BOOL_TYPE; result = boolVector(); break; }
-            case CHAR_VECTOR_TYPE: { result = charsVector(); break; }
-            case UNSIGNED_CHAR_VECTOR_TYPE: { result = unsignedCharVector(); break; }
-            case INT_VECTOR_TYPE: { result = intVector(); break; }
-            case LONG_VECTOR_TYPE: { result = longVector(); break; }
-            case FLOAT_VECTOR_TYPE: { result = floatVector(); break; }
-            case DOUBLE_VECTOR_TYPE:{ result = doubleVector(); break; }
-            case STRING_VECTOR_TYPE:{ result = stringVector(); break; }
+            case ScriptOperation::BOOL_VECTOR_TYPE: { subtype = ScriptOperation::BOOL_TYPE; result = boolVector(); break; }
+            case ScriptOperation::CHAR_VECTOR_TYPE: { subtype = ScriptOperation::CHAR_TYPE; result = charVector(); break; }
+            case ScriptOperation::UNSIGNED_CHAR_VECTOR_TYPE: { subtype = ScriptOperation::UNSIGNED_CHAR_TYPE; result = unsignedCharVector(); break; }
+            case ScriptOperation::INT_VECTOR_TYPE: { subtype = ScriptOperation::INT_TYPE; result = intVector(); break; }
+            case ScriptOperation::LONG_VECTOR_TYPE: { subtype = ScriptOperation::LONG_TYPE; result = longVector(); break; }
+            case ScriptOperation::FLOAT_VECTOR_TYPE: { subtype = ScriptOperation::FLOAT_TYPE; result = floatVector(); break; }
+            case ScriptOperation::DOUBLE_VECTOR_TYPE:{ subtype = ScriptOperation::DOUBLE_TYPE; result = doubleVector(); break; }
+            case ScriptOperation::STRING_VECTOR_TYPE:{ subtype = ScriptOperation::STRING_TYPE; result = stringVector(); break; }
         };
 
         if(PyTuple_Check(obj))
         {
             // Extract arguments from the tuple.
-
             for(int i = 0; i < PyTuple_Size(obj); ++i)
             {
                 PyObject *item = PyTuple_GET_ITEM(obj, i);
                 Variant v;
-                convert(subtype)
+                if(!convert(subtype,item,v))
+                    success = false;
+                addToVariant(subtype,result,v);
             }
         }
-        else
+        else if(PyList_Check(obj))
         {
             // Extract arguments from the list.
             for(int i = 0; i < PyList_Size(obj); ++i)
             {
                 PyObject *item = PyList_GET_ITEM(obj, i);
+                Variant v;
+                if(!convert(subtype,item,v))
+                    success = false;
+                addToVariant(subtype,result,v);
             }
         }
-        */
+        else
+        {
+            std::cerr << "avtScriptFilter::convert error should not be here.." << std::endl;
+            success = false;
+        }
         break;
     }
     case ScriptOperation::VTK_DATA_ARRAY_TYPE:
-    case ScriptOperation::VTK_DATASET_ARRAY_TYPE:
+    case ScriptOperation::VTK_DATASET_TYPE:
+    case ScriptOperation::VTK_AVTDATASET_TYPE:
     default: break;
     };
     return success;
 }
+
 PyObject *
 visit_functions(PyObject *self, PyObject *args)
 {
     char* name = 0;
     PyObject* scriptArgs = NULL;
 
-    std::cout << " called: " << self << " " << args << std::endl;
-
     ///if args is just the function call..
     if(PyString_Check(args))
-    {
-        std::cout << "NAME!" << std::endl;
         name = PyString_AsString(args);
-    }
     else
-    {
         PyArg_ParseTuple(args,"sO",&name,&scriptArgs);
-        std::cout << "NAME: " << name << std::endl;
-    }
 
     if(!name) return NULL;
 
@@ -695,62 +738,187 @@ visit_functions(PyObject *self, PyObject *args)
     ScriptOperation::ScriptOperationResponse op_resp = op->GetSignature(op_name,op_argnames,op_argtypes);
 
     std::vector<Variant> variantArgs;
+    std::map<int,void*> datamap;
+    std::map<int, std::vector<Variant> > variantVecMap;
 
     // Extract arguments from the tuple.
-    if(PyTuple_Size(scriptArgs) != op_argtypes.size())
+    if(scriptArgs)
     {
-        std::cerr << "sizes do not match!" << std::endl;
-        return NULL;
+        if(PyTuple_Size(scriptArgs) != op_argtypes.size())
+        {
+            std::cerr << "sizes do not match!" << std::endl;
+            return NULL;
+        }
+        for(int i = 0; i < PyTuple_Size(scriptArgs); ++i)
+        {
+            Variant v;
+            PyObject *item = PyTuple_GET_ITEM(scriptArgs, i);
+
+            if(op_argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
+            {
+                void* vobj = scriptFilter->GetPythonEnvironment()->UnwrapVTKObject(item, "vtkDataArray");
+                datamap[i] = vobj;
+            }
+            else if(op_argtypes[i] == ScriptOperation::VARIANT_VECTOR_TYPE)
+            {
+                std::vector<Variant> variantVec;
+
+                if(!PyTuple_Check(item) && !PyList_Check(item))
+                {
+                    variantArgs.push_back(v); ///null..
+                    variantVecMap[i] = variantVec;
+                    continue;
+                }
+
+                if(PyTuple_Check(item))
+                {
+                    // Extract arguments from the tuple.
+                    for(int j = 0; j < PyTuple_Size(item); ++j)
+                    {
+                        PyObject *itemx = PyTuple_GET_ITEM(item, j);
+                        Variant v;
+                        convert(ScriptOperation::VARIANT_TYPE,itemx,v);
+                        variantVec.push_back(v);
+                    }
+                }
+                else
+                {
+                    // Extract arguments from the list.
+                    for(int j = 0; j < PyList_Size(item); ++j)
+                    {
+                        PyObject *itemx = PyList_GET_ITEM(item, j);
+                        Variant v;
+                        convert(ScriptOperation::VARIANT_TYPE,itemx,v);
+                        variantVec.push_back(v);
+                    }
+                }
+                variantVecMap[i] = variantVec;
+            }
+            else
+            {
+                convert(op_argtypes[i],item,v);
+            }
+
+            //std::cout << op_argnames[i] << " " << op_argtypes[i] << " " <<  v.ToJSON() << std::endl;
+
+            variantArgs.push_back(v);
+        }
     }
-    for(int i = 0; i < PyTuple_Size(scriptArgs); ++i)
-    {
-        Variant v;
-        PyObject *item = PyTuple_GET_ITEM(scriptArgs, i);
-        std::cout << op_argnames[i] << " " << op_argtypes[i] << " " << convert(op_argtypes[i],item,v) << std::endl;
 
-        variantArgs.push_back(v);
-    }
-
-    for(int i = 0; i < variantArgs.size(); ++i)
-    {
-        Variant v = variantArgs[i];
-        std::cout << v.ToJSON() << std::endl;
-    }
-
-
-//    avtDataset_p result;
-
-//    if(!op->func(scriptFilter->GetInput(),
-//             scriptFilter->GetGeneralContract(),
-//             variantArgs, result))
-
+//    for(int i = 0; i < variantArgs.size(); ++i)
 //    {
-//        std::cerr << "operation failed!" << std::endl;
-//        Py_DECREF(c_api_object);
-//        Py_DECREF(m);
-//        return NULL;
+//        Variant v = variantArgs[i];
+//        std::cout << v.ToJSON() << std::endl;
 //    }
 
-//    avtDataTree_p tree = scriptFilter->GetDataTree(result);
+    ScriptArguments sargs;
 
-//    int leaves = 0;
-//    vtkDataSet** datasets = tree->GetAllLeaves(leaves);
+    sargs.input = scriptFilter->GetInput();
+    sargs.contract = scriptFilter->GetInput()->GetOriginatingSource()->GetGeneralContract();
+    sargs.args = variantArgs;
+    sargs.datamap = datamap;
+    sargs.variantVector = variantVecMap;
+    sargs.pythonFilter = scriptFilter->GetPythonEnvironment();
 
-//    //std::cout << leaves << std::endl;
-//    if(leaves != -1)
-//    {
-//        PyObject* out = scriptFilter->GetPythonEnvironment()->WrapVTKObject(datasets[0],"vtkDataSet");
-//        //std::cout << out << std::endl;
+    if(op_resp == ScriptOperation::AVT_DATA_SET)
+    {
+//        avtDataset_p result;
 
-//        Py_DECREF(c_api_object);
-//        Py_DECREF(m);
+//        if(!op->func(sargs, result))
 
-//        return out;
-//    }
+//        {
+//            std::cerr << "operation failed!" << std::endl;
+//            Py_DECREF(c_api_object);
+//            Py_DECREF(m);
+//            return NULL;
+//        }
+//        avtDataTree_p tree = scriptFilter->GetDataTree(result);
 
-    Py_INCREF(scriptArgs);
-    //Py_DECREF(c_api_object);
-    Py_DECREF(m);
+//        int leaves = 0;
+//        vtkDataSet** datasets = tree->GetAllLeaves(leaves);
+
+//        //std::cout << leaves << std::endl;
+//        if(leaves != -1)
+//        {
+//            PyObject* out = scriptFilter->GetPythonEnvironment()->WrapVTKObject(datasets[0],"vtkDataSet");
+//            //std::cout << out << std::endl;
+
+//            Py_DECREF(c_api_object);
+//            Py_DECREF(m);
+
+//            return out;
+//        }
+    }
+    else if(op_resp == ScriptOperation::VTK_DATA_ARRAY)
+    {
+        vtkDataArray* dataarray;
+        if(!op->func(sargs, dataarray))
+
+        {
+            std::cerr << name << ": constant operation failed!" << std::endl;
+            Py_DECREF(c_api_object);
+            Py_DECREF(m);
+            return NULL;
+        }
+
+        std::cout << "dataArray: " << dataarray << std::endl;
+        PyObject* output = scriptFilter->GetPythonEnvironment()->WrapVTKObject(dataarray, "vtkDataArray");
+        std::cout << output << std::endl;
+        return output;
+    }
+    else if(op_resp == ScriptOperation::VTK_DATASET)
+    {
+        vtkDataSet* dataset;
+        if(!op->func(sargs, dataset))
+
+        {
+            std::cerr << name << ": constant operation failed!" << std::endl;
+            Py_DECREF(c_api_object);
+            Py_DECREF(m);
+            return NULL;
+        }
+
+        PyObject* output = scriptFilter->GetPythonEnvironment()->WrapVTKObject(dataset, "vtkDataSet");
+        return output;
+    }
+    else
+    {
+        Variant result;
+        if(!op->func(sargs, result))
+
+        {
+            std::cerr << name << ": constant operation failed!" << std::endl;
+            Py_DECREF(c_api_object);
+            Py_DECREF(m);
+            return NULL;
+        }
+
+        PyObject* output = NULL;
+        /// convert result to PyObject
+
+        if(result.Type() == Variant::BOOL_TYPE)
+            output = PyBool_FromLong(result.AsBool());
+        else if(result.Type() == Variant::CHAR_TYPE)
+            output = PyString_FromStringAndSize(&result.AsChar(),1);
+        else if(result.Type() == Variant::UNSIGNED_CHAR_TYPE)
+            output = PyByteArray_FromStringAndSize(&result.AsChar(),1);
+        else if(result.Type() == Variant::STRING_TYPE)
+            output = PyString_FromString(result.AsString().c_str());
+        else if(result.Type() == Variant::INT_TYPE)
+            output = PyInt_FromLong(result.AsInt());
+        else if(result.Type() == Variant::LONG_TYPE)
+            output = PyLong_FromLong(result.AsLong());
+        else if(result.Type() == Variant::FLOAT_TYPE)
+            output = PyFloat_FromDouble(result.AsFloat());
+        else if(result.Type() == Variant::DOUBLE_TYPE)
+            output = PyFloat_FromDouble(result.AsDouble());
+
+        return output;
+    }
+
+//    Py_INCREF(scriptArgs);
+//    Py_DECREF(c_api_object);
+//    Py_DECREF(m);
 
     Py_INCREF(Py_None);
     return Py_None;

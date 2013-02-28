@@ -62,6 +62,10 @@ GetJSONVectorFromPyObject(PyObject *obj, JSONNode &vec)
     {
         retval = false;
     }
+    else if(PyBool_Check(obj))
+    {
+        vec = obj == Py_True ? true : false;
+    }
     else if(PyTuple_Check(obj))
     {
         // Extract arguments from the tuple.
@@ -260,7 +264,7 @@ ScriptAttributes_LoadPythonKernel(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    std::cout << node.ToString() << std::endl;
+    //std::cout << node.ToString() << std::endl;
 
 //    obj->data->AddPythonScript(name,vec,code);
     obj->data->LoadPythonKernel(name,node,code);
@@ -291,9 +295,7 @@ ScriptAttributes_LoadRKernel(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    std::cout << node.ToString() << std::endl;
-
-//    obj->data->AddPythonScript(name,vec,code);
+    obj->data->LoadRKernel(name,node,code);
 
     Py_INCREF(Py_None);
     return Py_None;

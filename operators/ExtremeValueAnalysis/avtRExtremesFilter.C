@@ -226,10 +226,9 @@ avtRExtremesFilter::Initialize()
     SetupOutput("se_rv", "se.returnValue", 1);
     SetupOutput("mle", "mle", 3);
     SetupOutput("se_mle", "se.mle", 3);
-    /*
+
     for (int i=0; i < outputArr.size(); i++)
         cout<<i<<": "<<outputArr[i].name<<" = "<<outputArr[i].Rname<<" vidx= "<<outputArr[i].varIdx<<" "<<outputArr[i].aggrIdx<<" "<<outputArr[i].dumpFileName<<endl;
-    */
 }
 
 
@@ -273,7 +272,7 @@ void
 avtRExtremesFilter::Execute()
 {
     debug1<<"avtRExtremesFilter::Execute() time= "<<currentTime<<endl;
-
+    std::cout << "executing" << std::endl;
     Initialize();
     int nleaves;
     vtkDataSet **leaves = GetInputDataTree()->GetAllLeaves(nleaves);
@@ -287,7 +286,7 @@ avtRExtremesFilter::Execute()
     float *vals = (float *) scalars->GetVoidPointer(0);
     
     int index = GetIndexFromDay(currentTime);
-    //cout<<"index= "<<index<<" "<<values.size()<<" "<<values[index].size()<<" nt= "<<scalars->GetNumberOfTuples()<<endl;
+    cout<<"index= "<<index<<" "<<values.size()<<" "<<values[index].size()<<" nt= "<<scalars->GetNumberOfTuples()<<endl;
 
     for (int i = 0; i < numTuples; i++)
     {

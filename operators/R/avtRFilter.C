@@ -284,14 +284,19 @@ avtRFilter::avtRExtremeValueAnalysisOperation::func(ScriptArguments &args,
     f->dumpData = args.getArg(3).AsBool();
     f->scalingVal = args.getArg(4).AsDouble();
 
+    std::cout << f->aggregation << " " << f->displayMonth << " " << f->displaySeason << " " << f->codeDir <<
+                 " " << f->dumpData << " " << f->scalingVal << std::endl;
+
     f->SetInput(args.GetInput());
 
-    avtContract_p spec = args.GetContract(); //GetInput()->GetOriginatingSource()->GetGeneralContract();
-    avtDataObject_p dob = f->GetOutput();
+    //avtContract_p spec = f->GetInput()->GetOriginatingSource()->GetGeneralContract();
+    //avtDataObject_p dob = f->GetOutput();
 
-    dob->Update(spec);
+    //dob->Update(spec);
 
-    result = f->GetTypedOutput();
+    //result = f->GetTypedOutput();
+
+
 //    avtDataTree_p tree = f->GetTypedOutput()->GetDataTree();
 
 //    //Set the output variable properly.

@@ -240,7 +240,7 @@ JSONNode::ToString(const std::string &indent) const
 
     if(type == JSONARRAY)
     {
-        std::string output = "[ ";
+        std::string output = "[";
         for(int i = 0; i < json.array.size(); ++i)
         {
             output += json.array[i].ToString();

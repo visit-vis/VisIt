@@ -40,6 +40,30 @@
 #include <DataNode.h>
 #include <JSONNode.h>
 
+#include <algorithm>
+#include <functional>
+#include <cctype>
+#include <locale>
+
+// trim from start
+static inline std::string ltrim(const std::string &ts) {
+        std::string s = ts;
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+        return s;
+}
+
+// trim from end
+static inline std::string rtrim(const std::string &ts) {
+        std::string s = ts;
+        s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+        return s;
+}
+
+// trim from both ends
+static inline std::string trim(const std::string &s) {
+        return ltrim(rtrim(s));
+}
+
 // ****************************************************************************
 // Method: ScriptAttributes::ScriptAttributes
 //
@@ -666,11 +690,10 @@ ScriptAttributes::AddFunction(const std::string& name, const stringVector& atts)
     std::ostringstream ostr;
 
     ostr << "import visit_internal_funcs\n"
-         << "print dir(visit_internal_funcs)\n"
          << "setout(visit_internal_funcs." << name << "(" << argstring << "))" << std::endl;
 
     std::string escapedCode = ostr.str();
-    std::cout << escapedCode << std::endl;
+    //std::cout << escapedCode << std::endl;
     replace(escapedCode, "\n", "\\n");
 
     node["source"] = escapedCode;
@@ -804,17 +827,15 @@ void ScriptAttributes::AddPythonScript(const std::string& name, const stringVect
     Select(ID_ScriptMap, (void *)&ScriptMap);
 }
 
-void
-ScriptAttributes::LoadRKernel(const std::string& name, const JSONNode &atts, const std::string& code)
-{
-//    script = JSONNode();
-//    ScriptMap = MapNode();
-
-//    AddRScript(name,atts,code);
-//    AddFinalOutputConnection(name);
-}
-
 /// convert json object to set up pipeline..
+std::string getNextName()
+{
+    static int i = 0;
+    char buf[1024];
+    sprintf(buf,"auto_name_%d",i);
+    i += 1;
+    return buf;
+}
 
 bool
 ScriptAttributes::SetupPipeline(const JSONNode& atts, stringVector& args, const std::string& parent)
@@ -853,25 +874,93 @@ ScriptAttributes::SetupPipeline(const JSONNode& atts, stringVector& args, const 
             int index = pair.find("=");
             if(index == std::string::npos) continue;
             key = pair.substr(0,index);
-            value = pair.substr(index+1);
+
+            value = trim(pair.substr(index+1));
          }
 
         if(key.GetType() != JSONNode::JSONSTRING) continue;
 
-        std::string keystr = key.GetString();
+        std::string keystr = trim(key.GetString());
 
         std::ostringstream str;
-        str << "import json\n"
-            << "setout(json.loads(\"" << value.ToString()
-            << "\"))\n";
+        str << "import json\n";
+        if(value.GetType() == JSONNode::JSONSTRING)
+        {
+            std::string v = trim(value.GetString());
 
-        //std::cout << "output = " << keystr << " " << str.str() << std::endl;
-        AddPythonScript(keystr,stringVector(),str.str());
-        AddNode(keystr,keystr);
-        AddConnection(keystr,parent,keystr);
+            ///character at 0 and has :
+            if(v.find(":") != std::string::npos && v.find(":") == 0)
+            {
+                /// optionally handle whether it can be as_vtkarray, as_ndarray, or as_rarray
+
+                size_t index = v.find(":as_ndarray");
+
+                if(index == std::string::npos)
+                    index = v.find(":as_rarray");
+
+                if(index != std::string::npos)
+                {
+                    std::string newName = getNextName();
+                    v = v.substr(0,index);
+                    AddNode(newName, "as_ndarray");
+                    AddConnection(v, newName, "in");
+                    AddConnection(newName,parent,keystr);
+                }
+                else
+                {
+                    index = v.find(":as_vtkarray");
+                    if(index != std::string::npos)
+                        v = v.substr(0,index);
+                    AddConnection(v,parent,keystr);
+                }
+            }
+            else
+            {
+                std::string escapedCode = trim(value.GetString());
+                replace(escapedCode,"\n","\\\n");
+                replace(escapedCode,"'","\"");
+                escapedCode = "'" + escapedCode + "'";
+
+                str << "try:\n"
+                    << " a = json.loads(" << escapedCode << ")\n"
+                    << "except:\n"
+                    << " a = " << escapedCode << "\n"
+                    << "setout(a)\n";
+
+                AddPythonScript(keystr,stringVector(),str.str());
+                AddNode(keystr,keystr);
+                AddConnection(keystr,parent,keystr);
+            }
+        }
+        else
+        {
+            str << "setout(json.loads('" << trim(value.ToString()) << "'))\n";
+
+            AddPythonScript(keystr,stringVector(),str.str());
+            AddNode(keystr,keystr);
+            AddConnection(keystr,parent,keystr);
+        }
         args.push_back(keystr);
     }
     return true;
+}
+
+void
+ScriptAttributes::LoadRKernel(const std::string& name, const JSONNode &atts, const std::string& code)
+{
+    script = JSONNode();
+    ScriptMap = MapNode();
+
+    stringVector args;
+    SetupPipeline(atts,args,name);
+
+    //for(int i = 0; i < args.size(); ++i)
+    //    std::cout << args[i] << std::endl;
+
+    AddRScript(name,args,code);
+    AddNode(name,name);
+    AddFinalOutputConnection(name);
+
 }
 
 void
@@ -883,8 +972,8 @@ ScriptAttributes::LoadPythonKernel(const std::string& name, const JSONNode& atts
     stringVector args;
     SetupPipeline(atts,args,name);
 
-    for(int i = 0; i < args.size(); ++i)
-        std::cout << args[i] << std::endl;
+    //for(int i = 0; i < args.size(); ++i)
+    //    std::cout << args[i] << std::endl;
 
     AddPythonScript(name,args,code);
     AddNode(name,name);

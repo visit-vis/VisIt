@@ -121,6 +121,9 @@ class ScriptPipelineSink(Filter):
     def execute(self):
         res = self.input("in")
 
+        if(res is None):
+            return self.context.mesh
+
         if isinstance(res,vtk.vtkDataSet):
             return res
 

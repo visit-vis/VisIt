@@ -9,15 +9,21 @@
 #include <avtContract.h>
 
 
+class avtPythonFilterEnvironment;
+
 class ScriptArguments
 {
     friend class avtScriptFilter;
-
+public:
+    avtPythonFilterEnvironment* pythonFilter;
     avtDataObject_p input;
     avtContract_p contract;
     std::vector<Variant> args;
     std::map<int,void*> datamap;
-public:
+    std::map<int, std::vector<Variant> > variantVector;
+
+    /// functions..
+    avtPythonFilterEnvironment* GetPythonEnvironment();
     avtDataObject_p GetInput() { return input; }
     avtContract_p GetContract() { return contract; }
     size_t getArgSize() { args.size(); }
@@ -27,8 +33,17 @@ public:
     {
         if(datamap.count(i) > 0)
             return datamap[i];
-        else
-            return (void*)&args[i];
+        return (void*)&args[i];
+    }
+
+    std::vector<Variant> getArgAsVariantVector(int i)
+    {
+        if(variantVector.count(i) > 0)
+            return variantVector[i];
+
+        std::vector<Variant> tmp;
+        tmp.push_back(args[i]);
+        return tmp;
     }
 };
 
@@ -46,10 +61,13 @@ public:
     {
         CONSTANT,
         VTK_DATA_ARRAY,
-        VTK_DATA_SET,
+        VTK_DATASET,
         AVT_DATA_SET
     };
 
+    /// TODO: I really want to use the Variant/MapNode class here
+    /// but I also need an ability to return VTK_DATA_ARRAY_TYPE as an option..
+    /// not sure how I am going to honor vtkDataSets from R?
     typedef enum
     {
         EMPTY_TYPE = 0,
@@ -57,9 +75,12 @@ public:
         FLOAT_TYPE, DOUBLE_TYPE, STRING_TYPE,
         BOOL_VECTOR_TYPE, CHAR_VECTOR_TYPE, UNSIGNED_CHAR_VECTOR_TYPE,
         INT_VECTOR_TYPE, LONG_VECTOR_TYPE, FLOAT_VECTOR_TYPE,
-        DOUBLE_VECTOR_TYPE, STRING_VECTOR_TYPE,
-        VTK_DATA_ARRAY_TYPE, VTK_DATASET_ARRAY_TYPE
+        DOUBLE_VECTOR_TYPE, STRING_VECTOR_TYPE, VARIANT_TYPE, VARIANT_VECTOR_TYPE,
+        VTK_DATA_ARRAY_TYPE, VTK_DATASET_TYPE, VTK_AVTDATASET_TYPE
     } ScriptVariantTypeEnum;
+
+    virtual bool func(ScriptArguments& args,
+                      Variant& result){ (void) args; (void) result; return false; }
 
     virtual bool func(ScriptArguments& args,
                       vtkDataArray*& result){ (void) args; (void) result; return false; }

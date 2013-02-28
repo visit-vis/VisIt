@@ -33,6 +33,7 @@ ${COMMON_SOURCES}
 SET(LIBE_SOURCES
 ScriptEnginePluginInfo.C
 avtScriptFilter.C
+avtScriptOperation.C
 ${COMMON_SOURCES}
 )
 
