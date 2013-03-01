@@ -64,7 +64,8 @@ class vtkDataSet;
 // ****************************************************************************
 
 class avtRFilter : virtual public avtPluginFilter,
-                   virtual public avtDatasetToDatasetFilter
+                   virtual public avtDatasetToDatasetFilter,
+                   public ScriptOperationsManager
 {
 
     class avtROperation : public ScriptOperation

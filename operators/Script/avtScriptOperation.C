@@ -46,7 +46,7 @@
 
 #include <vtkRInterface.h>
 #include <avtPythonFilterEnvironment.h>
-
+#include <Python.h>
 avtScriptOperation::avtScriptOperation()
 {}
 
@@ -73,36 +73,62 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
     for(int i = 0; i < kernelArgs.size(); ++i)
         std::cout << "arg: " << i << " " << kernelArgs[i].ToJSON() << std::endl;
 
-//    avtPythonFilterEnvironment* environ = args.GetPythonEnvironment();
+    avtPythonFilterEnvironment* environ = args.GetPythonEnvironment();
 
     //run python code or R code (using rpy2)..
 
-//    if(std::string(var->GetClassName()) != "vtkFloatArray") return false;
+    if(std::string(var->GetClassName()) != "vtkFloatArray") return false;
 
-//    vtkIdType size = var->GetDataSize();
-//    float* floatArray = (float*) var->GetVoidPointer(0);
+    vtkIdType size = var->GetDataSize();
+    float* floatArray = (float*) var->GetVoidPointer(0);
 
-//    std::string primaryVar = primaryVariable.AsString();
+    std::string primaryVar = primaryVariable.AsString();
 
-//    std::string arglist = "";
-//    for(int i = 0; i < kernelArgs.size(); ++i)
-//        arglist += kernelArgs[i].AsString() + (kernelArgs.size() == i-1 ? "" : ",");
+    std::string arglist = "";
+    for(int i = 0; i < kernelArgs.size(); ++i)
+        arglist += kernelArgs[i].ConvertToString() + (i == kernelArgs.size()-1 ? "" : ",");
 
-//    /// TODO: fix for arglist is empty
+    if(kernelLanguage == "Python")
+        environ->Interpreter()->RunScript(kernel.AsString());
+    else
+    {
+        std::ostringstream rsetup;
 
-//    //environ->Interpreter()->RunScript(kernel.AsString());
-
-
-//    for(int i = 0; i < size; ++i)
-//    {
-//        float val = floatArray[i];
-//        std::ostringstream result;
-//        result << kernelName.AsString() <<  "(" <<  primaryVar <<  "=" <<  val << "," << arglist << ")";
-//        std::cout << result << std::endl;
-//    }
+        rsetup << "import rpy2, rpy2.robjects\n"
+               << kernelName.AsString() <<  " = rpy2.robjects.r(\"\"\"\n"
+               << kernel.AsString()
+               << "\"\"\")\n";
+        std::cout << rsetup.str() << std::endl;
+        environ->Interpreter()->RunScript(rsetup.str());
+    }
 
     result = var->NewInstance();
     result->DeepCopy(var);
+
+    float* resultArray = (float*) result->GetVoidPointer(0);
+
+    double resultVal = 0;
+    for(int i = 0; i < size; ++i)
+    {
+        float val = floatArray[i];
+        std::ostringstream result;
+        result << "res = " << kernelName.AsString() <<  "(" <<  val;
+        if(arglist.size() > 0)
+            result << "," << arglist << ")\n";
+        else
+            result << ")\n";
+        if(kernelLanguage.AsString() == "R")
+            result << "res = res[0]\n";
+
+        if(i == 0) std::cout << result.str() << std::endl;
+        environ->Interpreter()->RunScript(result.str().c_str());
+
+        PyObject* obj = environ->Interpreter()->GetGlobalObject("res");
+
+        environ->Interpreter()->PyObjectToDouble(obj,resultVal);
+        resultArray[i] = resultVal;
+    }
+
     return true;
 }
 

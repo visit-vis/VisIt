@@ -45,7 +45,7 @@
 #include <ScriptOperation.h>
 
 /// class to provide default script operations..
-class avtScriptOperation
+class avtScriptOperation : public ScriptOperationsManager
 {
     class avtVisItForEachLocation : public ScriptOperation
     {

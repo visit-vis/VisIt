@@ -23,7 +23,7 @@ public:
     std::map<int, std::vector<Variant> > variantVector;
 
     /// functions..
-    avtPythonFilterEnvironment* GetPythonEnvironment();
+    avtPythonFilterEnvironment* GetPythonEnvironment() { return pythonFilter; }
     avtDataObject_p GetInput() { return input; }
     avtContract_p GetContract() { return contract; }
     size_t getArgSize() { args.size(); }
@@ -52,6 +52,12 @@ class ScriptManager
 {
 public:
     virtual void RegisterOperation(ScriptOperation* operation) = 0;
+};
+
+class ScriptOperationsManager
+{
+public:
+    virtual void RegisterOperations(ScriptManager* parent) = 0;
 };
 
 class ScriptOperation
