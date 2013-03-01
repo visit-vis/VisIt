@@ -85,6 +85,7 @@ public:
         VTK_DATA_ARRAY_TYPE, VTK_DATASET_TYPE, VTK_AVTDATASET_TYPE
     } ScriptVariantTypeEnum;
 
+    //DRP. Return type based methods....
     virtual bool func(ScriptArguments& args,
                       Variant& result){ (void) args; (void) result; return false; }
 

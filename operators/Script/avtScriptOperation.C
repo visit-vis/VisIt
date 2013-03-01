@@ -47,6 +47,29 @@
 #include <vtkRInterface.h>
 #include <avtPythonFilterEnvironment.h>
 #include <Python.h>
+
+#include <avtDatasetToDatasetFilter.h>
+#include <avtTimeLoopFilter.h>
+
+class avtTimeLooperFilter : virtual public avtDatasetToDatasetFilter,
+			    virtual public avtTimeLoopFilter
+{
+  public:
+    avtTimeLooperFilter() {}
+    virtual ~avtTimeLooperFilter() {}
+    virtual const char* GetType() {return "avtTimeLooperFilter";}
+
+  protected:
+    void                    Initialize() {}
+    virtual void            Execute() { cout<<currentTime<<endl;}
+    virtual void            CreateFinalOutput() { cout<<"CreateFinalOutput "<<endl; SetOutputDataTree(new avtDataTree()); }
+    virtual bool            ExecutionSuccessful() { return true; }
+
+    virtual bool            FilterSupportsTimeParallelization() { return true; }
+    virtual bool            DataCanBeParallelizedOverTime() { return true; }
+};
+
+
 avtScriptOperation::avtScriptOperation()
 {}
 
@@ -54,6 +77,7 @@ avtScriptOperation::avtScriptOperation()
 bool
 avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkDataArray*&result)
 {
+    cout<<__FILE__<<" "<<__LINE__<<endl;
     Variant windowArray = args.getArg(0);
     vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(1);
     Variant kernelLanguage = args.getArg(2); //R or Python
@@ -70,10 +94,29 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
               << primaryVariable.AsString() <<  " "
               << kernel.AsString() << std::endl;
 
+    var->Print(cout);
     for(int i = 0; i < kernelArgs.size(); ++i)
         std::cout << "arg: " << i << " " << kernelArgs[i].ToJSON() << std::endl;
 
     avtPythonFilterEnvironment* environ = args.GetPythonEnvironment();
+    /*
+    avtTimeLooperFilter *filt = new avtTimeLooperFilter; 
+    avtContract_p spec = args.GetContract();
+    filt->SetInput(args.GetInput());
+    avtDataObject_p dob = filt->GetOutput();
+    dob->Update(spec);
+    */
+
+    std::string arglist = "";
+    for(int i = 0; i < kernelArgs.size(); ++i)
+        arglist += kernelArgs[i].AsString() + (kernelArgs.size() == i-1 ? "" : ",");
+    cout<<"arglist: *************************"<<endl;
+    cout<<arglist<<endl;
+    
+
+    //Loop over all time.....
+
+//    avtPythonFilterEnvironment* environ = args.GetPythonEnvironment();
 
     //run python code or R code (using rpy2)..
 
@@ -84,7 +127,6 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
 
     std::string primaryVar = primaryVariable.AsString();
 
-    std::string arglist = "";
     for(int i = 0; i < kernelArgs.size(); ++i)
         arglist += kernelArgs[i].ConvertToString() + (i == kernelArgs.size()-1 ? "" : ",");
 
