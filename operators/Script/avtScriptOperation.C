@@ -51,40 +51,139 @@
 #include <avtDatasetToDatasetFilter.h>
 #include <avtTimeLoopFilter.h>
 #include <vtkDataSet.h>
+#include <vtkFloatArray.h>
+#include <vtkPointData.h>
+#include <vtkCellData.h>
 
 #include <avtParallel.h>
+#include <vector>
 
-class avtTimeLooperFilter : virtual public avtDatasetToDatasetFilter,
-			    virtual public avtTimeLoopFilter
+using namespace std;
+
+class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
+				virtual public avtTimeLoopFilter
 {
     /// record which rank has what timesteps and parts of the datasets..
   public:
-    avtTimeLooperFilter() {}
-    virtual ~avtTimeLooperFilter() {}
-    virtual const char* GetType() {return "avtTimeLooperFilter";}
+    avtTimeWindowLoopFilter() {initialized = false; }
+    virtual ~avtTimeWindowLoopFilter() {}
+    virtual const char* GetType() {return "avtTimeWindowLoopFilter";}
+
+    vector<float> values;
+    vector<int> times;
 
   protected:
-    void                    Initialize() {}
-    virtual void            Execute()
-    {
-        int rank = PAR_Rank();
-        cout<<"TimeStep: " << rank << " " << currentTime<< " " << GetStartTime() << " " << GetEndTime() << " "
-              << GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors() << endl;
-    }
-    virtual void            CreateFinalOutput()
-    {
-        cout<<"CreateFinalOutput "<<endl;
-        SetOutputDataTree(new avtDataTree());
-    }
+    void                    Initialize();
+    virtual void            Execute();
+    virtual void            CreateFinalOutput();
     virtual bool            ExecutionSuccessful() { return true; }
 
     virtual bool            FilterSupportsTimeParallelization() { return false; }
     virtual bool            DataCanBeParallelizedOverTime() { return true; }
+
+    bool initialized, nodeCenteredData;
+    int numTuples, idx0, idxN;
+    string script;
+    avtPythonFilterEnvironment *environment;
 };
+
+void
+avtTimeWindowLoopFilter::Initialize()
+{
+    if (initialized)
+	return;
+    
+    cout<<__FILE__<<" "<<__LINE__<<endl;
+    int nleaves;
+    vtkDataSet **leaves = GetInputDataTree()->GetAllLeaves(nleaves);
+    if (nleaves != 1)
+    {
+        EXCEPTION1(ImproperUseException, "Multi-domain not supported yet.");
+    }
+
+    vtkDataSet *inDS = leaves[0];
+    nodeCenteredData = (GetInput()->GetInfo().GetAttributes().GetCentering() == AVT_NODECENT);
+    if (nodeCenteredData)
+        numTuples = inDS->GetPointData()->GetScalars()->GetNumberOfTuples();
+    else
+        numTuples = inDS->GetCellData()->GetScalars()->GetNumberOfTuples();
+
+    idx0 = 0;
+    idxN = numTuples;
+    
+#ifdef PARALLEL
+    int rank = PAR_Rank();
+    int nProcs = PAR_Size();
+
+    int nSamplesPerProc = (numTuples / nProcs);
+    int oneExtraUntil = (numTuples % nProcs);
+    if (rank < oneExtraUntil)
+    {
+        idx0 = (rank)*(nSamplesPerProc+1);
+        idxN = (rank+1)*(nSamplesPerProc+1);
+    }
+    else
+    {
+        idx0 = (rank)*(nSamplesPerProc) + oneExtraUntil;
+        idxN = (rank+1)*(nSamplesPerProc) + oneExtraUntil;
+    }
+    cout<<"I have: ["<<idx0<<" "<<idxN<<"]"<<endl;
+#endif
+
+    delete [] leaves;
+
+    initialized = true;
+}
+
+void
+avtTimeWindowLoopFilter::Execute()
+{
+    //cout<<__FILE__<<" "<<__LINE__<<endl;
+    Initialize();
+
+    int nleaves;
+    vtkDataSet **leaves = GetInputDataTree()->GetAllLeaves(nleaves);
+    vtkDataSet *ds = leaves[0];
+    vtkFloatArray *scalars = NULL;
+
+    if (nodeCenteredData)
+        scalars = (vtkFloatArray *)ds->GetPointData()->GetScalars();
+    else
+        scalars = (vtkFloatArray *)ds->GetCellData()->GetScalars();
+    float *vals = (float *) scalars->GetVoidPointer(0);
+
+    for (int i = 0; i < numTuples; i++)
+    {
+	values.push_back(8640*vals[i]);
+	times.push_back(currentTime);
+    }
+
+    /*
+    int rank = PAR_Rank();
+    cout<<"TimeStep: " << rank << " " << currentTime<< " " << GetStartTime() << " " << GetEndTime() << " "
+	<< GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors() << endl;
+    */
+}
+
+void
+avtTimeWindowLoopFilter::CreateFinalOutput()
+{
+    cout<<"CreateFinalOutput "<<endl;
+    cout<<"values= "<<values.size()<<endl;
+
+    int numTimes = GetEndTime() - GetStartTime();
+    for (int i = 0; i < idxN-idx0; i++)
+    {
+        environment->Interpreter()->RunScript(script);
+    }
+
+    SetOutputDataTree(new avtDataTree());
+}
 
 
 avtScriptOperation::avtScriptOperation()
 {}
+
 #include <avtOriginatingSource.h>
 #include <avtMetaData.h>
 #include <avtDatabase.h>
@@ -138,30 +237,50 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
 //    }
     avtPythonFilterEnvironment* environ = args.GetPythonEnvironment();
 
+    avtTimeWindowLoopFilter *filt = new avtTimeWindowLoopFilter;
     /*
-    avtTimeLooperFilter *filt = new avtTimeLooperFilter;
+    filt->SetEnv(environ);
+    if(kernelLanguage == "Python")
+	filt->SetScript(kernel.AsString());
+    else
+    {
+        std::ostringstream rsetup;
+        rsetup << "import rpy2, rpy2.robjects\n"
+               << kernelName.AsString() <<  " = rpy2.robjects.r(\"\"\"\n"
+               << kernel.AsString() << "\n"
+               << "\"\"\")\n";
+	filt->SetScript(rsetup.str());
+	
+    }
+    */
     avtContract_p spec = args.GetContract();
     filt->SetInput(args.GetInput());
     avtDataObject_p dob = filt->GetOutput();
     dob->Update(spec);
-    */
+
+    result = var->NewInstance();
+    result->DeepCopy(var);
 
     std::string arglist = "";
 
     for(int i = 0; i < kernelArgs.size(); ++i)
         arglist += kernelArgs[i].ConvertToString() + (i == kernelArgs.size()-1 ? "" : ",");
-
+    cout<<__LINE__<<endl;
     if(kernelLanguage == "Python")
+    {
+	cout<<__LINE__<<endl;
         environ->Interpreter()->RunScript(kernel.AsString());
+    }
     else
     {
+	cout<<__LINE__<<endl;
         std::ostringstream rsetup;
 
         rsetup << "import rpy2, rpy2.robjects\n"
                << kernelName.AsString() <<  " = rpy2.robjects.r(\"\"\"\n"
                << kernel.AsString() << "\n"
                << "\"\"\")\n";
-        //std::cout << rsetup.str() << std::endl;
+        cout << rsetup.str() << std::endl;
         environ->Interpreter()->RunScript(rsetup.str());
     }
 
@@ -173,7 +292,8 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
     double resultVal = 0;
     for(size_t i = 0; i < size; ++i)
     {
-        double val = var->GetTuple1(i);
+        //double val = var->GetTuple1(i);
+	double val = filt->values[i];
 
         std::ostringstream resultKernel;
 
@@ -191,6 +311,7 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
         PyObject* obj = environ->Interpreter()->GetGlobalObject("res");
 
         environ->Interpreter()->PyObjectToDouble(obj,resultVal);
+	cout<<i<<": "<<val<<" --> "<<resultVal<<endl;
         result->SetTuple1(i,resultVal);
     }
 
