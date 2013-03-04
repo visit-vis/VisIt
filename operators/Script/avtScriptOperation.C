@@ -50,10 +50,14 @@
 
 #include <avtDatasetToDatasetFilter.h>
 #include <avtTimeLoopFilter.h>
+#include <vtkDataSet.h>
+
+#include <avtParallel.h>
 
 class avtTimeLooperFilter : virtual public avtDatasetToDatasetFilter,
 			    virtual public avtTimeLoopFilter
 {
+    /// record which rank has what timesteps and parts of the datasets..
   public:
     avtTimeLooperFilter() {}
     virtual ~avtTimeLooperFilter() {}
@@ -61,46 +65,81 @@ class avtTimeLooperFilter : virtual public avtDatasetToDatasetFilter,
 
   protected:
     void                    Initialize() {}
-    virtual void            Execute() { cout<<currentTime<<endl;}
-    virtual void            CreateFinalOutput() { cout<<"CreateFinalOutput "<<endl; SetOutputDataTree(new avtDataTree()); }
+    virtual void            Execute()
+    {
+        int rank = PAR_Rank();
+        cout<<"TimeStep: " << rank << " " << currentTime<< " " << GetStartTime() << " " << GetEndTime() << " "
+              << GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors() << endl;
+    }
+    virtual void            CreateFinalOutput()
+    {
+        cout<<"CreateFinalOutput "<<endl;
+        SetOutputDataTree(new avtDataTree());
+    }
     virtual bool            ExecutionSuccessful() { return true; }
 
-    virtual bool            FilterSupportsTimeParallelization() { return true; }
+    virtual bool            FilterSupportsTimeParallelization() { return false; }
     virtual bool            DataCanBeParallelizedOverTime() { return true; }
 };
 
 
 avtScriptOperation::avtScriptOperation()
 {}
-
-
+#include <avtOriginatingSource.h>
+#include <avtMetaData.h>
+#include <avtDatabase.h>
+#include <avtDatabaseMetaData.h>
+#include <avtCallback.h>
+#include <avtSourceFromDatabase.h>
 bool
 avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkDataArray*&result)
 {
-    cout<<__FILE__<<" "<<__LINE__<<endl;
     Variant windowArray = args.getArg(0);
     vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(1);
     Variant kernelLanguage = args.getArg(2); //R or Python
-    Variant kernelName = args.getArg(3); //name of the function to call..
-    Variant kernel = args.getArg(4); //kernel itself
+    Variant kernel = args.getArg(3); //kernel itself
+    Variant kernelName = args.getArg(4); //name of the function to call..
     Variant primaryVariable = args.getArg(5); // primary variable name to modify..
 
     std::vector<Variant> kernelArgs = args.getArgAsVariantVector(6);
 
-    std::cout << "For Each Location: " << windowArray.ToJSON() << " "
-              << var->GetClassName() << " "
-              << kernelLanguage.AsString() << " "
-              << kernelName.AsString() << " "
-              << primaryVariable.AsString() <<  " "
-              << kernel.AsString() << std::endl;
+//    std::cout << "For Each Location: " << windowArray.ToJSON() << " "
+//              << var->GetClassName() << " "
+//              << kernelLanguage.AsString() << " "
+//              << kernelName.AsString() << " "
+//              << primaryVariable.AsString() <<  " "
+//              << kernel.AsString() << std::endl;
 
-    var->Print(cout);
-    for(int i = 0; i < kernelArgs.size(); ++i)
-        std::cout << "arg: " << i << " " << kernelArgs[i].ToJSON() << std::endl;
+//    var->Print(cout);
+//    for(int i = 0; i < kernelArgs.size(); ++i)
+//        std::cout << "arg: " << i << " " << kernelArgs[i].ConvertToString() << std::endl;
 
+    avtDataObject_p input = args.GetInput();
+    std::string db = input->GetInfo().GetAttributes().GetFullDBName();
+    ref_ptr<avtDatabase> dbp = avtCallback::GetDatabase(db, 0, NULL);
+    avtDatabaseMetaData *md = dbp->GetMetaData(0, 1);
+
+    //std::string varname = var->GetName();
+
+
+//    const doubleVector& vector = md->GetTimes();
+////    std::cout << vector.size() << std::endl;
+//    for(int i = 0; i < vector.size(); ++i)
+//    {
+//        dbp = avtCallback::GetDatabase(db, i, NULL);
+
+//        //avtDataObject_p tr = dbp->GetOutput("pressure",0);
+//        std::cout << "--> " << i << " " << vector[i] << " " << dbp->GetType() << std::endl;
+//        avtDataTree_p tree = dbp->GetDebugDataTree();
+//        int numLeaves;
+//        vtkDataSet** leaves = tree->GetAllLeaves(numLeaves);
+
+//        std::cout << numLeaves << " " << leaves << std::endl;
+//    }
     avtPythonFilterEnvironment* environ = args.GetPythonEnvironment();
+
     /*
-    avtTimeLooperFilter *filt = new avtTimeLooperFilter; 
+    avtTimeLooperFilter *filt = new avtTimeLooperFilter;
     avtContract_p spec = args.GetContract();
     filt->SetInput(args.GetInput());
     avtDataObject_p dob = filt->GetOutput();
@@ -108,24 +147,6 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
     */
 
     std::string arglist = "";
-    for(int i = 0; i < kernelArgs.size(); ++i)
-        arglist += kernelArgs[i].AsString() + (kernelArgs.size() == i-1 ? "" : ",");
-    cout<<"arglist: *************************"<<endl;
-    cout<<arglist<<endl;
-    
-
-    //Loop over all time.....
-
-//    avtPythonFilterEnvironment* environ = args.GetPythonEnvironment();
-
-    //run python code or R code (using rpy2)..
-
-    if(std::string(var->GetClassName()) != "vtkFloatArray") return false;
-
-    vtkIdType size = var->GetDataSize();
-    float* floatArray = (float*) var->GetVoidPointer(0);
-
-    std::string primaryVar = primaryVariable.AsString();
 
     for(int i = 0; i < kernelArgs.size(); ++i)
         arglist += kernelArgs[i].ConvertToString() + (i == kernelArgs.size()-1 ? "" : ",");
@@ -138,37 +159,39 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
 
         rsetup << "import rpy2, rpy2.robjects\n"
                << kernelName.AsString() <<  " = rpy2.robjects.r(\"\"\"\n"
-               << kernel.AsString()
+               << kernel.AsString() << "\n"
                << "\"\"\")\n";
-        std::cout << rsetup.str() << std::endl;
+        //std::cout << rsetup.str() << std::endl;
         environ->Interpreter()->RunScript(rsetup.str());
     }
 
     result = var->NewInstance();
     result->DeepCopy(var);
 
-    float* resultArray = (float*) result->GetVoidPointer(0);
+    size_t size = var->GetDataSize();
 
     double resultVal = 0;
-    for(int i = 0; i < size; ++i)
+    for(size_t i = 0; i < size; ++i)
     {
-        float val = floatArray[i];
-        std::ostringstream result;
-        result << "res = " << kernelName.AsString() <<  "(" <<  val;
-        if(arglist.size() > 0)
-            result << "," << arglist << ")\n";
-        else
-            result << ")\n";
-        if(kernelLanguage.AsString() == "R")
-            result << "res = res[0]\n";
+        double val = var->GetTuple1(i);
 
-        if(i == 0) std::cout << result.str() << std::endl;
-        environ->Interpreter()->RunScript(result.str().c_str());
+        std::ostringstream resultKernel;
+
+        resultKernel << "res = " << kernelName.AsString() <<  "(" <<  val;
+        if(arglist.size() > 0)
+            resultKernel << "," << arglist << ")\n";
+        else
+            resultKernel << ")\n";
+        if(kernelLanguage.AsString() == "R")
+            resultKernel << "res = res[0]\n";
+
+        if(i == 0) std::cout << resultKernel.str() << std::endl;
+        environ->Interpreter()->RunScript(resultKernel.str());
 
         PyObject* obj = environ->Interpreter()->GetGlobalObject("res");
 
         environ->Interpreter()->PyObjectToDouble(obj,resultVal);
-        resultArray[i] = resultVal;
+        result->SetTuple1(i,resultVal);
     }
 
     return true;
@@ -189,10 +212,10 @@ avtScriptOperation::avtVisItForEachLocation::GetSignature(std::string& name,
     argnames.push_back("kernelLanguage");
     argtypes.push_back(ScriptOperation::STRING_TYPE);
 
-    argnames.push_back("kernelName");
+    argnames.push_back("kernel");
     argtypes.push_back(ScriptOperation::STRING_TYPE);
 
-    argnames.push_back("kernel");
+    argnames.push_back("kernelName");
     argtypes.push_back(ScriptOperation::STRING_TYPE);
 
     argnames.push_back("primaryVariable");

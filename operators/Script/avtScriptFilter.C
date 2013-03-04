@@ -51,6 +51,12 @@
 #include <avtOriginatingSource.h>
 #include <avtScriptOperation.h>
 
+#include <vtkDataArray.h>
+#include <vtkPointData.h>
+#include <vtkCellData.h>
+
+#include <avtParallel.h>
+
 struct ScriptData
 {
     avtRFilter* rfilter;
@@ -113,6 +119,14 @@ avtScriptFilter::avtScriptFilter()
         cout << "Initialization Script Failed.." << endl;
 
     /// register VisIt scriptable functions..
+    std::ostringstream renv;
+
+    renv << "import rpy2, rpy2.robjects\n"
+         << "rpy2.robjects.r('visit_internal_funcs = new.env()')\n";
+
+    if(!pyEnv->Interpreter()->RunScript(renv.str()))
+        cout << "R Initialization Script Failed.." << endl;
+
     scriptData->rfilter = dynamic_cast<avtRFilter*>(avtRFilter::Create());
     scriptData->rfilter->RegisterOperations(this);
 
@@ -200,22 +214,48 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
         << "rpy2.robjects.numpy2ri.activate()\n"
         << "import rpy2.rinterface as ri\n"
         << "import visit_internal_funcs\n"
+        << "import numpy\n"
+        << "def _r_" << name << "(" << argstring << "):\n"
+        << "    def my_ri2py(obj):\n"
+        << "        res = robjects.default_ri2py(obj)\n"
+        << "        if isinstance(res, robjects.Vector) and (len(res) == 1):\n"
+        << "            return res[0]\n"
+        << "        return numpy.asarray(res)\n"
+        << "    import vtk,vtk.util.numpy_support\n";
 
-        << "def _r_" << name << "(" << argstring << "):\n";
+    for(size_t i = 0; i < args.size(); ++i)
+    {
+            if( argtypes[i] == ScriptOperation::BOOL_VECTOR_TYPE ||
+                argtypes[i] == ScriptOperation::INT_VECTOR_TYPE ||
+                argtypes[i] == ScriptOperation::LONG_VECTOR_TYPE ||
+                argtypes[i] == ScriptOperation::FLOAT_VECTOR_TYPE ||
+                argtypes[i] == ScriptOperation::DOUBLE_VECTOR_TYPE ||
+                argtypes[i] == ScriptOperation::STRING_VECTOR_TYPE ||
+                argtypes[i] == ScriptOperation::VARIANT_VECTOR_TYPE)
+                str << "    " << args[i] << " = numpy.asarray(" << args[i] << ").tolist()\n";
+            else if(argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
+                str << "    " << args[i] << " = vtk.util.numpy_support.numpy_to_vtk(numpy.asarray(" << args[i] << "))\n";
+            else
+
+                str << "    " << args[i] << " = my_ri2py(" << args[i] << ")\n";
+    }
 
     if(argstring.size() == 0)
-        str << "  res = visit_internal_funcs.visit_functions('" << name << "')\n";
+        str << "    res = visit_internal_funcs.visit_functions('" << name << "')\n";
     else
-        str << "  res = visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
+        str << "    res = visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
 
-//        << "  print res\n"
-    str  << "  return rpy2.robjects.default_py2ri(res)\n"
+    str << "    if(isinstance(res,vtk.vtkDataArray)):\n"
+        << "        res = vtk.util.numpy_support.vtk_to_numpy(res)\n";
+
+    str << "    return rpy2.robjects.default_py2ro(res)\n"
 
          << "sys.modules['visit_internal_funcs'].__dict__['_r_"
          << name << "'] = _r_" << name << "\n"
 
          << "_rxp_" << name << "= ri.rternalize(visit_internal_funcs._r_" << name << ")\n"
-         << "ri.globalenv['" << name << "'] = _rxp_" << name << "\n";
+         << "ri.globalenv['" << name << "'] = _rxp_" << name << "\n"
+         << "rpy2.robjects.r('assign(\"" << name << "\"," << name << ",visit_internal_funcs)')\n";
 
     //std::cout << str.str() << std::endl;
     //std::cout << "--------------------------------" << std::endl;
@@ -296,10 +336,6 @@ avtScriptFilter::Equivalent(const AttributeGroup *a)
 //
 // ****************************************************************************
 
-#include <vtkDataArray.h>
-#include <vtkPointData.h>
-#include <vtkCellData.h>
-
 vtkDataSet *
 avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
 {
@@ -310,14 +346,20 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     pyEnv->Interpreter()->SetGlobalObject(py_ds_in,"ds_in");
     pyEnv->Interpreter()->SetGlobalObject(PyString_FromString(primaryVariable.c_str()),
                                           "pvar");
+    pyEnv->Interpreter()->SetGlobalObject(PyInt_FromLong(PAR_Rank()),
+                                          "mpi_rank");
+    pyEnv->Interpreter()->SetGlobalObject(PyInt_FromLong(PAR_Size()),
+                                          "mpi_size");
     std::string script = "";
     script += "ctx.init(ds_in,pvar)\n";
     script += "w.registry_add(':mesh',ds_in)\n";
     script += "w.registry_add(':pvar',pvar)\n";
+    script += "w.registry_add(':mpi_rank',mpi_rank)\n";
+    script += "w.registry_add(':mpi_size',mpi_size)\n";
     script += "res = w.execute()\n";
     if(!pyEnv->Interpreter()->RunScript(script))
     {
-        cout << "Script Failed.." << endl;
+        cout << "ExecuteData Script Failed.." << endl;
         cout << pyEnv->Interpreter()->ErrorMessage() << endl;
         throw VisItException("Script failed to run properly");
     }
@@ -362,87 +404,6 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     return res;
 
 }
-
-vtkDataSet *
-avtScriptFilter::ExecuteDataOld(vtkDataSet *in_ds, int, std::string)
-{
-    std::string script = "";
-    /// Setup input dataset to python registry..
-    MapNode node = atts.GetScriptMap();
-    //cout << node.ToXML() << endl;
-    std::string json_string = node["filter"].AsString();
-    cout << json_string << endl;
-    // create python string
-    PyObject *py_json_str = PyString_FromString(json_string.c_str());
-    pyEnv->Interpreter()->SetGlobalObject(py_json_str,"sdef_json");
-    script   = "sdef = json.loads(sdef_json)\n";
-    //script  += "print json.dumps(sdef,indent=2)\n";
-    /// initialize environment
-    if(!pyEnv->Interpreter()->RunScript(script))
-    {
-        cout << "Script Failed.." << endl;
-        cout << pyEnv->Interpreter()->ErrorMessage() << endl;
-    }
-    // create a workspace
-    script  = "w = Workspace()\n";
-    // register the scripts
-    script += "script_pipeline.register_scripts(sdef['scripts'])\n";
-    script += "w.register_filters(script_pipeline)\n";
-    // put the input mesh into the registry
-    PyObject* py_ds_in = pyEnv->WrapVTKObject(in_ds,"vtkDataSet");
-    pyEnv->Interpreter()->SetGlobalObject(py_ds_in,"ds_in");
-    script += "w.registry_add(':mesh',ds_in)\n";
-    // load the data flow
-    script += "w.load_dict(sdef)\n";
-    //script += "w.registry_add(':src_a',2)\n";
-    //script += "w.registry_add(':src_b',3)\n";
-    // get the visit vars
-    script += "res = ds_in\n";
-    script += "print w.execute()\n";
-    script += "print (2+3)*(2+3) + (3-2)*(3-2)\n";    
-    if(!pyEnv->Interpreter()->RunScript(script))
-    {
-        cout << "Script Failed.." << endl;
-        cout << pyEnv->Interpreter()->ErrorMessage() << endl;
-    }
-    PyObject *py_res = pyEnv->Interpreter()->GetGlobalObject("res");
-    if(py_ds_in == NULL)
-        cout << "BAD ERROR" <<endl;
-    vtkDataSet *res = (vtkDataSet*)pyEnv->UnwrapVTKObject(py_res,"vtkDataSet");
-
-    /// get data array for active variable..
-    vtkDataArray* array = res->GetPointData()->GetScalars(primaryVariable.c_str());
-
-    double minv =0, maxv = 0;
-    if(array)
-    {
-        minv = array->GetDataTypeMin();
-        maxv = array->GetDataTypeMax();
-    }
-    else
-    {
-        array = res->GetCellData()->GetScalars(primaryVariable.c_str());
-        if(array)
-        {
-            minv = array->GetDataTypeMin();
-            maxv = array->GetDataTypeMax();
-        }
-    }
-
-    avtDataAttributes &dataatts = GetOutput()->GetInfo().GetAttributes();
-    avtExtents* e = dataatts.GetThisProcsActualDataExtents();
-
-    double range[2];
-    range[0] = minv;
-    range[1] = maxv;
-    e->Set(range);
-    std::cout << "setting: " << minv << " " << maxv << std::endl;
-
-    res->Register(NULL);
-    return res;
-
-}
-
 
 bool avtScriptFilter::SetupFlowWorkspace()
 {
@@ -502,7 +463,7 @@ avtScriptFilter::ModifyContract(avtContract_p spec)
     
     // set this so we can use the name in exec data
     primaryVariable = std::string(ds->GetVariable());
-    cout <<"primaryVariable = " << primaryVariable <<endl;
+    cout <<PAR_Rank() << ": primaryVariable = " << primaryVariable <<endl;
     //
     // Make a new one
     //
@@ -514,10 +475,11 @@ avtScriptFilter::ModifyContract(avtContract_p spec)
     // we need to find out what visit vars we need to request
     std::string script = "";
     script += "__vars = w.filter_names()\n";
-    script += "__vars = [ var[1:] for var in __vars if var[0] == ':' and var != ':mesh' and var != ':pvar']";
+    script += "__vars = [ var[1:] for var in __vars if var[0] == ':' and var != ':mesh' and var != ':pvar'";
+    script += " and var != ':mpi_rank' and var != ':mpi_size']\n";
     if(!pyEnv->Interpreter()->RunScript(script))
     {
-        cout << "Script Failed.." << endl;
+        cout << "Modify Contract Script Failed.." << endl;
         cout << pyEnv->Interpreter()->ErrorMessage() << endl;
         throw VisItException("Contract extraction failed..");
     }
@@ -861,9 +823,9 @@ visit_functions(PyObject *self, PyObject *args)
             return NULL;
         }
 
-        std::cout << "dataArray: " << dataarray << std::endl;
+        //std::cout << "dataArray: " << dataarray << std::endl;
         PyObject* output = scriptFilter->GetPythonEnvironment()->WrapVTKObject(dataarray, "vtkDataArray");
-        std::cout << output << std::endl;
+        //std::cout << output << std::endl;
         return output;
     }
     else if(op_resp == ScriptOperation::VTK_DATASET)

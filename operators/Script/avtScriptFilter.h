@@ -89,7 +89,6 @@ class avtScriptFilter : public avtPluginDataTreeIterator,  public ScriptManager
     ScriptAttributes   atts;
 
     virtual vtkDataSet   *ExecuteData(vtkDataSet *, int, std::string);
-    virtual vtkDataSet   *ExecuteDataOld(vtkDataSet *, int, std::string);
     virtual avtContract_p
                           ModifyContract(avtContract_p spec);
     

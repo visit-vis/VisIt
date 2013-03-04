@@ -954,10 +954,39 @@ ScriptAttributes::LoadRKernel(const std::string& name, const JSONNode &atts, con
     stringVector args;
     SetupPipeline(atts,args,name);
 
-    //for(int i = 0; i < args.size(); ++i)
-    //    std::cout << args[i] << std::endl;
+    JSONNode vars = JSONNode::JSONArray();
+    for(int i = 0; i < args.size(); ++i)
+        vars.Append(args[i]);
 
-    AddRScript(name,args,code);
+    JSONNode node;
+    node["vars"] = vars;
+
+    std::string argstring = "";
+    for(size_t i = 0; i < args.size(); ++i)
+        argstring += args[i] + (i == args.size()-1 ? "" : ",");
+
+    std::ostringstream rwrapper;
+
+    rwrapper << "import rpy2,numpy\n"
+             << "import rpy2.robjects as robjects\n"
+             << "import rpy2.robjects.numpy2ri\n"
+             << "rpy2.robjects.numpy2ri.activate()\n"
+             << name << " = robjects.r('''\n"
+             << code << "\n"
+             << "''')\n"
+             << "setout(numpy.asarray(" << name << "(" << argstring << ")))\n";
+
+    std::string escapedCode = rwrapper.str();
+    //std::cout << escapedCode << std::endl;
+    replace(escapedCode, "\n", "\\n");
+
+    node["source"] = escapedCode;
+
+    script["scripts"][name] = node;
+
+    //update scriptmap
+    ScriptMap["filter"] = script.ToString();
+
     AddNode(name,name);
     AddFinalOutputConnection(name);
 
@@ -972,10 +1001,33 @@ ScriptAttributes::LoadPythonKernel(const std::string& name, const JSONNode& atts
     stringVector args;
     SetupPipeline(atts,args,name);
 
-    //for(int i = 0; i < args.size(); ++i)
-    //    std::cout << args[i] << std::endl;
+    std::string arglist = "";
 
-    AddPythonScript(name,args,code);
+    JSONNode vars = JSONNode::JSONArray();
+
+    for(int i = 0; i < args.size(); ++i)
+    {
+        vars.Append(args[i]);
+        arglist += args[i] + (i == args.size()-1 ? "" : ",");
+    }
+
+    JSONNode node;
+    node["vars"] = vars;
+
+    std::ostringstream pwrapper;
+
+    pwrapper << "from visit_internal_funcs import *\n"
+             << code
+             << "setout(" << name << "(" << arglist << "))\n"
+             << "\n";
+    std::string escapedCode = pwrapper.str();
+    replace(escapedCode, "\n", "\\n");
+
+    node["source"] = escapedCode;
+
+    script["scripts"][name] = node;
+    ScriptMap["filter"] = script.ToString();
+
     AddNode(name,name);
     AddFinalOutputConnection(name);
 }
