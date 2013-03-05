@@ -184,21 +184,25 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     cout<<"CreateFinalOutput "<<endl;
     cout<<"values= "<<values.size()<<endl;
 
-    std::cout << GetEndTime() << " " << GetStartTime() << std::endl;
-    std::vector<float> inputArray;
+    //std::cout << GetEndTime() << " " << GetStartTime() << std::endl;
+    //std::vector<float> inputArray;
 
     size_t totalTupleSize = idxN-idx0;
 
     int numTimes = GetEndTime() - GetStartTime() + 1;
-    inputArray.resize(numTimes);
+    //inputArray.resize(numTimes);
+    PyObject *retval = PyTuple_New(numTimes);
 
     for (int i = 0; i < totalTupleSize; i++)
     {
         for(int j = 0; j < numTimes; ++j)
-            inputArray[j] = values[(i*(numTimes))+j];
+        {
+            PyObject* value = PyInt_FromLong(values[(i*(numTimes))+j]);
+            PyTuple_SET_ITEM(retval, j, value);
+        }
 
-//        environment->Interpreter()->SetGlobalObject();
-//        environment->Interpreter()->RunScript(script);
+        environment->Interpreter()->SetGlobalObject(retval,"__internal_array");
+        environment->Interpreter()->RunScript(script);
     }
 
     SetOutputDataTree(new avtDataTree(inputDataSet,inputDomain));
@@ -244,12 +248,31 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
         environ->Interpreter()->RunScript(rsetup.str());
     }
 
+    std::string arglist = "";
+
+    for(int i = 0; i < kernelArgs.size(); ++i)
+        arglist += kernelArgs[i].ConvertToString() + (i == kernelArgs.size()-1 ? "" : ",");
+
+    std::ostringstream resultKernel;
+    resultKernel << "res = " << kernelName.AsString() <<  "(numpy.asarray(__internal_array)";
+
+    if(arglist.size() > 0)
+        resultKernel << "," << arglist << ")\n";
+    else
+        resultKernel << ")\n";
+
+    if(kernelLanguage.AsString() == "R")
+        resultKernel << "res = res[0]\n";
+
+
+    std::cout << resultKernel.str() << std::endl;
     /// run the time loop filter..
 
     avtTimeWindowLoopFilter *filt = new avtTimeWindowLoopFilter;
     filt->environment = environ;
     filt->inputDataSet = args.GetInputDataSet();
     filt->inputDomain = args.GetInputDomain();
+    filt->script = resultKernel.str();
 
     filt->SetInput(args.GetInput());
     avtDataObject_p dob = filt->GetOutput();
