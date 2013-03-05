@@ -69,6 +69,7 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
     virtual ~avtTimeWindowLoopFilter() {}
     virtual const char* GetType() {return "avtTimeWindowLoopFilter";}
 
+    //vector< vector<float> > values;
     vector<float> values;
     vector<int> times;
 
@@ -79,7 +80,8 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
     virtual bool            ExecutionSuccessful() { return true; }
 
     virtual bool            FilterSupportsTimeParallelization() { return true; }
-    virtual bool            DataCanBeParallelizedOverTime() { return true; }
+    virtual bool            DataCanBeParallelizedOverTime() { return false; }
+    //virtual bool            OperationNeedsAllData(void) { return true; }
 
     bool initialized, nodeCenteredData;
     int numTuples, idx0, idxN;
@@ -135,6 +137,9 @@ avtTimeWindowLoopFilter::Initialize()
     //delete [] leaves;
 
     initialized = true;
+
+    /// values need to be number of tuples * total number of timesteps..
+    values.resize((idxN-idx0)*(GetEndTime()-GetStartTime()+1));
 }
 
 void
@@ -143,9 +148,6 @@ avtTimeWindowLoopFilter::Execute()
     //cout<<__FILE__<<" "<<__LINE__<<endl;
     Initialize();
 
-//    int nleaves;
-//    vtkDataSet **leaves = GetInputDataTree()->GetAllLeaves(nleaves);
-//    vtkDataSet *ds = leaves[0];
     vtkDataSet *ds = inputDataSet;
     vtkFloatArray *scalars = NULL;
 
@@ -155,10 +157,18 @@ avtTimeWindowLoopFilter::Execute()
         scalars = (vtkFloatArray *)ds->GetCellData()->GetScalars();
     float *vals = (float *) scalars->GetVoidPointer(0);
 
-    for (int i = 0; i < numTuples; i++)
+    int rank = PAR_Rank();
+
+    int numTimes = GetEndTime() - GetStartTime() + 1;
+    for (size_t i = 0; i < numTuples; i++)
     {
-	values.push_back(8640*vals[i]);
-	times.push_back(currentTime);
+        if(i >= idx0 && i < idxN)
+        {
+            size_t index = rank + (i-idx0)*(numTimes); //0 index then arrange by rank..
+            //values.push_back(8640*vals[i]);
+            //times.push_back(currentTime);
+            values[index] = vals[i];
+        }
     }
 
     /*
@@ -174,11 +184,22 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     cout<<"CreateFinalOutput "<<endl;
     cout<<"values= "<<values.size()<<endl;
 
-    int numTimes = GetEndTime() - GetStartTime();
-//    for (int i = 0; i < idxN-idx0; i++)
-//    {
+    std::cout << GetEndTime() << " " << GetStartTime() << std::endl;
+    std::vector<float> inputArray;
+
+    size_t totalTupleSize = idxN-idx0;
+
+    int numTimes = GetEndTime() - GetStartTime() + 1;
+    inputArray.resize(numTimes);
+
+    for (int i = 0; i < totalTupleSize; i++)
+    {
+        for(int j = 0; j < numTimes; ++j)
+            inputArray[j] = values[(i*(numTimes))+j];
+
+//        environment->Interpreter()->SetGlobalObject();
 //        environment->Interpreter()->RunScript(script);
-//    }
+    }
 
     SetOutputDataTree(new avtDataTree(inputDataSet,inputDomain));
 }
@@ -204,7 +225,6 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
     Variant primaryVariable = args.getArg(5); // primary variable name to modify..
 
     std::vector<Variant> kernelArgs = args.getArgAsVariantVector(6);
-
 
     avtPythonFilterEnvironment* environ = args.GetPythonEnvironment();
 
@@ -234,9 +254,9 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
     filt->SetInput(args.GetInput());
     avtDataObject_p dob = filt->GetOutput();
 
-    std::cout << "update??" << std::endl;
+    //avtContract_p newContract = new avtContract(args.GetContract());
+    //newContract->SetReplicateSingleDomainOnAllProcessors(true);
     dob->Update(args.GetContract());
-    std::cout << "end <-- update??" << std::endl;
 
     result = var->NewInstance();
     result->DeepCopy(var);

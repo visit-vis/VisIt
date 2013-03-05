@@ -508,7 +508,7 @@ avtScriptFilter::ModifyContract(avtContract_p spec)
     // Create the new pipeline spec from the data spec, and return
     //
     avtContract_p rv = new avtContract(spec, nds);
-
+    rv->SetReplicateSingleDomainOnAllProcessors(true);
     return rv;
 }
 
@@ -664,7 +664,6 @@ bool convert(const ScriptOperation::ScriptVariantTypeEnum& type, PyObject* obj, 
 PyObject *
 visit_functions(PyObject *self, PyObject *args)
 {
-    std::cout << "CALLED!!" << PAR_Rank() << std::endl;
     char* name = 0;
     PyObject* scriptArgs = NULL;
 
