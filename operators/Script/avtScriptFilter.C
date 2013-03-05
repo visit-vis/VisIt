@@ -339,6 +339,7 @@ avtScriptFilter::Equivalent(const AttributeGroup *a)
 vtkDataSet *
 avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
 {
+    std::cout << PAR_Rank() << " ExecuteData is called" << std::endl;
     if(!SetupFlowWorkspace())
         return in_ds;
 
@@ -346,6 +347,8 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     pyEnv->Interpreter()->SetGlobalObject(py_ds_in,"ds_in");
     pyEnv->Interpreter()->SetGlobalObject(PyString_FromString(primaryVariable.c_str()),
                                           "pvar");
+    pyEnv->Interpreter()->SetGlobalObject(PyInt_FromLong(d),
+                                          "ds_domain");
     pyEnv->Interpreter()->SetGlobalObject(PyInt_FromLong(PAR_Rank()),
                                           "mpi_rank");
     pyEnv->Interpreter()->SetGlobalObject(PyInt_FromLong(PAR_Size()),
@@ -354,6 +357,7 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     script += "ctx.init(ds_in,pvar)\n";
     script += "w.registry_add(':mesh',ds_in)\n";
     script += "w.registry_add(':pvar',pvar)\n";
+    script += "w.registry_add(':mesh_domain',ds_domain)\n";
     script += "w.registry_add(':mpi_rank',mpi_rank)\n";
     script += "w.registry_add(':mpi_size',mpi_size)\n";
     script += "res = w.execute()\n";
@@ -393,11 +397,11 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     e = dataatts.GetThisProcsOriginalDataExtents();
     e->Set(range);
 
-    e = dataatts.GetThisProcsActualSpatialExtents();
+    e = dataatts.GetThisProcsActualDataExtents();
     e->Set(range);
 
-    e = dataatts.GetThisProcsOriginalSpatialExtents();
-    e->Set(range);
+//    e = dataatts.GetThisProcsOriginalSpatialExtents();
+//    e->Set(range);
 
     std::cout << "setting: " << range[0] << " " << range[1] << std::endl;
 
@@ -476,7 +480,7 @@ avtScriptFilter::ModifyContract(avtContract_p spec)
     std::string script = "";
     script += "__vars = w.filter_names()\n";
     script += "__vars = [ var[1:] for var in __vars if var[0] == ':' and var != ':mesh' and var != ':pvar'";
-    script += " and var != ':mpi_rank' and var != ':mpi_size']\n";
+    script += " and var != ':mpi_rank' and var != ':mpi_size' and var != ':mesh_domain']\n";
     if(!pyEnv->Interpreter()->RunScript(script))
     {
         cout << "Modify Contract Script Failed.." << endl;
@@ -656,9 +660,11 @@ bool convert(const ScriptOperation::ScriptVariantTypeEnum& type, PyObject* obj, 
     return success;
 }
 
+#include <avtParallel.h>
 PyObject *
 visit_functions(PyObject *self, PyObject *args)
 {
+    std::cout << "CALLED!!" << PAR_Rank() << std::endl;
     char* name = 0;
     PyObject* scriptArgs = NULL;
 
@@ -782,34 +788,44 @@ visit_functions(PyObject *self, PyObject *args)
     sargs.variantVector = variantVecMap;
     sargs.pythonFilter = scriptFilter->GetPythonEnvironment();
 
+    PyObject* ds_in = scriptFilter->GetPythonEnvironment()->Interpreter()->GetGlobalObject("ds_in");
+    vtkDataSet* inputDataSet = (vtkDataSet*)scriptFilter->GetPythonEnvironment()->UnwrapVTKObject(ds_in, "vtkDataSet");
+
+    sargs.input_mesh = inputDataSet;
+
+    PyObject* ds_domain = scriptFilter->GetPythonEnvironment()->Interpreter()->GetGlobalObject("ds_domain");
+    int domain = PyInt_AsLong(ds_domain);
+
+    sargs.input_domain = domain;
+
     if(op_resp == ScriptOperation::AVT_DATA_SET)
     {
-//        avtDataset_p result;
+        avtDataset_p result;
 
-//        if(!op->func(sargs, result))
+        if(!op->func(sargs, result))
 
-//        {
-//            std::cerr << "operation failed!" << std::endl;
-//            Py_DECREF(c_api_object);
-//            Py_DECREF(m);
-//            return NULL;
-//        }
-//        avtDataTree_p tree = scriptFilter->GetDataTree(result);
+        {
+            std::cerr << "operation failed!" << std::endl;
+            Py_DECREF(c_api_object);
+            Py_DECREF(m);
+            return NULL;
+        }
+        avtDataTree_p tree = scriptFilter->GetDataTree(result);
 
-//        int leaves = 0;
-//        vtkDataSet** datasets = tree->GetAllLeaves(leaves);
+        int leaves = 0;
+        vtkDataSet** datasets = tree->GetAllLeaves(leaves);
 
-//        //std::cout << leaves << std::endl;
-//        if(leaves != -1)
-//        {
-//            PyObject* out = scriptFilter->GetPythonEnvironment()->WrapVTKObject(datasets[0],"vtkDataSet");
-//            //std::cout << out << std::endl;
+        //std::cout << leaves << std::endl;
+        if(leaves != -1)
+        {
+            PyObject* out = scriptFilter->GetPythonEnvironment()->WrapVTKObject(datasets[0],"vtkDataSet");
+            //std::cout << out << std::endl;
 
-//            Py_DECREF(c_api_object);
-//            Py_DECREF(m);
+            Py_DECREF(c_api_object);
+            Py_DECREF(m);
 
-//            return out;
-//        }
+            return out;
+        }
     }
     else if(op_resp == ScriptOperation::VTK_DATA_ARRAY)
     {
@@ -817,7 +833,7 @@ visit_functions(PyObject *self, PyObject *args)
         if(!op->func(sargs, dataarray))
 
         {
-            std::cerr << name << ": constant operation failed!" << std::endl;
+            std::cerr << name << ": data array operation failed!" << std::endl;
             Py_DECREF(c_api_object);
             Py_DECREF(m);
             return NULL;
@@ -834,7 +850,7 @@ visit_functions(PyObject *self, PyObject *args)
         if(!op->func(sargs, dataset))
 
         {
-            std::cerr << name << ": constant operation failed!" << std::endl;
+            std::cerr << name << ": dataset operation failed!" << std::endl;
             Py_DECREF(c_api_object);
             Py_DECREF(m);
             return NULL;

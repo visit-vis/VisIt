@@ -78,13 +78,16 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
     virtual void            CreateFinalOutput();
     virtual bool            ExecutionSuccessful() { return true; }
 
-    virtual bool            FilterSupportsTimeParallelization() { return false; }
+    virtual bool            FilterSupportsTimeParallelization() { return true; }
     virtual bool            DataCanBeParallelizedOverTime() { return true; }
 
     bool initialized, nodeCenteredData;
     int numTuples, idx0, idxN;
+  public:
     string script;
     avtPythonFilterEnvironment *environment;
+    vtkDataSet* inputDataSet;
+    int inputDomain;
 };
 
 void
@@ -93,15 +96,15 @@ avtTimeWindowLoopFilter::Initialize()
     if (initialized)
 	return;
     
-    cout<<__FILE__<<" "<<__LINE__<<endl;
-    int nleaves;
-    vtkDataSet **leaves = GetInputDataTree()->GetAllLeaves(nleaves);
-    if (nleaves != 1)
-    {
-        EXCEPTION1(ImproperUseException, "Multi-domain not supported yet.");
-    }
+//    cout<<__FILE__<<" "<<__LINE__<<endl;
+//    int nleaves;
+//    vtkDataSet **leaves = GetInputDataTree()->GetAllLeaves(nleaves);
+//    if (nleaves != 1)
+//    {
+//        EXCEPTION1(ImproperUseException, "Multi-domain not supported yet.");
+//    }
 
-    vtkDataSet *inDS = leaves[0];
+    vtkDataSet *inDS = inputDataSet; //leaves[0];
     nodeCenteredData = (GetInput()->GetInfo().GetAttributes().GetCentering() == AVT_NODECENT);
     if (nodeCenteredData)
         numTuples = inDS->GetPointData()->GetScalars()->GetNumberOfTuples();
@@ -127,10 +130,9 @@ avtTimeWindowLoopFilter::Initialize()
         idx0 = (rank)*(nSamplesPerProc) + oneExtraUntil;
         idxN = (rank+1)*(nSamplesPerProc) + oneExtraUntil;
     }
-    cout<<"I have: ["<<idx0<<" "<<idxN<<"]"<<endl;
 #endif
-
-    delete [] leaves;
+    cout<<"I have: ["<<idx0<<" "<<idxN<<"]"<<endl;
+    //delete [] leaves;
 
     initialized = true;
 }
@@ -141,9 +143,10 @@ avtTimeWindowLoopFilter::Execute()
     //cout<<__FILE__<<" "<<__LINE__<<endl;
     Initialize();
 
-    int nleaves;
-    vtkDataSet **leaves = GetInputDataTree()->GetAllLeaves(nleaves);
-    vtkDataSet *ds = leaves[0];
+//    int nleaves;
+//    vtkDataSet **leaves = GetInputDataTree()->GetAllLeaves(nleaves);
+//    vtkDataSet *ds = leaves[0];
+    vtkDataSet *ds = inputDataSet;
     vtkFloatArray *scalars = NULL;
 
     if (nodeCenteredData)
@@ -172,12 +175,12 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     cout<<"values= "<<values.size()<<endl;
 
     int numTimes = GetEndTime() - GetStartTime();
-    for (int i = 0; i < idxN-idx0; i++)
-    {
-        environment->Interpreter()->RunScript(script);
-    }
+//    for (int i = 0; i < idxN-idx0; i++)
+//    {
+//        environment->Interpreter()->RunScript(script);
+//    }
 
-    SetOutputDataTree(new avtDataTree());
+    SetOutputDataTree(new avtDataTree(inputDataSet,inputDomain));
 }
 
 
@@ -202,118 +205,41 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
 
     std::vector<Variant> kernelArgs = args.getArgAsVariantVector(6);
 
-//    std::cout << "For Each Location: " << windowArray.ToJSON() << " "
-//              << var->GetClassName() << " "
-//              << kernelLanguage.AsString() << " "
-//              << kernelName.AsString() << " "
-//              << primaryVariable.AsString() <<  " "
-//              << kernel.AsString() << std::endl;
 
-//    var->Print(cout);
-//    for(int i = 0; i < kernelArgs.size(); ++i)
-//        std::cout << "arg: " << i << " " << kernelArgs[i].ConvertToString() << std::endl;
-
-    avtDataObject_p input = args.GetInput();
-    std::string db = input->GetInfo().GetAttributes().GetFullDBName();
-    ref_ptr<avtDatabase> dbp = avtCallback::GetDatabase(db, 0, NULL);
-    avtDatabaseMetaData *md = dbp->GetMetaData(0, 1);
-
-    //std::string varname = var->GetName();
-
-
-//    const doubleVector& vector = md->GetTimes();
-////    std::cout << vector.size() << std::endl;
-//    for(int i = 0; i < vector.size(); ++i)
-//    {
-//        dbp = avtCallback::GetDatabase(db, i, NULL);
-
-//        //avtDataObject_p tr = dbp->GetOutput("pressure",0);
-//        std::cout << "--> " << i << " " << vector[i] << " " << dbp->GetType() << std::endl;
-//        avtDataTree_p tree = dbp->GetDebugDataTree();
-//        int numLeaves;
-//        vtkDataSet** leaves = tree->GetAllLeaves(numLeaves);
-
-//        std::cout << numLeaves << " " << leaves << std::endl;
-//    }
     avtPythonFilterEnvironment* environ = args.GetPythonEnvironment();
 
-    avtTimeWindowLoopFilter *filt = new avtTimeWindowLoopFilter;
-    /*
-    filt->SetEnv(environ);
-    if(kernelLanguage == "Python")
-	filt->SetScript(kernel.AsString());
-    else
-    {
-        std::ostringstream rsetup;
-        rsetup << "import rpy2, rpy2.robjects\n"
-               << kernelName.AsString() <<  " = rpy2.robjects.r(\"\"\"\n"
-               << kernel.AsString() << "\n"
-               << "\"\"\")\n";
-	filt->SetScript(rsetup.str());
-	
-    }
-    */
-    avtContract_p spec = args.GetContract();
-    filt->SetInput(args.GetInput());
-    avtDataObject_p dob = filt->GetOutput();
-    dob->Update(spec);
-
-    result = var->NewInstance();
-    result->DeepCopy(var);
-
-    std::string arglist = "";
-
-    for(int i = 0; i < kernelArgs.size(); ++i)
-        arglist += kernelArgs[i].ConvertToString() + (i == kernelArgs.size()-1 ? "" : ",");
-    cout<<__LINE__<<endl;
+    /// register the kernels..
     if(kernelLanguage == "Python")
     {
-	cout<<__LINE__<<endl;
         environ->Interpreter()->RunScript(kernel.AsString());
     }
     else
     {
-	cout<<__LINE__<<endl;
         std::ostringstream rsetup;
 
         rsetup << "import rpy2, rpy2.robjects\n"
                << kernelName.AsString() <<  " = rpy2.robjects.r(\"\"\"\n"
                << kernel.AsString() << "\n"
                << "\"\"\")\n";
-        cout << rsetup.str() << std::endl;
         environ->Interpreter()->RunScript(rsetup.str());
     }
 
+    /// run the time loop filter..
+
+    avtTimeWindowLoopFilter *filt = new avtTimeWindowLoopFilter;
+    filt->environment = environ;
+    filt->inputDataSet = args.GetInputDataSet();
+    filt->inputDomain = args.GetInputDomain();
+
+    filt->SetInput(args.GetInput());
+    avtDataObject_p dob = filt->GetOutput();
+
+    std::cout << "update??" << std::endl;
+    dob->Update(args.GetContract());
+    std::cout << "end <-- update??" << std::endl;
+
     result = var->NewInstance();
     result->DeepCopy(var);
-
-    size_t size = var->GetDataSize();
-
-    double resultVal = 0;
-    for(size_t i = 0; i < size; ++i)
-    {
-        //double val = var->GetTuple1(i);
-	double val = filt->values[i];
-
-        std::ostringstream resultKernel;
-
-        resultKernel << "res = " << kernelName.AsString() <<  "(" <<  val;
-        if(arglist.size() > 0)
-            resultKernel << "," << arglist << ")\n";
-        else
-            resultKernel << ")\n";
-        if(kernelLanguage.AsString() == "R")
-            resultKernel << "res = res[0]\n";
-
-        if(i == 0) std::cout << resultKernel.str() << std::endl;
-        environ->Interpreter()->RunScript(resultKernel.str());
-
-        PyObject* obj = environ->Interpreter()->GetGlobalObject("res");
-
-        environ->Interpreter()->PyObjectToDouble(obj,resultVal);
-	cout<<i<<": "<<val<<" --> "<<resultVal<<endl;
-        result->SetTuple1(i,resultVal);
-    }
 
     return true;
 }

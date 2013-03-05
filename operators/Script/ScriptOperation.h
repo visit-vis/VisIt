@@ -18,11 +18,16 @@ public:
     avtPythonFilterEnvironment* pythonFilter;
     avtDataObject_p input;
     avtContract_p contract;
+    vtkDataSet* input_mesh;
+    int input_domain;
+
     std::vector<Variant> args;
     std::map<int,void*> datamap;
     std::map<int, std::vector<Variant> > variantVector;
 
     /// functions..
+    int GetInputDomain() { return input_domain; }
+    vtkDataSet* GetInputDataSet() { return input_mesh; }
     avtPythonFilterEnvironment* GetPythonEnvironment() { return pythonFilter; }
     avtDataObject_p GetInput() { return input; }
     avtContract_p GetContract() { return contract; }

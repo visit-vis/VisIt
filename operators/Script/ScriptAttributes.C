@@ -1017,10 +1017,13 @@ ScriptAttributes::LoadPythonKernel(const std::string& name, const JSONNode& atts
     std::ostringstream pwrapper;
 
     pwrapper << "from visit_internal_funcs import *\n"
-             << code
-             << "setout(" << name << "(" << arglist << "))\n"
-             << "\n";
+             << "exec(\"\"\"" << "\n"
+             << code << "\n"
+             << "\"\"\",globals())\n"
+             << "setout(" << name << "(" << arglist << "))\n";
+
     std::string escapedCode = pwrapper.str();
+    //std::cout << escapedCode << std::endl;
     replace(escapedCode, "\n", "\\n");
 
     node["source"] = escapedCode;
