@@ -57,6 +57,10 @@
 
 #include <avtParallel.h>
 #include <vector>
+#include <map>
+#ifdef PARALLEL
+  #include <mpi.h>
+#endif
 
 using namespace std;
 
@@ -65,13 +69,13 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
 {
     /// record which rank has what timesteps and parts of the datasets..
   public:
-    avtTimeWindowLoopFilter() {initialized = false; }
+    avtTimeWindowLoopFilter() {initialized = false; index=0;}
     virtual ~avtTimeWindowLoopFilter() {}
     virtual const char* GetType() {return "avtTimeWindowLoopFilter";}
 
     //vector< vector<float> > values;
     vector<float> values;
-    vector<int> times;
+    size_t index;
 
   protected:
     void                    Initialize();
@@ -80,7 +84,7 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
     virtual bool            ExecutionSuccessful() { return true; }
 
     virtual bool            FilterSupportsTimeParallelization() { return true; }
-    virtual bool            DataCanBeParallelizedOverTime() { return false; }
+    virtual bool            DataCanBeParallelizedOverTime() { return true; }
     //virtual bool            OperationNeedsAllData(void) { return true; }
 
     bool initialized, nodeCenteredData;
@@ -98,7 +102,6 @@ avtTimeWindowLoopFilter::Initialize()
     if (initialized)
 	return;
     
-//    cout<<__FILE__<<" "<<__LINE__<<endl;
 //    int nleaves;
 //    vtkDataSet **leaves = GetInputDataTree()->GetAllLeaves(nleaves);
 //    if (nleaves != 1)
@@ -115,6 +118,7 @@ avtTimeWindowLoopFilter::Initialize()
 
     idx0 = 0;
     idxN = numTuples;
+    index = 0;
     
 #ifdef PARALLEL
     int rank = PAR_Rank();
@@ -133,19 +137,21 @@ avtTimeWindowLoopFilter::Initialize()
         idxN = (rank+1)*(nSamplesPerProc) + oneExtraUntil;
     }
 #endif
-    cout<<"I have: ["<<idx0<<" "<<idxN<<"]"<<endl;
     //delete [] leaves;
 
     initialized = true;
+    
+    // values need to be number of tuples * total number of timesteps..
+    int totalTimes = GetTotalNumberOfTimeSlicesForRank();
+    cout<<PAR_Rank()<<": locs: ["<<idx0<<" "<<idxN<<"] times:"<<totalTimes<<endl;
 
-    /// values need to be number of tuples * total number of timesteps..
-    values.resize((idxN-idx0)*(GetEndTime()-GetStartTime()+1));
+    //format is: T0_val0, T0_val1, ...., T1_val0, T2_val1, ....
+    values.resize(numTuples*totalTimes);
 }
 
 void
 avtTimeWindowLoopFilter::Execute()
 {
-    //cout<<__FILE__<<" "<<__LINE__<<endl;
     Initialize();
 
     vtkDataSet *ds = inputDataSet;
@@ -160,16 +166,11 @@ avtTimeWindowLoopFilter::Execute()
     int rank = PAR_Rank();
 
     int numTimes = GetEndTime() - GetStartTime() + 1;
+    float dsTime = (float)GetInput()->GetInfo().GetAttributes().GetTime();
+    int dsCycle = (float)GetInput()->GetInfo().GetAttributes().GetCycle();
+
     for (size_t i = 0; i < numTuples; i++)
-    {
-        if(i >= idx0 && i < idxN)
-        {
-            size_t index = rank + (i-idx0)*(numTimes); //0 index then arrange by rank..
-            //values.push_back(8640*vals[i]);
-            //times.push_back(currentTime);
-            values[index] = vals[i];
-        }
-    }
+	values[index++] = vals[i];
 
     /*
     int rank = PAR_Rank();
@@ -181,23 +182,63 @@ avtTimeWindowLoopFilter::Execute()
 void
 avtTimeWindowLoopFilter::CreateFinalOutput()
 {
-    cout<<"CreateFinalOutput "<<endl;
-    cout<<"values= "<<values.size()<<endl;
+    Barrier();
+    cout<<"CreateFinalOutput : values= "<<values.size()<<endl;
+    
+    size_t totalTupleSize = idxN-idx0;
+    int numTimes = GetEndTime() - GetStartTime() + 1;
+    
+    vector<float> finalVals;
+#ifdef PARALLEL
+    finalVals.resize((idxN-idx0)*numTimes);
+    float *res = new float[numTimes];
+    float *tmp = new float[numTimes];
+
+    map<int,int> cycleMap;
+    vector<int> myCycles = GetCyclesForRank();
+    for (int i = 0; i < myCycles.size(); i++)
+	cycleMap[myCycles[i]] = i;
+    int finalIdx = 0;
+    for (int i = 0; i < numTuples; i++)
+    {
+	for (int j = 0; j < numTimes; j++)
+	    res[j] = tmp[j] = 0.0f;
+
+	for (int j = 0; j < numTimes; j++)
+	{
+	    //If I have this timestep...
+	    map<int, int>:: const_iterator mi = cycleMap.find(j);
+	    if (mi != cycleMap.end())
+	    {
+		int ti = mi->second;
+		int idx = ti*numTuples + i;
+		tmp[j] = values[idx];
+	    }
+	}
+	
+	MPI_Allreduce(tmp, res, numTimes, MPI_FLOAT, MPI_SUM, VISIT_MPI_COMM);
+	if (i >= idx0 && i < idxN)
+	    for (int j = 0; j < numTimes; j++)
+		finalVals[finalIdx++] = res[j];
+    }
+    delete [] tmp;
+    delete [] res;
+#else
+    finalVals = values;
+#endif
 
     //std::cout << GetEndTime() << " " << GetStartTime() << std::endl;
     //std::vector<float> inputArray;
 
-    size_t totalTupleSize = idxN-idx0;
-
-    int numTimes = GetEndTime() - GetStartTime() + 1;
     //inputArray.resize(numTimes);
+    cout<<__FILE__<<" "<<__LINE__<<endl;
     PyObject *retval = PyTuple_New(numTimes);
 
     for (int i = 0; i < totalTupleSize; i++)
     {
         for(int j = 0; j < numTimes; ++j)
         {
-            PyObject* value = PyInt_FromLong(values[(i*(numTimes))+j]);
+            PyObject* value = PyInt_FromLong(finalVals[(i*(numTimes))+j]);
             PyTuple_SET_ITEM(retval, j, value);
         }
 

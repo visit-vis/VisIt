@@ -45,10 +45,11 @@
 #include <avtCallback.h>
 #include <avtOriginatingSource.h>
 #include <avtParallel.h>
-
+#include <avtDatabase.h>
+#include <avtDatabaseMetaData.h>
 #include <DebugStream.h>
 #include <UnexpectedValueException.h>
-
+#include <InvalidFilesException.h>
 #include <math.h>
 
 
@@ -186,10 +187,8 @@ avtTimeLoopFilter::Update(avtContract_p spec)
         BeginIteration(currentLoopIter);
         for (i = startTime; i < actualEnd; i+= stride)
         {
-            bool shouldDoThisTimeSlice = true;
-            if (parallelizingOverTime)
-                if ((curIter % PAR_Size()) != PAR_Rank())
-                    shouldDoThisTimeSlice = false;
+            bool shouldDoThisTimeSlice = parallelizingOverTime && RankOwnsTimeSlice(i);
+
             curIter++;
             if (!shouldDoThisTimeSlice)
                 continue;
@@ -326,6 +325,78 @@ avtTimeLoopFilter::DataCanBeParallelizedOverTime(void)
     // a single MPI task.  The infrastructure doesn't exist yet.
     //return true;
     return false;
+}
+
+bool
+avtTimeLoopFilter::RankOwnsTimeSlice(int t)
+{
+#ifdef PARALLEL
+    return (t % PAR_Size() == PAR_Rank());
+#else
+    return true;
+#endif
+}
+
+int
+avtTimeLoopFilter::GetTotalNumberOfTimeSlicesForRank()
+{
+    if (!CanDoTimeParallelization())
+	return 1;
+    
+#ifdef PARALLEL
+    int totalNumTimes = 0;
+    for (int i = startTime; i < actualEnd; i+= stride)
+	if (RankOwnsTimeSlice(i))
+	    totalNumTimes++;
+    
+    cout<<__FILE__<<" "<<__LINE__<<" "<<totalNumTimes<<" "<<startTime<<" "<<actualEnd<<endl;
+    return totalNumTimes;
+#else
+    return ((actualEnd-startTime)/stride+1);
+#endif
+}
+
+std::vector<int>
+avtTimeLoopFilter::GetCyclesForRank()
+{
+    std::string db = GetInput()->GetInfo().GetAttributes().GetFullDBName();
+    ref_ptr<avtDatabase> dbp = avtCallback::GetDatabase(db, 0, NULL);
+    if (*dbp == NULL)
+    	EXCEPTION1(InvalidFilesException, db.c_str());
+    avtDatabaseMetaData *md = dbp->GetMetaData(0,true,true,false);
+    intVector c = md->GetCycles();
+
+    std::vector<int> cycles;
+#ifdef PARALLEL
+    for (int i = startTime; i < actualEnd; i+= stride)
+	if (RankOwnsTimeSlice(i))
+	    cycles.push_back(c[i]);
+#else
+    cycles = c;
+#endif
+    return cycles;
+}
+
+std::vector<double>
+avtTimeLoopFilter::GetTimesForRank()
+{
+    std::string db = GetInput()->GetInfo().GetAttributes().GetFullDBName();
+    ref_ptr<avtDatabase> dbp = avtCallback::GetDatabase(db, 0, NULL);
+    if (*dbp == NULL)
+    	EXCEPTION1(InvalidFilesException, db.c_str());
+    avtDatabaseMetaData *md = dbp->GetMetaData(0,true,true,false);
+    doubleVector t = md->GetTimes();
+
+    std::vector<double> times;
+#ifdef PARALLEL
+    for (int i = startTime; i < actualEnd; i+= stride)
+	if (RankOwnsTimeSlice(i))
+	    times.push_back(t[i]);
+#else
+    times = t;
+#endif
+    
+    return times;
 }
 
 

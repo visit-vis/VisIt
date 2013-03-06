@@ -111,6 +111,11 @@ class PIPELINE_API avtTimeLoopFilter : virtual public avtFilter
     virtual void                        BeginIteration(int i) {}
     virtual void                        EndIteration(int i) {}
     virtual int                         GetNumberOfIterations() {return 1;}
+
+    virtual int                         GetTotalNumberOfTimeSlicesForRank();
+    virtual std::vector<int>            GetCyclesForRank();
+    virtual std::vector<double>         GetTimesForRank();
+
     virtual bool                        NeedCurrentTimeSlice() {return true;}
     virtual void                        CreateFinalOutput(void) = 0;
     virtual bool                        ExecutionSuccessful(void) = 0;
@@ -124,6 +129,7 @@ class PIPELINE_API avtTimeLoopFilter : virtual public avtFilter
     int                                 actualEnd;
     bool                                parallelizingOverTime;
 
+    bool                                RankOwnsTimeSlice(int t);
     virtual void                        InitializeTimeLoop(void) {};
     void                                FinalizeTimeLoop(void);
 
