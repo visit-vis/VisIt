@@ -218,6 +218,8 @@ avtScriptOperation::avtScriptOperation()
 #include <avtDatabaseMetaData.h>
 #include <avtCallback.h>
 #include <avtSourceFromDatabase.h>
+
+
 bool
 avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkDataArray*&result)
 {
@@ -316,6 +318,148 @@ avtScriptOperation::avtVisItForEachLocation::GetSignature(std::string& name,
     return ScriptOperation::VTK_DATA_ARRAY;
 }
 
+
+bool
+avtScriptOperation::avtVisItForEachLocationR::func(ScriptArguments& args, vtkDataArray*&result)
+{
+    Variant windowArray = args.getArg(0);
+    vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(1);
+    Variant kernelName = args.getArg(2); //name of the function to call..
+    Variant primaryVariable = args.getArg(3); // primary variable name to modify..
+
+    std::vector<Variant> kernelArgs = args.getArgAsVariantVector(4);
+
+    avtPythonFilterEnvironment* environ = args.GetPythonEnvironment();
+
+    std::ostringstream rsetup;
+    rsetup << "import rpy2, rpy2.robjects\n"
+           << kernelName.AsString() <<  " = rpy2.robjects.r('" << kernelName.AsString() << "')\n";
+    environ->Interpreter()->RunScript(rsetup.str());
+
+    std::string arglist = "";
+
+    for(int i = 0; i < kernelArgs.size(); ++i)
+        arglist += kernelArgs[i].ConvertToString() + (i == kernelArgs.size()-1 ? "" : ",");
+
+    std::ostringstream resultKernel;
+    resultKernel << "res = " << kernelName.AsString() <<  "(numpy.asarray(__internal_array)";
+
+    if(arglist.size() > 0)
+        resultKernel << "," << arglist << ")\n";
+    else
+        resultKernel << ")\n";
+
+    resultKernel << "res = res[0]\n";
+
+    /// run the time loop filter..
+
+    avtTimeWindowLoopFilter *filt = new avtTimeWindowLoopFilter;
+    filt->environment = args.GetPythonEnvironment();
+    filt->inputDataSet = args.GetInputDataSet();
+    filt->inputDomain = args.GetInputDomain();
+    filt->script = resultKernel.str();
+
+    filt->SetInput(args.GetInput());
+    avtDataObject_p dob = filt->GetOutput();
+
+    dob->Update(args.GetContract());
+
+    result = var->NewInstance();
+    result->DeepCopy(var);
+
+    return true;
+}
+
+ScriptOperation::ScriptOperationResponse
+avtScriptOperation::avtVisItForEachLocationR::GetSignature(std::string& name,
+                          stringVector& argnames,
+                          std::vector<ScriptVariantTypeEnum>& argtypes)
+{
+    name = "visit_foreach_location_r";
+    argnames.push_back("window");
+    argtypes.push_back(ScriptOperation::INT_VECTOR_TYPE);
+
+    argnames.push_back("variableName");
+    argtypes.push_back(ScriptOperation::VTK_DATA_ARRAY_TYPE);
+
+    argnames.push_back("kernelName");
+    argtypes.push_back(ScriptOperation::STRING_TYPE);
+
+    argnames.push_back("primaryVariable");
+    argtypes.push_back(ScriptOperation::STRING_TYPE);
+
+    argnames.push_back("kernelArgs");
+    argtypes.push_back(ScriptOperation::VARIANT_VECTOR_TYPE);
+    return ScriptOperation::VTK_DATA_ARRAY;
+}
+
+bool
+avtScriptOperation::avtVisItForEachLocationPython::func(ScriptArguments& args, vtkDataArray*&result)
+{
+    Variant windowArray = args.getArg(0);
+    vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(1);
+    Variant kernelName = args.getArg(2); //name of the function to call..
+    Variant primaryVariable = args.getArg(3); // primary variable name to modify..
+
+    std::vector<Variant> kernelArgs = args.getArgAsVariantVector(4);
+
+    std::string arglist = "";
+
+    for(int i = 0; i < kernelArgs.size(); ++i)
+        arglist += kernelArgs[i].ConvertToString() + (i == kernelArgs.size()-1 ? "" : ",");
+
+    std::ostringstream resultKernel;
+    resultKernel << "res = " << kernelName.AsString() <<  "(numpy.asarray(__internal_array)";
+
+    if(arglist.size() > 0)
+        resultKernel << "," << arglist << ")\n";
+    else
+        resultKernel << ")\n";
+
+
+    //std::cout << resultKernel.str() << std::endl;
+    /// run the time loop filter..
+
+    avtTimeWindowLoopFilter *filt = new avtTimeWindowLoopFilter;
+    filt->environment = args.GetPythonEnvironment();
+    filt->inputDataSet = args.GetInputDataSet();
+    filt->inputDomain = args.GetInputDomain();
+    filt->script = resultKernel.str();
+
+    filt->SetInput(args.GetInput());
+    avtDataObject_p dob = filt->GetOutput();
+    dob->Update(args.GetContract());
+
+    result = var->NewInstance();
+    result->DeepCopy(var);
+
+    return true;
+}
+
+ScriptOperation::ScriptOperationResponse
+avtScriptOperation::avtVisItForEachLocationPython::GetSignature(std::string& name,
+                          stringVector& argnames,
+                          std::vector<ScriptVariantTypeEnum>& argtypes)
+{
+    name = "visit_foreach_location_python";
+    argnames.push_back("window");
+    argtypes.push_back(ScriptOperation::INT_VECTOR_TYPE);
+
+    argnames.push_back("variableName");
+    argtypes.push_back(ScriptOperation::VTK_DATA_ARRAY_TYPE);
+
+    argnames.push_back("kernelName");
+    argtypes.push_back(ScriptOperation::STRING_TYPE);
+
+    argnames.push_back("primaryVariable");
+    argtypes.push_back(ScriptOperation::STRING_TYPE);
+
+    argnames.push_back("kernelArgs");
+    argtypes.push_back(ScriptOperation::VARIANT_VECTOR_TYPE);
+    return ScriptOperation::VTK_DATA_ARRAY;
+}
+
+
 bool
 avtScriptOperation::avtVisItGetRSupportDirectory::func(ScriptArguments& args, Variant& result)
 {
@@ -338,10 +482,44 @@ avtScriptOperation::avtVisItGetRSupportDirectory::GetSignature(std::string& name
     return ScriptOperation::CONSTANT;
 }
 
+bool
+avtScriptOperation::avtVisItWriteToDisk::func(ScriptArguments& args, Variant& result)
+{
+    std::string vlibdir = GetVisItLibraryDirectory() + VISIT_SLASH_CHAR + "r_support";
+    std::string vlibrdir  = vlibdir  + VISIT_SLASH_CHAR + "Rscripts" + VISIT_SLASH_CHAR;
+    result = vlibrdir;
+    return true;
+}
+
+ScriptOperation::ScriptOperationResponse
+avtScriptOperation::avtVisItWriteToDisk::GetSignature(std::string& name,
+                          stringVector& argnames,
+                          std::vector<ScriptOperation::ScriptVariantTypeEnum>& argtypes)
+{
+    name = "visit_write";
+
+    argnames.push_back("filename");
+    argtypes.push_back(ScriptOperation::INT_VECTOR_TYPE);
+
+    argnames.push_back("variable");
+    argtypes.push_back(ScriptOperation::VTK_DATA_ARRAY_TYPE);
+
+    argnames.push_back("index");
+    argtypes.push_back(ScriptOperation::STRING_TYPE);
+
+    argnames.push_back("stride");
+    argtypes.push_back(ScriptOperation::STRING_TYPE);
+
+    return ScriptOperation::CONSTANT;
+}
+
+
 void
 avtScriptOperation::RegisterOperations(ScriptManager *manager)
 {
     manager->RegisterOperation(&vfel);
+    manager->RegisterOperation(&vfelr);
+    manager->RegisterOperation(&vfelp);
     manager->RegisterOperation(&vfef);
     manager->RegisterOperation(&avag);
 }

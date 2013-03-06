@@ -57,6 +57,28 @@ class avtScriptOperation : public ScriptOperationsManager
                                   std::vector<ScriptVariantTypeEnum>& argtypes);
     };
 
+    class avtVisItForEachLocationR : public ScriptOperation
+    {
+    public:
+        virtual bool func(ScriptArguments&, vtkDataArray*& result);
+
+        virtual ScriptOperationResponse GetSignature(std::string& name,
+                                  stringVector& argnames,
+                                  std::vector<ScriptVariantTypeEnum>& argtypes);
+    };
+
+    class avtVisItForEachLocationPython : public ScriptOperation
+    {
+    public:
+        virtual bool func(ScriptArguments&, vtkDataArray*& result);
+
+        virtual ScriptOperationResponse GetSignature(std::string& name,
+                                  stringVector& argnames,
+                                  std::vector<ScriptVariantTypeEnum>& argtypes);
+    };
+
+
+
     class avtVisItForEachFile : public ScriptOperation
     {
     public:
@@ -83,11 +105,24 @@ class avtScriptOperation : public ScriptOperationsManager
                                   std::vector<ScriptVariantTypeEnum>& argtypes);
     };
 
+    class avtVisItWriteToDisk : public ScriptOperation
+    {
+        virtual bool func(ScriptArguments&, Variant&);
+
+        virtual ScriptOperationResponse GetSignature(std::string& name,
+                                  stringVector& argnames,
+                                  std::vector<ScriptVariantTypeEnum>& argtypes);
+    };
+
 public:
     avtScriptOperation();
     void RegisterOperations(ScriptManager* manager);
 private:
+    /// visit foreach location variations..
     avtVisItForEachLocation vfel;
+    avtVisItForEachLocationR vfelr;
+    avtVisItForEachLocationPython vfelp;
+
     avtVisItForEachFile vfef;
     avtVisItGetRSupportDirectory avag;
 };

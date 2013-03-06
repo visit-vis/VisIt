@@ -374,6 +374,17 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     vtkDataSet *res = (vtkDataSet*)pyEnv->UnwrapVTKObject(py_res,"vtkDataSet");
     res->Register(NULL);
 
+    res->Print(cout);
+    double bounds[6];
+    res->GetBounds(bounds);
+
+    if(bounds[4] == bounds[5])
+    {
+        std::cout << "in here.." << std::endl;
+        GetOutput()->GetInfo().GetAttributes().SetSpatialDimension(2);
+        //GetOutput()->GetInfo().GetAttributes().SetTopologicalDimension(2);
+        std::cout << "in here.." << std::endl;
+    }
     /// get data array for active variable..
     vtkDataArray* array = res->GetPointData()->GetScalars(primaryVariable.c_str());
 
@@ -400,13 +411,12 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     e = dataatts.GetThisProcsActualDataExtents();
     e->Set(range);
 
-//    e = dataatts.GetThisProcsOriginalSpatialExtents();
-//    e->Set(range);
+    e = dataatts.GetThisProcsOriginalSpatialExtents();
+    e->Set(range);
 
     std::cout << "setting: " << range[0] << " " << range[1] << std::endl;
 
     return res;
-
 }
 
 bool avtScriptFilter::SetupFlowWorkspace()
