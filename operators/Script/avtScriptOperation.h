@@ -43,7 +43,10 @@
 #define AVT_SCRIPT_OPERATION_H
 
 #include <ScriptOperation.h>
-
+#include <vtkDataSet.h>
+#include <vtkPointData.h>
+#include <vtkCellData.h>
+#include <vtkImageData.h>
 /// class to provide default script operations..
 class avtScriptOperation : public ScriptOperationsManager
 {
@@ -105,15 +108,64 @@ class avtScriptOperation : public ScriptOperationsManager
                                   std::vector<ScriptVariantTypeEnum>& argtypes);
     };
 
-    class avtVisItWriteToDisk : public ScriptOperation
+    class avtVisItGetVarInfo : public ScriptOperation
     {
-        virtual bool func(ScriptArguments&, Variant&);
+        /// we are always returning true unless the script
+        /// itself is failing not the inquiry..
+        virtual bool func(ScriptArguments& args, Variant& result)
+        {
+            std::string varName = args.getArg(0).AsString();
+            vtkDataSet* dataset = args.GetInputDataSet();
+            bool pointData = true;
+            vtkDataArray* array = dataset->GetPointData()->GetScalars(varName.c_str());
+
+            if(!array) {
+                array = dataset->GetCellData()->GetScalars(varName.c_str());
+                pointData = false;
+            }
+
+            /// for now just deal with scalars..
+            if(array == NULL)
+            {
+                result = "";
+                return true;
+            }
+
+            /// now extract information from the array..
+            /// through in mesh dimensions to help inquiring class reshape
+            /// information correctly..
+            JSONNode resultNode;
+            resultNode["type"] = pointData ? "pointdata" : "celldata";
+            JSONNode::JSONArray dims(3,-1);
+            resultNode["dims"] = dims;
+
+            result = resultNode.ToString();
+
+            return true;
+        }
+
+        virtual ScriptOperationResponse GetSignature(std::string& name,
+                                  stringVector& argnames,
+                                  std::vector<ScriptVariantTypeEnum>& argtypes)
+        {
+            name = "visit_get_var_info";
+
+            argnames.push_back("variableName");
+            argtypes.push_back(ScriptOperation::STRING_TYPE);
+
+            return ScriptOperation::CONSTANT;
+        }
+    };
+
+    class avtVisItWriteData : public ScriptOperation
+    {
+        virtual bool func(ScriptArguments &args,
+                          vtkShapedDataArray& result);
 
         virtual ScriptOperationResponse GetSignature(std::string& name,
                                   stringVector& argnames,
                                   std::vector<ScriptVariantTypeEnum>& argtypes);
     };
-
 public:
     avtScriptOperation();
     void RegisterOperations(ScriptManager* manager);
@@ -125,6 +177,8 @@ private:
 
     avtVisItForEachFile vfef;
     avtVisItGetRSupportDirectory avag;
+
+    avtVisItGetVarInfo vgvi;
 };
 
 #endif

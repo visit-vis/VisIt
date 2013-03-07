@@ -374,17 +374,17 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     vtkDataSet *res = (vtkDataSet*)pyEnv->UnwrapVTKObject(py_res,"vtkDataSet");
     res->Register(NULL);
 
-    res->Print(cout);
-    double bounds[6];
-    res->GetBounds(bounds);
+//    res->Print(cout);
+//    double bounds[6];
+//    res->GetBounds(bounds);
 
-    if(bounds[4] == bounds[5])
-    {
-        std::cout << "in here.." << std::endl;
-        GetOutput()->GetInfo().GetAttributes().SetSpatialDimension(2);
-        //GetOutput()->GetInfo().GetAttributes().SetTopologicalDimension(2);
-        std::cout << "in here.." << std::endl;
-    }
+//    if(bounds[4] == bounds[5])
+//    {
+//        std::cout << "in here.." << std::endl;
+//        GetOutput()->GetInfo().GetAttributes().SetSpatialDimension(2);
+//        //GetOutput()->GetInfo().GetAttributes().SetTopologicalDimension(2);
+//        std::cout << "in here.." << std::endl;
+//    }
     /// get data array for active variable..
     vtkDataArray* array = res->GetPointData()->GetScalars(primaryVariable.c_str());
 
@@ -719,7 +719,64 @@ visit_functions(PyObject *self, PyObject *args)
     std::map<int, std::vector<Variant> > variantVecMap;
 
     // Extract arguments from the tuple.
-    if(scriptArgs)
+    if(scriptArgs && op_argtypes.size() < 2)
+    {
+        /// TODO remove this duplication of code..
+        if(scriptArgs && op_argtypes.size() == 1)
+        {
+            Variant v;
+            int i = 0;
+            PyObject* item = scriptArgs;
+
+            if(op_argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
+            {
+                void* vobj = scriptFilter->GetPythonEnvironment()->UnwrapVTKObject(item, "vtkDataArray");
+                datamap[i] = vobj;
+            }
+            else if(op_argtypes[i] == ScriptOperation::VARIANT_VECTOR_TYPE)
+            {
+                std::vector<Variant> variantVec;
+
+                if(!PyTuple_Check(item) && !PyList_Check(item))
+                {
+                    variantArgs.push_back(v); ///null..
+                    variantVecMap[i] = variantVec;
+                }
+                else {
+                    if(PyTuple_Check(item))
+                    {
+                        // Extract arguments from the tuple.
+                        for(int j = 0; j < PyTuple_Size(item); ++j)
+                        {
+                            PyObject *itemx = PyTuple_GET_ITEM(item, j);
+                            Variant v;
+                            convert(ScriptOperation::VARIANT_TYPE,itemx,v);
+                            variantVec.push_back(v);
+                        }
+                    }
+                    else
+                    {
+                        // Extract arguments from the list.
+                        for(int j = 0; j < PyList_Size(item); ++j)
+                        {
+                            PyObject *itemx = PyList_GET_ITEM(item, j);
+                            Variant v;
+                            convert(ScriptOperation::VARIANT_TYPE,itemx,v);
+                            variantVec.push_back(v);
+                        }
+                    }
+                    variantVecMap[i] = variantVec;
+                }
+            }
+            else
+            {
+                convert(op_argtypes[i],item,v);
+            }
+
+            variantArgs.push_back(v);
+        }
+    }
+    else
     {
         if(PyTuple_Size(scriptArgs) != op_argtypes.size())
         {

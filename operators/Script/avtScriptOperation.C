@@ -524,16 +524,13 @@ avtScriptOperation::avtVisItGetRSupportDirectory::GetSignature(std::string& name
 }
 
 bool
-avtScriptOperation::avtVisItWriteToDisk::func(ScriptArguments& args, Variant& result)
+avtScriptOperation::avtVisItWriteData::func(ScriptArguments& args, vtkShapedDataArray& result)
 {
-    std::string vlibdir = GetVisItLibraryDirectory() + VISIT_SLASH_CHAR + "r_support";
-    std::string vlibrdir  = vlibdir  + VISIT_SLASH_CHAR + "Rscripts" + VISIT_SLASH_CHAR;
-    result = vlibrdir;
     return true;
 }
 
 ScriptOperation::ScriptOperationResponse
-avtScriptOperation::avtVisItWriteToDisk::GetSignature(std::string& name,
+avtScriptOperation::avtVisItWriteData::GetSignature(std::string& name,
                           stringVector& argnames,
                           std::vector<ScriptOperation::ScriptVariantTypeEnum>& argtypes)
 {
@@ -551,7 +548,7 @@ avtScriptOperation::avtVisItWriteToDisk::GetSignature(std::string& name,
     argnames.push_back("stride");
     argtypes.push_back(ScriptOperation::STRING_TYPE);
 
-    return ScriptOperation::CONSTANT;
+    return ScriptOperation::VTK_MULTI_DIMENSIONAL_DATA_ARRAY;
 }
 
 
@@ -563,4 +560,5 @@ avtScriptOperation::RegisterOperations(ScriptManager *manager)
     manager->RegisterOperation(&vfelp);
     manager->RegisterOperation(&vfef);
     manager->RegisterOperation(&avag);
+    manager->RegisterOperation(&vgvi);
 }

@@ -11,6 +11,13 @@
 
 class avtPythonFilterEnvironment;
 
+/// a shaped VTK DataArray
+struct vtkShapedDataArray
+{
+    intVector shape;
+    vtkDataArray* vtkarray;
+};
+
 class ScriptArguments
 {
     friend class avtScriptFilter;
@@ -21,8 +28,15 @@ public:
     vtkDataSet* input_mesh;
     int input_domain;
 
-    std::vector<Variant> args;
-    std::map<int,void*> datamap;
+    std::vector<Variant> args; ///simplest case..
+
+    std::map<int,void*> datamap; /// unknown case..
+
+    /// dataArray with shape information..
+    /// I am really trying to avoid bringing in the NUMPY API
+    /// but if this does not work then I will pursue that route..
+    std::map<int,vtkShapedDataArray> dataArrayMap;
+
     std::map<int, std::vector<Variant> > variantVector;
 
     /// functions..
@@ -72,6 +86,7 @@ public:
     {
         CONSTANT,
         VTK_DATA_ARRAY,
+        VTK_MULTI_DIMENSIONAL_DATA_ARRAY,
         VTK_DATASET,
         AVT_DATA_SET
     };
@@ -93,6 +108,9 @@ public:
     //DRP. Return type based methods....
     virtual bool func(ScriptArguments& args,
                       Variant& result){ (void) args; (void) result; return false; }
+
+    virtual bool func(ScriptArguments& args,
+                      vtkShapedDataArray& result){ (void) args; (void) result; return false; }
 
     virtual bool func(ScriptArguments& args,
                       vtkDataArray*& result){ (void) args; (void) result; return false; }
