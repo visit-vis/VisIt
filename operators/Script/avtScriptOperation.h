@@ -166,6 +166,16 @@ class avtScriptOperation : public ScriptOperationsManager
                                   stringVector& argnames,
                                   std::vector<ScriptVariantTypeEnum>& argtypes);
     };
+    
+    class avtVisItMaxAcrossTime : public ScriptOperation
+    {
+        virtual bool func(ScriptArguments&, vtkDataArray*&);
+
+        virtual ScriptOperationResponse GetSignature(std::string& name,
+						     stringVector& argnames,
+						     std::vector<ScriptVariantTypeEnum>& argtypes);
+    };
+
 public:
     avtScriptOperation();
     void RegisterOperations(ScriptManager* manager);
@@ -179,6 +189,7 @@ private:
     avtVisItGetRSupportDirectory avag;
 
     avtVisItGetVarInfo vgvi;
+    avtVisItMaxAcrossTime vmax;
 };
 
 #endif

@@ -170,7 +170,9 @@ avtTimeWindowLoopFilter::Execute()
     int dsCycle = (float)GetInput()->GetInfo().GetAttributes().GetCycle();
 
     for (size_t i = 0; i < numTuples; i++)
+    {
 	values[index++] = vals[i];
+    }
 
     /*
     int rank = PAR_Rank();
@@ -182,15 +184,14 @@ avtTimeWindowLoopFilter::Execute()
 void
 avtTimeWindowLoopFilter::CreateFinalOutput()
 {
-    Barrier();
     cout<<"CreateFinalOutput : values= "<<values.size()<<endl;
     
     size_t totalTupleSize = idxN-idx0;
     int numTimes = GetEndTime() - GetStartTime() + 1;
     
     vector<float> finalVals;
-#ifdef PARALLEL
     finalVals.resize((idxN-idx0)*numTimes);
+#ifdef PARALLEL
     float *res = new float[numTimes];
     float *tmp = new float[numTimes];
 
@@ -224,21 +225,25 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     delete [] tmp;
     delete [] res;
 #else
+    //Redo the indexing.....
     finalVals = values;
+    int idx = 0;
+    for (int i = 0; i < numTuples; i++)
+	for (int j = 0; j < numTimes; j++)
+	    finalVals[idx++] = values[j*numTuples +i];
 #endif
 
     //std::cout << GetEndTime() << " " << GetStartTime() << std::endl;
     //std::vector<float> inputArray;
 
     //inputArray.resize(numTimes);
-    cout<<__FILE__<<" "<<__LINE__<<endl;
     PyObject *retval = PyTuple_New(numTimes);
 
     for (int i = 0; i < totalTupleSize; i++)
     {
         for(int j = 0; j < numTimes; ++j)
         {
-            PyObject* value = PyInt_FromLong(finalVals[(i*(numTimes))+j]);
+            PyObject* value = PyInt_FromLong(finalVals[j*totalTupleSize + i]);
             PyTuple_SET_ITEM(retval, j, value);
         }
 
@@ -551,6 +556,36 @@ avtScriptOperation::avtVisItWriteData::GetSignature(std::string& name,
     return ScriptOperation::VTK_MULTI_DIMENSIONAL_DATA_ARRAY;
 }
 
+bool
+avtScriptOperation::avtVisItMaxAcrossTime::func(ScriptArguments& args, vtkDataArray*& result)
+{
+    cout<<"avtScriptOperation::avtVisItMaxAcrossTime::func()"<<endl;
+    cout<<"args= "<<args.getArgSize()<<endl;
+    for (int i = 0; i < args.getArgSize(); i++)
+	cout<<i<<": "<<endl;
+    
+    vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(0);
+    //var->Print(cout);
+    
+    return true;
+}
+
+ScriptOperation::ScriptOperationResponse
+avtScriptOperation::avtVisItMaxAcrossTime::GetSignature(std::string& name,
+					stringVector& argnames,
+				       	std::vector<ScriptOperation::ScriptVariantTypeEnum>& argtypes)
+{
+    name = "visit_max_across_time";
+
+    argnames.push_back("variable");
+    argtypes.push_back(ScriptOperation::VTK_DATA_ARRAY_TYPE);
+    
+    return ScriptOperation::VTK_DATA_ARRAY;
+}
+
+
+
+
 
 void
 avtScriptOperation::RegisterOperations(ScriptManager *manager)
@@ -561,4 +596,5 @@ avtScriptOperation::RegisterOperations(ScriptManager *manager)
     manager->RegisterOperation(&vfef);
     manager->RegisterOperation(&avag);
     manager->RegisterOperation(&vgvi);
+    manager->RegisterOperation(&vmax);
 }
