@@ -58,9 +58,26 @@
 #include <avtParallel.h>
 #include <vector>
 #include <map>
+
 #ifdef PARALLEL
   #include <mpi.h>
 #endif
+
+#include <avtOriginatingSource.h>
+#include <avtMetaData.h>
+#include <avtDatabase.h>
+#include <avtDatabaseMetaData.h>
+#include <avtCallback.h>
+#include <avtSourceFromDatabase.h>
+
+#include <vtkBitArray.h>
+#include <vtkUnsignedCharArray.h>
+#include <vtkIntArray.h>
+#include <vtkLongArray.h>
+#include <vtkDoubleArray.h>
+#include <vtkStringArray.h>
+#include <vtkCharArray.h>
+
 
 using namespace std;
 
@@ -97,6 +114,7 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
     vtkDataSet* inputDataSet;
     int inputDomain;
     vtkShapedDataArray outputdataArray;
+    vtkShapedDataArray globalOutputDataArray;
 };
 
 void
@@ -139,6 +157,7 @@ avtTimeWindowLoopFilter::Initialize()
     // values need to be number of tuples * total number of timesteps..
     int totalTimes = GetTotalNumberOfTimeSlicesForRank();
     cout<<PAR_Rank()<<": locs: ["<<idx0<<" "<<idxN<<"] times:"<<totalTimes<<endl;
+    cout<<"Is data replicated: " << GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors()<<endl;
 
     //format is: T0_val0, T0_val1, ...., T1_val0, T2_val1, ....
     values.resize(numTuples*totalTimes);
@@ -158,11 +177,11 @@ avtTimeWindowLoopFilter::Execute()
         scalars = (vtkFloatArray *)ds->GetCellData()->GetScalars();
     float *vals = (float *) scalars->GetVoidPointer(0);
 
-    int rank = PAR_Rank();
+//    int rank = PAR_Rank();
 
-    int numTimes = GetEndTime() - GetStartTime() + 1;
-    float dsTime = (float)GetInput()->GetInfo().GetAttributes().GetTime();
-    int dsCycle = (float)GetInput()->GetInfo().GetAttributes().GetCycle();
+//    int numTimes = GetEndTime() - GetStartTime() + 1;
+//    float dsTime = (float)GetInput()->GetInfo().GetAttributes().GetTime();
+//    int dsCycle = (float)GetInput()->GetInfo().GetAttributes().GetCycle();
 
     for (size_t i = 0; i < numTuples; i++)
         values[index++] = vals[i];
@@ -178,6 +197,7 @@ void
 avtTimeWindowLoopFilter::CreateFinalOutput()
 {
     Barrier();
+    avtCallback::ResetTimeout(0);
     cout<<"CreateFinalOutput : values= "<<values.size()<<endl;
     
     size_t totalTupleSize = idxN-idx0;
@@ -252,16 +272,63 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
         handleOutputShapeAndData(result);
     }
 
-    SetOutputDataTree(new avtDataTree(inputDataSet,inputDomain));
     Barrier();
-}
 
-#include <vtkUnsignedCharArray.h>
-#include <vtkIntArray.h>
-#include <vtkLongArray.h>
-#include <vtkDoubleArray.h>
-#include <vtkStringArray.h>
-#include <vtkCharArray.h>
+    /// if the same data is replicated on all processors
+    /// then make sure to send your results to them..
+    /// this way all ranks have the correct final output..
+#ifdef PARALLEL
+
+    if(GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors() )
+    {
+        std::cout << "data is replicated over multiple processors.." << std::endl;
+        /// assumption the local data array size is the same on all processors,
+        /// the correct was to ensure all of mpi rank conform..
+        int multi_dim_size = 1;
+        for(int i = 1; i < outputdataArray.shape.size(); ++i)
+            multi_dim_size *= outputdataArray.shape[i];
+
+        /// update globalOutputDataArray..
+        globalOutputDataArray.shape = outputdataArray.shape;
+        globalOutputDataArray.shape[0] = numTuples;
+
+        /// create a one dimensional array with the multi dimensional part..
+        globalOutputDataArray.vtkarray = outputdataArray.vtkarray->NewInstance();
+        globalOutputDataArray.vtkarray->Allocate(numTuples*multi_dim_size);
+        globalOutputDataArray.vtkarray->SetNumberOfTuples(numTuples*multi_dim_size);
+
+        int type = outputdataArray.vtkarray->GetDataType();
+        MPI_Datatype mpi_type = MPI_CHAR;
+
+        if(type == VTK_INT) mpi_type = MPI_INTEGER;
+        if(type == VTK_LONG) mpi_type = MPI_LONG;
+        if(type == VTK_FLOAT) mpi_type = MPI_FLOAT;
+        if(type == VTK_DOUBLE) mpi_type = MPI_DOUBLE;
+        /// todo: handle strings?
+//        if(type == VTK_STRING) mpi_type = MPI_STRING;
+
+        std::cout << "starting index: " << idx0 << " " << idxN << " " << multi_dim_size << std::endl;
+        MPI_Allreduce(outputdataArray.vtkarray->GetVoidPointer(0),
+                      globalOutputDataArray.vtkarray->GetVoidPointer(idx0*multi_dim_size),
+                      outputdataArray.vtkarray->GetDataSize(),
+                      mpi_type,
+                      MPI_SUM,
+                      VISIT_MPI_COMM);
+
+        /// global array should have all appropriate values now..
+        /// clear up local space..
+        outputdataArray.shape = intVector();
+        outputdataArray.vtkarray->Delete();
+        outputdataArray.vtkarray = 0;
+    }
+#else
+    /// just copy..
+    globalOutputDataArray = outputdataArray;
+#endif
+    avtCallback::ResetTimeout(0);
+    /// cleanup local
+    SetOutputDataTree(new avtDataTree(inputDataSet,inputDomain));
+}
 
 bool
 avtTimeWindowLoopFilter::handleOutputShapeAndData(PyObject* obj)
@@ -465,14 +532,6 @@ avtTimeWindowLoopFilter::handleOutputShapeAndData(PyObject* obj)
 avtScriptOperation::avtScriptOperation()
 {}
 
-#include <avtOriginatingSource.h>
-#include <avtMetaData.h>
-#include <avtDatabase.h>
-#include <avtDatabaseMetaData.h>
-#include <avtCallback.h>
-#include <avtSourceFromDatabase.h>
-
-
 bool
 avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkShapedDataArray& result)
 {
@@ -522,6 +581,9 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkShap
     /// std::cout << resultKernel.str() << std::endl;
     /// run the time loop filter..
 
+    //std::cout << "disabling timer" << std::endl;
+    avtCallback::ResetTimeout(0);
+
     avtTimeWindowLoopFilter *filt = new avtTimeWindowLoopFilter;
     filt->environment = environ;
     filt->inputDataSet = args.GetInputDataSet();
@@ -531,11 +593,18 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkShap
     filt->SetInput(args.GetInput());
     avtDataObject_p dob = filt->GetOutput();
 
-    //avtContract_p newContract = new avtContract(args.GetContract());
-    //newContract->SetReplicateSingleDomainOnAllProcessors(true);
     dob->Update(args.GetContract());
 
-    result = filt->outputdataArray;
+    avtCallback::ResetTimeout(5*60);
+    //std::cout << "enabling timer" << std::endl;
+
+    std::cout << PAR_Rank() << " finishing... " << std::endl;
+    std::cout << var->GetDataSize() << " "
+              << filt->globalOutputDataArray.vtkarray->GetDataSize() << " "
+              << filt->globalOutputDataArray.shape[0] << " "
+              << filt->globalOutputDataArray.shape[1] << std::endl;
+
+    result = filt->globalOutputDataArray;
 
     //result.shape.push_back(var->GetDataSize());
     //result.vtkarray = var->NewInstance();
@@ -620,7 +689,7 @@ avtScriptOperation::avtVisItForEachLocationR::func(ScriptArguments& args, vtkSha
 
     dob->Update(args.GetContract());
 
-    result = filt->outputdataArray;
+    result = filt->globalOutputDataArray;
 
     //result.shape.push_back(var->GetDataSize());
     //result.vtkarray = var->NewInstance();
@@ -690,7 +759,7 @@ avtScriptOperation::avtVisItForEachLocationPython::func(ScriptArguments& args, v
     avtDataObject_p dob = filt->GetOutput();
     dob->Update(args.GetContract());
 
-    result = filt->outputdataArray;
+    result = filt->globalOutputDataArray;
 
     //result.shape.push_back(var->GetDataSize());
     //result.vtkarray = var->NewInstance();
