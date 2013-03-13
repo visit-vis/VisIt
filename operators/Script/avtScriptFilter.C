@@ -199,6 +199,10 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
         str << "    res = visit_internal_funcs.visit_functions('" << name << "')\n";
     else
         str << "    res = visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
+    str << "    if isinstance(res,list) and len(res) == 2 and isinstance(res[0],list) and isinstance(res[1],vtk.vtkAbstractArray):\n"
+        << "        res_shape = tuple(res[0])\n"
+        << "        res = vtk.util.numpy_support.vtk_to_numpy(res[1])\n"
+        << "        res.shape = res_shape\n";
     str << "    return res\n";
 
     /// convert from vtk to numpy if needed..
@@ -246,9 +250,7 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
         str << "    res = visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
 
     str << "    if isinstance(res,list) and len(res) == 2 and isinstance(res[0],list) and isinstance(res[1],vtk.vtkAbstractArray):\n"
-        << "        print res[0], res[1].GetDataSize()\n"
         << "        res_shape = tuple(res[0])\n"
-        << "        print res_shape\n"
         << "        res = vtk.util.numpy_support.vtk_to_numpy(res[1])\n"
         << "        res.shape = res_shape\n";
 
