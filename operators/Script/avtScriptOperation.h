@@ -53,7 +53,7 @@ class avtScriptOperation : public ScriptOperationsManager
     class avtVisItForEachLocation : public ScriptOperation
     {
     public:
-        virtual bool func(ScriptArguments&, vtkDataArray*& result);
+        virtual bool func(ScriptArguments&, vtkShapedDataArray &result);
 
         virtual ScriptOperationResponse GetSignature(std::string& name,
                                   stringVector& argnames,
@@ -63,7 +63,7 @@ class avtScriptOperation : public ScriptOperationsManager
     class avtVisItForEachLocationR : public ScriptOperation
     {
     public:
-        virtual bool func(ScriptArguments&, vtkDataArray*& result);
+        virtual bool func(ScriptArguments&, vtkShapedDataArray& result);
 
         virtual ScriptOperationResponse GetSignature(std::string& name,
                                   stringVector& argnames,
@@ -73,7 +73,7 @@ class avtScriptOperation : public ScriptOperationsManager
     class avtVisItForEachLocationPython : public ScriptOperation
     {
     public:
-        virtual bool func(ScriptArguments&, vtkDataArray*& result);
+        virtual bool func(ScriptArguments&, vtkShapedDataArray& result);
 
         virtual ScriptOperationResponse GetSignature(std::string& name,
                                   stringVector& argnames,
@@ -85,7 +85,7 @@ class avtScriptOperation : public ScriptOperationsManager
     class avtVisItForEachFile : public ScriptOperation
     {
     public:
-        virtual bool func(ScriptArguments&, vtkDataArray*&)
+        virtual bool func(ScriptArguments&, vtkShapedDataArray&)
         {
             return false;
         }
@@ -101,6 +101,7 @@ class avtScriptOperation : public ScriptOperationsManager
 
     class avtVisItGetRSupportDirectory : public ScriptOperation
     {
+    public:
         virtual bool func(ScriptArguments&, Variant&);
 
         virtual ScriptOperationResponse GetSignature(std::string& name,
@@ -110,55 +111,18 @@ class avtScriptOperation : public ScriptOperationsManager
 
     class avtVisItGetVarInfo : public ScriptOperation
     {
+    public:
         /// we are always returning true unless the script
         /// itself is failing not the inquiry..
-        virtual bool func(ScriptArguments& args, Variant& result)
-        {
-            std::string varName = args.getArg(0).AsString();
-            vtkDataSet* dataset = args.GetInputDataSet();
-            bool pointData = true;
-            vtkDataArray* array = dataset->GetPointData()->GetScalars(varName.c_str());
-
-            if(!array) {
-                array = dataset->GetCellData()->GetScalars(varName.c_str());
-                pointData = false;
-            }
-
-            /// for now just deal with scalars..
-            if(array == NULL)
-            {
-                result = "";
-                return true;
-            }
-
-            /// now extract information from the array..
-            /// through in mesh dimensions to help inquiring class reshape
-            /// information correctly..
-            JSONNode resultNode;
-            resultNode["type"] = pointData ? "pointdata" : "celldata";
-            JSONNode::JSONArray dims(3,-1);
-            resultNode["dims"] = dims;
-
-            result = resultNode.ToString();
-
-            return true;
-        }
-
+        virtual bool func(ScriptArguments& args, Variant& result);
         virtual ScriptOperationResponse GetSignature(std::string& name,
                                   stringVector& argnames,
-                                  std::vector<ScriptVariantTypeEnum>& argtypes)
-        {
-            name = "visit_get_var_info";
-
-            argnames.push_back("variableName");
-            argtypes.push_back(ScriptOperation::STRING_TYPE);
-
-            return ScriptOperation::CONSTANT;
-        }
+                                  std::vector<ScriptVariantTypeEnum>& argtypes);
     };
 
     class avtVisItWriteData : public ScriptOperation
     {
+    public:
         virtual bool func(ScriptArguments &args,
                           vtkShapedDataArray& result);
 
@@ -169,7 +133,7 @@ class avtScriptOperation : public ScriptOperationsManager
     
     class avtVisItMaxAcrossTime : public ScriptOperation
     {
-        virtual bool func(ScriptArguments&, vtkDataArray*&);
+        virtual bool func(ScriptArguments&, vtkShapedDataArray&);
 
         virtual ScriptOperationResponse GetSignature(std::string& name,
 						     stringVector& argnames,
@@ -189,7 +153,8 @@ private:
     avtVisItGetRSupportDirectory avag;
 
     avtVisItGetVarInfo vgvi;
-    avtVisItMaxAcrossTime vmax;
+    avtVisItWriteData vmax;
+	avtVisItWriteData avwd;
 };
 
 #endif

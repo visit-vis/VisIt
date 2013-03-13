@@ -87,6 +87,8 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
     virtual bool            DataCanBeParallelizedOverTime() { return true; }
     //virtual bool            OperationNeedsAllData(void) { return true; }
 
+    bool handleOutputShapeAndData(PyObject* result);
+
     bool initialized, nodeCenteredData;
     int numTuples, idx0, idxN;
   public:
@@ -94,6 +96,7 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
     avtPythonFilterEnvironment *environment;
     vtkDataSet* inputDataSet;
     int inputDomain;
+    vtkShapedDataArray outputdataArray;
 };
 
 void
@@ -101,15 +104,8 @@ avtTimeWindowLoopFilter::Initialize()
 {
     if (initialized)
 	return;
-    
-//    int nleaves;
-//    vtkDataSet **leaves = GetInputDataTree()->GetAllLeaves(nleaves);
-//    if (nleaves != 1)
-//    {
-//        EXCEPTION1(ImproperUseException, "Multi-domain not supported yet.");
-//    }
 
-    vtkDataSet *inDS = inputDataSet; //leaves[0];
+    vtkDataSet *inDS = inputDataSet;
     nodeCenteredData = (GetInput()->GetInfo().GetAttributes().GetCentering() == AVT_NODECENT);
     if (nodeCenteredData)
         numTuples = inDS->GetPointData()->GetScalars()->GetNumberOfTuples();
@@ -137,7 +133,6 @@ avtTimeWindowLoopFilter::Initialize()
         idxN = (rank+1)*(nSamplesPerProc) + oneExtraUntil;
     }
 #endif
-    //delete [] leaves;
 
     initialized = true;
     
@@ -170,10 +165,8 @@ avtTimeWindowLoopFilter::Execute()
     int dsCycle = (float)GetInput()->GetInfo().GetAttributes().GetCycle();
 
     for (size_t i = 0; i < numTuples; i++)
-    {
-	values[index++] = vals[i];
-    }
-
+        values[index++] = vals[i];
+    
     /*
     int rank = PAR_Rank();
     cout<<"TimeStep: " << rank << " " << currentTime<< " " << GetStartTime() << " " << GetEndTime() << " "
@@ -184,14 +177,15 @@ avtTimeWindowLoopFilter::Execute()
 void
 avtTimeWindowLoopFilter::CreateFinalOutput()
 {
+    Barrier();
     cout<<"CreateFinalOutput : values= "<<values.size()<<endl;
     
     size_t totalTupleSize = idxN-idx0;
     int numTimes = GetEndTime() - GetStartTime() + 1;
     
     vector<float> finalVals;
-    finalVals.resize((idxN-idx0)*numTimes);
 #ifdef PARALLEL
+    finalVals.resize((idxN-idx0)*numTimes);
     float *res = new float[numTimes];
     float *tmp = new float[numTimes];
 
@@ -237,6 +231,10 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     //std::vector<float> inputArray;
 
     //inputArray.resize(numTimes);
+    //cout<<__FILE__<<" "<<__LINE__<<endl;
+
+    outputdataArray.vtkarray = 0;
+
     PyObject *retval = PyTuple_New(numTimes);
 
     for (int i = 0; i < totalTupleSize; i++)
@@ -244,14 +242,223 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
         for(int j = 0; j < numTimes; ++j)
         {
             PyObject* value = PyInt_FromLong(finalVals[j*totalTupleSize + i]);
+            //PyObject* value = PyInt_FromLong(finalVals[(i*(numTimes))+j]);
             PyTuple_SET_ITEM(retval, j, value);
         }
 
         environment->Interpreter()->SetGlobalObject(retval,"__internal_array");
         environment->Interpreter()->RunScript(script);
+        PyObject* result = environment->Interpreter()->GetGlobalObject("res");
+        handleOutputShapeAndData(result);
     }
 
     SetOutputDataTree(new avtDataTree(inputDataSet,inputDomain));
+    Barrier();
+}
+
+#include <vtkUnsignedCharArray.h>
+#include <vtkIntArray.h>
+#include <vtkLongArray.h>
+#include <vtkDoubleArray.h>
+#include <vtkStringArray.h>
+#include <vtkCharArray.h>
+
+bool
+avtTimeWindowLoopFilter::handleOutputShapeAndData(PyObject* obj)
+{
+    if(PyTuple_Check(obj))
+    {
+        size_t size = PyTuple_Size(obj);
+        /// make sure the new size and first size matches..
+        /// TODO: better error checking..
+        /// Convert this logic to construct multi dimensional shape array..
+        if(!outputdataArray.vtkarray)
+        {
+            /// figure out output type from object..
+            outputdataArray.shape.push_back(0);
+            outputdataArray.shape.push_back(size);
+        }
+        else
+        {
+            if(size != outputdataArray.shape[1])
+            {
+                std::cerr << "shape sizes do not match, this operation does "
+                          << "not support varying results from kernels"
+                          << size << " " << outputdataArray.shape[1]
+                          << std::endl;
+                /// error
+                return false;
+            }
+        }
+
+        outputdataArray.shape[0] += 1;
+
+        for(size_t i = 0; i < size; ++i)
+        {
+            PyObject* retobj = PyTuple_GetItem(obj,i);
+
+            if (PyBool_Check(retobj))
+            {
+                if(!outputdataArray.vtkarray)
+                    outputdataArray.vtkarray = vtkUnsignedCharArray::New();
+                vtkUnsignedCharArray::SafeDownCast(outputdataArray.vtkarray)
+                        ->InsertNextValue((retobj == Py_False ? 0: 1 ));
+            }
+            else if(PyInt_Check(retobj))
+            {
+                if(!outputdataArray.vtkarray)
+                    outputdataArray.vtkarray = vtkIntArray::New();
+                vtkIntArray::SafeDownCast(outputdataArray.vtkarray)
+                        ->InsertNextValue((int)PyInt_AsLong(retobj));
+            }
+            else if(PyLong_Check(retobj))
+            {
+                if(!outputdataArray.vtkarray)
+                    outputdataArray.vtkarray = vtkLongArray::New();
+                vtkLongArray::SafeDownCast(outputdataArray.vtkarray)
+                        ->InsertNextValue((long)PyLong_AsLong(retobj));
+            }
+            else if(PyFloat_Check(retobj))
+            {
+                if(!outputdataArray.vtkarray)
+                    outputdataArray.vtkarray = vtkDoubleArray::New();
+                vtkDoubleArray::SafeDownCast(outputdataArray.vtkarray)
+                        ->InsertNextValue((double)PyFloat_AsDouble(retobj));
+            }
+            else if(PyString_Check(retobj))
+            {
+                if(!outputdataArray.vtkarray)
+                    outputdataArray.vtkarray = vtkStringArray::New();
+                vtkStringArray::SafeDownCast(outputdataArray.vtkarray)
+                        ->InsertNextValue((const char*)PyString_AsString(retobj));
+            }
+            else
+            {
+                std::cerr << "Something else.." << std::endl;
+            }
+        }
+
+    }
+    else if(PyList_Check(obj))
+    {
+        size_t size = PyList_Size(obj);
+        /// make sure the new size and first size matches..
+        /// TODO: better error checking..
+        /// Convert this logic to construct multi dimensional shape array..
+        if(!outputdataArray.vtkarray)
+        {
+            /// figure out output type from object..
+            outputdataArray.shape.push_back(0);
+            outputdataArray.shape.push_back(size);
+        }
+        else
+        {
+            if(size != outputdataArray.shape[1])
+            {
+                std::cerr << "shape sizes do not match, this operation does "
+                          << "not support varying results from kernels: "
+                          << size << " " << outputdataArray.shape[1]
+                          << std::endl;
+                /// error
+                return false;
+            }
+        }
+        outputdataArray.shape[0] += 1;
+        for(size_t i = 0; i < size; ++i)
+        {
+            PyObject* retobj = PyList_GetItem(obj,i);
+
+            if (PyBool_Check(retobj))
+            {
+                if(!outputdataArray.vtkarray)
+                    outputdataArray.vtkarray = vtkUnsignedCharArray::New();
+                vtkUnsignedCharArray::SafeDownCast(outputdataArray.vtkarray)
+                        ->InsertNextValue((retobj == Py_False ? 0: 1 ));
+            }
+            else if(PyInt_Check(retobj))
+            {
+                if(!outputdataArray.vtkarray)
+                    outputdataArray.vtkarray = vtkIntArray::New();
+                vtkIntArray::SafeDownCast(outputdataArray.vtkarray)
+                        ->InsertNextValue((int)PyInt_AsLong(retobj));
+            }
+            else if(PyLong_Check(retobj))
+            {
+                if(!outputdataArray.vtkarray)
+                    outputdataArray.vtkarray = vtkLongArray::New();
+                vtkLongArray::SafeDownCast(outputdataArray.vtkarray)
+                        ->InsertNextValue((long)PyLong_AsLong(retobj));
+            }
+            else if(PyFloat_Check(retobj))
+            {
+                if(!outputdataArray.vtkarray)
+                    outputdataArray.vtkarray = vtkDoubleArray::New();
+                vtkDoubleArray::SafeDownCast(outputdataArray.vtkarray)
+                        ->InsertNextValue((double)PyFloat_AsDouble(retobj));
+            }
+            else if(PyString_Check(retobj))
+            {
+                if(!outputdataArray.vtkarray)
+                    outputdataArray.vtkarray = vtkStringArray::New();
+                vtkStringArray::SafeDownCast(outputdataArray.vtkarray)
+                        ->InsertNextValue((const char*)PyString_AsString(retobj));
+            }
+            else
+            {
+                std::cerr << "Something else.." << std::endl;
+            }
+        }
+    }
+    else
+    {
+        if(!outputdataArray.vtkarray)
+            outputdataArray.shape.push_back(0);
+
+        outputdataArray.shape[0] += 1;
+
+        if (PyBool_Check(obj))
+        {
+            if(!outputdataArray.vtkarray)
+                outputdataArray.vtkarray = vtkUnsignedCharArray::New();
+            vtkUnsignedCharArray::SafeDownCast(outputdataArray.vtkarray)
+                    ->InsertNextValue((obj == Py_False ? 0: 1 ));
+        }
+        else if(PyInt_Check(obj))
+        {
+            if(!outputdataArray.vtkarray)
+                outputdataArray.vtkarray = vtkIntArray::New();
+            vtkIntArray::SafeDownCast(outputdataArray.vtkarray)
+                    ->InsertNextValue((int)PyInt_AsLong(obj));
+        }
+        else if(PyLong_Check(obj))
+        {
+            if(!outputdataArray.vtkarray)
+                outputdataArray.vtkarray = vtkLongArray::New();
+            vtkLongArray::SafeDownCast(outputdataArray.vtkarray)
+                    ->InsertNextValue((long)PyLong_AsLong(obj));
+        }
+        else if(PyFloat_Check(obj))
+        {
+            if(!outputdataArray.vtkarray)
+                outputdataArray.vtkarray = vtkDoubleArray::New();
+            vtkDoubleArray::SafeDownCast(outputdataArray.vtkarray)
+                    ->InsertNextValue((double)PyFloat_AsDouble(obj));
+        }
+        else if(PyString_Check(obj))
+        {
+            if(!outputdataArray.vtkarray)
+                outputdataArray.vtkarray = vtkStringArray::New();
+            vtkStringArray::SafeDownCast(outputdataArray.vtkarray)
+                    ->InsertNextValue((const char*)PyString_AsString(obj));
+        }
+        else
+        {
+            std::cerr << "Something else.." << std::endl;
+        }
+    }
+
+
+    return true;
 }
 
 
@@ -267,7 +474,7 @@ avtScriptOperation::avtScriptOperation()
 
 
 bool
-avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkDataArray*&result)
+avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkShapedDataArray& result)
 {
     Variant windowArray = args.getArg(0);
     vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(1);
@@ -309,11 +516,10 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
     else
         resultKernel << ")\n";
 
-    if(kernelLanguage.AsString() == "R")
-        resultKernel << "res = res[0]\n";
+    resultKernel << "res = numpy.asarray(res).tolist()\n";
 
 
-    std::cout << resultKernel.str() << std::endl;
+    /// std::cout << resultKernel.str() << std::endl;
     /// run the time loop filter..
 
     avtTimeWindowLoopFilter *filt = new avtTimeWindowLoopFilter;
@@ -329,8 +535,11 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkData
     //newContract->SetReplicateSingleDomainOnAllProcessors(true);
     dob->Update(args.GetContract());
 
-    result = var->NewInstance();
-    result->DeepCopy(var);
+    result = filt->outputdataArray;
+
+    //result.shape.push_back(var->GetDataSize());
+    //result.vtkarray = var->NewInstance();
+    //result.vtkarray->DeepCopy(var);
 
     return true;
 }
@@ -361,12 +570,12 @@ avtScriptOperation::avtVisItForEachLocation::GetSignature(std::string& name,
 
     argnames.push_back("kernelArgs");
     argtypes.push_back(ScriptOperation::VARIANT_VECTOR_TYPE);
-    return ScriptOperation::VTK_DATA_ARRAY;
+    return ScriptOperation::VTK_MULTI_DIMENSIONAL_DATA_ARRAY;
 }
 
 
 bool
-avtScriptOperation::avtVisItForEachLocationR::func(ScriptArguments& args, vtkDataArray*&result)
+avtScriptOperation::avtVisItForEachLocationR::func(ScriptArguments& args, vtkShapedDataArray &result)
 {
     Variant windowArray = args.getArg(0);
     vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(1);
@@ -395,10 +604,11 @@ avtScriptOperation::avtVisItForEachLocationR::func(ScriptArguments& args, vtkDat
     else
         resultKernel << ")\n";
 
-    resultKernel << "res = res[0]\n";
+    resultKernel << "res = numpy.asarray(res).tolist()\n";
 
     /// run the time loop filter..
 
+    //std::cout << resultKernel << std::endl;
     avtTimeWindowLoopFilter *filt = new avtTimeWindowLoopFilter;
     filt->environment = args.GetPythonEnvironment();
     filt->inputDataSet = args.GetInputDataSet();
@@ -410,8 +620,11 @@ avtScriptOperation::avtVisItForEachLocationR::func(ScriptArguments& args, vtkDat
 
     dob->Update(args.GetContract());
 
-    result = var->NewInstance();
-    result->DeepCopy(var);
+    result = filt->outputdataArray;
+
+    //result.shape.push_back(var->GetDataSize());
+    //result.vtkarray = var->NewInstance();
+    //result.vtkarray->DeepCopy(var);
 
     return true;
 }
@@ -436,11 +649,11 @@ avtScriptOperation::avtVisItForEachLocationR::GetSignature(std::string& name,
 
     argnames.push_back("kernelArgs");
     argtypes.push_back(ScriptOperation::VARIANT_VECTOR_TYPE);
-    return ScriptOperation::VTK_DATA_ARRAY;
+    return ScriptOperation::VTK_MULTI_DIMENSIONAL_DATA_ARRAY;
 }
 
 bool
-avtScriptOperation::avtVisItForEachLocationPython::func(ScriptArguments& args, vtkDataArray*&result)
+avtScriptOperation::avtVisItForEachLocationPython::func(ScriptArguments& args, vtkShapedDataArray& result)
 {
     Variant windowArray = args.getArg(0);
     vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(1);
@@ -462,6 +675,7 @@ avtScriptOperation::avtVisItForEachLocationPython::func(ScriptArguments& args, v
     else
         resultKernel << ")\n";
 
+    resultKernel << "res = numpy.asarray(res).tolist()\n";
 
     //std::cout << resultKernel.str() << std::endl;
     /// run the time loop filter..
@@ -476,8 +690,11 @@ avtScriptOperation::avtVisItForEachLocationPython::func(ScriptArguments& args, v
     avtDataObject_p dob = filt->GetOutput();
     dob->Update(args.GetContract());
 
-    result = var->NewInstance();
-    result->DeepCopy(var);
+    result = filt->outputdataArray;
+
+    //result.shape.push_back(var->GetDataSize());
+    //result.vtkarray = var->NewInstance();
+    //result.vtkarray->DeepCopy(var);
 
     return true;
 }
@@ -502,7 +719,7 @@ avtScriptOperation::avtVisItForEachLocationPython::GetSignature(std::string& nam
 
     argnames.push_back("kernelArgs");
     argtypes.push_back(ScriptOperation::VARIANT_VECTOR_TYPE);
-    return ScriptOperation::VTK_DATA_ARRAY;
+    return ScriptOperation::VTK_MULTI_DIMENSIONAL_DATA_ARRAY;
 }
 
 
@@ -529,8 +746,24 @@ avtScriptOperation::avtVisItGetRSupportDirectory::GetSignature(std::string& name
 }
 
 bool
-avtScriptOperation::avtVisItWriteData::func(ScriptArguments& args, vtkShapedDataArray& result)
+avtScriptOperation::avtVisItWriteData::func(ScriptArguments& args,
+                                            vtkShapedDataArray& result)
 {
+    std::string filename = args.getArg(0).AsString();
+    std::string format = args.getArg(1).AsString();
+    bool local = args.getArg(2).AsString() == "local";
+    vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(3);
+
+    std::cout << "write out file as: "
+              << filename
+              << " format: "
+              << format
+              << std::endl;
+
+    result.shape.push_back(1);
+    result.vtkarray = var->NewInstance();
+    result.vtkarray->DeepCopy(var);
+
     return true;
 }
 
@@ -542,7 +775,13 @@ avtScriptOperation::avtVisItWriteData::GetSignature(std::string& name,
     name = "visit_write";
 
     argnames.push_back("filename");
-    argtypes.push_back(ScriptOperation::INT_VECTOR_TYPE);
+    argtypes.push_back(ScriptOperation::STRING_TYPE);
+
+    argnames.push_back("format");
+    argtypes.push_back(ScriptOperation::STRING_TYPE);
+
+    argnames.push_back("local_or_global");
+    argtypes.push_back(ScriptOperation::STRING_TYPE);
 
     argnames.push_back("variable");
     argtypes.push_back(ScriptOperation::VTK_DATA_ARRAY_TYPE);
@@ -550,14 +789,14 @@ avtScriptOperation::avtVisItWriteData::GetSignature(std::string& name,
     argnames.push_back("index");
     argtypes.push_back(ScriptOperation::STRING_TYPE);
 
-    argnames.push_back("stride");
-    argtypes.push_back(ScriptOperation::STRING_TYPE);
+    //argnames.push_back("stride");
+    //argtypes.push_back(ScriptOperation::STRING_TYPE);
 
     return ScriptOperation::VTK_MULTI_DIMENSIONAL_DATA_ARRAY;
 }
 
 bool
-avtScriptOperation::avtVisItMaxAcrossTime::func(ScriptArguments& args, vtkDataArray*& result)
+avtScriptOperation::avtVisItMaxAcrossTime::func(ScriptArguments& args, vtkShapedDataArray &result)
 {
     cout<<"avtScriptOperation::avtVisItMaxAcrossTime::func()"<<endl;
     cout<<"args= "<<args.getArgSize()<<endl;
@@ -567,6 +806,9 @@ avtScriptOperation::avtVisItMaxAcrossTime::func(ScriptArguments& args, vtkDataAr
     vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(0);
     //var->Print(cout);
     
+    result.shape.push_back(var->GetDataSize());
+    result.vtkarray = var->NewInstance();
+    result.vtkarray->DeepCopy(var);
     return true;
 }
 
@@ -583,9 +825,53 @@ avtScriptOperation::avtVisItMaxAcrossTime::GetSignature(std::string& name,
     return ScriptOperation::VTK_DATA_ARRAY;
 }
 
+/// we are always returning true unless the script
+/// itself is failing not the inquiry..
+bool
+avtScriptOperation::avtVisItGetVarInfo::func(ScriptArguments& args, Variant& result)
+{
+    std::string varName = args.getArg(0).AsString();
+    vtkDataSet* dataset = args.GetInputDataSet();
+    bool pointData = true;
+    vtkDataArray* array = dataset->GetPointData()->GetScalars(varName.c_str());
 
+    if(!array) {
+        array = dataset->GetCellData()->GetScalars(varName.c_str());
+        pointData = false;
+    }
 
+    /// for now just deal with scalars..
+    if(array == NULL)
+    {
+        result = "";
+        return true;
+    }
 
+    /// now extract information from the array..
+    /// through in mesh dimensions to help inquiring class reshape
+    /// information correctly..
+    JSONNode resultNode;
+    resultNode["type"] = pointData ? "pointdata" : "celldata";
+    JSONNode::JSONArray dims(3,-1);
+    resultNode["dims"] = dims;
+
+    result = resultNode.ToString();
+
+    return true;
+}
+
+ScriptOperation::ScriptOperationResponse
+avtScriptOperation::avtVisItGetVarInfo::GetSignature(std::string& name,
+                          stringVector& argnames,
+                          std::vector<ScriptVariantTypeEnum>& argtypes)
+{
+    name = "visit_get_var_info";
+
+    argnames.push_back("variableName");
+    argtypes.push_back(ScriptOperation::STRING_TYPE);
+
+    return ScriptOperation::CONSTANT;
+}
 
 void
 avtScriptOperation::RegisterOperations(ScriptManager *manager)
@@ -597,4 +883,5 @@ avtScriptOperation::RegisterOperations(ScriptManager *manager)
     manager->RegisterOperation(&avag);
     manager->RegisterOperation(&vgvi);
     manager->RegisterOperation(&vmax);
+	manager->RegisterOperation(&avwd);
 }

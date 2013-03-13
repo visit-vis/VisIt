@@ -410,6 +410,43 @@ private:
     bool verbose;
 };
 
+class VisItGlobalObserver : public SimpleObserver
+{
+public:
+    VisItGlobalObserver() : SimpleObserver()
+    {
+        callable = 0;
+        callbackData = 0;
+    }
+
+    virtual ~VisItGlobalObserver() { }
+
+    void SetCallable(PyObject* obj, PyObject* data = NULL){
+        if(PyCallable_Check(obj))
+        {
+            callable = obj;
+            callbackData = data;
+        }
+        else
+        {
+            std::cerr << "Callable not registered with global observer"
+                      << std::endl;
+        }
+    }
+    virtual void Update(Subject *s)
+    {
+        /// convert from Subject ot Py Version ><
+        /// the run registered callback...
+        if(!callable) return;
+        //Py
+    }
+
+private:
+    PyObject* callable;
+    PyObject* callbackData;
+};
+
+
 //
 // VisIt module state flags and objects.
 //
@@ -434,6 +471,7 @@ static int                   moduleDebugLevel = 0;
 static bool                  moduleBufferDebug = false;
 static VisItMessageObserver *messageObserver = 0;
 static VisItStatusObserver  *statusObserver = 0;
+static VisItGlobalObserver  *globalObserver = 0;
 static bool                  moduleVerbose = false;
 static ObserverToCallback   *pluginLoader = 0;
 static ObserverToCallback   *clientMethodObserver = 0;
@@ -15653,6 +15691,84 @@ visit_GetCallbackArgumentCount(PyObject *, PyObject *args)
 }
 
 // ****************************************************************************
+// Method: visit_RegisterGlobalCallback
+//
+// Purpose:
+//   Registers a user-defined callback with a named state object.
+//
+// Programmer: Brad Whitlock
+// Creation:   Fri Feb  1 16:53:02 PST 2008
+//
+// Modifications:
+//   Brad Whitlock, Wed Feb  6 10:17:24 PST 2008
+//   Added optional callback data and made it possible to unregister a
+//   callback by passing just the name.
+//
+// ****************************************************************************
+
+PyObject *
+visit_RegisterGlobalCallback(PyObject *, PyObject *args)
+{
+    ENSURE_VIEWER_EXISTS();
+    ENSURE_CALLBACK_MANAGER_EXISTS();
+
+    char *name = 0;
+    PyObject *callback = 0, *callback_data = 0;
+    if (!PyArg_ParseTuple(args, "sOO", &name, &callback, &callback_data))
+    {
+        if (PyArg_ParseTuple(args, "sO", &name, &callback))
+            callback_data = 0;
+        else
+        {
+            if(PyArg_ParseTuple(args, "s", &name))
+                callback = callback_data = 0;
+            else
+                return NULL;
+        }
+        PyErr_Clear();
+    }
+    if(callback != 0 && !PyCallable_Check(callback))
+    {
+        VisItErrorFunc("The object passed to RegisterCallback is not callable.");
+        return NULL;
+    }
+
+    // Try and register a ViewerRPC callback.
+    bool failed = !rpcCallbacks->RegisterCallback(name, callback, callback_data);
+
+    // Try and register a state callback instead.
+    if(failed)
+    {
+        // Get the names of the callbacks that we can set.
+        stringVector names;
+        callbackMgr->GetCallbackNames(names);
+        failed = true;
+        for(int i = 0; i < names.size(); ++i)
+        {
+            if(names[i] == name)
+            {
+                callbackMgr->RegisterCallback(name, callback, callback_data);
+                failed = false;
+                break;
+            }
+        }
+    }
+    if(failed)
+    {
+        VisItErrorFunc("An invalid callback name was provided.");
+        return NULL;
+    }
+    else
+    {
+        // Tell the callback manager that it can process callbacks now.
+        callbackMgr->WorkAllowed();
+    }
+
+    return PyLong_FromLong(1L);
+}
+
+
+// ****************************************************************************
 // Method: visit_RegisterCallback
 //
 // Purpose:
@@ -17678,6 +17794,8 @@ InitializeViewerProxy(ViewerProxy* proxy)
                                                  WakeMainThread);
 #endif
 
+    globalObserver = new VisItGlobalObserver();
+
     // Set the macro string to empty.
     Macro_SetString("");
 
@@ -17704,6 +17822,10 @@ InitializeViewerProxy(ViewerProxy* proxy)
     AddExtensions();
     // Mark the end of the method table.
     AddMethod(NULL, (PyCFunction)NULL);
+
+    /// register all states to global observer
+    for(int i = 0; i < GetViewerState()->GetNumStateObjects(); ++i)
+        GetViewerState()->GetStateObject(i)->Attach(globalObserver);
 
     // Set the module initialized flag.
     //moduleInitialized = true;

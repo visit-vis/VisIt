@@ -245,7 +245,14 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
     else
         str << "    res = visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
 
-    str << "    if(isinstance(res,vtk.vtkDataArray)):\n"
+    str << "    if isinstance(res,list) and len(res) == 2 and isinstance(res[0],list) and isinstance(res[1],vtk.vtkAbstractArray):\n"
+        << "        print res[0], res[1].GetDataSize()\n"
+        << "        res_shape = tuple(res[0])\n"
+        << "        print res_shape\n"
+        << "        res = vtk.util.numpy_support.vtk_to_numpy(res[1])\n"
+        << "        res.shape = res_shape\n";
+
+    str << "    if isinstance(res,vtk.vtkDataArray) :\n"
         << "        res = vtk.util.numpy_support.vtk_to_numpy(res)\n";
 
     str << "    return rpy2.robjects.default_py2ro(res)\n"
@@ -339,7 +346,7 @@ avtScriptFilter::Equivalent(const AttributeGroup *a)
 vtkDataSet *
 avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
 {
-    std::cout << PAR_Rank() << " ExecuteData is called" << std::endl;
+    //std::cout << PAR_Rank() << " ExecuteData is called" << std::endl;
     if(!SetupFlowWorkspace())
         return in_ds;
 
@@ -374,17 +381,29 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     vtkDataSet *res = (vtkDataSet*)pyEnv->UnwrapVTKObject(py_res,"vtkDataSet");
     res->Register(NULL);
 
-//    res->Print(cout);
-//    double bounds[6];
-//    res->GetBounds(bounds);
+    avtDataAttributes &inAtts      = GetInput()->GetInfo().GetAttributes();
+    avtDataAttributes &outAtts     = GetOutput()->GetInfo().GetAttributes();
 
-//    if(bounds[4] == bounds[5])
-//    {
-//        std::cout << "in here.." << std::endl;
+//    res->Print(cout);
+    double bounds[6];
+    res->GetBounds(bounds);
+
+    if(bounds[4] == bounds[5])
+    {
 //        GetOutput()->GetInfo().GetAttributes().SetSpatialDimension(2);
-//        //GetOutput()->GetInfo().GetAttributes().SetTopologicalDimension(2);
-//        std::cout << "in here.." << std::endl;
-//    }
+        //GetOutput()->GetInfo().GetAttributes().SetTopologicalDimension(2);
+//        if (inAtts.GetSpatialDimension() == 3)
+//        {
+//            outAtts.SetSpatialDimension(2);
+//            outAtts.SetTopologicalDimension(2);
+//        }
+//        GetOutput()->GetInfo().GetValidity().InvalidateSpatialMetaData();
+//        GetOutput()->GetInfo().GetValidity().InvalidateNodes();
+//        GetOutput()->GetInfo().GetValidity().InvalidateZones();
+//        GetOutput()->GetInfo().GetValidity().InvalidateDataMetaData();
+//        GetOutput()->GetInfo().GetValidity().InvalidateOperation();
+
+    }
     /// get data array for active variable..
     vtkDataArray* array = res->GetPointData()->GetScalars(primaryVariable.c_str());
 
@@ -405,18 +424,41 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     avtDataAttributes &dataatts = GetOutput()->GetInfo().GetAttributes();
     avtExtents* e;
 
-    e = dataatts.GetThisProcsOriginalDataExtents();
+    e = dataatts.GetActualDataExtents();
     e->Set(range);
 
-    e = dataatts.GetThisProcsActualDataExtents();
-    e->Set(range);
+//    e = dataatts.GetThisProcsActualDataExtents();
+//    e->Set(range);
 
-    e = dataatts.GetThisProcsOriginalSpatialExtents();
-    e->Set(range);
+//    e = dataatts.GetThisProcsOriginalSpatialExtents();
+//    e->Set(range);
+
+    vtkImageData* data = vtkImageData::SafeDownCast(res);
+
+    if(data)
+    {
+        int arg[6];
+        data->GetExtent(arg);
+        double ex[6] = { arg[0], arg[1], arg[2], arg[3], arg[4], arg[5] };
+        e = dataatts.GetOriginalSpatialExtents();
+        e->Set(ex);
+    }
 
     std::cout << "setting: " << range[0] << " " << range[1] << std::endl;
-
     return res;
+}
+
+void
+avtScriptFilter::UpdateDataObjectInfo()
+{
+    //GetOutput()->GetInfo().GetAttributes().SetSpatialDimension(2);
+    //GetOutput()->GetInfo().GetAttributes().SetTopologicalDimension(2);
+    //GetOutput()->GetInfo().GetValidity().InvalidateSpatialMetaData();
+    //GetOutput()->GetInfo().GetValidity().InvalidateNodes();
+    //GetOutput()->GetInfo().GetValidity().InvalidateZones();
+    //GetOutput()->GetInfo().GetValidity().InvalidateDataMetaData();
+//    GetOutput()->GetInfo().GetValidity().InvalidateOperation();
+
 }
 
 bool avtScriptFilter::SetupFlowWorkspace()
@@ -700,7 +742,7 @@ visit_functions(PyObject *self, PyObject *args)
 
     /// Parse arguments..
 
-    std::cout << "running: " << scriptFilter << std::endl;
+    //std::cout << "running: " << scriptFilter << std::endl;
 
     ScriptData* sd = scriptFilter->GetScriptData();
 
@@ -714,11 +756,13 @@ visit_functions(PyObject *self, PyObject *args)
 
     ScriptOperation::ScriptOperationResponse op_resp = op->GetSignature(op_name,op_argnames,op_argtypes);
 
+    //std::cout << op_name << " " << op_resp << std::endl;
     std::vector<Variant> variantArgs;
     std::map<int,void*> datamap;
     std::map<int, std::vector<Variant> > variantVecMap;
 
     // Extract arguments from the tuple.
+    /// scriptArgs need to ensure case against no parameters..
     if(scriptArgs && op_argtypes.size() < 2)
     {
         /// TODO remove this duplication of code..
@@ -776,7 +820,7 @@ visit_functions(PyObject *self, PyObject *args)
             variantArgs.push_back(v);
         }
     }
-    else
+    else if(scriptArgs && op_argtypes.size() >= 2)
     {
         if(PyTuple_Size(scriptArgs) != op_argtypes.size())
         {
@@ -893,9 +937,9 @@ visit_functions(PyObject *self, PyObject *args)
             return out;
         }
     }
-    else if(op_resp == ScriptOperation::VTK_DATA_ARRAY)
+    /*else if(op_resp == ScriptOperation::VTK_DATA_ARRAY)
     {
-        vtkDataArray* dataarray;
+        vtkAbstractArray* dataarray;
         if(!op->func(sargs, dataarray))
 
         {
@@ -906,10 +950,10 @@ visit_functions(PyObject *self, PyObject *args)
         }
 
         //std::cout << "dataArray: " << dataarray << std::endl;
-        PyObject* output = scriptFilter->GetPythonEnvironment()->WrapVTKObject(dataarray, "vtkDataArray");
+        PyObject* output = scriptFilter->GetPythonEnvironment()->WrapVTKObject(dataarray, "vtkAbstractArray");
         //std::cout << output << std::endl;
         return output;
-    }
+    }*/
     else if(op_resp == ScriptOperation::VTK_DATASET)
     {
         vtkDataSet* dataset;
@@ -924,6 +968,35 @@ visit_functions(PyObject *self, PyObject *args)
 
         PyObject* output = scriptFilter->GetPythonEnvironment()->WrapVTKObject(dataset, "vtkDataSet");
         return output;
+    }
+    else if(op_resp == ScriptOperation::VTK_MULTI_DIMENSIONAL_DATA_ARRAY)
+    {
+        vtkShapedDataArray dataarrayshape;
+
+        if(!op->func(sargs, dataarrayshape))
+
+        {
+            std::cerr << name << ": multi data array operation failed!" << std::endl;
+            Py_DECREF(c_api_object);
+            Py_DECREF(m);
+            return NULL;
+        }
+
+        //std::cout << "dataArray: " << dataarray << std::endl;
+        PyObject* output = PyList_New(2);
+
+        PyObject* outputshape = PyList_New(dataarrayshape.shape.size());
+        for(int i = 0; i < dataarrayshape.shape.size(); ++i )
+            PyList_SetItem(outputshape,i,PyInt_FromLong(dataarrayshape.shape[i]));
+
+        PyObject* outputdata = scriptFilter->GetPythonEnvironment()->WrapVTKObject(dataarrayshape.vtkarray, "vtkAbstractArray");
+
+        PyList_SetItem(output,0,outputshape);
+        PyList_SetItem(output,1,outputdata);
+
+        //std::cout << output << std::endl;
+        return output;
+
     }
     else
     {

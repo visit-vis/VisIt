@@ -79,6 +79,8 @@ class avtScriptFilter : public avtPluginDataTreeIterator,  public ScriptManager
 
     virtual void         SetAtts(const AttributeGroup*);
     virtual bool         Equivalent(const AttributeGroup*);
+    virtual void         UpdateDataObjectInfo();
+
     avtPythonFilterEnvironment* GetPythonEnvironment() { return pyEnv; }
     avtDataTree_p GetDataTree(avtDataset_p val) { return val->GetDataTree(); }
     ScriptData*          GetScriptData() { return scriptData; }

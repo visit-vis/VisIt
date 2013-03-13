@@ -349,7 +349,7 @@ avtTimeLoopFilter::GetTotalNumberOfTimeSlicesForRank()
 	if (RankOwnsTimeSlice(i))
 	    totalNumTimes++;
     
-    cout<<__FILE__<<" "<<__LINE__<<" "<<totalNumTimes<<" "<<startTime<<" "<<actualEnd<<endl;
+    //cout<<__FILE__<<" "<<__LINE__<<" "<<totalNumTimes<<" "<<startTime<<" "<<actualEnd<<endl;
     return totalNumTimes;
 #else
     return ((actualEnd-startTime)/stride+1);

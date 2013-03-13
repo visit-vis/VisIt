@@ -7,6 +7,7 @@
 #include <avtDataset.h>
 #include <avtDataObject.h>
 #include <avtContract.h>
+#include <vtkAbstractArray.h>
 
 
 class avtPythonFilterEnvironment;
@@ -15,7 +16,7 @@ class avtPythonFilterEnvironment;
 struct vtkShapedDataArray
 {
     intVector shape;
-    vtkDataArray* vtkarray;
+    vtkAbstractArray* vtkarray;
 };
 
 class ScriptArguments
@@ -111,9 +112,6 @@ public:
 
     virtual bool func(ScriptArguments& args,
                       vtkShapedDataArray& result){ (void) args; (void) result; return false; }
-
-    virtual bool func(ScriptArguments& args,
-                      vtkDataArray*& result){ (void) args; (void) result; return false; }
 
     virtual bool func(ScriptArguments& args,
                       vtkDataSet*& result){  (void) args; (void) result; return false; }
