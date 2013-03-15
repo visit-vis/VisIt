@@ -193,7 +193,7 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
                           << "        " << args[i] << "_tmp = vtk.util.numpy_support.numpy_to_vtk(" << args[i] << ")\n"
                           << "        " << args[i] << "= [list(_shape), " << args[i] << "_tmp]\n"
                           << "    else:\n"
-                          << "        args[i] = [[args.GetDataSize()], args[i]]\n";
+                          << "        " << args[i] << " = [[" <<args[i] << ".GetDataSize()], " << args[i] << "]\n";
         }
     }
     std::ostringstream str;
