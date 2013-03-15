@@ -34,6 +34,7 @@ SET(LIBE_SOURCES
 ScriptEnginePluginInfo.C
 avtScriptFilter.C
 avtScriptOperation.C
+Writers/VisItWriteData.C
 ${COMMON_SOURCES}
 )
 
@@ -86,6 +87,8 @@ ${QT_QTGUI_INCLUDE_DIR}
 ${VTK_INCLUDE_DIRS} 
 ${PYTHON_INCLUDE_PATH} 
 ${VISIT_INCLUDE_DIR}/visitpy/visitpy 
+${NETCDF_INCLUDE_DIR}
+${CMAKE_CURRENT_SOURCE_DIR}/Writers
 )
 
 INCLUDE(Constant.cmake)
@@ -102,7 +105,7 @@ IF(VISIT_PYTHON_SCRIPTING)
     INCLUDE(Python.cmake)
 ENDIF(VISIT_PYTHON_SCRIPTING)
 
-LINK_DIRECTORIES(${VISIT_LIBRARY_DIR} ${QT_LIBRARY_DIR} ${GLEW_LIBRARY_DIR} ${VTK_LIBRARY_DIRS} )
+LINK_DIRECTORIES(${VISIT_LIBRARY_DIR} ${QT_LIBRARY_DIR} ${GLEW_LIBRARY_DIR} ${VTK_LIBRARY_DIRS} ${NETCDF_LIBRARY_DIR})
 
 ADD_LIBRARY(IScriptOperator ${LIBI_SOURCES})
 TARGET_LINK_LIBRARIES(IScriptOperator visitcommon)
@@ -135,12 +138,12 @@ IF(NOT VISIT_SERVER_COMPONENTS_ONLY AND NOT VISIT_ENGINE_ONLY AND NOT VISIT_DBIO
 ENDIF(NOT VISIT_SERVER_COMPONENTS_ONLY AND NOT VISIT_ENGINE_ONLY AND NOT VISIT_DBIO_ONLY)
 
 ADD_LIBRARY(EScriptOperator_ser ${LIBE_SOURCES})
-TARGET_LINK_LIBRARIES(EScriptOperator_ser visitcommon avtexpressions_ser avtfilters_ser avtpipeline_ser  avtpythonfilters_ser)
+TARGET_LINK_LIBRARIES(EScriptOperator_ser visitcommon avtexpressions_ser avtfilters_ser avtpipeline_ser  avtpythonfilters_ser ${NETCDF_LIB})
 SET(INSTALLTARGETS ${INSTALLTARGETS} EScriptOperator_ser)
 
 IF(VISIT_PARALLEL)
     ADD_PARALLEL_LIBRARY(EScriptOperator_par ${LIBE_SOURCES})
-    TARGET_LINK_LIBRARIES(EScriptOperator_par visitcommon avtexpressions_par avtfilters_par avtpipeline_par  avtpythonfilters_par)
+    TARGET_LINK_LIBRARIES(EScriptOperator_par visitcommon avtexpressions_par avtfilters_par avtpipeline_par  avtpythonfilters_par ${NETCDF_LIB})
     SET(INSTALLTARGETS ${INSTALLTARGETS} EScriptOperator_par)
 ENDIF(VISIT_PARALLEL)
 

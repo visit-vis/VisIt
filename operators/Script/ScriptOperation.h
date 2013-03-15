@@ -17,6 +17,10 @@ struct vtkShapedDataArray
 {
     intVector shape;
     vtkAbstractArray* vtkarray;
+    vtkShapedDataArray()
+    {
+        vtkarray = 0;
+    }
 };
 
 class ScriptArguments
@@ -31,7 +35,7 @@ public:
 
     std::vector<Variant> args; ///simplest case..
 
-    std::map<int,void*> datamap; /// unknown case..
+    //std::map<int,void*> datamap; /// unknown case..
 
     /// dataArray with shape information..
     /// I am really trying to avoid bringing in the NUMPY API
@@ -51,9 +55,17 @@ public:
 
     void* getArgAsVoidPtr(size_t i)
     {
-        if(datamap.count(i) > 0)
-            return datamap[i];
+//        if(datamap.count(i) > 0)
+//            return datamap[i];
         return (void*)&args[i];
+    }
+
+    vtkShapedDataArray getArgAsShapedDataArray(int i)
+    {
+        if(dataArrayMap.count(i) > 0)
+            return dataArrayMap[i];
+        return vtkShapedDataArray();
+
     }
 
     std::vector<Variant> getArgAsVariantVector(int i)

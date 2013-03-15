@@ -78,6 +78,7 @@
 #include <vtkStringArray.h>
 #include <vtkCharArray.h>
 
+#include <VisItWriteData.h>
 
 using namespace std;
 
@@ -124,6 +125,26 @@ avtTimeWindowLoopFilter::Initialize()
 	return;
 
     vtkDataSet *inDS = inputDataSet;
+
+    /// Todo: verify assumption domain ids & leaves traverse the same path?
+    std::vector<int> dids;
+    GetInputDataTree()->GetAllDomainIds(dids);
+    int numLeaves = -1;
+    vtkDataSet** datasets = GetInputDataTree()->GetAllLeaves(numLeaves);
+
+    if(numLeaves != dids.size())
+        std::cout << "mismatch " << numLeaves << " " << dids.size() << std::endl;
+    int index = -1;
+    for(int i = 0; i < dids.size(); ++i)
+    {
+        if(dids[i] == inputDomain)
+        {
+            index = i;
+            break;
+        }
+    }
+    if(index != -1) inDS = datasets[index];
+
     nodeCenteredData = (GetInput()->GetInfo().GetAttributes().GetCentering() == AVT_NODECENT);
     if (nodeCenteredData)
         numTuples = inDS->GetPointData()->GetScalars()->GetNumberOfTuples();
@@ -169,6 +190,28 @@ avtTimeWindowLoopFilter::Execute()
     Initialize();
 
     vtkDataSet *ds = inputDataSet;
+
+    /// Todo: verify assumption domain ids & leaves traverse the same path?
+    std::vector<int> dids;
+    GetInputDataTree()->GetAllDomainIds(dids);
+    int numLeaves = -1;
+    vtkDataSet** datasets = GetInputDataTree()->GetAllLeaves(numLeaves);
+
+    if(numLeaves != dids.size())
+        std::cout << "mismatch " << numLeaves << " " << dids.size() << std::endl;
+    int index = -1;
+    for(int i = 0; i < dids.size(); ++i)
+    {
+        if(dids[i] == inputDomain)
+        {
+            index = i;
+            break;
+        }
+    }
+    if(index != -1) ds = datasets[index];
+
+    std::cout << inputDataSet << "  " << ds << std::endl;
+
     vtkFloatArray *scalars = NULL;
 
     if (nodeCenteredData)
@@ -261,8 +304,7 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     {
         for(int j = 0; j < numTimes; ++j)
         {
-            PyObject* value = PyInt_FromLong(finalVals[j*totalTupleSize + i]);
-            //PyObject* value = PyInt_FromLong(finalVals[(i*(numTimes))+j]);
+            PyObject* value = PyFloat_FromDouble(finalVals[j*totalTupleSize + i]);
             PyTuple_SET_ITEM(retval, j, value);
         }
 
@@ -536,7 +578,7 @@ bool
 avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkShapedDataArray& result)
 {
     Variant windowArray = args.getArg(0);
-    vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(1);
+    vtkShapedDataArray var = args.getArgAsShapedDataArray(1);
     Variant kernelLanguage = args.getArg(2); //R or Python
     Variant kernel = args.getArg(3); //kernel itself
     Variant kernelName = args.getArg(4); //name of the function to call..
@@ -599,7 +641,7 @@ avtScriptOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkShap
     //std::cout << "enabling timer" << std::endl;
 
     std::cout << PAR_Rank() << " finishing... " << std::endl;
-    std::cout << var->GetDataSize() << " "
+    std::cout << var.vtkarray->GetDataSize() << " "
               << filt->globalOutputDataArray.vtkarray->GetDataSize() << " "
               << filt->globalOutputDataArray.shape[0] << " "
               << filt->globalOutputDataArray.shape[1] << std::endl;
@@ -647,7 +689,7 @@ bool
 avtScriptOperation::avtVisItForEachLocationR::func(ScriptArguments& args, vtkShapedDataArray &result)
 {
     Variant windowArray = args.getArg(0);
-    vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(1);
+    vtkShapedDataArray var = args.getArgAsShapedDataArray(1);
     Variant kernelName = args.getArg(2); //name of the function to call..
     Variant primaryVariable = args.getArg(3); // primary variable name to modify..
 
@@ -725,7 +767,7 @@ bool
 avtScriptOperation::avtVisItForEachLocationPython::func(ScriptArguments& args, vtkShapedDataArray& result)
 {
     Variant windowArray = args.getArg(0);
-    vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(1);
+    vtkShapedDataArray var = args.getArgAsShapedDataArray(1);
     Variant kernelName = args.getArg(2); //name of the function to call..
     Variant primaryVariable = args.getArg(3); // primary variable name to modify..
 
@@ -816,23 +858,36 @@ avtScriptOperation::avtVisItGetRSupportDirectory::GetSignature(std::string& name
 
 bool
 avtScriptOperation::avtVisItWriteData::func(ScriptArguments& args,
-                                            vtkShapedDataArray& result)
+                                            Variant &result)
 {
     std::string filename = args.getArg(0).AsString();
     std::string format = args.getArg(1).AsString();
     bool local = args.getArg(2).AsString() == "local";
-    vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(3);
+    vtkShapedDataArray var = args.getArgAsShapedDataArray(3);
+    std::string varname = args.getArg(4).AsString();
+    int index = args.getArg(5).AsInt();
 
     std::cout << "write out file as: "
-              << filename
+              << filename << " "
+              << varname << " " << index << " "
               << " format: "
               << format
+              << " " << local
               << std::endl;
 
-    result.shape.push_back(1);
-    result.vtkarray = var->NewInstance();
-    result.vtkarray->DeepCopy(var);
+//    std::cout << vtkDoubleArray::SafeDownCast(var.vtkarray)->GetValue(0) << " "
+//              << vtkDoubleArray::SafeDownCast(var.vtkarray)->GetValue(1) << " "
+//              << vtkDoubleArray::SafeDownCast(var.vtkarray)->GetValue(2) << " "
+//              << vtkDoubleArray::SafeDownCast(var.vtkarray)->GetValue(3) << " "
+//              << std::endl;
+    /// this data has all of the information already..
+    /// write it out..
+//    if(args.GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors())
+//    {
+//        VisItWriteData::write_data(filename,varname,var.vtkarray);
+//    }
 
+    result = true;
     return true;
 }
 
@@ -855,13 +910,13 @@ avtScriptOperation::avtVisItWriteData::GetSignature(std::string& name,
     argnames.push_back("variable");
     argtypes.push_back(ScriptOperation::VTK_DATA_ARRAY_TYPE);
 
-    argnames.push_back("index");
+    argnames.push_back("varname");
     argtypes.push_back(ScriptOperation::STRING_TYPE);
 
-    //argnames.push_back("stride");
-    //argtypes.push_back(ScriptOperation::STRING_TYPE);
+    argnames.push_back("index");
+    argtypes.push_back(ScriptOperation::INT_TYPE);
 
-    return ScriptOperation::VTK_MULTI_DIMENSIONAL_DATA_ARRAY;
+    return ScriptOperation::CONSTANT;
 }
 
 bool
@@ -872,12 +927,12 @@ avtScriptOperation::avtVisItMaxAcrossTime::func(ScriptArguments& args, vtkShaped
     for (int i = 0; i < args.getArgSize(); i++)
 	cout<<i<<": "<<endl;
     
-    vtkDataArray* var = (vtkDataArray*)args.getArgAsVoidPtr(0);
+    vtkShapedDataArray var = args.getArgAsShapedDataArray(0);
     //var->Print(cout);
     
-    result.shape.push_back(var->GetDataSize());
-    result.vtkarray = var->NewInstance();
-    result.vtkarray->DeepCopy(var);
+    result.shape = var.shape;
+    result.vtkarray = var.vtkarray->NewInstance();
+    result.vtkarray->DeepCopy(var.vtkarray);
     return true;
 }
 

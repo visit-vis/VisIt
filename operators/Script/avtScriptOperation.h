@@ -124,7 +124,7 @@ class avtScriptOperation : public ScriptOperationsManager
     {
     public:
         virtual bool func(ScriptArguments &args,
-                          vtkShapedDataArray& result);
+                          Variant& result);
 
         virtual ScriptOperationResponse GetSignature(std::string& name,
                                   stringVector& argnames,

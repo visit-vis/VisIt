@@ -184,8 +184,16 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
         /// convert numpy to vtk...
         if(argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
         {
-            cast_to_numpy << "    if not isinstance(" << args[i] << ", vtk.vtkDataArray):\n";
-            cast_to_numpy << "        " << args[i] << " = vtk.util.numpy_support.numpy_to_vtk(" << args[i] << ")\n";
+            //convert to 1D..
+            cast_to_numpy << "    if not isinstance(" << args[i] << ", vtk.vtkAbstractArray):\n"
+                          << "        _shape = " << args[i] << ".shape\n"
+                          << "        _shape_one_d = 1\n"
+                          << "        for i in _shape: _shape_one_d *= i\n"
+                          << "        " << args[i] << ".shape = (_shape_one_d,)\n"
+                          << "        " << args[i] << "_tmp = vtk.util.numpy_support.numpy_to_vtk(" << args[i] << ")\n"
+                          << "        " << args[i] << "= [list(_shape), " << args[i] << "_tmp]\n"
+                          << "    else:\n"
+                          << "        args[i] = [[args.GetDataSize()], args[i]]\n";
         }
     }
     std::ostringstream str;
@@ -238,10 +246,21 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
                 argtypes[i] == ScriptOperation::VARIANT_VECTOR_TYPE)
                 str << "    " << args[i] << " = numpy.asarray(" << args[i] << ").tolist()\n";
             else if(argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
-                str << "    " << args[i] << " = vtk.util.numpy_support.numpy_to_vtk(numpy.asarray(" << args[i] << "))\n";
-            else
-
+            {
+                //str << "    " << args[i] << " = vtk.util.numpy_support.numpy_to_vtk(numpy.asarray(" << args[i] << "))\n";
+                /// convert from R array to Numpy Array then collapse multi dimensional array
+                str << "    " << args[i] << " = numpy.asarray(" << args[i] << ")\n"
+                    << "    _shape = " << args[i] << ".shape\n"
+                    << "    _shape_one_d = 1\n"
+                    << "    for i in _shape: _shape_one_d *= i\n"
+                    //<< "    " << args[i] << ".shape = (_shape_one_d,)\n"
+                    << "    " << args[i] << " = numpy.reshape(" << args[i] << ",_shape_one_d)\n"
+                    << "    " << args[i] << "_tmp = vtk.util.numpy_support.numpy_to_vtk(" << args[i] << ")\n"
+                    << "    " << args[i] << "= [list(_shape), " << args[i] << "_tmp]\n";
+            }
+            else {
                 str << "    " << args[i] << " = my_ri2py(" << args[i] << ")\n";
+            }
     }
 
     if(argstring.size() == 0)
@@ -383,17 +402,17 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     vtkDataSet *res = (vtkDataSet*)pyEnv->UnwrapVTKObject(py_res,"vtkDataSet");
     res->Register(NULL);
 
-    avtDataAttributes &inAtts      = GetInput()->GetInfo().GetAttributes();
-    avtDataAttributes &outAtts     = GetOutput()->GetInfo().GetAttributes();
+//    avtDataAttributes &inAtts      = GetInput()->GetInfo().GetAttributes();
+//    avtDataAttributes &outAtts     = GetOutput()->GetInfo().GetAttributes();
 
 //    res->Print(cout);
     double bounds[6];
     res->GetBounds(bounds);
 
-    if(bounds[4] == bounds[5])
-    {
+//    if(bounds[4] == bounds[5])
+//    {
 //        GetOutput()->GetInfo().GetAttributes().SetSpatialDimension(2);
-        //GetOutput()->GetInfo().GetAttributes().SetTopologicalDimension(2);
+//        GetOutput()->GetInfo().GetAttributes().SetTopologicalDimension(2);
 //        if (inAtts.GetSpatialDimension() == 3)
 //        {
 //            outAtts.SetSpatialDimension(2);
@@ -404,8 +423,7 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
 //        GetOutput()->GetInfo().GetValidity().InvalidateZones();
 //        GetOutput()->GetInfo().GetValidity().InvalidateDataMetaData();
 //        GetOutput()->GetInfo().GetValidity().InvalidateOperation();
-
-    }
+//    }
     /// get data array for active variable..
     vtkDataArray* array = res->GetPointData()->GetScalars(primaryVariable.c_str());
 
@@ -426,14 +444,16 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     avtDataAttributes &dataatts = GetOutput()->GetInfo().GetAttributes();
     avtExtents* e;
 
-    e = dataatts.GetActualDataExtents();
-    e->Set(range);
+//    e = dataatts.GetActualDataExtents();
+//    e->Set(range);
 
 //    e = dataatts.GetThisProcsActualDataExtents();
 //    e->Set(range);
 
 //    e = dataatts.GetThisProcsOriginalSpatialExtents();
 //    e->Set(range);
+    e = dataatts.GetThisProcsActualDataExtents();
+    e->Set(range);
 
     vtkImageData* data = vtkImageData::SafeDownCast(res);
 
@@ -611,12 +631,19 @@ bool convert(const ScriptOperation::ScriptVariantTypeEnum& type, PyObject* obj, 
         }
         case ScriptOperation::INT_TYPE:
         {
-            PyInt_Check(obj) ? result = (int)PyInt_AsLong(obj) : success = false;
+            /// if they come from R they may be double..
+            PyInt_Check(obj) ? result = (int)PyInt_AsLong(obj) :
+                              (PyFloat_Check(obj) ? result = (int)PyFloat_AsDouble(obj):
+                                                    success = false) ;
             break;
         }
         case ScriptOperation::LONG_TYPE:
         {
-            PyLong_Check(obj) ? result = (long)PyLong_AsLong(obj) : success = false;
+
+            /// if they come from R they may be double..
+            PyLong_Check(obj) ? result = (long)PyLong_AsLong(obj) :
+                                (PyFloat_Check(obj) ? result = (long)PyFloat_AsDouble(obj):
+                                                      success = false);
             break;
         }
         case ScriptOperation::FLOAT_TYPE:
@@ -760,7 +787,8 @@ visit_functions(PyObject *self, PyObject *args)
 
     //std::cout << op_name << " " << op_resp << std::endl;
     std::vector<Variant> variantArgs;
-    std::map<int,void*> datamap;
+    //std::map<int,void*> datamap;
+    std::map<int,vtkShapedDataArray> dataArrayMap;
     std::map<int, std::vector<Variant> > variantVecMap;
 
     // Extract arguments from the tuple.
@@ -776,8 +804,35 @@ visit_functions(PyObject *self, PyObject *args)
 
             if(op_argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
             {
-                void* vobj = scriptFilter->GetPythonEnvironment()->UnwrapVTKObject(item, "vtkDataArray");
-                datamap[i] = vobj;
+                /// Handle multi-dimensional array..
+                if(PyTuple_Check(item) || PyList_Check(item))
+                {
+                    PyObject* output_shape = PyTuple_Check(item) ? PyTuple_GetItem(item,0) :
+                                                                   PyList_GetItem(item,0);
+                    PyObject* output_data = PyTuple_Check(item) ? PyTuple_GetItem(item,1) :
+                                                                  PyList_GetItem(item,1);
+                    vtkShapedDataArray output;
+
+                    for(int j = 0; j < PyList_Size(output_shape); ++j)
+                    {
+                        int value = PyInt_AsLong(PyList_GetItem(output_shape,j));
+                        output.shape.push_back(value);
+                    }
+
+                    void* vobj = scriptFilter->GetPythonEnvironment()->UnwrapVTKObject(output_data, "vtkAbstractArray");
+                    output.vtkarray = (vtkAbstractArray*)vobj;
+                    dataArrayMap[i] = output;
+                }
+                else
+                {
+                    void* vobj = scriptFilter->GetPythonEnvironment()->UnwrapVTKObject(item, "vtkAbstractArray");
+
+                    vtkShapedDataArray output;
+                    output.vtkarray = (vtkAbstractArray*)vobj;
+                    output.shape.push_back(output.vtkarray->GetDataSize());
+
+                    dataArrayMap[i] = output;
+                }
             }
             else if(op_argtypes[i] == ScriptOperation::VARIANT_VECTOR_TYPE)
             {
@@ -836,8 +891,36 @@ visit_functions(PyObject *self, PyObject *args)
 
             if(op_argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
             {
-                void* vobj = scriptFilter->GetPythonEnvironment()->UnwrapVTKObject(item, "vtkDataArray");
-                datamap[i] = vobj;
+                /// Handle multi-dimensional array..
+                if(PyTuple_Check(item) || PyList_Check(item))
+                {
+                    PyObject* output_shape = PyTuple_Check(item) ? PyTuple_GetItem(item,0) :
+                                                                   PyList_GetItem(item,0);
+                    PyObject* output_data = PyTuple_Check(item) ? PyTuple_GetItem(item,1) :
+                                                                  PyList_GetItem(item,1);
+                    vtkShapedDataArray output;
+
+                    for(int j = 0; j < PyList_Size(output_shape); ++j)
+                    {
+                        int value = PyInt_AsLong(PyList_GetItem(output_shape,j));
+                        output.shape.push_back(value);
+                    }
+
+                    void* vobj = scriptFilter->GetPythonEnvironment()->UnwrapVTKObject(output_data, "vtkAbstractArray");
+                    output.vtkarray = (vtkAbstractArray*)vobj;
+
+                    dataArrayMap[i] = output;
+                }
+                else
+                {
+                    void* vobj = scriptFilter->GetPythonEnvironment()->UnwrapVTKObject(item, "vtkAbstractArray");
+
+                    vtkShapedDataArray output;
+                    output.vtkarray = (vtkAbstractArray*)vobj;
+                    output.shape.push_back(output.vtkarray->GetDataSize());
+
+                    dataArrayMap[i] = output;
+                }
             }
             else if(op_argtypes[i] == ScriptOperation::VARIANT_VECTOR_TYPE)
             {
@@ -896,7 +979,7 @@ visit_functions(PyObject *self, PyObject *args)
     sargs.input = scriptFilter->GetInput();
     sargs.contract = scriptFilter->GetInput()->GetOriginatingSource()->GetGeneralContract();
     sargs.args = variantArgs;
-    sargs.datamap = datamap;
+    sargs.dataArrayMap = dataArrayMap;
     sargs.variantVector = variantVecMap;
     sargs.pythonFilter = scriptFilter->GetPythonEnvironment();
 
