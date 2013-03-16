@@ -178,7 +178,7 @@ avtTimeWindowLoopFilter::Initialize()
     // values need to be number of tuples * total number of timesteps..
     int totalTimes = GetTotalNumberOfTimeSlicesForRank();
     cout<<PAR_Rank()<<": locs: ["<<idx0<<" "<<idxN<<"] times:"<<totalTimes<<endl;
-    cout<<"Is data replicated: " << GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors()<<endl;
+    //cout<<"Is data replicated: " << GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors()<<endl;
 
     //format is: T0_val0, T0_val1, ...., T1_val0, T2_val1, ....
     values.resize(numTuples*totalTimes);
@@ -210,7 +210,7 @@ avtTimeWindowLoopFilter::Execute()
     }
     if(index != -1) ds = datasets[index];
 
-    std::cout << inputDataSet << "  " << ds << std::endl;
+    //std::cout << inputDataSet << "  " << ds << std::endl;
 
     vtkFloatArray *scalars = NULL;
 
@@ -349,12 +349,14 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
         /// todo: handle strings?
 //        if(type == VTK_STRING) mpi_type = MPI_STRING;
 
-        std::cout << "starting index: " << idx0 << " " << idxN << " " << multi_dim_size << std::endl;
-        MPI_Allreduce(outputdataArray.vtkarray->GetVoidPointer(0),
-                      globalOutputDataArray.vtkarray->GetVoidPointer(idx0*multi_dim_size),
+        std::cout << "starting index: " << idx0 << " " << idxN << " " << multi_dim_size <<  " "
+                     << outputdataArray.vtkarray->GetDataSize() << " " << std::endl;
+        MPI_Allgather(outputdataArray.vtkarray->GetVoidPointer(0),
                       outputdataArray.vtkarray->GetDataSize(),
                       mpi_type,
-                      MPI_SUM,
+                      globalOutputDataArray.vtkarray->GetVoidPointer(0),
+                      outputdataArray.vtkarray->GetDataSize(),
+                      mpi_type,
                       VISIT_MPI_COMM);
 
         /// global array should have all appropriate values now..
@@ -882,10 +884,10 @@ avtScriptOperation::avtVisItWriteData::func(ScriptArguments& args,
 //              << std::endl;
     /// this data has all of the information already..
     /// write it out..
-//    if(args.GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors())
-//    {
-//        VisItWriteData::write_data(filename,varname,var.vtkarray);
-//    }
+    if(args.GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors())
+    {
+        VisItWriteData::write_data(filename,varname,var.vtkarray);
+    }
 
     result = true;
     return true;

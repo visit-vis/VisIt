@@ -186,6 +186,7 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
         {
             //convert to 1D..
             cast_to_numpy << "    if not isinstance(" << args[i] << ", vtk.vtkAbstractArray):\n"
+                          << "        " << args[i] << "= numpy.ascontiguousarray(" << args[i] << ")\n"
                           << "        _shape = " << args[i] << ".shape\n"
                           << "        _shape_one_d = 1\n"
                           << "        for i in _shape: _shape_one_d *= i\n"
@@ -247,14 +248,13 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
                 str << "    " << args[i] << " = numpy.asarray(" << args[i] << ").tolist()\n";
             else if(argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
             {
-                //str << "    " << args[i] << " = vtk.util.numpy_support.numpy_to_vtk(numpy.asarray(" << args[i] << "))\n";
                 /// convert from R array to Numpy Array then collapse multi dimensional array
-                str << "    " << args[i] << " = numpy.asarray(" << args[i] << ")\n"
+                str
+                    << "    " << args[i] << " = numpy.ascontiguousarray(" << args[i] << ")\n"
                     << "    _shape = " << args[i] << ".shape\n"
                     << "    _shape_one_d = 1\n"
                     << "    for i in _shape: _shape_one_d *= i\n"
-                    //<< "    " << args[i] << ".shape = (_shape_one_d,)\n"
-                    << "    " << args[i] << " = numpy.reshape(" << args[i] << ",_shape_one_d)\n"
+                    << "    " << args[i] << ".shape = (_shape_one_d,)\n"
                     << "    " << args[i] << "_tmp = vtk.util.numpy_support.numpy_to_vtk(" << args[i] << ")\n"
                     << "    " << args[i] << "= [list(_shape), " << args[i] << "_tmp]\n";
             }
