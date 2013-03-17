@@ -98,12 +98,12 @@ class ScriptPipelineRegistrySource(Filter):
     def execute(self):
         # fetch data from registry
         rkeys = self.context.registry_keys()
-        print rkeys
+        #print rkeys
         if not self.name in rkeys:
             # try to dynam fetch of vtkDataArray from mesh
             if ":mesh" in  rkeys:
                 var_name   = self.name[self.name.rfind(":")+1:]
-                print "fetch",var_name
+                #print "fetch",var_name
                 mesh  = self.context.registry_fetch(":mesh")
                 varr = mesh.GetCellData().GetArray(var_name)
                 if varr is None:
@@ -120,21 +120,35 @@ class ScriptPipelineSink(Filter):
     output_port    = True
     def execute(self):
         res = self.input("in")
+    
+        #get primary variable..
+        #need to ensure that results that go back to VisIt
+        #are at least correct size..
+        varr = self.context.mesh.GetCellData().GetArray(self.context.primary_var)
+        if varr is None:
+            varr = self.context.mesh.GetPointData().GetArray(self.context.primary_var)
 
-        if(res is None):
+        if res is None:
             return self.context.mesh
 
         if isinstance(res,vtk.vtkDataSet):
             return res
 
         if isinstance(res,npy.ndarray):
+            res = npy.ascontiguousarray(res)
             res = vnp.numpy_to_vtk(res)
 
         if not isinstance(res, vtk.vtkDataArray):
-            if isinstance(res, (list,tuple)):
-                np_tmp = npy.asarray(res)
+            if isinstance(res,npy.ndarray) or isinstance(res, (list,tuple)):
+                np_tmp = npy.ascontiguousarray(res)
             else:
-                np_tmp = npy.asarray([res])
+                np_tmp = npy.ascontiguousarray([res])
+
+            #ensure 1 dimension before putting it in vtk..
+            np_tmp = npy.ravel(np_tmp)
+            #pad with zeros if incorrect size..
+            if varr is not None and varr.GetDataSize() > len(np_tmp):
+                np_tmp = npy.pad(np_tmp,(0,len(np_tmp)-var.GetDataSize()),'constant')
             res = vnp.numpy_to_vtk(np_tmp)
 
         #if isinstance(res,npy.ndarray):

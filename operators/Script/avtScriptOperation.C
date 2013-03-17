@@ -323,7 +323,6 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
 
     if(GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors() )
     {
-        std::cout << "data is replicated over multiple processors.." << std::endl;
         /// assumption the local data array size is the same on all processors,
         /// the correct was to ensure all of mpi rank conform..
         int multi_dim_size = 1;
@@ -877,11 +876,6 @@ avtScriptOperation::avtVisItWriteData::func(ScriptArguments& args,
               << " " << local
               << std::endl;
 
-//    std::cout << vtkDoubleArray::SafeDownCast(var.vtkarray)->GetValue(0) << " "
-//              << vtkDoubleArray::SafeDownCast(var.vtkarray)->GetValue(1) << " "
-//              << vtkDoubleArray::SafeDownCast(var.vtkarray)->GetValue(2) << " "
-//              << vtkDoubleArray::SafeDownCast(var.vtkarray)->GetValue(3) << " "
-//              << std::endl;
     /// this data has all of the information already..
     /// write it out..
     if(args.GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors())

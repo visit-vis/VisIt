@@ -44,6 +44,7 @@
 #include <avtPythonFilterEnvironment.h>
 #include <Python.h>
 #include <vtkDataSet.h>
+#include <vtkDoubleArray.h>
 #include <avtRFilter.h>
 #include <vector>
 #include <map>
@@ -174,12 +175,13 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
 
     /// create a definition in the modules..
     std::ostringstream cast_to_numpy;
-    std::string argstring = "";
+    std::string i_argstring = "";
+    std::string o_argstring = "";
 
     for(size_t i = 0; i < args.size(); ++i)
     {
         std::string arg = args[i];
-        argstring += arg + (i == args.size() - 1 ? "" : ",");
+        i_argstring += arg + (i == args.size() - 1 ? "" : ",");
 
         /// convert numpy to vtk...
         if(argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
@@ -188,26 +190,31 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
             cast_to_numpy << "    if not isinstance(" << args[i] << ", vtk.vtkAbstractArray):\n"
                           << "        " << args[i] << "= numpy.ascontiguousarray(" << args[i] << ")\n"
                           << "        _shape = " << args[i] << ".shape\n"
-                          << "        _shape_one_d = 1\n"
-                          << "        for i in _shape: _shape_one_d *= i\n"
-                          << "        " << args[i] << ".shape = (_shape_one_d,)\n"
-                          << "        " << args[i] << "_tmp = vtk.util.numpy_support.numpy_to_vtk(" << args[i] << ")\n"
-                          << "        " << args[i] << "= [list(_shape), " << args[i] << "_tmp]\n"
+                          << "        " << args[i] << "_tmp = vtk.util.numpy_support.numpy_to_vtk(numpy.ravel(" << args[i] << "))\n"
+                          << "        " << args[i] << "_in = [list(_shape), " << args[i] << "_tmp]\n"
                           << "    else:\n"
-                          << "        " << args[i] << " = [[" <<args[i] << ".GetDataSize()], " << args[i] << "]\n";
+                          << "        " << args[i] << "_in = [[" <<args[i] << ".GetDataSize()], " << args[i] << "]\n";
+            o_argstring += arg + std::string("_in");
         }
+        else
+        {
+            o_argstring += arg;
+        }
+
+        o_argstring += (i == args.size() - 1 ? "" : ",");
     }
+
     std::ostringstream str;
 
-    str << "def " << name << "(" << argstring << "):\n";
+    str << "def " << name << "(" << i_argstring << "):\n";
     str << "    import vtk,vtk.util.numpy_support\n";
     if(cast_to_numpy.str().size() > 0)
         str << cast_to_numpy.str();
 
-    if(argstring.size() == 0)
+    if(o_argstring.size() == 0)
         str << "    res = visit_internal_funcs.visit_functions('" << name << "')\n";
     else
-        str << "    res = visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
+        str << "    res = visit_internal_funcs.visit_functions('" << name << "',(" << o_argstring << "))\n";
     str << "    if isinstance(res,list) and len(res) == 2 and isinstance(res[0],list) and isinstance(res[1],vtk.vtkAbstractArray):\n"
         << "        res_shape = tuple(res[0])\n"
         << "        res = vtk.util.numpy_support.vtk_to_numpy(res[1])\n"
@@ -228,7 +235,7 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
         << "import rpy2.rinterface as ri\n"
         << "import visit_internal_funcs\n"
         << "import numpy\n"
-        << "def _r_" << name << "(" << argstring << "):\n"
+        << "def _r_" << name << "(" << i_argstring << "):\n"
         << "    def my_ri2py(obj):\n"
         << "        res = robjects.default_ri2py(obj)\n"
         << "        if isinstance(res, robjects.Vector) and (len(res) == 1):\n"
@@ -238,42 +245,40 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
 
     for(size_t i = 0; i < args.size(); ++i)
     {
-            if( argtypes[i] == ScriptOperation::BOOL_VECTOR_TYPE ||
-                argtypes[i] == ScriptOperation::INT_VECTOR_TYPE ||
-                argtypes[i] == ScriptOperation::LONG_VECTOR_TYPE ||
-                argtypes[i] == ScriptOperation::FLOAT_VECTOR_TYPE ||
-                argtypes[i] == ScriptOperation::DOUBLE_VECTOR_TYPE ||
-                argtypes[i] == ScriptOperation::STRING_VECTOR_TYPE ||
-                argtypes[i] == ScriptOperation::VARIANT_VECTOR_TYPE)
-                str << "    " << args[i] << " = numpy.asarray(" << args[i] << ").tolist()\n";
-            else if(argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
-            {
-                /// convert from R array to Numpy Array then collapse multi dimensional array
-                str
-                    << "    " << args[i] << " = numpy.ascontiguousarray(" << args[i] << ")\n"
-                    << "    _shape = " << args[i] << ".shape\n"
-                    << "    _shape_one_d = 1\n"
-                    << "    for i in _shape: _shape_one_d *= i\n"
-                    << "    " << args[i] << ".shape = (_shape_one_d,)\n"
-                    << "    " << args[i] << "_tmp = vtk.util.numpy_support.numpy_to_vtk(" << args[i] << ")\n"
-                    << "    " << args[i] << "= [list(_shape), " << args[i] << "_tmp]\n";
-            }
-            else {
-                str << "    " << args[i] << " = my_ri2py(" << args[i] << ")\n";
-            }
+        if( argtypes[i] == ScriptOperation::BOOL_VECTOR_TYPE ||
+            argtypes[i] == ScriptOperation::INT_VECTOR_TYPE ||
+            argtypes[i] == ScriptOperation::LONG_VECTOR_TYPE ||
+            argtypes[i] == ScriptOperation::FLOAT_VECTOR_TYPE ||
+            argtypes[i] == ScriptOperation::DOUBLE_VECTOR_TYPE ||
+            argtypes[i] == ScriptOperation::STRING_VECTOR_TYPE ||
+            argtypes[i] == ScriptOperation::VARIANT_VECTOR_TYPE)
+        {
+            str << "    " << args[i] << " = numpy.asarray(" << args[i] << ").tolist()\n";
+        }
+        else if(argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
+        {
+            /// convert from R array to Numpy Array then collapse multi dimensional array
+            str << "    " << args[i] << " = numpy.ascontiguousarray(" << args[i] << ")\n"
+                << "    _shape = " << args[i] << ".shape\n"
+                << "    " << args[i] << "_tmp = vtk.util.numpy_support.numpy_to_vtk(numpy.ravel(" << args[i] << "))\n"
+                << "    " << args[i] << "_in = [list(_shape), " << args[i] << "_tmp]\n";
+        }
+        else {
+            str << "    " << args[i] << " = my_ri2py(" << args[i] << ")\n";
+        }
     }
 
-    if(argstring.size() == 0)
+    if(o_argstring.size() == 0)
         str << "    res = visit_internal_funcs.visit_functions('" << name << "')\n";
     else
-        str << "    res = visit_internal_funcs.visit_functions('" << name << "',(" << argstring << "))\n";
+        str << "    res = visit_internal_funcs.visit_functions('" << name << "',(" << o_argstring << "))\n";
 
     str << "    if isinstance(res,list) and len(res) == 2 and isinstance(res[0],list) and isinstance(res[1],vtk.vtkAbstractArray):\n"
         << "        res_shape = tuple(res[0])\n"
         << "        res = vtk.util.numpy_support.vtk_to_numpy(res[1])\n"
         << "        res.shape = res_shape\n";
 
-    str << "    if isinstance(res,vtk.vtkDataArray) :\n"
+    str << "    if isinstance(res,vtk.vtkAbstractArray) :\n"
         << "        res = vtk.util.numpy_support.vtk_to_numpy(res)\n";
 
     str << "    return rpy2.robjects.default_py2ro(res)\n"
@@ -285,8 +290,8 @@ avtScriptFilter::RegisterOperation(ScriptOperation *op)
          << "ri.globalenv['" << name << "'] = _rxp_" << name << "\n"
          << "rpy2.robjects.r('assign(\"" << name << "\"," << name << ",visit_internal_funcs)')\n";
 
-    //std::cout << str.str() << std::endl;
-    //std::cout << "--------------------------------" << std::endl;
+//    std::cout << str.str() << std::endl;
+//    std::cout << "--------------------------------" << std::endl;
 
     if(!pyEnv->Interpreter()->RunScript(str.str()))
         std::cerr << "function : " << name << " registration failed" << std::endl;
@@ -811,6 +816,10 @@ visit_functions(PyObject *self, PyObject *args)
                                                                    PyList_GetItem(item,0);
                     PyObject* output_data = PyTuple_Check(item) ? PyTuple_GetItem(item,1) :
                                                                   PyList_GetItem(item,1);
+
+                    //Py_INCREF(output_shape);
+                    //Py_INCREF(output_data);
+
                     vtkShapedDataArray output;
 
                     for(int j = 0; j < PyList_Size(output_shape); ++j)
@@ -879,6 +888,7 @@ visit_functions(PyObject *self, PyObject *args)
     }
     else if(scriptArgs && op_argtypes.size() >= 2)
     {
+        //Py_INCREF(scriptArgs);
         if(PyTuple_Size(scriptArgs) != op_argtypes.size())
         {
             std::cerr << "sizes do not match!" << std::endl;
@@ -888,7 +898,7 @@ visit_functions(PyObject *self, PyObject *args)
         {
             Variant v;
             PyObject *item = PyTuple_GET_ITEM(scriptArgs, i);
-
+            //Py_INCREF(item);
             if(op_argtypes[i] == ScriptOperation::VTK_DATA_ARRAY_TYPE)
             {
                 /// Handle multi-dimensional array..
@@ -898,6 +908,9 @@ visit_functions(PyObject *self, PyObject *args)
                                                                    PyList_GetItem(item,0);
                     PyObject* output_data = PyTuple_Check(item) ? PyTuple_GetItem(item,1) :
                                                                   PyList_GetItem(item,1);
+                    //Py_INCREF(output_shape);
+                    //Py_INCREF(output_data);
+
                     vtkShapedDataArray output;
 
                     for(int j = 0; j < PyList_Size(output_shape); ++j)
@@ -908,7 +921,7 @@ visit_functions(PyObject *self, PyObject *args)
 
                     void* vobj = scriptFilter->GetPythonEnvironment()->UnwrapVTKObject(output_data, "vtkAbstractArray");
                     output.vtkarray = (vtkAbstractArray*)vobj;
-
+                    output.vtkarray->Register(NULL);
                     dataArrayMap[i] = output;
                 }
                 else

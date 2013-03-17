@@ -9,16 +9,10 @@ VisItWriteData::write_data(const std::string& filename, const std::string& varna
 
     vtkDoubleArray* array = vtkDoubleArray::SafeDownCast(vtkarray);
 
-    std::cout << "writing> " << filename << " " << varname << " "
-              << vtkarray->GetDataSize() << " " << vtkarray->GetClassName() <<
-                 " " << array->GetNumberOfTuples() << " " << std::endl;
+    std::cout << "netcdf: " << filename << " " << varname << " "
+              << vtkarray->GetDataSize() << " " << vtkarray->GetClassName() << " "
+              << array->GetNumberOfTuples() << " " << std::endl;
 
-    /*
-    array->Print(cout);
-
-    std::cout << array->GetValue(0) << " "
-              << array->GetValue(1) << " "
-              << std::endl;
     int ncidp, varidp, dimidsp;
 
     nc_create(filename.c_str(), NC_CLOBBER ,&ncidp);
@@ -30,6 +24,4 @@ VisItWriteData::write_data(const std::string& filename, const std::string& varna
 
     nc_put_var_double(ncidp, varidp, array->GetPointer(0) );
     nc_close(ncidp);
-    */
-
 }
