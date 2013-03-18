@@ -67,7 +67,7 @@ class TECA_API avtTECAFilter : public avtTimeLoopFilter,
                                      public avtTECA
 {
   public:
-                              avtTECAFilter();
+    avtTECAFilter();
     virtual                  ~avtTECAFilter();
 
     virtual const char       *GetType(void)   { return "avtTECAFilter"; }
@@ -90,6 +90,11 @@ class TECA_API avtTECAFilter : public avtTimeLoopFilter,
 
     virtual void              SetupAVTOutput();
     virtual avtDataTree_p     CreateOutput() = 0;
+
+    virtual bool              GetData(int timestep, size_t *start, size_t* count, void* data) { return true; }
+//    if ((retval = nc_get_var1_double (ncid, lon_varid, index, &lon_val)))
+    virtual double              GetLongVal(int timestep, size_t index[2], double& lon_val) { return 0; }
+    virtual double              GetLatVal(int timestep, size_t index[2], double& lat_val) { return 0; }
 };
 
 

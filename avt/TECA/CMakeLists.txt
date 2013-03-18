@@ -41,6 +41,8 @@
 SET(AVTTECA_SOURCES
 avtTECA.C
 avtTECAFilter.C
+AtmosphericRivers.C
+TropicalCyclone.C
 )
 
 INCLUDE_DIRECTORIES(

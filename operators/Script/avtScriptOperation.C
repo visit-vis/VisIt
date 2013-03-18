@@ -240,8 +240,11 @@ void
 avtTimeWindowLoopFilter::CreateFinalOutput()
 {
     Barrier();
+
+    Initialize();
+
     avtCallback::ResetTimeout(0);
-    cout<<"CreateFinalOutput : values= "<<values.size()<<endl;
+    cout<<PAR_Rank() << ": CreateFinalOutput : values= "<<values.size()<<endl;
     
     size_t totalTupleSize = idxN-idx0;
     int numTimes = GetEndTime() - GetStartTime() + 1;
@@ -351,15 +354,50 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
 //        std::cout << "starting index: " << idx0 << " " << idxN << " " << multi_dim_size <<  " "
 //                     << outputdataArray.vtkarray->GetDataSize() << " " << std::endl;
 
-	cout<<PAR_Rank()<<": ["<<idx0<<" "<<idxN<<"] sendCnt= "<<outputdataArray.vtkarray->GetDataSize()<<" recvCnt= "<<outputdataArray.vtkarray->GetDataSize()<<" globalsz= "<<globalOutputDataArray.vtkarray->GetDataSize()<<endl;
-        MPI_Allgather(outputdataArray.vtkarray->GetVoidPointer(0),
-                      outputdataArray.vtkarray->GetDataSize(),
-                      mpi_type,
-                      globalOutputDataArray.vtkarray->GetVoidPointer(0),
-                      //globalOutputDataArray.vtkarray->GetDataSize(),
-                      outputdataArray.vtkarray->GetDataSize(),
-                      mpi_type,
+        cout<<PAR_Rank()<<": ["<<idx0<<" "<<idxN<<"] sendCnt= "<<outputdataArray.vtkarray->GetDataSize()<<" recvCnt= "<<outputdataArray.vtkarray->GetDataSize()<<" globalsz= "<<globalOutputDataArray.vtkarray->GetDataSize()<<endl;
+        //get output size & dimension for all processors
+        std::vector<int> all_sizes;
+
+        all_sizes.resize(PAR_Size()*outputdataArray.shape.size());
+        MPI_Allgather(&outputdataArray.shape.front(),
+                      outputdataArray.shape.size(),
+                      MPI_INT,
+                      &all_sizes.front(),
+                      outputdataArray.shape.size(),
+                      MPI_INT,
                       VISIT_MPI_COMM);
+
+        std::vector<int> sizes, displs;
+        int totalsize = 0;
+        for(int x = 0; x < all_sizes.size(); x += outputdataArray.shape.size())
+        {
+            int lsize = 1;
+            for(int y = 0; y < outputdataArray.shape.size(); ++y)
+                lsize *= all_sizes[x+y];
+
+            sizes.push_back(lsize);
+            displs.push_back(totalsize);
+            totalsize += lsize;
+        }
+
+//        if(PAR_Rank() == 0)
+//        {
+//            if(PAR_Size() != sizes.size())
+//                std::cout << "PANIC" << std::endl;
+//            for(int x = 0; x < PAR_Size(); ++x)
+//            {
+//                std::cout << sizes[x] << " " << displs[x] << std::endl;
+//            }
+//        }
+
+        MPI_Allgatherv(outputdataArray.vtkarray->GetVoidPointer(0),
+                       outputdataArray.vtkarray->GetDataSize(),
+                       mpi_type,
+                       globalOutputDataArray.vtkarray->GetVoidPointer(0),
+                       &sizes.front(),
+                       &displs.front(),
+                       mpi_type,
+                       VISIT_MPI_COMM);
 
         /// global array should have all appropriate values now..
         /// clear up local space..

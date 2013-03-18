@@ -76,8 +76,7 @@ class TECA_API avtTECA
 
   protected:
     virtual void              SetRequestedTimeFrame(const RequestedTimeFrame& tf);
-    virtual void              GetVariables(std::vector<std::string> &)
-                                   { ; }
+    virtual void              GetVariables(std::vector<std::string> &) { ; }
     virtual void              SetNumberOfTimesteps(int) {;}
     //  Support for ghost time slices
 
