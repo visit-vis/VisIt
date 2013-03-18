@@ -134,16 +134,16 @@ avtTimeWindowLoopFilter::Initialize()
 
     if(numLeaves != dids.size())
         std::cout << "mismatch " << numLeaves << " " << dids.size() << std::endl;
-    int index = -1;
+    int domIndex = -1;
     for(int i = 0; i < dids.size(); ++i)
     {
         if(dids[i] == inputDomain)
         {
-            index = i;
+            domIndex = i;
             break;
         }
     }
-    if(index != -1) inDS = datasets[index];
+    if(domIndex != -1) inDS = datasets[domIndex];
 
     nodeCenteredData = (GetInput()->GetInfo().GetAttributes().GetCentering() == AVT_NODECENT);
     if (nodeCenteredData)
@@ -199,16 +199,16 @@ avtTimeWindowLoopFilter::Execute()
 
     if(numLeaves != dids.size())
         std::cout << "mismatch " << numLeaves << " " << dids.size() << std::endl;
-    int index = -1;
+    int domIndex = -1;
     for(int i = 0; i < dids.size(); ++i)
     {
         if(dids[i] == inputDomain)
         {
-            index = i;
+            domIndex = i;
             break;
         }
     }
-    if(index != -1) ds = datasets[index];
+    if(domIndex != -1) ds = datasets[domIndex];
 
     //std::cout << inputDataSet << "  " << ds << std::endl;
 
@@ -348,12 +348,15 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
         /// todo: handle strings?
 //        if(type == VTK_STRING) mpi_type = MPI_STRING;
 
-        std::cout << "starting index: " << idx0 << " " << idxN << " " << multi_dim_size <<  " "
-                     << outputdataArray.vtkarray->GetDataSize() << " " << std::endl;
+//        std::cout << "starting index: " << idx0 << " " << idxN << " " << multi_dim_size <<  " "
+//                     << outputdataArray.vtkarray->GetDataSize() << " " << std::endl;
+
+	cout<<PAR_Rank()<<": ["<<idx0<<" "<<idxN<<"] sendCnt= "<<outputdataArray.vtkarray->GetDataSize()<<" recvCnt= "<<outputdataArray.vtkarray->GetDataSize()<<" globalsz= "<<globalOutputDataArray.vtkarray->GetDataSize()<<endl;
         MPI_Allgather(outputdataArray.vtkarray->GetVoidPointer(0),
                       outputdataArray.vtkarray->GetDataSize(),
                       mpi_type,
                       globalOutputDataArray.vtkarray->GetVoidPointer(0),
+                      //globalOutputDataArray.vtkarray->GetDataSize(),
                       outputdataArray.vtkarray->GetDataSize(),
                       mpi_type,
                       VISIT_MPI_COMM);
@@ -371,6 +374,7 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     avtCallback::ResetTimeout(0);
     /// cleanup local
     SetOutputDataTree(new avtDataTree(inputDataSet,inputDomain));
+    cout<<PAR_Rank()<<": DONE."<<endl;
 }
 
 bool
