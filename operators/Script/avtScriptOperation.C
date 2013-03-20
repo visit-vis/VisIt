@@ -900,22 +900,22 @@ avtScriptOperation::avtVisItWriteData::func(ScriptArguments& args,
     std::string format = args.getArg(1).AsString();
     bool local = args.getArg(2).AsString() == "local";
     vtkShapedDataArray var = args.getArgAsShapedDataArray(3);
-    std::string varname = args.getArg(4).AsString();
-    int index = args.getArg(5).AsInt();
+    stringVector varnames = args.getArg(4).AsStringVector();
+    intVector indices = args.getArg(5).AsIntVector();
 
-    std::cout << "write out file as: "
-              << filename << " "
-              << varname << " " << index << " "
-              << " format: "
-              << format
-              << " " << local
-              << std::endl;
+    std::cout << "write out file as: "<<filename;
+    std::cout<<", vars,index = [";
+    for (int i = 0; i < varnames.size(); i++)
+	std::cout<<varnames[i]<<","<<indices[i]<<" ";
+    std::cout<<"] ";
+    std::cout<<" format= "<<format<<std::endl;
 
     /// this data has all of the information already..
     /// write it out..
     if(args.GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors())
     {
-        VisItWriteData::write_data(filename,varname,var.vtkarray);
+        //VisItWriteData::write_data(filename,varname,var.vtkarray);
+        VisItWriteData::write_data(filename, varnames, indices, var.shape, var.vtkarray);
     }
 
     result = true;
@@ -941,11 +941,11 @@ avtScriptOperation::avtVisItWriteData::GetSignature(std::string& name,
     argnames.push_back("variable");
     argtypes.push_back(ScriptOperation::VTK_DATA_ARRAY_TYPE);
 
-    argnames.push_back("varname");
-    argtypes.push_back(ScriptOperation::STRING_TYPE);
+    argnames.push_back("varnames");
+    argtypes.push_back(ScriptOperation::STRING_VECTOR_TYPE);
 
-    argnames.push_back("index");
-    argtypes.push_back(ScriptOperation::INT_TYPE);
+    argnames.push_back("indices");
+    argtypes.push_back(ScriptOperation::INT_VECTOR_TYPE);
 
     return ScriptOperation::CONSTANT;
 }
