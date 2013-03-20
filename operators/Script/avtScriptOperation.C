@@ -87,7 +87,7 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
 {
     /// record which rank has what timesteps and parts of the datasets..
   public:
-    avtTimeWindowLoopFilter() {initialized = false; index=0;}
+    avtTimeWindowLoopFilter() { index=0;}
     virtual ~avtTimeWindowLoopFilter() {}
     virtual const char* GetType() {return "avtTimeWindowLoopFilter";}
 
@@ -96,7 +96,7 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
     size_t index;
 
   protected:
-    void                    Initialize();
+    virtual void            PreLoopInitialize();
     virtual void            Execute();
     virtual void            CreateFinalOutput();
     virtual bool            ExecutionSuccessful() { return true; }
@@ -107,7 +107,7 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
 
     bool handleOutputShapeAndData(PyObject* result);
 
-    bool initialized, nodeCenteredData;
+    bool nodeCenteredData;
     int numTuples, idx0, idxN;
   public:
     string script;
@@ -119,10 +119,8 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
 };
 
 void
-avtTimeWindowLoopFilter::Initialize()
+avtTimeWindowLoopFilter::PreLoopInitialize()
 {
-    if (initialized)
-	return;
 
     vtkDataSet *inDS = inputDataSet;
 
@@ -173,7 +171,6 @@ avtTimeWindowLoopFilter::Initialize()
     }
 #endif
 
-    initialized = true;
     
     // values need to be number of tuples * total number of timesteps..
     int totalTimes = GetTotalNumberOfTimeSlicesForRank();
@@ -187,8 +184,6 @@ avtTimeWindowLoopFilter::Initialize()
 void
 avtTimeWindowLoopFilter::Execute()
 {
-    Initialize();
-
     vtkDataSet *ds = inputDataSet;
 
     /// Todo: verify assumption domain ids & leaves traverse the same path?
@@ -240,8 +235,6 @@ void
 avtTimeWindowLoopFilter::CreateFinalOutput()
 {
     Barrier();
-
-    Initialize();
 
     avtCallback::ResetTimeout(0);
     cout<<PAR_Rank() << ": CreateFinalOutput : values= "<<values.size()<<endl;

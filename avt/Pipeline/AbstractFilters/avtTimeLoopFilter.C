@@ -165,9 +165,8 @@ avtTimeLoopFilter::Update(avtContract_p spec)
     // derived filters can use it for setting the start and stop
     // times.
     currentTime = spec->GetDataRequest()->GetTimestep();
-    //cout<<"avtTimeLoopFilter::Update() currentTime= "<<currentTime<<endl<<endl;
 
-    FinalizeTimeLoop();
+    InitializeTimeLoop();
 
     int numTimeLoopIterations = GetNumberOfIterations();
 
@@ -282,7 +281,6 @@ avtTimeLoopFilter::Update(avtContract_p spec)
     GetOutput()->GetInfo().GetAttributes().SetTimeIndex(
                              GetInput()->GetInfo().GetAttributes().GetTimeIndex());
 
-    //cout<<"avtTimeLoopFilter::Update()  DONE"<<endl<<endl;
     return modified;
 }
 
@@ -327,6 +325,19 @@ avtTimeLoopFilter::DataCanBeParallelizedOverTime(void)
     return false;
 }
 
+//****************************************************************************
+// Method:  avtTimeLoopFilter::RankOwnsTimeSlice
+//
+// Purpose:
+//   Determines if rank will load this time slice
+//
+// Programmer:  Dave Pugmire
+// Creation:    March 20, 2013
+//
+// Modifications:
+//
+//****************************************************************************
+
 bool
 avtTimeLoopFilter::RankOwnsTimeSlice(int t)
 {
@@ -336,6 +347,19 @@ avtTimeLoopFilter::RankOwnsTimeSlice(int t)
     return true;
 #endif
 }
+
+//****************************************************************************
+// Method:  avtTimeLoopFilter::GetTotalNumberOfTimeSlicesForRank
+//
+// Purpose:
+//   Return total number of times slices that will be loaded by this rank.
+//
+// Programmer:  Dave Pugmire
+// Creation:    March 20, 2013
+//
+// Modifications:
+//
+//****************************************************************************
 
 int
 avtTimeLoopFilter::GetTotalNumberOfTimeSlicesForRank()
@@ -349,12 +373,24 @@ avtTimeLoopFilter::GetTotalNumberOfTimeSlicesForRank()
 	if (RankOwnsTimeSlice(i))
 	    totalNumTimes++;
     
-    //cout<<__FILE__<<" "<<__LINE__<<" "<<totalNumTimes<<" "<<startTime<<" "<<actualEnd<<endl;
     return totalNumTimes;
 #else
     return ((actualEnd-startTime)/stride+1);
 #endif
 }
+
+//****************************************************************************
+// Method:  avtTimeLoopFilter::GetCyclesForRank
+//
+// Purpose:
+//   Return cycles that will be loaded by this rank.
+//
+// Programmer:  Dave Pugmire
+// Creation:    March 20, 2013
+//
+// Modifications:
+//
+//****************************************************************************
 
 std::vector<int>
 avtTimeLoopFilter::GetCyclesForRank()
@@ -376,6 +412,20 @@ avtTimeLoopFilter::GetCyclesForRank()
 #endif
     return cycles;
 }
+
+//****************************************************************************
+// Method:  avtTimeLoopFilter::GetTimesForRank
+//
+// Purpose:
+//   Return times that will be loaded by this rank.
+//
+// Programmer:  Dave Pugmire
+// Creation:    March 20, 2013
+//
+// Modifications:
+//
+//****************************************************************************
+
 
 std::vector<double>
 avtTimeLoopFilter::GetTimesForRank()
@@ -401,7 +451,7 @@ avtTimeLoopFilter::GetTimesForRank()
 
 
 // ****************************************************************************
-//  Method: avtTimeLoopFilter::FinalizeTimeLoop
+//  Method: avtTimeLoopFilter::InitializeTimeLoop
 //
 //  Purpose:  Sets the begin and end frames for the time loop.  Peforms error
 //            checking on the values.
@@ -423,12 +473,8 @@ avtTimeLoopFilter::GetTimesForRank()
 // ****************************************************************************
 
 void
-avtTimeLoopFilter::FinalizeTimeLoop()
+avtTimeLoopFilter::InitializeTimeLoop()
 {
-    // Hook for derived types to set the start, stop, and stride
-    // possibly using the currentTime. Not always needed.
-    InitializeTimeLoop();
-
     int numStates = GetInput()->GetInfo().GetAttributes().GetNumStates();
     
     if (startTime < 0)
@@ -485,6 +531,10 @@ avtTimeLoopFilter::FinalizeTimeLoop()
     actualEnd = startTime + nFrames *stride;
     if (actualEnd < endTime)
         actualEnd = endTime + stride;
+
+    // Hook for derived types to set the start, stop, and stride
+    // possibly using the currentTime. Not always needed.
+    PreLoopInitialize();
 }
 
 

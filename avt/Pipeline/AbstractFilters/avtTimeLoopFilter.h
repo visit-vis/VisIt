@@ -130,8 +130,8 @@ class PIPELINE_API avtTimeLoopFilter : virtual public avtFilter
     bool                                parallelizingOverTime;
 
     virtual bool                        RankOwnsTimeSlice(int t);
-    virtual void                        InitializeTimeLoop(void) {};
-    void                                FinalizeTimeLoop(void);
+    virtual void                        PreLoopInitialize(void) {};
+    void                                InitializeTimeLoop(void);
 
   protected:
     // Asks whether we have decided to do time parallelization.  This 
