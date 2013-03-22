@@ -43,6 +43,9 @@ avtTECA.C
 avtTECAFilter.C
 AtmosphericRivers.C
 TropicalCyclone.C
+avtTECAScriptOperation.C
+util/Util.cpp
+util/Spline.cpp
 )
 
 INCLUDE_DIRECTORIES(
@@ -66,12 +69,19 @@ ${VISIT_SOURCE_DIR}/visit_vtk/full
 ${VISIT_SOURCE_DIR}/visit_vtk/lightweight
 ${PROJECT_BINARY_DIR}/avt/Plotter/vtk/
 ${VTK_INCLUDE_DIRS}
+${VISIT_SOURCE_DIR}/operators/Script
 )
 
 # Add link directories
 LINK_DIRECTORIES(${LIBRARY_OUTPUT_DIRECTORY} ${VTK_LIBRARY_DIRS})
 
-ADD_LIBRARY(avtteca ${AVTTECA_SOURCES})
-TARGET_LINK_LIBRARIES(avtteca visitcommon vtkCommon)
+ADD_LIBRARY(avtteca_ser STATIC ${AVTTECA_SOURCES})
+TARGET_LINK_LIBRARIES(avtteca_ser avtcalendar visitcommon vtkCommon)
+VISIT_INSTALL_TARGETS(avtteca_ser)
 
-VISIT_INSTALL_TARGETS(avtteca)
+IF(VISIT_PARALLEL)
+    ADD_PARALLEL_LIBRARY(avtteca_par STATIC ${AVTTECA_SOURCES})
+    TARGET_LINK_LIBRARIES(avtteca_par avtcalendar visitcommon vtkCommon)
+    VISIT_INSTALL_TARGETS(avtteca_par)
+ENDIF(VISIT_PARALLEL)
+

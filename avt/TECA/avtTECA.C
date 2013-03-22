@@ -55,6 +55,8 @@
 
 avtTECA::avtTECA()
 {
+    timeframe = avtTECA::Default;
+    customTime = 24;
 }
 
 
@@ -72,12 +74,46 @@ avtTECA::~avtTECA()
 {
 }
 
-
 void
-avtTECA::FinalizeAnalysis(void)
+avtTECA::InitializeAnalysis()
+{
+    timeframe = GetRequestedTimeFrame();
+    if(timeframe == USER_DEFINED)
+        customTime = GetUserDefinedTime();
+    else
+    {
+        switch(timeframe)
+        {
+            case ThreeHour:
+            {
+                customTime = 3;
+                break;
+            }
+            case SixHour:
+            {
+                customTime = 6;
+                break;
+            }
+            case TwentyFourHour:
+            {
+                customTime = 24;
+                break;
+            }
+            case ThreeDays:
+            {
+                customTime = 72;
+                break;
+            }
+        default:
+            customTime = 24;
+        };
+    }
+    vars = GetVariables();
+}
+void
+avtTECA::FinalizeAnalysis()
 {
     CollectResults();
-
     SetupAVTOutput();
 }
 

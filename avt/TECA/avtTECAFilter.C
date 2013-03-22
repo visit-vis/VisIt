@@ -47,6 +47,10 @@
 
 #include <string.h>
 
+#include <avtParallel.h>
+
+//int cuErrOpts = 2; ///CU_VERBOSE
+//int cuErrorOccurred = 0;
 
 // ****************************************************************************
 //  Method: avtTECAFilter constructor
@@ -77,6 +81,13 @@ avtTECAFilter::~avtTECAFilter()
 {
 }
 
+bool
+avtTECAFilter::RankOwnsTimeSlice(int t)
+{
+    return (t % PAR_Size() == PAR_Rank());
+
+    /// loop over times > t and return true..
+}
 
 // ****************************************************************************
 //  Method: avtTECAFilter::ExecuteData
@@ -95,13 +106,24 @@ avtTECAFilter::~avtTECAFilter()
 //  Creation:   February 27, 2012
 //
 // ****************************************************************************
-
+#include <vtkDataSet.h>
+#include <vtkPointData.h>
+#include <vtkDataArray.h>
 vtkDataSet *
 avtTECAFilter::ExecuteData(vtkDataSet *inDS, int, std::string)
 {
-    double dtime = GetInput()->GetInfo().GetAttributes().GetTime();
-    ProcessPiece(currentTime, dtime, inDS);
-    return NULL;
+    indtime = GetInput()->GetInfo().GetAttributes().GetTime();
+
+    int times = 0;
+
+    indataset[currentTime] = inDS;
+//    indataset[currentTime+1] = inDS;
+//    indataset[currentTime+2] = inDS;
+
+    ExecuteProcess();
+
+    indataset.clear();
+    return inDS;
 }
 
 
@@ -134,13 +156,44 @@ avtTECAFilter::UpdateDataObjectInfo(void)
 // ****************************************************************************
 
 avtContract_p
-avtTECAFilter::ModifyContract(avtContract_p contract)
+avtTECAFilter::ModifyContract(avtContract_p spec)
 {
 /*
     cerr << "Should be calling GetVariables and dealing with ghost time slices"
          << endl;
  */
-    return contract;
+    avtDataRequest_p ds = spec->GetDataRequest();
+
+    // set this so we can use the name in exec data
+    std::string primaryVariable = std::string(ds->GetVariable());
+    //cout <<PAR_Rank() << ": primaryVariable = " << primaryVariable <<endl;
+        //
+        // Make a new one
+        //
+    avtDataRequest_p nds = new avtDataRequest(ds);
+
+    /// get all the requested information..
+    InitializeAnalysis();
+
+    int n_vars          = vars.size();
+    // process all vars
+    for(int i = 0; i < n_vars ; i++)
+    {
+        std::string var_str = vars[i];
+        if (primaryVariable != var_str && var_str != std::string("default") &&
+                var_str != "lat" && var_str != "lon")
+        {
+            cout << "Adding \"" << var_str << "\" as secondary var" <<endl;
+            nds->AddSecondaryVariable(var_str.c_str());
+        }
+    }
+
+    //
+    // Create the new pipeline spec from the data spec, and return
+    //
+    avtContract_p rv = new avtContract(spec, nds);
+    //rv->SetReplicateSingleDomainOnAllProcessors(true);
+    return rv;
 }
 
 
@@ -182,3 +235,200 @@ avtTECAFilter::SetupAVTOutput()
     avtDataTree_p tree = CreateOutput();
     SetOutputDataTree(tree);
 }
+
+#include <vtkRectilinearGrid.h>
+#include <vtkImageData.h>
+#include <vtkPointData.h>
+#include <vtkCellData.h>
+#include <vtkDataArray.h>
+bool
+avtTECAFilter::GetLatVal(int timestep, size_t index[2], double &lat_val)
+{
+    if(indataset.count(timestep) == 0)
+        return false;
+
+    vtkRectilinearGrid* grid = vtkRectilinearGrid::SafeDownCast(indataset[timestep]);
+
+    if(!grid)
+        return false;
+
+    vtkDataArray* lat = grid->GetXCoordinates();
+
+    if(index[0] == index[1])
+        lat_val = lat->GetTuple1(index[0]);
+    else
+    {    lat_val = lat->GetTuple1(index[0]);
+        //for(int i = index[0],j = 0; i < index[1]; ++i, ++j)
+        //    lat_val[j] = lat->GetTuple1(i);
+    }
+    return true;
+}
+
+
+
+bool
+avtTECAFilter::GetLongVal(int timestep, size_t index[2], double &lon_val)
+{
+    if(indataset.count(timestep) == 0)
+        return false;
+
+
+    vtkRectilinearGrid* grid = vtkRectilinearGrid::SafeDownCast(indataset[timestep]);
+
+    if(!grid)
+        return false;
+
+    vtkDataArray* lon = grid->GetYCoordinates();
+
+//    for(int i = index[0],j = 0; i < index[1]; ++i, ++j)
+//        lon_val[j] = lon->GetTuple1(i);
+
+    if(index[0] == index[1])
+        lon_val = lon->GetTuple1(index[0]);
+    else
+    {    lon_val = lon->GetTuple1(index[0]);
+        //for(int i = index[0],j = 0; i < index[1]; ++i, ++j)
+        //    lat_val[j] = lat->GetTuple1(i);
+    }
+
+    return true;
+}
+
+float *avtTECAFilter::GetLatValues(int timestep, size_t& lat_values)
+{
+    if(indataset.count(timestep) == 0)
+        return NULL;
+    vtkRectilinearGrid* grid = vtkRectilinearGrid::SafeDownCast(indataset[timestep]);
+
+    if(!grid)
+        return NULL;
+
+    vtkDataArray* lat = grid->GetXCoordinates();
+
+    std::cout << lat->GetClassName() << std::endl;
+    lat_values = lat->GetDataSize();
+    return (float*)lat->GetVoidPointer(0);
+}
+
+float*
+avtTECAFilter::GetLatValues(int timestep, intVector& lat_values)
+{
+    if(indataset.count(timestep) == 0)
+        return NULL;
+    vtkRectilinearGrid* grid = vtkRectilinearGrid::SafeDownCast(indataset[timestep]);
+
+    if(!grid)
+        return NULL;
+
+    vtkDataArray* lat = grid->GetXCoordinates();
+
+    lat_values.clear();
+    int dim[3];
+    grid->GetDimensions(dim);
+    for(int i = 0; i < 3; ++i)
+        lat_values.push_back(dim[i]);
+
+    return (float*)lat->GetVoidPointer(0);
+}
+
+float*
+avtTECAFilter::GetLongValues(int timestep, size_t &long_values)
+{
+    if(indataset.count(timestep) == 0)
+        return NULL;
+
+    vtkRectilinearGrid* grid = vtkRectilinearGrid::SafeDownCast(indataset[timestep]);
+
+    if(!grid)
+        return NULL;
+
+    vtkDataArray* lon = grid->GetYCoordinates();
+    long_values = lon->GetDataSize();
+
+
+    std::cout << lon->GetClassName() << std::endl;
+    return (float*)lon->GetVoidPointer(0);
+}
+
+float*
+avtTECAFilter::GetLongValues(int timestep, intVector &long_values)
+{
+    if(indataset.count(timestep) == 0)
+        return NULL;
+
+    vtkRectilinearGrid* grid = vtkRectilinearGrid::SafeDownCast(indataset[timestep]);
+
+    if(!grid)
+        return NULL;
+
+    vtkDataArray* lon = grid->GetYCoordinates();
+
+    long_values.clear();
+    int dim[3];
+    grid->GetDimensions(dim);
+    for(int i = 0; i < 3; ++i)
+        long_values.push_back(dim[i]);
+
+    return (float*)lon->GetVoidPointer(0);
+
+}
+
+
+bool avtTECAFilter::GetData(const char* varname, int timestep, size_t *start, size_t* count, void* data)
+{
+//    intVector shape;
+//    void* tmpdata = GetData(varname,timestep,shape);
+
+//    if(tmpdata == NULL)
+//        return NULL;
+
+//    return NULL;
+}
+
+void*
+avtTECAFilter::GetData(const char* varname, int timestep, intVector& shape)
+{
+    if(indataset.count(timestep) == 0)
+        return NULL;
+
+    vtkRectilinearGrid* grid = vtkRectilinearGrid::SafeDownCast(indataset[timestep]);
+
+    if(!grid)
+        return NULL;
+
+    shape.clear();
+    int dim[3];
+    grid->GetDimensions(dim);
+    for(int i = 0; i < 3; ++i)
+        shape.push_back(dim[i]);
+
+    if(std::string(varname) == "lon")
+    {
+        float* res = GetLongValues(timestep,shape);
+        if(!res) return NULL;
+
+        return res;
+    }
+    else if(std::string(varname) == "lat")
+    {
+        float* res = GetLatValues(timestep,shape);
+        if(!res) return NULL;
+
+        return res;
+    }
+    else
+    {
+        vtkDataSet* dataset = indataset[timestep];
+        vtkDataArray* array = dataset->GetPointData()->GetArray(varname);
+        if(!array)
+            array = dataset->GetCellData()->GetArray(varname);
+
+        if(!array) return NULL;
+
+        std::cout << array->GetClassName() << std::endl;
+        return array->GetVoidPointer(0);
+    }
+
+    return NULL;
+}
+

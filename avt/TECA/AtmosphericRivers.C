@@ -23,6 +23,46 @@ This is an implementation to detect Atmospheric Rivers in a given vapor data. Cu
 //#include <netcdf.h>
 #include "params.h"
 
+avtTECA::RequestedTimeFrame
+AtmosphericRivers::GetRequestedTimeFrame()
+{
+    return avtTECA::ThreeDays;
+}
+
+stringVector AtmosphericRivers::GetVariables()
+{
+    stringVector vars;
+    vars.push_back(LON_VAR_NAME);
+    vars.push_back(LAT_VAR_NAME);
+    vars.push_back(DATA_VAR_NAME);
+
+    return vars;
+}
+
+void
+AtmosphericRivers::ExecuteProcess()
+{
+
+//    ar_detect_nc(timesteps,in_file, out_file, dataset);
+
+//    void AtmosphericRivers::ar_detect_nc (const std::vector< int >& timesteps,
+//                                          const std::string& in_file,
+//                                          const std::string& out_file,
+//                                          const std::string& dataset);
+}
+
+void
+AtmosphericRivers::CollectResults()
+{
+
+}
+
+avtDataTree_p
+AtmosphericRivers::CreateOutput()
+{
+    return new avtDataTree();
+}
+
 // read vapor data from netCDF file for three time steps and average them
 // Assuming each time step data refers to 1 day's data
 // This version reads a block of 2D vapor array using start [] and count []
@@ -65,13 +105,14 @@ AtmosphericRivers::read_vapor_data_nc_3day (float * vapor_data, input_params * i
         static size_t count[] = {1, num_rows, num_cols};
 
 
-        if( retval = GetData(ips->time_step[iter], start, count, &part_vapor_data[0][0]) )
+        if( retval = GetData(DATA_VAR_NAME, ips->time_step[iter], start, count, &part_vapor_data[0][0]) )
         {
-            printf ("Timestep: %d Error 3:%d: %s Filename: %s\n",
-                    ips->time_step[iter], iter+1,
-                    retval,
-                    ips->ifname[iter]);
+//            printf ("Timestep: %d Error 3:%d: %s Filename: %s\n",
+//                    ips->time_step[iter], iter+1,
+//                    retval,
+//                    ips->ifname[iter]);
             //exit (2);
+            throw VisItException("Error getting data: 86");
         }
 
         for (int i = 0; i < num_rows; i++)
@@ -950,9 +991,9 @@ AtmosphericRivers::date_from_days (int days, int *day, int *month, int leap)
 
 // Find date from file name for providing output AR event dates
 void
-AtmosphericRivers::find_date_from_dfname (input_params *ips, int *yyyy, int *mm, int *dd, int time_step)
+AtmosphericRivers::find_date_from_dfname (input_params *ips, int *yyyy, int *mm, int *dd, int time_step, const char* filename)
 {
-    char * am_str;
+    const char * am_str;
     char date_str[20] = "";
     char year[5] = "";
     char month[3] = "";
@@ -964,7 +1005,7 @@ AtmosphericRivers::find_date_from_dfname (input_params *ips, int *yyyy, int *mm,
     if (strcmp (ips->dataset, "CAM5") == 0)
     {
         // data_file starts with the following prefix
-        am_str = strstr (ips->ifname[2], "TMQ_cam5_1_amip_run2.cam2.h1.");
+        am_str = strstr (filename, "TMQ_cam5_1_amip_run2.cam2.h1.");
         // 29 is the number of characters in the prefix
         strncpy (date_str, am_str+29, 8);
 
@@ -987,7 +1028,7 @@ AtmosphericRivers::find_date_from_dfname (input_params *ips, int *yyyy, int *mm,
     else if (strcmp (ips->dataset, "CMIP5") == 0)
     {
         // data_file starts with the following prefix
-        am_str = strstr (ips->ifname[2], "hus_day_MRI-CGCM3_historical_r1i1p1_");
+        am_str = strstr (filename, "hus_day_MRI-CGCM3_historical_r1i1p1_");
         // 36 is the number of characters in the prefix
         strncpy (date_str, am_str+36, 8);
 
@@ -1077,7 +1118,7 @@ AtmosphericRivers::dump_output_params (output_params *opars, char* output_file_n
     // printf ("Year\tMonth\tDay\tLength\tWidth \n");
     FILE *outfile_t;
     outfile_t = fopen (output_file_name, "a");
-    char poa[2];
+    char poa[3];
 
     if (pe_or_ar == 1)
     {
@@ -1106,10 +1147,10 @@ AtmosphericRivers::dump_output_params (output_params *opars, char* output_file_n
 
 // Driver function for netCDF inputs
 // Can be merged into one driver function for all types of files
-void AtmosphericRivers::ar_detect_nc (std::vector< std::string >& filenames,
-                                      std::vector< int >& timesteps,
-                                      std::string out_file,
-                                      std::string dataset)
+void AtmosphericRivers::ar_detect_nc (const std::vector< int >& timesteps,
+                                      const std::string& in_file,
+                                      const std::string& out_file,
+                                      const std::string& dataset)
 {
     int rows_from;
     int rows_to;
@@ -1121,9 +1162,9 @@ void AtmosphericRivers::ar_detect_nc (std::vector< std::string >& filenames,
 
     init_output_params (opars);
 
-    ips->ifname[0] = (char *) filenames[0].c_str();
-    ips->ifname[1] = (char *) filenames[1].c_str();
-    ips->ifname[2] = (char *) filenames[2].c_str();
+    //ips->ifname[0] = (char *) filenames[0].c_str();
+    //ips->ifname[1] = (char *) filenames[1].c_str();
+    //ips->ifname[2] = (char *) filenames[2].c_str();
     ips->ofname = (char *) out_file.c_str();
     ips->dataset = (char *) dataset.c_str();
 
@@ -1140,7 +1181,7 @@ void AtmosphericRivers::ar_detect_nc (std::vector< std::string >& filenames,
     int y, m, d;
 
     // Works for CAM5 model only
-    find_date_from_dfname (ips, &y, &m, &d, ips->time_step[2]);
+    find_date_from_dfname (ips, &y, &m, &d, ips->time_step[2],in_file.c_str());
 
     opars->year = y;
     opars->month = m;

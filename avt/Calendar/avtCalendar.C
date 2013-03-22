@@ -35,7 +35,6 @@
 * DAMAGE.
 *
 *****************************************************************************/
-
 #include "avtCalendar.h"
 #include "cdms.h"
 #include "cdmsint.h"
@@ -46,6 +45,8 @@
 #include <string>
 #include <VisItException.h>
 
+extern int cuErrOpts = 0;
+
 typedef avtCalendar::time_Units time_Units;
 typedef avtCalendar::TimeObject TimeObject;
 typedef avtCalendar::ReltimeObject ReltimeObject;
@@ -53,9 +54,9 @@ typedef avtCalendar::ComptimeObject ComptimeObject;
 
 avtCalendar::Calendar avtCalendar::defaultCalendar = avtCalendar::Default;
 
-extern int cdParseRelunits(cdCalenType timetype, char* relunits, int* unit, cdCompTime* base_comptime);
-extern int cdValidateTime(cdCalenType timetype, cdCompTime comptime);
-extern void cdCompAddMixed(cdCompTime ct, double value, cdCompTime *result);
+int cdParseRelunits(cdCalenType timetype, char* relunits, int* unit, cdCompTime* base_comptime);
+int cdValidateTime(cdCalenType timetype, cdCompTime comptime);
+void cdCompAddMixed(cdCompTime ct, double value, cdCompTime *result);
 
 #define VALCMP(a,b) ((a)<(b)?-1:(b)<(a)?1:0)
 
@@ -385,7 +386,7 @@ comptime_add(const ComptimeObject &self, double value, time_Units units, cdCalen
     double sec, fmin;
 
 
-                         /* Increment in integer months */
+    /* Increment in integer months */
     if(units >= avtCalendar::time_Months){
 
         switch(units){
@@ -792,3 +793,5 @@ avtCalendar::avtCalendar()
 
 avtCalendar::~avtCalendar()
 {}
+
+#include "cdtime/cdTimeConv.c"

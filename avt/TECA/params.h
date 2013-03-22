@@ -26,7 +26,7 @@ struct input_params
 	int num_lats;
 	int num_lons;
 	int file_type;
-    char *ifname[3];
+    //char *ifname[3];
     int time_step[3];
 	char *ofname;
 	char *dataset;

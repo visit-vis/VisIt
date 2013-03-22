@@ -46,10 +46,8 @@
 #include <teca_exports.h>
 #include <string>
 #include <vector>
-
-/// add calendaring support to TECA
+#include <vectortypes.h>
 #include <avtCalendar.h>
-
 class    vtkDataSet;
 
 // ****************************************************************************
@@ -65,28 +63,32 @@ class    vtkDataSet;
 
 class TECA_API avtTECA
 {
+public:
     enum RequestedTimeFrame
     {
-        ThreeHour, SixHour, TwentyFourHour
+         Default, ThreeHour, SixHour, TwentyFourHour, ThreeDays,USER_DEFINED
     };
 
-  public:
-                              avtTECA();
+    avtTECA();
     virtual                  ~avtTECA();
 
-  protected:
-    virtual void              SetRequestedTimeFrame(const RequestedTimeFrame& tf);
-    virtual void              GetVariables(std::vector<std::string> &) { ; }
-    virtual void              SetNumberOfTimesteps(int) {;}
+protected:
+    void                       InitializeAnalysis();
+    virtual RequestedTimeFrame GetRequestedTimeFrame() = 0;
+    virtual double             GetUserDefinedTime() { return 24; }
+    virtual stringVector       GetVariables() = 0;
     //  Support for ghost time slices
 
-    virtual void              ProcessPiece(int, double, vtkDataSet *) = 0;
+    //virtual void              ProcessPiece(int, double, vtkDataSet *) = 0;
+    virtual void              ExecuteProcess() = 0;
 
     void                      FinalizeAnalysis();
     virtual void              CollectResults() = 0;
     virtual void              SetupAVTOutput() = 0;
 
+    double customTime;
     RequestedTimeFrame timeframe;
+    stringVector vars;
 };
 
 

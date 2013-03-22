@@ -35,6 +35,7 @@ ScriptEnginePluginInfo.C
 avtScriptFilter.C
 avtScriptOperation.C
 Writers/VisItWriteData.C
+#${VISIT_SOURCE_DIR}/avt/TECA/avtTECAScriptOperation.C
 ${COMMON_SOURCES}
 )
 
@@ -85,7 +86,9 @@ ${QT_INCLUDE_DIR}
 ${QT_QTCORE_INCLUDE_DIR}
 ${QT_QTGUI_INCLUDE_DIR}
 ${VTK_INCLUDE_DIRS} 
-${PYTHON_INCLUDE_PATH} 
+${PYTHON_INCLUDE_PATH}
+${VISIT_INCLUDE_DIR}/avt/TECA
+${VISIT_INCLUDE_DIR}/avt/Calendar
 ${VISIT_INCLUDE_DIR}/visitpy/visitpy 
 ${NETCDF_INCLUDE_DIR}
 ${CMAKE_CURRENT_SOURCE_DIR}/Writers
@@ -138,12 +141,12 @@ IF(NOT VISIT_SERVER_COMPONENTS_ONLY AND NOT VISIT_ENGINE_ONLY AND NOT VISIT_DBIO
 ENDIF(NOT VISIT_SERVER_COMPONENTS_ONLY AND NOT VISIT_ENGINE_ONLY AND NOT VISIT_DBIO_ONLY)
 
 ADD_LIBRARY(EScriptOperator_ser ${LIBE_SOURCES})
-TARGET_LINK_LIBRARIES(EScriptOperator_ser visitcommon avtexpressions_ser avtfilters_ser avtpipeline_ser  avtpythonfilters_ser ${NETCDF_LIB})
+TARGET_LINK_LIBRARIES(EScriptOperator_ser visitcommon  avtcalendar avtteca_ser avtexpressions_ser avtfilters_ser avtpipeline_ser  avtpythonfilters_ser   ${NETCDF_LIB})
 SET(INSTALLTARGETS ${INSTALLTARGETS} EScriptOperator_ser)
 
 IF(VISIT_PARALLEL)
     ADD_PARALLEL_LIBRARY(EScriptOperator_par ${LIBE_SOURCES})
-    TARGET_LINK_LIBRARIES(EScriptOperator_par visitcommon avtexpressions_par avtfilters_par avtpipeline_par  avtpythonfilters_par ${NETCDF_LIB})
+    TARGET_LINK_LIBRARIES(EScriptOperator_par visitcommon avtcalendar avtteca_par avtexpressions_par avtfilters_par avtpipeline_par  avtpythonfilters_par ${NETCDF_LIB})
     SET(INSTALLTARGETS ${INSTALLTARGETS} EScriptOperator_par)
 ENDIF(VISIT_PARALLEL)
 

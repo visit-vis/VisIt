@@ -10,7 +10,7 @@
 struct input_params;
 struct output_params;
 
-class TECA_API AtmosphericRivers : public avtTECAFilter
+class TECA_API AtmosphericRivers : virtual public avtTECAFilter
 {
     typedef struct lat_lon_pair_t
     {
@@ -24,10 +24,10 @@ class TECA_API AtmosphericRivers : public avtTECAFilter
             int y;
     }point;
 
-    void ar_detect_nc (std::vector< std::string >& filenames,
-               std::vector< int >& timesteps,
-               std::string out_file,
-               std::string dataset);
+    void ar_detect_nc (const std::vector<int> &timesteps,
+               const std::string& in_file,
+               const std::string& out_file,
+               const std::string& dataset);
 
     void init_output_params (output_params *opars);
 
@@ -85,7 +85,7 @@ class TECA_API AtmosphericRivers : public avtTECAFilter
 
     void date_from_days (int days, int *day, int *month, int leap);
 
-    void find_date_from_dfname (input_params *ips, int *yyyy, int *mm, int *dd, int time_step);
+    void find_date_from_dfname (input_params *ips, int *yyyy, int *mm, int *dd, int time_step, const char* filename);
 
     int get_num_input_files (char *ifile);
 
@@ -94,6 +94,19 @@ class TECA_API AtmosphericRivers : public avtTECAFilter
     void get_num_time_steps (char *ifname, int *num_ts_array);
 
     void dump_output_params (output_params *opars, char* output_file_name, int pe_or_ar);
+
+    /// input information
+    stringVector GetVariables();
+    RequestedTimeFrame GetRequestedTimeFrame();
+
+    /// execute phase..
+    void ExecuteProcess();
+
+    /// output information
+    void CollectResults();
+    avtDataTree_p CreateOutput();
+public:
+    AtmosphericRivers() : avtTECAFilter() {}
 };
 
 #endif // AR_DETECT_H

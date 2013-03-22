@@ -57,9 +57,11 @@
 #include <vtkCellData.h>
 
 #include <avtParallel.h>
+#include <avtTECAScriptOperation.h>
 
 struct ScriptData
 {
+    avtTecaScriptOperation* tfilter;
     avtRFilter* rfilter;
     avtScriptOperation* sfilter;
     std::map<std::string,ScriptOperation*> operations;
@@ -133,6 +135,9 @@ avtScriptFilter::avtScriptFilter()
 
     scriptData->sfilter = new avtScriptOperation();
     scriptData->sfilter->RegisterOperations(this);
+
+    scriptData->tfilter = new avtTecaScriptOperation();
+    scriptData->tfilter->RegisterOperations(this);
 }
 
 // ****************************************************************************
@@ -151,6 +156,7 @@ avtScriptFilter::~avtScriptFilter()
     {
         delete scriptData->rfilter;
         delete scriptData->sfilter;
+        delete scriptData->tfilter;
         delete scriptData;
     }
     if(pyEnv)

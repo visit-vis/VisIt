@@ -61,7 +61,7 @@
 //  Creation:   February 27, 2012
 //
 // ****************************************************************************
-
+class vtkDataSet;
 class TECA_API avtTECAFilter : public avtTimeLoopFilter,
                                      public avtDataTreeIterator, 
                                      public avtTECA
@@ -80,6 +80,7 @@ class TECA_API avtTECAFilter : public avtTimeLoopFilter,
     virtual void              UpdateDataObjectInfo(void);
     virtual void              ReleaseData(void);
     virtual avtContract_p     ModifyContract(avtContract_p);
+    virtual bool              RankOwnsTimeSlice(int t);
 
     virtual bool              FilterSupportsTimeParallelization(void) { return true; }
     virtual bool              DataCanBeParallelizedOverTime(void) { return true; }
@@ -91,10 +92,23 @@ class TECA_API avtTECAFilter : public avtTimeLoopFilter,
     virtual void              SetupAVTOutput();
     virtual avtDataTree_p     CreateOutput() = 0;
 
-    virtual bool              GetData(int timestep, size_t *start, size_t* count, void* data) { return true; }
+    virtual bool              GetData(const char *varname, int timestep, size_t* start, size_t *count, void* data);
+    virtual void*              GetData(const char *varname, int timestep, intVector& shape);
+
 //    if ((retval = nc_get_var1_double (ncid, lon_varid, index, &lon_val)))
-    virtual double              GetLongVal(int timestep, size_t index[2], double& lon_val) { return 0; }
-    virtual double              GetLatVal(int timestep, size_t index[2], double& lat_val) { return 0; }
+    virtual bool              GetLongVal(int timestep,
+                                         size_t index[2],
+                                         double &lon_val);
+    virtual bool              GetLatVal(int timestep,
+                                        size_t index[2],
+                                        double &lat_val);
+    virtual float*           GetLatValues(int timestep, size_t& lat_values);
+    virtual float*           GetLongValues(int timestep, size_t& long_values);
+    virtual float*           GetLatValues(int timestep, intVector& lat_values);
+    virtual float*           GetLongValues(int timestep, intVector& long_values);
+private:
+    double                    indtime;
+    std::map<int,vtkDataSet*> indataset;
 };
 
 
