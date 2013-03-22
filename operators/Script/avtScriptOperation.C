@@ -901,49 +901,34 @@ avtScriptOperation::avtVisItWriteData::func(ScriptArguments& args,
     std::string format = args.getArg(1).AsString();
     bool local = args.getArg(2).AsString() == "local";
     stringVector dimNames = args.getArg(3).AsStringVector();
-    vtkShapedDataArray var = args.getArgAsShapedDataArray(5);
-    stringVector varnames = args.getArg(6).AsStringVector();
-    intVector indices = args.getArg(7).AsIntVector();
+    doubleVector dimX = args.getArg(4).AsDoubleVector();
+    doubleVector dimY = args.getArg(5).AsDoubleVector();
+    doubleVector dimZ = args.getArg(6).AsDoubleVector();
+    vtkShapedDataArray var = args.getArgAsShapedDataArray(7);
+    stringVector varnames = args.getArg(8).AsStringVector();
+    intVector indices = args.getArg(9).AsIntVector();
 
     std::vector<std::vector<double> > dimensions;
-    /*
-    std::vector<Variant> dimensionVariants = args.getArgAsVariantVector(4);
-    if (dimNames.size() != dimensionVariants.size())
+    int nDims = dimNames.size();
+    dimensions.resize(nDims);
+    if (nDims > 0)
     {
-	std::cout<<" dimension size mismatch!!"<<endl;
-	return false;
+	dimensions[0].resize(dimX.size());
+	for (int i = 0; i < dimX.size(); i++)
+	    dimensions[0][i] = dimX[i];
     }
-    else
+    if (nDims > 1)
     {
-	dimensions.resize(dimensionVariants.size());
-	for (int i = 0; i < dimensionVariants.size(); i++)
-	{
-	    cout<<"DIM "<<i<<": "<<dimNames[i]<<" "<<dimensionVariants[i].TypeName()<<endl;
-	    doubleVector d = dimensionVariants[i].AsDoubleVector();
-	    dimensions[i].resize(d.size());
-	    for (int j = 0; j < d.size(); j++)
-		dimensions[i][j] = d[j];
-	}
+	dimensions[1].resize(dimY.size());
+	for (int i = 0; i < dimY.size(); i++)
+	    dimensions[1][i] = dimY[i];
     }
-    */
-
-    intVector dimSz = args.getArg(4).AsIntVector();
-    if (dimNames.size() != dimSz.size())
+    if (nDims > 2)
     {
-	std::cout<<" dimension size mismatch!!"<<endl;
-	return false;
+	dimensions[2].resize(dimZ.size());
+	for (int i = 0; i < dimZ.size(); i++)
+	    dimensions[2][i] = dimZ[i];
     }
-    else
-    {
-	dimensions.resize(dimSz.size());
-	for (int i = 0; i < dimensions.size(); i++)
-	{
-	    dimensions[i].resize(dimSz[i]);
-	    for(int j = 0; j < dimensions[i].size(); j++)
-		dimensions[i][j] = j;
-	}
-    }
-
 
     std::cout << "write out file as: "<<filename;
     std::cout<<" dims= [";
@@ -987,12 +972,13 @@ avtScriptOperation::avtVisItWriteData::GetSignature(std::string& name,
     argnames.push_back("dimension_names");
     argtypes.push_back(ScriptOperation::STRING_VECTOR_TYPE);
 
-    /*
-    argnames.push_back("dimension_values");
-    argtypes.push_back(ScriptOperation::VARIANT_VECTOR_TYPE);
-    */
-    argnames.push_back("dimension_values");
-    argtypes.push_back(ScriptOperation::INT_VECTOR_TYPE);
+    argnames.push_back("dimension_X");
+    argtypes.push_back(ScriptOperation::DOUBLE_VECTOR_TYPE);
+    argnames.push_back("dimension_Y");
+    argtypes.push_back(ScriptOperation::DOUBLE_VECTOR_TYPE);
+    argnames.push_back("dimension_Z");
+    argtypes.push_back(ScriptOperation::DOUBLE_VECTOR_TYPE);
+
 
     argnames.push_back("variable");
     argtypes.push_back(ScriptOperation::VTK_DATA_ARRAY_TYPE);
