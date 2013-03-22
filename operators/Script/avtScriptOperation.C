@@ -899,12 +899,57 @@ avtScriptOperation::avtVisItWriteData::func(ScriptArguments& args,
     std::string filename = args.getArg(0).AsString();
     std::string format = args.getArg(1).AsString();
     bool local = args.getArg(2).AsString() == "local";
-    vtkShapedDataArray var = args.getArgAsShapedDataArray(3);
-    stringVector varnames = args.getArg(4).AsStringVector();
-    intVector indices = args.getArg(5).AsIntVector();
+    stringVector dimNames = args.getArg(3).AsStringVector();
+    vtkShapedDataArray var = args.getArgAsShapedDataArray(5);
+    stringVector varnames = args.getArg(6).AsStringVector();
+    intVector indices = args.getArg(7).AsIntVector();
+
+    std::vector<std::vector<double> > dimensions;
+    /*
+    std::vector<Variant> dimensionVariants = args.getArgAsVariantVector(4);
+    if (dimNames.size() != dimensionVariants.size())
+    {
+	std::cout<<" dimension size mismatch!!"<<endl;
+	return false;
+    }
+    else
+    {
+	dimensions.resize(dimensionVariants.size());
+	for (int i = 0; i < dimensionVariants.size(); i++)
+	{
+	    cout<<"DIM "<<i<<": "<<dimNames[i]<<" "<<dimensionVariants[i].TypeName()<<endl;
+	    doubleVector d = dimensionVariants[i].AsDoubleVector();
+	    dimensions[i].resize(d.size());
+	    for (int j = 0; j < d.size(); j++)
+		dimensions[i][j] = d[j];
+	}
+    }
+    */
+
+    intVector dimSz = args.getArg(4).AsIntVector();
+    if (dimNames.size() != dimSz.size())
+    {
+	std::cout<<" dimension size mismatch!!"<<endl;
+	return false;
+    }
+    else
+    {
+	dimensions.resize(dimSz.size());
+	for (int i = 0; i < dimensions.size(); i++)
+	{
+	    dimensions[i].resize(dimSz[i]);
+	    for(int j = 0; j < dimensions[i].size(); j++)
+		dimensions[i][j] = j;
+	}
+    }
+
 
     std::cout << "write out file as: "<<filename;
-    std::cout<<", vars,index = [";
+    std::cout<<" dims= [";
+    for (int i = 0; i < dimNames.size(); i++)
+	std::cout<<dimNames[i]<<":"<<dimensions[i].size()<<" ";
+    std::cout<<"] ";
+    std::cout<<" vars,index = [";
     for (int i = 0; i < varnames.size(); i++)
 	std::cout<<varnames[i]<<","<<indices[i]<<" ";
     std::cout<<"] ";
@@ -915,7 +960,7 @@ avtScriptOperation::avtVisItWriteData::func(ScriptArguments& args,
     if(args.GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors())
     {
         //VisItWriteData::write_data(filename,varname,var.vtkarray);
-        VisItWriteData::write_data(filename, varnames, indices, var.shape, var.vtkarray);
+        VisItWriteData::write_data(filename, dimNames, dimensions, varnames, indices, var.shape, var.vtkarray);
     }
 
     result = true;
@@ -937,6 +982,16 @@ avtScriptOperation::avtVisItWriteData::GetSignature(std::string& name,
 
     argnames.push_back("local_or_global");
     argtypes.push_back(ScriptOperation::STRING_TYPE);
+
+    argnames.push_back("dimension_names");
+    argtypes.push_back(ScriptOperation::STRING_VECTOR_TYPE);
+
+    /*
+    argnames.push_back("dimension_values");
+    argtypes.push_back(ScriptOperation::VARIANT_VECTOR_TYPE);
+    */
+    argnames.push_back("dimension_values");
+    argtypes.push_back(ScriptOperation::INT_VECTOR_TYPE);
 
     argnames.push_back("variable");
     argtypes.push_back(ScriptOperation::VTK_DATA_ARRAY_TYPE);

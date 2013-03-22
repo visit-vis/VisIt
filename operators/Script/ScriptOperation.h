@@ -72,7 +72,7 @@ public:
     {
         if(variantVector.count(i) > 0)
             return variantVector[i];
-
+	
         std::vector<Variant> tmp;
         tmp.push_back(args[i]);
         return tmp;
