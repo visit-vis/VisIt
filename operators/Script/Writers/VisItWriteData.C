@@ -39,15 +39,6 @@ VisItWriteData::write_data(const std::string &filename,
 			   const intVector &arrayShape,
 			   vtkAbstractArray *vtkarray)
 {
-    /*
-    std::vector<int> dimSz;
-    std::vector<std::string> dimNm;
-    dimSz.push_back(6);
-    dimSz.push_back(5);
-    dimNm.push_back("lat");
-    dimNm.push_back("lon");
-    */
-    
     vtkDoubleArray *array = vtkDoubleArray::SafeDownCast(vtkarray);
 
     int ncID;
@@ -57,8 +48,6 @@ VisItWriteData::write_data(const std::string &filename,
     int nDims = dimensions.size();
 
     nc_create(filename.c_str(), NC_CLOBBER, &ncID);
-    cout<<"NVALS= "<<nVals<<endl;
-    cout<<"NVARS= "<<nVars<<endl;
     //Define dimensions.
     int *dimIds = new int[nDims];
     for (int i = 0; i < nDims; i++)
@@ -69,9 +58,17 @@ VisItWriteData::write_data(const std::string &filename,
     for (int i = 0; i < nDims; i++)
 	nc_def_var(ncID, dimNm[i].c_str(), NC_DOUBLE, 1, &dimIds[i], &dimVarIds[i]);
 
+    //Reverse the dim ordering...
+    int *swapIds = new int[nDims];
+    for (int i = 0; i < nDims; i++)
+	swapIds[i] = dimIds[nDims-1 -i];
+    for (int i = 0; i < nDims; i++)
+	dimIds[i] = swapIds[i];
+    delete [] swapIds;
+
     int *varIds = new int[nVars];
     for (int i = 0; i < nVars; i++)
-	nc_def_var(ncID, varnames[i].c_str(), NC_DOUBLE, nDims, dimVarIds, &varIds[i]);
+	nc_def_var(ncID, varnames[i].c_str(), NC_DOUBLE, nDims, dimIds, &varIds[i]);
 
     nc_enddef(ncID);
 

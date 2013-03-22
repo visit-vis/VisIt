@@ -120,6 +120,17 @@ class avtScriptOperation : public ScriptOperationsManager
                                   std::vector<ScriptVariantTypeEnum>& argtypes);
     };
 
+    class avtVisItGetMeshInfo : public ScriptOperation
+    {
+    public:
+        /// we are always returning true unless the script
+        /// itself is failing not the inquiry..
+        virtual bool func(ScriptArguments& args, Variant& result);
+        virtual ScriptOperationResponse GetSignature(std::string& name,
+                                  stringVector& argnames,
+                                  std::vector<ScriptVariantTypeEnum>& argtypes);
+    };
+
     class avtVisItWriteData : public ScriptOperation
     {
     public:
@@ -153,8 +164,9 @@ private:
     avtVisItGetRSupportDirectory avag;
 
     avtVisItGetVarInfo vgvi;
+    avtVisItGetMeshInfo vgmi;
     avtVisItWriteData vmax;
-	avtVisItWriteData avwd;
+    avtVisItWriteData avwd;
 };
 
 #endif

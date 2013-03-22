@@ -54,6 +54,7 @@
 #include <vtkFloatArray.h>
 #include <vtkPointData.h>
 #include <vtkCellData.h>
+#include <vtkRectilinearGrid.h>
 
 #include <avtParallel.h>
 #include <vector>
@@ -1083,6 +1084,63 @@ avtScriptOperation::avtVisItGetVarInfo::GetSignature(std::string& name,
     return ScriptOperation::CONSTANT;
 }
 
+
+bool
+avtScriptOperation::avtScriptOperation::avtVisItGetMeshInfo::func(ScriptArguments& args, Variant& result)
+{
+    vtkDataSet *dataset = args.GetInputDataSet();
+
+    vtkRectilinearGrid *rg = vtkRectilinearGrid::SafeDownCast(dataset);
+    if (dataset->GetDataObjectType() != VTK_RECTILINEAR_GRID || rg == NULL)
+    {
+	result = "";
+	return true;
+    }
+    
+    JSONNode resultNode;
+    resultNode["type"] = "rectilinear_grid";
+    JSONNode::JSONArray dims(3, -1);
+    int numX = rg->GetDimensions()[0];
+    int numY = rg->GetDimensions()[1];
+    int numZ = rg->GetDimensions()[2];
+
+    dims[0] = numX;
+    dims[1] = numY;
+    dims[2] = numZ;
+
+    vtkDataArray *x = rg->GetXCoordinates();
+    vtkDataArray *y = rg->GetYCoordinates();
+    vtkDataArray *z = rg->GetZCoordinates();
+
+    JSONNode::JSONArray xc(numX, -1);
+    JSONNode::JSONArray yc(numY, -1);
+    JSONNode::JSONArray zc(numZ, -1);
+
+    for (int i = 0; i < numX; i++)
+	xc[i] = x->GetTuple1(i);
+    for (int i = 0; i < numY; i++)
+	yc[i] = y->GetTuple1(i);
+    for (int i = 0; i < numZ; i++)
+	zc[i] = z->GetTuple1(i);
+    
+    resultNode["dims"] = dims;
+    resultNode["x_coords"] = xc;
+    resultNode["y_coords"] = yc;
+    resultNode["z_coords"] = zc;
+    result = resultNode.ToString();
+    return true;
+}
+
+ScriptOperation::ScriptOperationResponse
+avtScriptOperation::avtScriptOperation::avtVisItGetMeshInfo::GetSignature(std::string& name,
+                          stringVector& argnames,
+                          std::vector<ScriptVariantTypeEnum>& argtypes)
+{
+    name = "visit_get_mesh_info";
+
+    return ScriptOperation::CONSTANT;
+}
+
 void
 avtScriptOperation::RegisterOperations(ScriptManager *manager)
 {
@@ -1092,6 +1150,7 @@ avtScriptOperation::RegisterOperations(ScriptManager *manager)
     manager->RegisterOperation(&vfef);
     manager->RegisterOperation(&avag);
     manager->RegisterOperation(&vgvi);
+    manager->RegisterOperation(&vgmi);
     manager->RegisterOperation(&vmax);
-	manager->RegisterOperation(&avwd);
+    manager->RegisterOperation(&avwd);
 }
