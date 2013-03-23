@@ -45,7 +45,7 @@
 #include <string>
 #include <VisItException.h>
 
-extern int cuErrOpts = 0;
+int cuErrOpts = 0;
 
 typedef avtCalendar::time_Units time_Units;
 typedef avtCalendar::TimeObject TimeObject;

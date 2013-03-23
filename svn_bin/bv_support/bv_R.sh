@@ -185,6 +185,7 @@ function build_R
 
     info "Installing package ismev . . ."
     $R_INSTALL_DIR/bin/R -e "r = getOption(\"repos\"); r[\"CRAN\"] = \"http://cran.us.r-project.org\"; options(repos = r); rm(r); install.packages(\"ismev\")"
+    #$R_INSTALL_DIR/bin/R -e "install.packages(\"ismev\", repos = \"http://cran.us.r-project.org\")"
 
     #
     # TODO, install name tool for OSX
