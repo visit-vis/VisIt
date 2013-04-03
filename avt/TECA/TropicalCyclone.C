@@ -30,7 +30,7 @@
 #include <avtCalendar.h>
 
 #include <DebugStream.h>
-
+#include <avtCallback.h>
 
 avtTECA::RequestedTimeFrame TstormsDriver::GetRequestedTimeFrame()
 {
@@ -55,7 +55,7 @@ stringVector TstormsDriver::GetVariables()
 
     return vars;
 }
-
+#include <avtParallel.h>
 void
 TstormsDriver::ExecuteProcess()
 {
@@ -63,10 +63,23 @@ TstormsDriver::ExecuteProcess()
     float* latvals = GetLatValues(currentTime, latsize);
     float* lonvals = GetLongValues(currentTime, lonsize);
 
-    Glat = TNT::Fortran_Array1D<float>(latsize, latvals);
-    Glon = TNT::Fortran_Array1D<float>(lonsize, lonvals);
+    Glat = TNT::Fortran_Array1D<float>(latsize);
+    Glon = TNT::Fortran_Array1D<float>(lonsize);
 
-    TstormsTimestep ts(currentTime, this, "abc.txt", "log.txt");
+    for(size_t i = 0; i < latsize; ++i)
+        Glat(i) = latvals[i];
+    for(size_t i = 0; i < lonsize; ++i)
+        Glon(i) = lonvals[i];
+
+
+    int TIMESTEP_WITHIN_FILE=currentTime;
+    std::string input_filename = "abc";
+    std::stringstream ss1, ss2;
+
+    ss1<<input_filename<<"-raw_cyclone."<<setw(5)<<setfill('0')<<TIMESTEP_WITHIN_FILE<<".txt";
+    ss2<<input_filename<<"-raw_cyclone."<<setw(5)<<setfill('0')<<TIMESTEP_WITHIN_FILE<<".log";
+
+    TstormsTimestep ts(currentTime, this, ss1.str(), ss2.str());
 
     ts.initialize_thresholds();
     ts.print_thresholds();
@@ -74,6 +87,7 @@ TstormsDriver::ExecuteProcess()
     ts.changeTimestep(currentTime);
     ts.go();
 
+    Barrier();
     /*
     time_t start_time, end_time;
 
@@ -82,9 +96,6 @@ TstormsDriver::ExecuteProcess()
     NetCDFInterface nc_file(input_filename);
 
     int n;
-    std::stringstream ss1, ss2;
-    ss1<<input_filename<<"-raw_cyclone."<<setw(5)<<setfill('0')<<TIMESTEP_WITHIN_FILE<<".txt";
-    ss2<<input_filename<<"-raw_cyclone."<<setw(5)<<setfill('0')<<TIMESTEP_WITHIN_FILE<<".log";
 
     std::string output_filename=ss1.str();
     std::string log_filename   =ss2.str();
@@ -265,7 +276,9 @@ TstormsDriver::CollectResults()
 
 avtDataTree_p
 TstormsDriver::CreateOutput()
-{}
+{
+    return new avtDataTree();
+}
 
 
 void TstormsDriver::set_dx_dy(TNT::Fortran_Array1D<float>& dx, float& dy)
@@ -293,12 +306,39 @@ TstormsDriver::read3dTimestep(const std::string& var, int timestep, TNT::Fortran
     float* data;
     intVector shape;
 
-    std::cout << "reading " << var.c_str() << std::endl;
+    //std::cout << "reading " << var.c_str() << std::endl;
     data = (float*)GetData(var.c_str(), timestep, shape);
 
-    std::cout << "reading " << var.c_str() << " returned: " << shape[0] << " " << shape[1] << std::endl;
+    v = TNT::Fortran_Array2D<float>(shape[0],shape[1]);
+
+
+        size_t index = 0;
+        for(size_t j = 0; j < shape[1]; ++j)
+        {
+            for(size_t i = 0; i < shape[0]; ++i)
+            {
+                v(i+1,j+1) = data[i*shape[1] + j];//data[index++];//data[i*shape[1] + j];//data[index++];
+                //if(data[j*shape[0] + i] != v(i+1,j+1) )
+                //    std::cout << "blah: " << i << " " << j << std::endl;
+            }
+        }
+
+//        std::cout << std::endl;
+
+//        std::cout << shape[0] << " " << v.dim1() << std::endl;
+//    std::cout << "reading " << var.c_str() << " returned: " << shape[0] << " " << shape[1] << std::endl;
     //convert timestep to float3d array...
-    v = TNT::Fortran_Array2D<float>(shape[0],shape[1],data);
+//    v = TNT::Fortran_Array2D<float>(shape[0],shape[1],data);
+
+//        if(var == "PSL")
+//        {
+//            for(size_t i = 0; i < shape[0]; ++i)
+//            {
+//                std::cout << v(i+1,1) << std::endl;
+//            }
+
+//            exit(0);
+//        }
 }
 
 
@@ -1324,7 +1364,7 @@ TstormsTimestep::TstormsTimestep(int t,
   //<<"  lat size="<<lat.dim1()
   //<<", lon size="<<lon.dim1()<<endl;
 
-  std::cout << "opening " << std::endl;
+  std::cout << "opening " << result_name << std::endl;
   result_file.open(result_name.c_str(), fstream::out);
   if (!result_file) {
     cout<<"Could not open results file for writing"<<endl;
@@ -1364,8 +1404,10 @@ void TstormsTimestep::go() {
   std::cout << "output" << std::endl;
   outputResultsToFile();
 
+  std::cout << "cleanup" << std::endl;
   cleanup();
 
+  std::cout << PAR_Rank() << ": end" << std::endl;
 }
 
 //
@@ -1627,7 +1669,7 @@ void TstormsTimestep::mainloop() {
       vort_max = Util::MAXVAL(vort, im, ip, jm, jp);
 
       vort_current = vort(i,j);
-      std::cout <<" vort_local_max= "<<vort_max<<" " << std::endl;
+      //std::cout <<" vort_local_max= "<<vort_max<<" " << std::endl;
 
       if ((vort_current<vort_max)||
       (vort_current<crit_vort))

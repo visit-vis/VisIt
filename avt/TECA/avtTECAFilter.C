@@ -116,6 +116,7 @@ avtTECAFilter::ExecuteData(vtkDataSet *inDS, int, std::string)
 
     int times = 0;
 
+    std::cout << currentTime << std::endl;
     indataset[currentTime] = inDS;
 //    indataset[currentTime+1] = inDS;
 //    indataset[currentTime+2] = inDS;
@@ -123,6 +124,9 @@ avtTECAFilter::ExecuteData(vtkDataSet *inDS, int, std::string)
     ExecuteProcess();
 
     indataset.clear();
+//    //inDS->Register(NULL);
+//    vtkDataSet* dataset = inDS->NewInstance();
+//    dataset->DeepCopy(inDS);
     return inDS;
 }
 
@@ -232,8 +236,8 @@ avtTECAFilter::ReleaseData(void)
 void
 avtTECAFilter::SetupAVTOutput()
 {
-    avtDataTree_p tree = CreateOutput();
-    SetOutputDataTree(tree);
+    //avtDataTree_p tree = CreateOutput();
+    //SetOutputDataTree(tree);
 }
 
 #include <vtkRectilinearGrid.h>
@@ -305,7 +309,7 @@ float *avtTECAFilter::GetLatValues(int timestep, size_t& lat_values)
 
     vtkDataArray* lat = grid->GetXCoordinates();
 
-    std::cout << lat->GetClassName() << std::endl;
+    //std::cout << lat->GetClassName() << std::endl;
     lat_values = lat->GetDataSize();
     return (float*)lat->GetVoidPointer(0);
 }
@@ -346,7 +350,7 @@ avtTECAFilter::GetLongValues(int timestep, size_t &long_values)
     long_values = lon->GetDataSize();
 
 
-    std::cout << lon->GetClassName() << std::endl;
+    //std::cout << lon->GetClassName() << std::endl;
     return (float*)lon->GetVoidPointer(0);
 }
 
@@ -425,7 +429,7 @@ avtTECAFilter::GetData(const char* varname, int timestep, intVector& shape)
 
         if(!array) return NULL;
 
-        std::cout << array->GetClassName() << std::endl;
+        //std::cout << array->GetClassName() << std::endl;
         return array->GetVoidPointer(0);
     }
 

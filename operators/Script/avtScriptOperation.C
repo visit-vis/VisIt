@@ -142,14 +142,15 @@ avtTimeWindowLoopFilter::PreLoopInitialize()
             break;
         }
     }
-    if(domIndex != -1) inDS = datasets[domIndex];
+    if(domIndex != -1)
+        inDS = datasets[domIndex];
 
     nodeCenteredData = (GetInput()->GetInfo().GetAttributes().GetCentering() == AVT_NODECENT);
+    /// TODO: IMPORTANT: make sure request variable is met (not just default)
     if (nodeCenteredData)
         numTuples = inDS->GetPointData()->GetScalars()->GetNumberOfTuples();
     else
         numTuples = inDS->GetCellData()->GetScalars()->GetNumberOfTuples();
-
     idx0 = 0;
     idxN = numTuples;
     index = 0;
@@ -179,7 +180,7 @@ avtTimeWindowLoopFilter::PreLoopInitialize()
     //cout<<"Is data replicated: " << GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors()<<endl;
 
     //format is: T0_val0, T0_val1, ...., T1_val0, T2_val1, ....
-    values.resize(numTuples*totalTimes);
+    values.resize(numTuples*totalTimes,0);
 }
 
 void
@@ -204,16 +205,19 @@ avtTimeWindowLoopFilter::Execute()
             break;
         }
     }
-    if(domIndex != -1) ds = datasets[domIndex];
+    if(domIndex != -1)
+        ds = datasets[domIndex];
 
     //std::cout << inputDataSet << "  " << ds << std::endl;
 
     vtkFloatArray *scalars = NULL;
 
+    /// TODO: Important: make sure variable is appropriately casted.
     if (nodeCenteredData)
         scalars = (vtkFloatArray *)ds->GetPointData()->GetScalars();
     else
         scalars = (vtkFloatArray *)ds->GetCellData()->GetScalars();
+
     float *vals = (float *) scalars->GetVoidPointer(0);
 
 //    int rank = PAR_Rank();
@@ -224,7 +228,6 @@ avtTimeWindowLoopFilter::Execute()
 
     for (size_t i = 0; i < numTuples; i++)
         values[index++] = vals[i];
-    
     /*
     int rank = PAR_Rank();
     cout<<"TimeStep: " << rank << " " << currentTime<< " " << GetStartTime() << " " << GetEndTime() << " "
@@ -245,7 +248,7 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     
     vector<float> finalVals;
 #ifdef PARALLEL
-    finalVals.resize((idxN-idx0)*numTimes);
+    finalVals.resize((idxN-idx0)*numTimes,0);
     float *res = new float[numTimes];
     float *tmp = new float[numTimes];
 
@@ -253,7 +256,7 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     vector<int> myCycles = GetCyclesForRank();
     for (int i = 0; i < myCycles.size(); i++)
 	cycleMap[myCycles[i]] = i;
-    int finalIdx = 0;
+    size_t finalIdx = 0;
     for (int i = 0; i < numTuples; i++)
     {
 	for (int j = 0; j < numTimes; j++)
@@ -271,8 +274,8 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
 	    }
 	}
 	
-	MPI_Allreduce(tmp, res, numTimes, MPI_FLOAT, MPI_SUM, VISIT_MPI_COMM);
-	if (i >= idx0 && i < idxN)
+    MPI_Allreduce(tmp, res, numTimes, MPI_FLOAT, MPI_SUM, VISIT_MPI_COMM);
+    if (i >= idx0 && i < idxN)
 	    for (int j = 0; j < numTimes; j++)
 		finalVals[finalIdx++] = res[j];
     }
@@ -281,7 +284,7 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
 #else
     //Redo the indexing.....
     finalVals = values;
-    int idx = 0;
+    size_t idx = 0;
     for (int i = 0; i < numTuples; i++)
 	for (int j = 0; j < numTimes; j++)
 	    finalVals[idx++] = values[j*numTuples +i];
@@ -301,7 +304,8 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     {
         for(int j = 0; j < numTimes; ++j)
         {
-            PyObject* value = PyFloat_FromDouble(finalVals[j*totalTupleSize + i]);
+            //std::cout << finalVals[j*totalTupleSize + i] << std::endl;
+            PyObject* value = PyFloat_FromDouble((double)finalVals[i*numTimes + j]); //[j*totalTupleSize + i]);
             PyTuple_SET_ITEM(retval, j, value);
         }
 

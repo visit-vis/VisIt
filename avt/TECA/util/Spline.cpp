@@ -13,8 +13,8 @@ Spline::Spline() {}
 //: nmax(2), pcom(nmax), xicom(nmax) {}
 
 inline void copysecondindex(Fortran_Array1D<float>& to,  
-			    Fortran_Array2D<float>& from, 
-			    int index) {
+                    Fortran_Array2D<float>& from, 
+                    int index) {
     int n;
     for (n = 1; n < to.dim1(); n++){
       to(n) = from(n,index);
@@ -33,9 +33,9 @@ inline float sign(float x, float y) {
 //!-----------------------------------------------------------------------
 
 void Spline::splie2(  const Fortran_Array1D<float>& x1a,
-		      const Fortran_Array1D<float>& x2a,
-		      const Fortran_Array2D<float>& ya, 
-		      Fortran_Array2D<float>& y2a) {
+                const Fortran_Array1D<float>& x2a,
+                const Fortran_Array2D<float>& ya, 
+                Fortran_Array2D<float>& y2a) {
 
   //x1a is not referenced!!
   float ypval(1.0e30);
@@ -45,23 +45,18 @@ void Spline::splie2(  const Fortran_Array1D<float>& x1a,
 
   m = ya.dim1(); 
   n = ya.dim2();
-  
+
   for (int j=1; j<=m; j++) { 
-    
     Util::get_Row_2D(ytmp, ya, j);
-    
     spline(x2a, ytmp, ypval, ypval, y2tmp);
-    
     Util::insert_Row_2D(y2a, j, y2tmp);
-    
   }
-  
 }
 
 void Spline::splie3(  const Fortran_Array1D<float>& x1a,   
-		      const Fortran_Array1D<float>& x2a,
-		      const Fortran_Array2D<float>& ya, 
-		      Fortran_Array2D<float>& y2a) {
+                const Fortran_Array1D<float>& x2a,
+                const Fortran_Array2D<float>& ya, 
+                Fortran_Array2D<float>& y2a) {
 
   Fortran_Array1D<float> ytmp(ya.dim1());
   Fortran_Array1D<float> y2tmp(ya.dim1());
@@ -73,31 +68,26 @@ void Spline::splie3(  const Fortran_Array1D<float>& x1a,
   n = ya.dim2();
 
   for (int k=1; k<=n; k++) {
-
     Util::get_Column_2D(ytmp, ya, k);
-    
     spline(x1a, ytmp, ypval, ypval, y2tmp);
-  
     Util::insert_Column_2D(y2a, k, y2tmp);
-
   }
 }
 
 void Spline::spline( const Fortran_Array1D<float>& x,  
-		     const Fortran_Array1D<float>& y, 
-		     const float& yp1, 
-		     const float& ypn, 
-		     Fortran_Array1D<float>& y2) {
-  
+                const Fortran_Array1D<float>& y, 
+                const float& yp1, 
+                const float& ypn, 
+                Fortran_Array1D<float>& y2) {
+    
   Fortran_Array1D<float>   u(x.dim1());
   Fortran_Array1D<float> sig(x.dim1());
   Fortran_Array1D<float>   p(x.dim1());
 
   float qn(0), un(0);
   float yptest(.99e30);
-  
   int n = x.dim();
-  
+
   if (yp1 > yptest) {
     y2(1) = 0.0;
      u(1) = 0.0;
@@ -105,7 +95,7 @@ void Spline::spline( const Fortran_Array1D<float>& x,
   else {
     y2(1) = -0.5;
     u(1)  = ( 3.0 / ( x(2) - x(1) ) ) * 
-                  ( ( y(2) - y(1) ) / ( x(2) - x(1) ) - yp1 );
+                    ( ( y(2) - y(1) ) / ( x(2) - x(1) ) - yp1 );
 
   }
 
@@ -119,7 +109,7 @@ void Spline::spline( const Fortran_Array1D<float>& x,
                    / ( x(i+1) - x(i)   )    
                    - ( y(i)   - y(i-1) )    
                    / ( x(i)   - x(i-1) ) )  
-	           / ( x(i+1) - x(i-1) ) - sig(i) * u(i-1) ) / p(i);
+                   / ( x(i+1) - x(i-1) ) - sig(i) * u(i-1) ) / p(i);
     //%%%%%%%%%%%%%%
 }
 
@@ -137,22 +127,27 @@ void Spline::spline( const Fortran_Array1D<float>& x,
   for (int i = n-1; i >= 1; i--) {
     y2(i) = y2(i) * y2(i+1) + u(i);
   }
+
+
+//  for(int i = 0; i < y2.dim(); ++i)
+//      std::cout << y2(i) << " ";
+//  std::cout << std::endl;
 }
 
 void Spline::splint( const Fortran_Array1D<float>& xa,  
-		     const Fortran_Array1D<float>& ya,  
-		     const Fortran_Array1D<float>& y2a,
-                     const float& x, 
-		     float& y, 
-		     float& dy, float& dyy){
-  
+                const Fortran_Array1D<float>& ya,  
+                const Fortran_Array1D<float>& y2a,
+                const float& x, 
+                float& y, 
+                float& dy, float& dyy){
+
   int n(0), k(0), klo(0), khi(0);
   float h(0), a(0), b(0), ddy(0);
-  
+
   n = xa.dim1();
   klo = 1; 
   khi = n;
-  
+
   while (khi - klo > 1) {
     k = ( khi + klo ) / 2;
     if (xa(k)>x) {
@@ -162,7 +157,7 @@ void Spline::splint( const Fortran_Array1D<float>& xa,
       klo = k;
     }
   }
-  
+
   h = xa(khi) - xa(klo);
 
   if (h == 0.0) {
@@ -185,12 +180,11 @@ void Spline::splint( const Fortran_Array1D<float>& xa,
 }
 
 void Spline::splin2 ( const Fortran_Array1D<float>& x1a,  
-		      const Fortran_Array1D<float>& x2a,
-                      const Fortran_Array2D<float>& ya,  
-		      const Fortran_Array2D<float>& y2a,
-		      const float& x1, const float& x2, 
-		      float& y, float& dy, float& ddy) {
-  
+                const Fortran_Array1D<float>& x2a,
+                const Fortran_Array2D<float>& ya,  
+                const Fortran_Array2D<float>& y2a,
+                const float& x1, const float& x2, 
+                float& y, float& dy, float& ddy) {
 
   Fortran_Array1D<float>  ytmp(ya.dim2());
   Fortran_Array1D<float> y2tmp(ya.dim2());
@@ -204,10 +198,8 @@ void Spline::splin2 ( const Fortran_Array1D<float>& x1a,
   int n = ya.dim2();
   
   for (int j=1; j<=m; j++) {
-    
     Util::get_Row_2D( ytmp, ya, j);
     Util::get_Row_2D(y2tmp, y2a, j);
-
     splint(x2a, ytmp, y2tmp, x2, yytmp(j), y1, y2);
   }
   
@@ -215,15 +207,14 @@ void Spline::splin2 ( const Fortran_Array1D<float>& x1a,
   splint(x1a, yytmp, yy2tmp, x1, y, dy, ddy);
 
   ddy = 0.0;
-  
 }
 
 void Spline::splin3 ( const Fortran_Array1D<float>& x1a,  
-		      const Fortran_Array1D<float>& x2a,
-                      const Fortran_Array2D<float>& ya,  
-		      const Fortran_Array2D<float>& y2a,
-		      const float& x1, const float& x2, 
-		      float& y, float& dy, float& ddy) {
+                const Fortran_Array1D<float>& x2a,
+                const Fortran_Array2D<float>& ya,  
+                const Fortran_Array2D<float>& y2a,
+                const float& x1, const float& x2, 
+                float& y, float& dy, float& ddy) {
 
   Fortran_Array1D<float> ytmp(ya.dim1());
   Fortran_Array1D<float> y2tmp(ya.dim1());
@@ -236,10 +227,8 @@ void Spline::splin3 ( const Fortran_Array1D<float>& x1a,
   int n = ya.dim2();  
 
   for (int k=1; k<=n; k++) {
-    
     Util::get_Column_2D( ytmp, ya, k);
     Util::get_Column_2D(y2tmp, y2a, k);
-    
     splint(x1a, ytmp, y2tmp, x1, yytmp(k), y1, y2);
   }
   
@@ -263,13 +252,13 @@ void Spline::splin3 ( const Fortran_Array1D<float>& x1a,
 // function value
 //!-----------------------------------------------------------------------
 void Spline::frprm (  const Fortran_Array1D<float>& x1a,   
-		      const Fortran_Array1D<float>& x2a, 
-                      const Fortran_Array2D<float>& ya,  
-		      const Fortran_Array2D<float>& y2a,
-                      const Fortran_Array2D<float>& y3a, 
-		      Fortran_Array1D<float>& p, 
-		      const float& ftol, 
-		     int& iter, float& fret, int& ierror) {
+                const Fortran_Array1D<float>& x2a, 
+                const Fortran_Array2D<float>& ya,  
+                const Fortran_Array2D<float>& y2a,
+                const Fortran_Array2D<float>& y3a, 
+                Fortran_Array1D<float>& p, 
+                const float& ftol, 
+                int& iter, float& fret, int& ierror) {
 
   //cout<<"frprm:: start()"<<endl;
 
@@ -309,15 +298,15 @@ void Spline::frprm (  const Fortran_Array1D<float>& x1a,
     
     /*
     cout<<"before "<<setw(10)<<p(1)<<" "<<setw(10)<<p(2)
-	<<" "<<setw(10)<<xi(1)<<" "<<setw(10)<<xi(2)<<" "
-	<<setw(10)<<fret<<" "<<ier<<endl;
+    <<" "<<setw(10)<<xi(1)<<" "<<setw(10)<<xi(2)<<" "
+    <<setw(10)<<fret<<" "<<ier<<endl;
     */
 
     linmin(p, xi, fret, x1a, x2a, ya, y2a, ier);
 
     //cout<<"("<<setw(2)<<its<<") "<<setw(10)<<p(1)<<" "<<setw(10)<<p(2)
-    //	<<" "<<setw(10)<<xi(1)<<" "<<setw(10)<<xi(2)<<" "
-    //	<<setw(10)<<fret<<" "<<ier<<endl;
+    //<<" "<<setw(10)<<xi(1)<<" "<<setw(10)<<xi(2)<<" "
+    //<<setw(10)<<fret<<" "<<ier<<endl;
     
     if (ier == 1) {
       ierror = 1;
@@ -369,13 +358,13 @@ void Spline::frprm (  const Fortran_Array1D<float>& x1a,
 }
 
 void Spline::linmin( Fortran_Array1D<float>& p, 
-		     Fortran_Array1D<float>& xi, 
-		     float& fret,  
-		     const Fortran_Array1D<float>& x1a,  
-		     const Fortran_Array1D<float>& x2a,
-		     const Fortran_Array2D<float>& ya,  
-		     const Fortran_Array2D<float>& y2a, 
-		     int& ier) {
+                Fortran_Array1D<float>& xi, 
+                float& fret,  
+                const Fortran_Array1D<float>& x1a,  
+                const Fortran_Array1D<float>& x2a,
+                const Fortran_Array2D<float>& ya,  
+                const Fortran_Array2D<float>& y2a, 
+                int& ier) {
   
     int l, m, n, j;
     float ax, xx, bx, fa, fx, fb, xmin, tol; 
@@ -397,8 +386,8 @@ void Spline::linmin( Fortran_Array1D<float>& p,
     xx = 1.0;
 
     mnbrak(ax, xx, bx, fa, fx, fb, 
-	   x1a, x2a, ya, y2a, 
-	   pcom, xicom, ncom);
+           x1a, x2a, ya, y2a, 
+           pcom, xicom, ncom);
     
     ier = 0;
     
@@ -415,15 +404,15 @@ void Spline::linmin( Fortran_Array1D<float>& p,
 }
 
 void Spline::linmin1 (Fortran_Array1D<float>& p,  
-		      const Fortran_Array1D<float>& xi, 
-		      float& fret,  
-		      const Fortran_Array1D<float>& x1a,  
-		      const Fortran_Array1D<float>& x2a,  
-		      const Fortran_Array2D<float>& ya, 
-		      const Fortran_Array2D<float>& y2a, 
-		      int& ier, const float& val, const float& dist_val,
-		      Fortran_Array1D<float>& pcom, 
-		      Fortran_Array1D<float>& xicom) {
+                const Fortran_Array1D<float>& xi, 
+                float& fret,  
+                const Fortran_Array1D<float>& x1a,  
+                const Fortran_Array1D<float>& x2a,  
+                const Fortran_Array2D<float>& ya, 
+                const Fortran_Array2D<float>& y2a, 
+                int& ier, const float& val, const float& dist_val,
+                Fortran_Array1D<float>& pcom, 
+                Fortran_Array1D<float>& xicom) {
   
   float x20(0), y20(0), x(0), d(0), y(0), py(0), pyy(0), y0(0), y1(0), tol(0); 
   tol = 1.0e-4;
@@ -488,13 +477,13 @@ void Spline::linmin1 (Fortran_Array1D<float>& p,
 }
 
 void Spline::f1d1m (float& y, const float& x,  
-		    const Fortran_Array1D<float>& x1a,  
-		    const Fortran_Array1D<float>& x2a,
-		    const Fortran_Array2D<float>& ya,  
-		    const Fortran_Array2D<float>& y2a,
-		    Fortran_Array1D<float>& pcom, 
-		    Fortran_Array1D<float>& xicom, 
-		    int& ncom ) {
+                const Fortran_Array1D<float>& x1a,  
+                const Fortran_Array1D<float>& x2a,
+                const Fortran_Array2D<float>& ya,  
+                const Fortran_Array2D<float>& y2a,
+                Fortran_Array1D<float>& pcom, 
+                Fortran_Array1D<float>& xicom, 
+                int& ncom ) {
   //
   // needs pcom, xicom, ncom as input
   //
@@ -518,14 +507,14 @@ void Spline::f1d1m (float& y, const float& x,
 }
 
 void Spline::mnbrak (float& ax, float& bx, float& cx, 
-		     float& fa, float& fb, float& fc, 
-		     const Fortran_Array1D<float>& x1a,  
-		     const Fortran_Array1D<float>& x2a,
-		     const Fortran_Array2D<float>& ya,  
-		     const Fortran_Array2D<float>& y2a,
-		     Fortran_Array1D<float>& pcom, 
-		     Fortran_Array1D<float>& xicom, 
-		     int& ncom) {
+                float& fa, float& fb, float& fc, 
+                const Fortran_Array1D<float>& x1a,  
+                const Fortran_Array1D<float>& x2a,
+                const Fortran_Array2D<float>& ya,  
+                const Fortran_Array2D<float>& y2a,
+                Fortran_Array1D<float>& pcom, 
+                Fortran_Array1D<float>& xicom, 
+                int& ncom) {
 
   int l(0), m(0);
   float dum(0), r(0), q(0), u(0), ulim(0), fu(0), uxt(0), uxb(0), gold(0), glimit(0), tiny(0);
@@ -571,13 +560,13 @@ void Spline::mnbrak (float& ax, float& bx, float& cx,
             u = cx + gold*(cx - bx);
             f1d1m(fu, u, x1a, x2a, ya, y2a, pcom, xicom, ncom);
         } else if (((cx-u)*(u-ulim))>0.0) {
-	  f1d1m(fu, u, x1a, x2a,ya, y2a, pcom, xicom, ncom);
+            f1d1m(fu, u, x1a, x2a,ya, y2a, pcom, xicom, ncom);
             if (fu < fc) {
                 bx = cx; 
-		cx = u;
+                cx = u;
                 u = cx + gold*(cx-bx);
                 fb = fc; 
-		fc = fu;
+                fc = fu;
                 f1d1m(fu, u, x1a, x2a, ya, y2a, pcom, xicom, ncom);
             }
         } else if (((u-ulim)*(ulim-cx))>=0.0) {
@@ -588,24 +577,24 @@ void Spline::mnbrak (float& ax, float& bx, float& cx,
             f1d1m(fu, u, x1a, x2a, ya, y2a, pcom, xicom, ncom);
         }
         ax = bx; 
-	bx = cx; 
-	cx = u; 
-	fa = fb; 
-	fb = fc; 
-	fc = fu;
+        bx = cx; 
+        cx = u; 
+        fa = fb; 
+        fb = fc; 
+        fc = fu;
     }
 }
 
 void Spline::brent (const float& ax, const float& bx, const float& cx, 
-		    const float tol, float& fret, float& xmin,  
-		    const Fortran_Array1D<float>& x1a, 
-		    const Fortran_Array1D<float>& x2a,  
-		    const Fortran_Array2D<float>& ya,  
-		    const Fortran_Array2D<float>& y2a, 
-		    int& ier,
-		    Fortran_Array1D<float>& pcom, 
-		    Fortran_Array1D<float>& xicom, 
-		    int& ncom) {
+                const float tol, float& fret, float& xmin,  
+                const Fortran_Array1D<float>& x1a, 
+                const Fortran_Array1D<float>& x2a,  
+                const Fortran_Array2D<float>& ya,  
+                const Fortran_Array2D<float>& y2a, 
+                int& ier,
+                Fortran_Array1D<float>& pcom, 
+                Fortran_Array1D<float>& xicom, 
+                int& ncom) {
     int l(0), m(0), iter(0), itmax; 
  
     float a(0), b(0), v(0), w(0), x(0), e(0), fx(0), fv(0), fw(0), d(0), u(0), fu(0), xm(0);
@@ -638,7 +627,7 @@ void Spline::brent (const float& ax, const float& bx, const float& cx,
       tol2 = 2.0 * tol1;
       
       if (abs(x-xm)<=(tol2-0.5*(b-a))) {
-	xmin = x; fret = fx; return;
+        xmin = x; fret = fx; return;
       }
       
       if (abs(e)>tol1) {
@@ -650,60 +639,60 @@ void Spline::brent (const float& ax, const float& bx, const float& cx,
             q = abs(q);
             etemp = e;
             e = d;
-	    
+    
             if ((abs(p) >= abs(.5*q*etemp))||
-		(p<=(q*(a-x)))||
-		(p>=(q*(b-x)))) 
-	      goto l1;
+                (p<=(q*(a-x)))||
+                (p>=(q*(b-x)))) 
+                goto l1;
 
             d = p / q; 
-	    u = x + d;
+            u = x + d;
             if (((u-a)<tol2)||
-		((b-u)<tol2)) 
-	      d = sign(tol1,xm-x);
+                ((b-u)<tol2)) 
+                d = sign(tol1,xm-x);
             goto l2;
         }
 
         l1:
-        if (x >= xm) 
-	  e = a - x;
-        else 
-	  e = b - x;
-        d = cgold * e;
-	
-    l2:
-        if (abs(d)>=tol1) 
-	  u = x + d;
-        else 
-	  u = x + sign(tol1, d);
-        f1d1m(fu, u, x1a, x2a, ya, y2a, pcom, xicom, ncom);
+            if (x >= xm) 
+                e = a - x;
+            else 
+                e = b - x;
+            d = cgold * e;
 
-        if (fu <= fx) {
-            if (u >= x) 
-	      a = x;
+        l2:
+            if (abs(d)>=tol1) 
+                u = x + d;
             else 
-	      b = x;
-            v = w; 
-	    fv = fw; 
-	    w = x; 
-	    fw = fx; 
-	    x = u; 
-	    fx = fu;
-        } else {
-            if (u < x) 
-	      a = u;
-            else 
-	      b = u;
-            if ((fu <= fw)||(w == x)){
+                u = x + sign(tol1, d);
+            f1d1m(fu, u, x1a, x2a, ya, y2a, pcom, xicom, ncom);
+
+            if (fu <= fx) {
+                if (u >= x) 
+                    a = x;
+                else 
+                    b = x;
                 v = w; 
-		fv = fw; 
-		w = u; 
-		fw = fu;
-            } else if ((fu<=fv)||(v==x)||(v==w)){
-                v = u; 
-		fv = fu;
+                fv = fw; 
+                w = x; 
+                fw = fx; 
+                x = u; 
+                fx = fu;
+            } else {
+                if (u < x) 
+                    a = u;
+                else 
+                    b = u;
+                if ((fu <= fw)||(w == x)){
+                    v = w; 
+                fv = fw; 
+                w = u; 
+                fw = fu;
+                } else if ((fu<=fv)||(v==x)||(v==w)){
+                    v = u; 
+                    fv = fu;
+                }
             }
-        }
     }
     ier = 1;
     //cout << " *** Brent: exceed maximum iterations";
@@ -712,14 +701,14 @@ void Spline::brent (const float& ax, const float& bx, const float& cx,
 }
 
 void Spline::shape (  const Fortran_Array1D<float>& x1a,   
-		      const Fortran_Array1D<float>& x2a,
-		      Fortran_Array2D<float>& ya,  
-		      Fortran_Array2D<float>& y2a,
-		      Fortran_Array2D<float>& y3a,  
-		      const Fortran_Array1D<float>& p, 
-		      const float& ftol,  int& iter,  float& fret,
-		      int& ierror2, 
-		      const float& val, const float& dist_val) {
+                const Fortran_Array1D<float>& x2a,
+                Fortran_Array2D<float>& ya,  
+                Fortran_Array2D<float>& y2a,
+                Fortran_Array2D<float>& y3a,  
+                const Fortran_Array1D<float>& p, 
+                const float& ftol,  int& iter,  float& fret,
+                int& ierror2, 
+                const float& val, const float& dist_val) {
   
 
   // ftol, iter and fret are not referenced..

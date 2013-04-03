@@ -416,16 +416,14 @@ public:
     VisItGlobalObserver() : SimpleObserver()
     {
         callable = 0;
-        callbackData = 0;
     }
 
     virtual ~VisItGlobalObserver() { }
 
-    void SetCallable(PyObject* obj, PyObject* data = NULL){
+    void SetCallable(PyObject* obj){
         if(PyCallable_Check(obj))
         {
             callable = obj;
-            callbackData = data;
         }
         else
         {
@@ -438,12 +436,21 @@ public:
         /// convert from Subject ot Py Version ><
         /// the run registered callback...
         if(!callable) return;
-        //Py
+
+//        std::cout << ((AttributeSubject*)s)->TypeName() << std::endl;
+        PyObject* retval = GetPyObjectPluginAttributes(static_cast<AttributeSubject*>(s), true, GetViewerProxy());
+        if(retval)
+        {
+            std::cout << "called: " << ((AttributeSubject*)s)->TypeName() << std::endl;
+            PyObject_Call(callable,retval,NULL);
+        }else
+        {
+            //std::cout << "not called: " << ((AttributeSubject*)s)->TypeName() << std::endl;
+        }
     }
 
 private:
     PyObject* callable;
-    PyObject* callbackData;
 };
 
 
@@ -15712,20 +15719,13 @@ visit_RegisterGlobalCallback(PyObject *, PyObject *args)
     ENSURE_VIEWER_EXISTS();
     ENSURE_CALLBACK_MANAGER_EXISTS();
 
-    char *name = 0;
-    PyObject *callback = 0, *callback_data = 0;
-    if (!PyArg_ParseTuple(args, "sOO", &name, &callback, &callback_data))
+    std::cout << "here!" << std::endl;
+
+    PyObject *callback = 0;
+    if (!PyArg_ParseTuple(args, "O", &callback))
     {
-        if (PyArg_ParseTuple(args, "sO", &name, &callback))
-            callback_data = 0;
-        else
-        {
-            if(PyArg_ParseTuple(args, "s", &name))
-                callback = callback_data = 0;
-            else
-                return NULL;
-        }
-        PyErr_Clear();
+        VisItErrorFunc("Needs a Callback argument");
+        return NULL;
     }
     if(callback != 0 && !PyCallable_Check(callback))
     {
@@ -15733,36 +15733,7 @@ visit_RegisterGlobalCallback(PyObject *, PyObject *args)
         return NULL;
     }
 
-    // Try and register a ViewerRPC callback.
-    bool failed = !rpcCallbacks->RegisterCallback(name, callback, callback_data);
-
-    // Try and register a state callback instead.
-    if(failed)
-    {
-        // Get the names of the callbacks that we can set.
-        stringVector names;
-        callbackMgr->GetCallbackNames(names);
-        failed = true;
-        for(int i = 0; i < names.size(); ++i)
-        {
-            if(names[i] == name)
-            {
-                callbackMgr->RegisterCallback(name, callback, callback_data);
-                failed = false;
-                break;
-            }
-        }
-    }
-    if(failed)
-    {
-        VisItErrorFunc("An invalid callback name was provided.");
-        return NULL;
-    }
-    else
-    {
-        // Tell the callback manager that it can process callbacks now.
-        callbackMgr->WorkAllowed();
-    }
+    globalObserver->SetCallable(callback);
 
     return PyLong_FromLong(1L);
 }
@@ -17037,6 +17008,7 @@ AddProxyMethods()
     AddMethod("RegisterMacro", visit_RegisterMacro, visit_RegisterMacro_doc);
     AddMethod("SuppressMessages", visit_SuppressMessages, visit_SuppressMessages_doc);
 
+    AddMethod("RegisterGlobalCallback", visit_RegisterGlobalCallback, NULL);
     AddMethod("GetCallbackNames", visit_GetCallbackNames, visit_GetCallbackNames_doc);
     AddMethod("RegisterCallback", visit_RegisterCallback, visit_RegisterCallback_doc);
     AddMethod("GetCallbackArgumentCount", visit_GetCallbackArgumentCount, 

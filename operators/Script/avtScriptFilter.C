@@ -378,7 +378,7 @@ avtScriptFilter::Equivalent(const AttributeGroup *a)
 vtkDataSet *
 avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
 {
-    //std::cout << PAR_Rank() << " ExecuteData is called" << std::endl;
+    std::cout << PAR_Rank() << " ExecuteData is called" << std::endl;
     if(!SetupFlowWorkspace())
         return in_ds;
 
@@ -463,6 +463,8 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
 
 //    e = dataatts.GetThisProcsOriginalSpatialExtents();
 //    e->Set(range);
+    e = dataatts.GetThisProcsOriginalDataExtents();
+    e->Set(range);
     e = dataatts.GetThisProcsActualDataExtents();
     e->Set(range);
 
@@ -478,7 +480,15 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     }
 
     std::cout << "setting: " << range[0] << " " << range[1] << std::endl;
-    return res;
+//    return res;
+    if(PAR_Rank() == 0)
+    {
+        return res;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 void
@@ -593,6 +603,7 @@ avtScriptFilter::ModifyContract(avtContract_p spec)
     // Create the new pipeline spec from the data spec, and return
     //
     avtContract_p rv = new avtContract(spec, nds);
+    //rv->SetOnDemandStreaming(true);
     rv->SetReplicateSingleDomainOnAllProcessors(true);
     return rv;
 }
