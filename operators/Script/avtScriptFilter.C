@@ -474,21 +474,30 @@ avtScriptFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
     {
         int arg[6];
         data->GetExtent(arg);
-        double ex[6] = { arg[0], arg[1], arg[2], arg[3], arg[4], arg[5] };
+        double ex[6] = { arg[0], arg[1],
+                         arg[2], arg[3],
+                         arg[4], arg[5] };
+
         e = dataatts.GetOriginalSpatialExtents();
+        e->Set(ex);
+
+        e = dataatts.GetActualSpatialExtents();
         e->Set(ex);
     }
 
+    //GetOutput()->GetInfo().GetAttributes().SetTopologicalDimension(2);
+    GetOutput()->GetInfo().GetAttributes().SetSpatialDimension(2);
+
     std::cout << "setting: " << range[0] << " " << range[1] << std::endl;
 //    return res;
-    if(PAR_Rank() == 0)
-    {
+//    if(PAR_Rank() == 0)
+//    {
         return res;
-    }
-    else
-    {
-        return NULL;
-    }
+//    }
+//    else
+//    {
+//        return NULL;
+//    }
 }
 
 void
