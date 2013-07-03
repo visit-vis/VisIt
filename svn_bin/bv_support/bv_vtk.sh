@@ -31,7 +31,7 @@ function bv_vtk_alt_vtk_dir
 
 function bv_vtk_depends_on
 {
- depends_on="cmake"
+ depends_on="cmake python"
 
  if [[ "$DO_PYTHON" == "yes" ]]; then
       depends_on="${depends_on} python"

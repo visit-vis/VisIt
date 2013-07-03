@@ -69,13 +69,17 @@ done
 # Find the most recent VisIt python
 visitpython=""
 dir="$(dirname $0)"
-for ver in $versions; do
-    thispython="$dir/../$ver/$platform/bin/python"
-    if test -x "$thispython"; then
-        visitpython="$thispython"
-        break
-    fi
-done
+if test -x "$dir/python"; then
+    visitpython="$dir/python" #check if we are in dev branch..
+else
+    for ver in $versions; do
+        thispython="$dir/../$ver/$platform/bin/python"
+        if test -x "$thispython"; then
+            visitpython="$thispython"
+            break
+        fi
+    done
+fi
 
 # Execute VisIt's Python or system Python, depending on what's available
 frontendlauncherpy="$(dirname $0)/frontendlauncher.py"
@@ -107,7 +111,7 @@ if test -n "$visitpython"; then
     export PYTHONPATH="$PYTHONHOME/lib/python$pyver:$PYTHONHOME/lib/python$pyver/lib-dynload"
 
     #echo "VisIt Python: $visitpython $frontendlauncherpy $0 ${1+"$@"}"
-
+    . "$(dirname $0)/activate"
     exec "$visitpython" $frontendlauncherpy $0 ${1+"$@"}
 else
     #echo "System python $frontendlauncherpy $0 ${1+"$@"}"

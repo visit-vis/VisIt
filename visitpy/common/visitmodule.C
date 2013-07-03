@@ -528,7 +528,7 @@ static pthread_mutex_t       mutex;
 static pthread_cond_t        received_sync_from_viewer;
 static bool waitingForViewer = false;
 static ObserverToCallback   *synchronizeCallback = 0;
-#define THREAD_INIT()        { pthread_attr_init(&thread_atts); }
+#define THREAD_INIT()        pthread_attr_init(&thread_atts)
 #define MUTEX_CREATE()       pthread_mutex_init(&mutex, NULL)
 #define MUTEX_DESTROY()      pthread_mutex_destroy(&mutex)
 #define MUTEX_LOCK()         pthread_mutex_lock(&mutex)
@@ -3356,7 +3356,7 @@ OpenClientHelper(PyObject *self, PyObject *args, int componentNumber)
 
         PyErr_Clear();
     }
-    if(componentNumber == 2)
+    else if(componentNumber == 2)
     {
         clientName = "CLI";
         program = "visit";
@@ -3385,6 +3385,11 @@ OpenClientHelper(PyObject *self, PyObject *args, int componentNumber)
                     VisItErrorFunc(OCEError);
                     return NULL;
                 }
+            }
+            else
+            {
+                VisItErrorFunc(OCEError);
+                return NULL;
             }
         }
         else
@@ -15838,7 +15843,64 @@ visit_exec_client_method(void *data)
             delete [] buf;
         }
     }
+    else if(m->GetMethodName() == "WriteState")
+    {
+        std::string command = "";
+        std::string result = "";
 
+
+        command += "def __tmp_writeScript():\n";
+        command += "  import cStringIO\n";
+        command += "  __tmpOut__ = cStringIO.StringIO()\n";
+        command += "  WriteScript(__tmpOut__)\n";
+        command += "  __tmpOut__.seek(0)\n";
+        command += "  __tmpRes__ = __tmpOut__.read()\n";
+        command += "  __tmpOut__.close()\n";
+        command += "  return 'meow'";
+
+        std::cout << command << std::endl;
+
+        PyRun_SimpleString(command.c_str());
+
+
+        std::cout << "executed" << std::endl;
+
+        PyObject* resobject = PyRun_String("__tmp_writeScript()", Py_eval_input, NULL, NULL);
+
+        std::cout << "regt" << std::endl;
+        std::cout << PyString_AsString(resobject) << std::endl;
+        std::cout << "meow??" << std::endl;
+        //PyObject* dict = PyDict_New();
+        //Py_DECREF(dict);
+
+        ///std::cout << content << std::endl;
+        //result = PyString_AsString(content);
+        //std::cout << "result" << result << std::endl;
+        // Send the macro to the clients.
+        /*
+        if(result.size() > 0)
+        {
+            if(onNewThread)
+               GetViewerProxy()->SetXferUpdate(true);
+
+            // We don't want to get here re-entrantly so disable the client
+            // method observer temporarily.
+            clientMethodObserver->SetUpdate(false);
+
+            stringVector args;
+            args.push_back(result);
+
+            ClientMethod *newM = GetViewerState()->GetClientMethod();
+            newM->ClearArgs();
+            newM->SetMethodName("AcceptRecordedMacro");
+            newM->SetStringArgs(args);
+            newM->Notify();
+
+            if(onNewThread)
+               GetViewerProxy()->SetXferUpdate(false);
+
+        }*/
+    }
     if(acquireLock)
         VisItUnlockPythonInterpreter(myThreadState);
 
@@ -15948,6 +16010,7 @@ ExecuteClientMethod(ClientMethod *method, bool onNewThread)
         info->DeclareMethod("MacroStart", "");
         info->DeclareMethod("MacroPause", "");
         info->DeclareMethod("MacroEnd",   "");
+        info->DeclareMethod("WriteState",   "");
         info->SelectAll();
 
         // If onNewThread is true then we got into this method on the 2nd

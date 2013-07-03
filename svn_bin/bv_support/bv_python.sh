@@ -5,8 +5,20 @@ export ON_PYTHON="on"
 export FORCE_PYTHON="no"
 export USE_SYSTEM_PYTHON="no"
 export VISIT_PYTHON_DIR=${VISIT_PYTHON_DIR:-""}
-add_extra_commandline_args "python" "system-python" 0 "Using system python"
-add_extra_commandline_args "python" "alt-python-dir" 1 "Using alternate python directory"
+export VISIT_INSTALL_PYTHON_PIP="no"
+export VISIT_INSTALL_PYTHON_READLINE="no"
+export VISIT_INSTALL_PYTHON_RPY2="no"
+export VISIT_INSTALL_PYTHON_MPI4PY="no"
+
+add_extra_commandline_args "python" "python-install-pip" 0 "Install pip support"
+add_extra_commandline_args "python" "python-install-readline" 0 "Install readline support (requires pip)"
+add_extra_commandline_args "python" "python-install-rpy2" 0 "Install rpy2 support (requires pip,R)"
+add_extra_commandline_args "python" "python-install-mpi4py" 0 "Install mpi4py support (requires pip, parallel)"
+
+#I am removing these as the mixing of VisIt
+#on system python may be dangerous...
+#add_extra_commandline_args "python" "system-python" 0 "Using system python"
+#add_extra_commandline_args "python" "alt-python-dir" 1 "Using alternate python directory"
 }
 
 function bv_python_enable
@@ -60,13 +72,13 @@ function python_set_vars_helper
       fi
   fi
   PYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/${PYTHON_LIBRARY}"
-  echo $PYTHON_BUILD_DIR $PYTHON_VERSION $VISIT_PYTHON_DIR
+  echo "build: $PYTHON_BUILD_DIR version: $PYTHON_VERSION install: $VISIT_PYTHON_DIR"
 
 }
 
 function bv_python_system_python
 {
-  echo "Using system python"
+  echo "using system python"
    TEST=`which python-config`
    [ $? != 0 ] && error "System python-config not found, cannot configure python"
 
@@ -80,7 +92,7 @@ function bv_python_system_python
 
 function bv_python_alt_python_dir
 {
-  echo "Using alternate python directory"
+  echo "using alternate python directory"
 
   [ ! -e "$1/bin/python-config" ] && error "Python not found in $1"
 
@@ -94,10 +106,45 @@ function bv_python_alt_python_dir
 
 }
 
+function bv_python_python_install_pip
+{
+    #if [[ "$DO_PYTHON" == "no" && "$USE_SYSTEM_PYTHON" == "no" ]]; then
+    #    error "Python must be available to install for secondary flags to work"
+    #fi
+
+    info "enabling python-pip installation..."
+    VISIT_INSTALL_PYTHON_PIP="yes"
+}
+
+function bv_python_python_install_readline
+{
+    info "enabling python-readline installation..."
+    VISIT_INSTALL_PYTHON_PIP="yes"
+    VISIT_INSTALL_PYTHON_READLINE="yes"
+}
+
+function bv_python_python_install_rpy2
+{
+    info "enabling python-rpy2 installation..."
+    VISIT_INSTALL_PYTHON_PIP="yes"
+    VISIT_INSTALL_PYTHON_RPY2="yes"
+}
+
+function bv_python_python_install_mpi4py
+{
+    info "enabling python-mpi4py installation..."
+    VISIT_INSTALL_PYTHON_PIP="yes"
+    VISIT_INSTALL_PYTHON_MPI4PY="yes"
+}
 
 function bv_python_depends_on
 {
-echo ""
+    # python will be dependent on R if rpy2 is turned on..
+    if [[ "$VISIT_INSTALL_PYTHON_RPY2" == "yes" ]]; then
+        echo "R"
+    else
+        echo ""
+    fi
 }
 
 function bv_python_info
@@ -129,7 +176,11 @@ function bv_python_print
 function bv_python_print_usage
 {
 printf "%-15s %s [%s]\n" "--python" "Build Python" "built by default unless --no-thirdparty flag is used"
-printf "%-15s %s [%s]\n" "--system-python" "Use System Python" "Used unless --no-thirdparty flag is used"
+printf "%-15s %s [%s]\n" "--python-install-pip" "Build python-pip" "build python pip"
+printf "%-15s %s [%s]\n" "--python-install-readline" "Build Python-readline" "build python with readline support (will enable pip)"
+printf "%-15s %s [%s]\n" "--python-install-rpy2" "Build python-rpy2" "build python with rpy2 support (will enable pip, requires R to be enabled)"
+printf "%-15s %s [%s]\n" "--python-install-mpi4py" "Build python-mpi4py" "build python with rpy2 support (will enable pip, requires parallel flag to be enabled)"
+#printf "%-15s %s [%s]\n" "--system-python" "Use System Python" "Used unless --no-thirdparty flag is used"
 }
 
 function bv_python_host_profile
@@ -149,6 +200,7 @@ function bv_python_host_profile
             echo "VISIT_OPTION_DEFAULT(PYTHON_VERSION $PYTHON_COMPATIBILITY_VERSION)" >> $HOSTCONF
         else
             echo "VISIT_OPTION_DEFAULT(VISIT_PYTHON_DIR $VISIT_PYTHON_DIR)" >> $HOSTCONF
+	    	echo "VISIT_OPTION_DEFAULT(VISIT_VIRTUALENV_DIR $VISITDIR/virtualenv/)" >> $HOSTCONF
         fi
     fi
 }
@@ -165,6 +217,14 @@ function bv_python_initialize_vars
         export PYTHON_LIBRARY_DIR="${VISIT_PYTHON_DIR}/bin/python"
         export PYTHON_INCLUDE_DIR="${VISIT_PYTHON_DIR}/include/python${PYTHON_COMPATIBILITY_VERSION}"
         export PYTHON_LIBRARY="${VISIT_PYTHON_DIR}/lib/libpython${PYTHON_COMPATIBILITY_VERSION}.${SO_EXT}"
+    fi
+
+    if [[ "$VISIT_INSTALL_PYTHON_RPY2" == "yes" && "$DO_R" == "no" ]]; then
+        error "R must be enabled to install python-rpy2..."
+    fi
+
+    if [[ "$VISIT_INSTALL_PYTHON_MPI4PY" == "yes" && "$DO_parallel" == "no" ]]; then
+        error "parallel flag must be enabled in order to install python-mpi4py..."
     fi
 }
 
@@ -431,11 +491,11 @@ function build_pil
     pushd $PIL_BUILD_DIR > /dev/null
         info "Building PIL ...\n" \
         "CC=${C_COMPILER} CXX=${CXX_COMPILER} CFLAGS=${PYEXT_CFLAGS} CXXFLAGS=${PYEXT_CXXFLAGS}" \
-        "  ${PYHOME}/bin/python ./setup.py build "
+        ${PYTHON_COMMAND} ./setup.py build 
         CC=${C_COMPILER} CXX=${CXX_COMPILER} CFLAGS=${PYEXT_CFLAGS} CXXFLAGS=${PYEXT_CXXFLAGS} \
-            ${PYHOME}/bin/python ./setup.py build 
-        info "Installing PIL ..."
-        ${PYHOME}/bin/python ./setup.py install --prefix="${PYHOME}"
+        ${PYTHON_COMMAND} ./setup.py build
+		info "Installing PIL ..."
+        ${PYTHON_COMMAND} ./setup.py install #--prefix="${PYHOME}"
     popd > /dev/null
 
     # PIL installs into site-packages dir of Visit's Python.
@@ -473,7 +533,7 @@ function build_pyparsing
     PYHOME="${VISITDIR}/python/${PYTHON_VERSION}/${VISITARCH}"
     pushd $PYPARSING_BUILD_DIR > /dev/null
         info "Installing pyparsing ..."
-        ${PYHOME}/bin/python ./setup.py install --prefix="${PYHOME}"
+        ${PYTHON_COMMAND} ./setup.py install #--prefix="${PYHOME}"
     popd > /dev/null
 
     # pyparsing installs into site-packages dir of Visit's Python.
@@ -507,6 +567,39 @@ function bv_python_is_installed
     return 0
 }
 
+function bv_python_execute_subcommands
+{
+    export PYTHON_COMMAND="$VISITDIR/virtualenv/bin/python"
+    export PYTHON_PIP_COMMAND="$VISITDIR/virtualenv/bin/pip"
+    export PYTHONPATH="$VISITDIR/virtualenv/lib/python${PYTHON_COMPATIBILITY_VERSION}/site-packages/"
+
+    info "Installing ply & numpy libraries"
+    $PYTHON_PIP_COMMAND install ply
+    $PYTHON_PIP_COMMAND install numpy
+
+    #these options are run outside to enable installation of pip, readline,
+    #, and rpy2 even after python has been installed
+    if [[ "$VISIT_INSTALL_PYTHON_READLINE" == "yes" ]]; then
+        info "Installing python-readline..."
+        ${PYTHON_PIP_COMMAND} install readline
+    fi
+
+    if [[ "$DO_R" == "yes" ||  "$VISIT_INSTALL_PYTHON_RPY2" == "yes" ]]; then
+        info "Installing python-rpy2..."
+        if [[ "$OPSYS" == "Darwin" && -e "$R_INSTALL_DIR/R.framework/" ]]; then
+            env PATH="$R_INSTALL_DIR/R.framework/Versions/Current/Resources/:$PATH" ${PYTHON_PIP_COMMAND} install rpy2 --global-option=build_ext --global-option=--undef=HAS_READLINE
+        else
+            env PATH="$R_INSTALL_DIR/bin:$PATH" ${PYTHON_PIP_COMMAND} install rpy2 --global-option=build_ext --global-option=--undef=HAS_READLINE
+        fi
+    fi
+
+    if [[ "$VISIT_INSTALL_PYTHON_MPI4PY" == "yes" ]]; then
+        info "Installing python-mpi4py..."
+        #TODO: match build_visit's mpi findings
+        ${PYTHON_PIP_COMMAND} install mpi4py
+    fi
+}
+
 function bv_python_build
 {
 #
@@ -524,6 +617,35 @@ if [[ "$DO_PYTHON" == "yes" && "$USE_SYSTEM_PYTHON" == "no" ]] ; then
             error "Unable to build or install Python.  Bailing out."
         fi
         info "Done building Python"
+
+        #setup virtual environment
+        local virtualenv_name="virtualenv.py"
+        local virtualenv_url="https://raw.github.com/pypa/virtualenv/master/"
+
+        #or should I delete in case it already exists...
+        if [[ ! -e "$virtualenv_name" ]]; then
+            download_file "$virtualenv_name" "$virtualenv_url"
+        fi
+
+        mkdir -p "$VISITDIR/virtualenv/"
+        cp $virtualenv_name "$VISITDIR/virtualenv/"
+
+        #install virtualenv directory..
+        info "Setting up virtualenv"
+        "$PYTHON_COMMAND" "$VISITDIR/virtualenv/$virtualenv_name" "$VISITDIR/virtualenv"
+
+        #activate virtual environment.
+        info "activating virtual environment.."
+        source $VISITDIR/virtualenv/bin/activate
+
+        #make new environment
+        export PYTHON_COMMAND="$VISITDIR/virtualenv/bin/python"
+        export PYTHON_PIP_COMMAND="$VISITDIR/virtualenv/bin/pip"
+        export PYTHONPATH="$VISITDIR/virtualenv/lib/python${PYTHON_COMPATIBILITY_VERSION}/site-packages/"
+
+        if [[ ! -e "$PYTHON_COMMAND"  || ! -e "$PYTHON_PIP_COMMAND" ]]; then
+            error "virtualenv version of $PYTHON_COMMAND or $PYTHON_PIP_COMMAND not found.."
+        fi
 
         info "Building the Python Imaging Library"
         build_pil

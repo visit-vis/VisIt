@@ -357,7 +357,8 @@ main(int argc, char *argv[])
             pyside_gui = true;
             uifile = argv[i+1];
             ++i;
-            argv2[argc2++] = "-pyuiembedded"; //pass it along to client
+            argv2[argc2++] = "-uifile"; //pass it along to client
+            s_found = true;
         }
         else if(strcmp(argv[i], "-dv") == 0)
         {
@@ -421,9 +422,20 @@ main(int argc, char *argv[])
         Py_Initialize();
         PyEval_InitThreads();
         Py_SetProgramName(argv[0]);
-        PySys_SetArgv(argc, argv);
+        PySys_SetArgv(argc_after_s, argv_after_s);
 
         PyRun_SimpleString((char*)"import sys");
+        /// argc_after_s and argv_after_s don't have argv0
+        /// append it to be consistent to the reset of the system
+        PyRun_SimpleString((char*)"sys.argv = ['-'] if sys.argv[0] == '' else ['-'] + sys.argv");
+        char* virtual_env = getenv("VIRTUAL_ENV");
+        if(virtual_env)
+        {
+            char buffer[1024];
+            sprintf(buffer,"activate_this='%s/bin/activate_this.py'",virtual_env);
+            PyRun_SimpleString(buffer);
+            PyRun_SimpleString((char*)"execfile(activate_this,dict(__file__=activate_this))");
+        }
         PyRun_SimpleString((char*)"import os");
         PyRun_SimpleString((char*)"from os.path import join as pjoin");
 
@@ -476,10 +488,8 @@ main(int argc, char *argv[])
                             << std::endl;
                 return (0);
             }
-
-            PyRun_SimpleString((char*)"args = sys.argv");
-            if(uifile) //if external file then start VisIt in embedded mode
-                PyRun_SimpleString((char*)"args.append('-pyuiembedded')"); //default to embedded
+            PyRun_SimpleString(uifile ? (char*)"args = sys.argv + ['-pyuiembedded']" :
+                                        (char*)"args = sys.argv + ['-pysideclient']");
             PyRun_SimpleString((char*)"tmp = visit.pyside_gui.PySideGUI.instance(args)");
             PyRun_SimpleString((char*)"visit.InitializeViewerProxy(tmp.GetViewerProxyPtr())");
             PyRun_SimpleString((char*)"from visit.pyside_support import GetRenderWindow");
@@ -586,15 +596,15 @@ main(int argc, char *argv[])
         //char *argv3 = argv[0];
         //retval = Py_Main(argc3, &argv3);
 
-        char **argv3 = new char*[argc+1];
+        char **argv3 = new char*[argc_after_s+2];
         int ii;
-        for (ii = 1 ; ii < argc ; ii++)
+        for (ii = 0 ; ii < argc_after_s ; ii++)
         {
-            argv3[ii+1] = argv[ii];
+            argv3[ii+2] = argv_after_s[ii];
         }
         argv3[0] = argv[0];
         argv3[1] = (char*)"-";
-        retval = Py_Main(argc+1, argv3);
+        retval = Py_Main(argc_after_s+2, argv3);
         delete[] argv3;
 
     }

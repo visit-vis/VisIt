@@ -121,7 +121,7 @@ avtPythonFilterEnvironment::~avtPythonFilterEnvironment()
 // ****************************************************************************
 
 bool
-avtPythonFilterEnvironment::Initialize()
+avtPythonFilterEnvironment::Initialize(bool shouldImportVTK)
 {
     // init the interpreter
     if(!pyi->Initialize())
@@ -130,16 +130,20 @@ avtPythonFilterEnvironment::Initialize()
     // add system paths: $VISITARCHOME/lib & $VISITARCHOME/lib/site-packages
     string vlibdir = GetVisItLibraryDirectory();
     string vlibsp  = vlibdir  + VISIT_SLASH_CHAR + "site-packages";
-
+    /// any extension libraries
+    string vlibext = vlibsp + VISIT_SLASH_CHAR + "lib"
+                            + VISIT_SLASH_CHAR + "python";
     if(!pyi->AddSystemPath(vlibdir))
         return false;
     if(!pyi->AddSystemPath(vlibsp)) // vtk module is symlinked here
+        return false;
+    if(!pyi->AddSystemDir(vlibext)) // any extension modules are placed here..
         return false;
 
     // import pyavt and vtk
     if(!pyi->RunScript("from pyavt.filters import *\n"))
         return false;
-    if(!pyi->RunScript("import vtk\n"))
+    if(shouldImportVTK && !pyi->RunScript("import vtk\n"))
         return false;
 
 #ifdef PARALLEL

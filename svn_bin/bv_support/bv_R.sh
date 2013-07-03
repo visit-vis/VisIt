@@ -39,12 +39,13 @@ function bv_R_initialize_vars
 
 function bv_R_info
 {
-export R_FILE=${R_FILE:-"R-2.13.2.tar.gz"}
-export R_VERSION=${R_VERSION:-"2.13.2"}
-export R_COMPATIBILITY_VERSION=${R_COMPATIBILITY_VERSION:-"2.13.2"}
-export R_BUILD_DIR=${R_BUILD_DIR:-"R-2.13.2"}
-export R_MD5_CHECKSUM="fbad74f6415385f86425d0f3968dd684"
+export R_FILE=${R_FILE:-"R-2.15.2.tar.gz"}
+export R_VERSION=${R_VERSION:-"2.15.2"}
+export R_COMPATIBILITY_VERSION=${R_COMPATIBILITY_VERSION:-"2.15.2"}
+export R_BUILD_DIR=${R_BUILD_DIR:-"R-2.15.2"}
+export R_MD5_CHECKSUM=""
 export R_SHA256_CHECKSUM=""
+export R_URL="http://cran.cnr.berkeley.edu/src/base/R-2/"
 }
 
 function bv_R_print
@@ -74,13 +75,25 @@ function bv_R_host_profile
         echo "## R" >> $HOSTCONF
         echo "##" >> $HOSTCONF
         if [[ "$USE_SYSTEM_R" == "yes" ]]; then
+            if [[ "$OPSYS" == "Darwin" && -e "$R_INSTALL_DIR/R.framework" ]]; then
+            echo \
+            "VISIT_OPTION_DEFAULT(VISIT_R_DIR $R_INSTALL_DIR/R.framework/Versions/Current/Resources)" \
+            >> $HOSTCONF
+            else
             echo \
             "VISIT_OPTION_DEFAULT(VISIT_R_DIR $R_INSTALL_DIR/lib/R)" \
             >> $HOSTCONF
+            fi
         else
+            if [[ "$OPSYS" == "Darwin"  && -e "$R_INSTALL_DIR/R.framework" ]]; then
+            echo \
+            "VISIT_OPTION_DEFAULT(VISIT_R_DIR \${VISITHOME}/R/$R_VERSION/\${VISITARCH}/R.framework/Versions/Current/Resources)" \
+            >> $HOSTCONF
+            else
             echo \
             "VISIT_OPTION_DEFAULT(VISIT_R_DIR \${VISITHOME}/R/$R_VERSION/\${VISITARCH}/lib/R)" \
             >> $HOSTCONF
+            fi
         fi
     fi
 }
@@ -88,7 +101,7 @@ function bv_R_host_profile
 function bv_R_ensure
 {
     if [[ "$DO_R" == "yes" && "$USE_SYSTEM_R" == "no" ]] ; then
-        ensure_built_or_ready "R" $R_VERSION $R_BUILD_DIR $R_FILE
+        ensure_built_or_ready "R" $R_VERSION $R_BUILD_DIR $R_FILE $R_URL
         if [[ $? != 0 ]] ; then
             ANY_ERRORS="yes"
             DO_R="no"
@@ -136,7 +149,7 @@ function build_R
             RFLAG="64"
         fi
         if [[ $MACOSX_DEPLOYMENT_TARGET == "10.6" || $MACOSX_DEPLOYMENT_TARGET == "10.7" || $MACOSX_DEPLOYMENT_TARGET == "10.8" ]]; then
-        ./configure FFLAGS="-m64" CFLAGS="-std=gnu99 -g -O2" CXXFLAGS="-std=gnu99 -g -O2" --without-jpeglib --disable-R-framework --enable-R-shlib --disable-openmp --without-cairo --without-ICU --without-libpng --without-system-xz --without-aqua --without-tcltk --without-readline --prefix="$R_INSTALL_DIR"
+        ./configure FFLAGS="-m64" CFLAGS="-std=gnu99 -g -O2" CXXFLAGS="-std=gnu99 -g -O2" --without-jpeglib --enable-R-shlib --disable-openmp --without-cairo --without-ICU --without-libpng --without-system-xz --without-aqua --without-tcltk --without-readline --prefix="$R_INSTALL_DIR"
         else
         ./configure FFLAGS="-m$RFLAG" CFLAGS="-std=gnu99 -g -O2" CXXFLAGS="-std=gnu99 -g -O2" --without-jpeglib --disable-R-framework --enable-R-shlib --disable-openmp --without-cairo --without-ICU --without-libpng --without-system-xz --without-aqua --without-tcltk --without-readline --prefix="$R_INSTALL_DIR"
         fi
@@ -172,6 +185,7 @@ function build_R
 
     info "Installing package ismev . . ."
     $R_INSTALL_DIR/bin/R -e "r = getOption(\"repos\"); r[\"CRAN\"] = \"http://cran.us.r-project.org\"; options(repos = r); rm(r); install.packages(\"ismev\")"
+    #$R_INSTALL_DIR/bin/R -e "install.packages(\"ismev\", repos = \"http://cran.us.r-project.org\")"
 
     #
     # TODO, install name tool for OSX

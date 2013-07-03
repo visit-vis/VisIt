@@ -152,6 +152,7 @@ FOREACH(_CURRENT_VERSION 2.7 2.6 2.5 2.4 2.3 2.2 2.1 2.0 1.6 1.5)
   FIND_PROGRAM(PYTHON_EXECUTABLE
                NAMES python2.7 python2.6 python2.5 python
                PATHS
+               ${VISIT_VIRTUALENV_DIR}/bin
                ${PYTHON_DIR}/bin
                ${PYTHON_DIR}
                [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\${_CURRENT_VERSION}\\InstallPath]
@@ -204,6 +205,17 @@ FOREACH(_CURRENT_VERSION 2.7 2.6 2.5 2.4 2.3 2.2 2.1 2.0 1.6 1.5)
 
 ENDFOREACH(_CURRENT_VERSION)
 
+IF(NOT EXISTS ${CMAKE_BINARY_DIR}/bin)
+    FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+ENDIF()
+# symlink activate (virtualenv), python, and pip
+IF(VISIT_VIRTUALENV_DIR)
+    MESSAGE(STATUS "Setting up virtual environment for Python")
+    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${VISIT_VIRTUALENV_DIR}/bin/activate ${CMAKE_BINARY_DIR}/bin/activate)
+    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${VISIT_VIRTUALENV_DIR}/bin/activate_this.py ${CMAKE_BINARY_DIR}/bin/activate_this.py)
+    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${VISIT_VIRTUALENV_DIR}/bin/pip ${CMAKE_BINARY_DIR}/bin/pip)
+    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${VISIT_VIRTUALENV_DIR}/bin/python ${CMAKE_BINARY_DIR}/bin/python)
+ENDIF(VISIT_VIRTUALENV_DIR)
 # If we want to be strict about python, add this clause:
 #IF(NOT PYTHON_VERSION)
 #MESSAGE(FATAL_ERROR "Python is required to build VisIt.")
