@@ -15849,39 +15849,29 @@ visit_exec_client_method(void *data)
         std::string result = "";
 
 
-        command += "def __tmp_writeScript():\n";
-        command += "  import cStringIO\n";
-        command += "  __tmpOut__ = cStringIO.StringIO()\n";
-        command += "  WriteScript(__tmpOut__)\n";
-        command += "  __tmpOut__.seek(0)\n";
-        command += "  __tmpRes__ = __tmpOut__.read()\n";
-        command += "  __tmpOut__.close()\n";
-        command += "  return 'meow'";
-
-        std::cout << command << std::endl;
+        command += "import cStringIO\n";
+        command += "__tmpOut__ = cStringIO.StringIO()\n";
+        command += "WriteScript(__tmpOut__)\n";
+        command += "__tmpOut__.seek(0)\n";
+        command += "__tmpRes__ = __tmpOut__.read()\n";
+        command += "__tmpOut__.close()\n";
 
         PyRun_SimpleString(command.c_str());
 
+        PyObject* mod = PyImport_AddModule("__main__");
+        PyObject* dict = PyModule_GetDict(mod);
 
-        std::cout << "executed" << std::endl;
+        PyObject* key = PyString_FromString("__tmpRes__");
+        PyObject* res = PyDict_GetItem(dict, key);
 
-        PyObject* resobject = PyRun_String("__tmp_writeScript()", Py_eval_input, NULL, NULL);
+        result = PyString_AsString(res);
 
-        std::cout << "regt" << std::endl;
-        std::cout << PyString_AsString(resobject) << std::endl;
-        std::cout << "meow??" << std::endl;
-        //PyObject* dict = PyDict_New();
-        //Py_DECREF(dict);
-
-        ///std::cout << content << std::endl;
-        //result = PyString_AsString(content);
-        //std::cout << "result" << result << std::endl;
         // Send the macro to the clients.
-        /*
+
         if(result.size() > 0)
         {
-            if(onNewThread)
-               GetViewerProxy()->SetXferUpdate(true);
+            //if(onNewThread)
+            GetViewerProxy()->SetXferUpdate(true);
 
             // We don't want to get here re-entrantly so disable the client
             // method observer temporarily.
@@ -15896,10 +15886,10 @@ visit_exec_client_method(void *data)
             newM->SetStringArgs(args);
             newM->Notify();
 
-            if(onNewThread)
-               GetViewerProxy()->SetXferUpdate(false);
+            //if(onNewThread)
+            GetViewerProxy()->SetXferUpdate(false);
 
-        }*/
+        }
     }
     if(acquireLock)
         VisItUnlockPythonInterpreter(myThreadState);
