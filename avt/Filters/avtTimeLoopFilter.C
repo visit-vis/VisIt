@@ -377,7 +377,7 @@ avtTimeLoopFilter::GetTotalNumberOfTimeSlicesForRank()
 {
     if (!CanDoTimeParallelization())
         return 1;
-    
+
 #ifdef PARALLEL
     int totalNumTimes = 0;
     for (int i = startTime; i < actualEnd; i+= stride)

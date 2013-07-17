@@ -181,6 +181,7 @@ avtProgrammableOpFilter::Register(ProgrammableOperation *op)
 
     op->getSignature(name,args,argtypes);
 
+    //std::cout << " registering: " << name << std::endl;
     /// do not register blank..
     if(name == "") return;
 
@@ -305,9 +306,10 @@ avtProgrammableOpFilter::Register(ProgrammableOperation *op)
          << "ri.globalenv['" << name << "'] = _rxp_" << name << "\n"
          << "rpy2.robjects.r('assign(\"" << name << "\"," << name << ",visit_internal_funcs)')\n";
 
-//    std::cout << str.str() << std::endl;
-//    std::cout << "--------------------------------" << std::endl;
 #endif
+    //std::cout << str.str() << std::endl;
+    //std::cout << "--------------------------------" << std::endl;
+
     if(!pyEnv->Interpreter()->RunScript(str.str()))
         std::cerr << "function : " << name << " registration failed" << std::endl;
 }
@@ -387,7 +389,7 @@ avtProgrammableOpFilter::Equivalent(const AttributeGroup *a)
 vtkDataSet *
 avtProgrammableOpFilter::ExecuteData(vtkDataSet *in_ds, int d, std::string s)
 {
-    std::cout << PAR_Rank() << " ExecuteData is called" << std::endl;
+    //std::cout << PAR_Rank() << " ExecuteData is called" << std::endl;
     if(!SetupFlowWorkspace())
         return in_ds;
 
@@ -519,8 +521,8 @@ avtProgrammableOpFilter::UpdateDataObjectInfo()
     //GetOutput()->GetInfo().GetValidity().InvalidateZones();
     //GetOutput()->GetInfo().GetValidity().InvalidateDataMetaData();
 //    GetOutput()->GetInfo().GetValidity().InvalidateOperation();
-
 }
+
 
 bool avtProgrammableOpFilter::SetupFlowWorkspace()
 {
@@ -531,11 +533,33 @@ bool avtProgrammableOpFilter::SetupFlowWorkspace()
 
     std::string json_string = atts.GetScriptMap(); //node["filter"].AsString();
 
-    std::cout << "STRUCT: " << atts.GetScriptMap() << std::endl;
+    if(json_string.length() == 0) /// empty string, maybe initializing empty instance..
+        return false;
+
+    //std::cout << "json_string: " << json_string << std::endl;
+    JSONNode node;
+    node.Parse(json_string);
+
+    //std::cout << node.ToString() << std::endl;
+    //std::cout << "Structure: " << json_string << std::endl;
+
     // create python string
     PyObject *py_json_str = PyString_FromString(json_string.c_str());
     pyEnv->Interpreter()->SetGlobalObject(py_json_str,"sdef_json");
-    script  = "sdef = json.loads(sdef_json)\n";
+    script = "";
+    script += "def removeUnicode(input):\n";
+    script += "    if isinstance(input, dict):\n";
+    script += "        return { removeUnicode(key): removeUnicode(value) for key, value in input.iteritems()}\n";
+    script += "    elif isinstance(input, list):\n";
+    script += "        return [ removeUnicode(element) for element in input]\n";
+    script += "    elif isinstance(input, unicode):\n";
+    script += "        return input.encode('utf-8')\n";
+    script += "    else:\n";
+    script += "        return input\n";
+
+    script += "sdef = json.loads(sdef_json)\n";
+    script += "sdef = removeUnicode(sdef)\n";
+
     //script += "print json.dumps(sdef,indent=2)\n";
     // create a workspace
     script += "w = Workspace()\n";
@@ -581,7 +605,7 @@ avtProgrammableOpFilter::ModifyContract(avtContract_p spec)
     
     // set this so we can use the name in exec data
     primaryVariable = std::string(ds->GetVariable());
-    cout <<PAR_Rank() << ": primaryVariable = " << primaryVariable <<endl;
+    //cout <<PAR_Rank() << ": primaryVariable = " << primaryVariable <<endl;
     //
     // Make a new one
     //
@@ -782,7 +806,7 @@ bool convert(const ProgrammableOperation::ScriptType& type, PyObject* obj, Varia
     return success;
 }
 
-#include <avtParallel.h>
+
 PyObject *
 visit_functions(PyObject *self, PyObject *args)
 {
@@ -1168,8 +1192,8 @@ visit_functions(PyObject *self, PyObject *args)
     }
 
 //    Py_INCREF(scriptArgs);
-//    Py_DECREF(c_api_object);
-//    Py_DECREF(m);
+    Py_DECREF(c_api_object);
+    Py_DECREF(m);
 
     Py_INCREF(Py_None);
     return Py_None;

@@ -428,14 +428,14 @@ main(int argc, char *argv[])
         /// argc_after_s and argv_after_s don't have argv0
         /// append it to be consistent to the reset of the system
         PyRun_SimpleString((char*)"sys.argv = ['-'] if sys.argv[0] == '' else ['-'] + sys.argv");
-        char* virtual_env = getenv("VIRTUAL_ENV");
+        /*char* virtual_env = getenv("VIRTUAL_ENV");
         if(virtual_env)
         {
             char buffer[1024];
             sprintf(buffer,"activate_this='%s/bin/activate_this.py'",virtual_env);
             PyRun_SimpleString(buffer);
             PyRun_SimpleString((char*)"execfile(activate_this,dict(__file__=activate_this))");
-        }
+        }*/
         PyRun_SimpleString((char*)"import os");
         PyRun_SimpleString((char*)"from os.path import join as pjoin");
 

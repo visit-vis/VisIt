@@ -144,11 +144,19 @@ ENDFOREACH(LIB in ${MESA_LIB})
 
 
 IF (NOT WIN32)
+    IF(VISIT_VIRTUALENV_DIR)
+    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E remove -f
+                            ${CMAKE_CURRENT_BINARY_DIR}/python)
+    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink
+                            ${VISIT_VIRTUALENV_DIR}
+                            ${CMAKE_CURRENT_BINARY_DIR}/python)
+    ELSE(VISIT_VIRTUALENV_DIR)
     EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E remove -f
                             ${CMAKE_CURRENT_BINARY_DIR}/python)
     EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink
                             ${VISIT_PYTHON_DIR}
                             ${CMAKE_CURRENT_BINARY_DIR}/python)
+    ENDIF(VISIT_VIRTUALENV_DIR)
 ELSE (NOT WIN32)
 
     # because you don't need to choose your configuration up-front

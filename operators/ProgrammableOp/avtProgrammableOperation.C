@@ -105,7 +105,9 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
     virtual void            CreateFinalOutput();
     virtual bool            ExecutionSuccessful() { return true; }
 
-    virtual bool            FilterSupportsTimeParallelization() { return true; }
+    virtual bool            FilterSupportsTimeParallelization() {
+        return true;
+    }
     virtual bool            DataCanBeParallelizedOverTime() { return true; }
     //virtual bool            OperationNeedsAllData(void) { return true; }
 
@@ -125,7 +127,6 @@ class avtTimeWindowLoopFilter : virtual public avtDatasetToDatasetFilter,
 void
 avtTimeWindowLoopFilter::PreLoopInitialize()
 {
-
     vtkDataSet *inDS = inputDataSet;
 
     /// Todo: verify assumption domain ids & leaves traverse the same path?
@@ -178,9 +179,11 @@ avtTimeWindowLoopFilter::PreLoopInitialize()
 
     
     // values need to be number of tuples * total number of timesteps..
-    int totalTimes = GetTotalNumberOfTimeSlicesForRank();
-    cout<<PAR_Rank()<<": locs: ["<<idx0<<" "<<idxN<<"] times:"<<totalTimes<<endl;
-    //cout<<"Is data replicated: " << GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors()<<endl;
+    /// todo: Figure out why GetTotalNumberOfTimeSlicesForRank does not work
+    int totalTimes = GetEndTime() - GetStartTime() + 1; //GetTotalNumberOfTimeSlicesForRank();
+//    cout<<PAR_Rank()<<": locs: ["<<idx0<<" "<<idxN<<"] times:"<<totalTimes<< " " << numTuples*totalTimes << " "
+//       << GetEndTime() << " " << GetStartTime() << endl;
+//    cout<<"Is data replicated: " << GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors()<<endl;
 
     //format is: T0_val0, T0_val1, ...., T1_val0, T2_val1, ....
     values.resize(numTuples*totalTimes,0);
@@ -231,6 +234,7 @@ avtTimeWindowLoopFilter::Execute()
 
     for (size_t i = 0; i < numTuples; i++)
         values[index++] = vals[i];
+
     /*
     int rank = PAR_Rank();
     cout<<"TimeStep: " << rank << " " << currentTime<< " " << GetStartTime() << " " << GetEndTime() << " "
@@ -244,7 +248,7 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     Barrier();
 
     avtCallback::ResetTimeout(0);
-    cout<<PAR_Rank() << ": CreateFinalOutput : values= "<<values.size()<<endl;
+    //cout<<PAR_Rank() << ": CreateFinalOutput : values= "<<values.size()<<endl;
     
     size_t totalTupleSize = idxN-idx0;
     int numTimes = GetEndTime() - GetStartTime() + 1;
@@ -355,7 +359,9 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
 //        std::cout << "starting index: " << idx0 << " " << idxN << " " << multi_dim_size <<  " "
 //                     << outputdataArray.vtkarray->GetDataSize() << " " << std::endl;
 
-        cout<<PAR_Rank()<<": ["<<idx0<<" "<<idxN<<"] sendCnt= "<<outputdataArray.vtkarray->GetDataSize()<<" recvCnt= "<<outputdataArray.vtkarray->GetDataSize()<<" globalsz= "<<globalOutputDataArray.vtkarray->GetDataSize()<<endl;
+        //cout<<PAR_Rank()<<": ["<<idx0<<" "<<idxN<<"] sendCnt= "<<outputdataArray.vtkarray->GetDataSize()
+        //<<" recvCnt= "<<outputdataArray.vtkarray->GetDataSize()
+        //<<" globalsz= "<<globalOutputDataArray.vtkarray->GetDataSize()<<endl;
         //get output size & dimension for all processors
         std::vector<int> all_sizes;
 
@@ -413,7 +419,7 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
     avtCallback::ResetTimeout(0);
     /// cleanup local
     SetOutputDataTree(new avtDataTree(inputDataSet,inputDomain));
-    cout<<PAR_Rank()<<": DONE."<<endl;
+    //cout<<PAR_Rank()<<": DONE."<<endl;
 }
 
 bool
@@ -619,7 +625,7 @@ avtProgrammableOperation::avtProgrammableOperation()
 {}
 
 bool
-avtProgrammableOperation::avtVisItForEachLocation::func(ScriptArguments& args, vtkShapedDataArray& result)
+avtProgrammableOperation::avtVisItForEachLocation::func(ProgrammableOpArguments& args, vtkShapedDataArray& result)
 {
     Variant windowArray = args.getArg(0);
     vtkShapedDataArray var = args.getArgAsShapedDataArray(1);
@@ -707,7 +713,7 @@ avtProgrammableOperation::avtVisItForEachLocation::func(ScriptArguments& args, v
 ProgrammableOperation::ResponseType
 avtProgrammableOperation::avtVisItForEachLocation::getSignature(std::string& name,
                           stringVector& argnames,
-                          std::vector<ScriptVariantTypeEnum>& argtypes)
+                          std::vector<ScriptType>& argtypes)
 {
     name = "visit_foreach_location";
     argnames.push_back("window");
@@ -735,7 +741,7 @@ avtProgrammableOperation::avtVisItForEachLocation::getSignature(std::string& nam
 
 #ifdef HAVE_LIB_R
 bool
-avtProgrammableOperation::avtVisItForEachLocationR::func(ScriptArguments& args, vtkShapedDataArray &result)
+avtProgrammableOperation::avtVisItForEachLocationR::func(ProgrammableOpArguments& args, vtkShapedDataArray &result)
 {
     Variant windowArray = args.getArg(0);
     vtkShapedDataArray var = args.getArgAsShapedDataArray(1);
@@ -782,9 +788,9 @@ avtProgrammableOperation::avtVisItForEachLocationR::func(ScriptArguments& args, 
 
     result = filt->globalOutputDataArray;
 
-    //result.shape.push_back(var->GetDataSize());
-    //result.vtkarray = var->NewInstance();
-    //result.vtkarray->DeepCopy(var);
+//    result.shape = var.shape;
+//    result.vtkarray = var.vtkarray->NewInstance();
+//    result.vtkarray->DeepCopy(var.vtkarray);
 
     return true;
 }
@@ -792,7 +798,7 @@ avtProgrammableOperation::avtVisItForEachLocationR::func(ScriptArguments& args, 
 ProgrammableOperation::ResponseType
 avtProgrammableOperation::avtVisItForEachLocationR::getSignature(std::string& name,
                           stringVector& argnames,
-                          std::vector<ScriptVariantTypeEnum>& argtypes)
+                          std::vector<ScriptType>& argtypes)
 {
     name = "visit_foreach_location_r";
     argnames.push_back("window");
@@ -814,7 +820,7 @@ avtProgrammableOperation::avtVisItForEachLocationR::getSignature(std::string& na
 #endif
 
 bool
-avtProgrammableOperation::avtVisItForEachLocationPython::func(ScriptArguments& args, vtkShapedDataArray& result)
+avtProgrammableOperation::avtVisItForEachLocationPython::func(ProgrammableOpArguments& args, vtkShapedDataArray& result)
 {
     Variant windowArray = args.getArg(0);
     vtkShapedDataArray var = args.getArgAsShapedDataArray(1);
@@ -863,7 +869,7 @@ avtProgrammableOperation::avtVisItForEachLocationPython::func(ScriptArguments& a
 ProgrammableOperation::ResponseType
 avtProgrammableOperation::avtVisItForEachLocationPython::getSignature(std::string& name,
                           stringVector& argnames,
-                          std::vector<ScriptVariantTypeEnum>& argtypes)
+                          std::vector<ScriptType>& argtypes)
 {
     name = "visit_foreach_location_python";
     argnames.push_back("window");
@@ -885,7 +891,7 @@ avtProgrammableOperation::avtVisItForEachLocationPython::getSignature(std::strin
 
 
 bool
-avtProgrammableOperation::avtVisItGetRSupportDirectory::func(ScriptArguments& args, Variant& result)
+avtProgrammableOperation::avtVisItGetRSupportDirectory::func(ProgrammableOpArguments& args, Variant& result)
 {
     std::string vlibdir = GetVisItLibraryDirectory() + VISIT_SLASH_CHAR + "r_support";
     std::string vlibrdir  = vlibdir  + VISIT_SLASH_CHAR + "Rscripts" + VISIT_SLASH_CHAR;
@@ -907,7 +913,7 @@ avtProgrammableOperation::avtVisItGetRSupportDirectory::getSignature(std::string
 }
 
 bool
-avtProgrammableOperation::avtVisItWriteData::func(ScriptArguments& args,
+avtProgrammableOperation::avtVisItWriteData::func(ProgrammableOpArguments& args,
                                             Variant &result)
 {
     std::string filename = args.getArg(0).AsString();
@@ -1006,7 +1012,7 @@ avtProgrammableOperation::avtVisItWriteData::getSignature(std::string& name,
 }
 
 bool
-avtProgrammableOperation::avtVisItMaxAcrossTime::func(ScriptArguments& args, vtkShapedDataArray &result)
+avtProgrammableOperation::avtVisItMaxAcrossTime::func(ProgrammableOpArguments& args, vtkShapedDataArray &result)
 {
     cout<<"avtProgrammableOperation::avtVisItMaxAcrossTime::func()"<<endl;
     cout<<"args= "<<args.getArgSize()<<endl;
@@ -1038,7 +1044,7 @@ avtProgrammableOperation::avtVisItMaxAcrossTime::getSignature(std::string& name,
 /// we are always returning true unless the script
 /// itself is failing not the inquiry..
 bool
-avtProgrammableOperation::avtVisItGetVarInfo::func(ScriptArguments& args, Variant& result)
+avtProgrammableOperation::avtVisItGetVarInfo::func(ProgrammableOpArguments& args, Variant& result)
 {
     std::string varName = args.getArg(0).AsString();
     vtkDataSet* dataset = args.GetInputDataSet();
@@ -1073,7 +1079,7 @@ avtProgrammableOperation::avtVisItGetVarInfo::func(ScriptArguments& args, Varian
 ProgrammableOperation::ResponseType
 avtProgrammableOperation::avtVisItGetVarInfo::getSignature(std::string& name,
                           stringVector& argnames,
-                          std::vector<ScriptVariantTypeEnum>& argtypes)
+                          std::vector<ScriptType>& argtypes)
 {
     name = "visit_get_var_info";
 
@@ -1085,7 +1091,7 @@ avtProgrammableOperation::avtVisItGetVarInfo::getSignature(std::string& name,
 
 
 bool
-avtProgrammableOperation::avtProgrammableOperation::avtVisItGetMeshInfo::func(ScriptArguments& args, Variant& result)
+avtProgrammableOperation::avtProgrammableOperation::avtVisItGetMeshInfo::func(ProgrammableOpArguments& args, Variant& result)
 {
     vtkDataSet *dataset = args.GetInputDataSet();
 
@@ -1133,7 +1139,7 @@ avtProgrammableOperation::avtProgrammableOperation::avtVisItGetMeshInfo::func(Sc
 ProgrammableOperation::ResponseType
 avtProgrammableOperation::avtProgrammableOperation::avtVisItGetMeshInfo::getSignature(std::string& name,
                           stringVector& argnames,
-                          std::vector<ScriptVariantTypeEnum>& argtypes)
+                          std::vector<ScriptType>& argtypes)
 {
     name = "visit_get_mesh_info";
 

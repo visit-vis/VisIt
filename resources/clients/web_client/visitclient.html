@@ -297,12 +297,20 @@
                 var as = vs.getAttributeSubject(index);
                 var stringArgs = [];
 
-                var splitMessage = message.split("\n");
-                for(var i = 0; i < splitMessage.length; ++i)
-                    stringArgs.push(splitMessage[i]);
+                message += "\n";
+                message = "raw:" + message;
+                //message.replace("\n","\\n");
+                //message.replace("\"","\\\"");
+
+                //var splitMessage = message.split("\n");
+                //for(var i = 0; i < splitMessage.length; ++i)
+                    //stringArgs.push(splitMessage[i]);
+                stringArgs.push(message);
                 as.set("stringArgs", stringArgs);
                 as.set("methodName", "Interpret");
                 vs.notify(index);
+
+                document.getElementById("messageTextArea").value = "";
             }
         </script>
     </body>

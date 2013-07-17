@@ -48,6 +48,7 @@ IF (WIN32)
 ELSE (WIN32)
   SET_UP_THIRD_PARTY(R lib include R Rblas Rlapack)
   MESSAGE(STATUS "Installing R directory ${VISIT_INSTALLED_VERSION_LIB}")
+
   FILE(COPY ${VISIT_R_DIR}/
         DESTINATION ${CMAKE_BINARY_DIR}/lib/r_support/R #mac has Resources dir
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
@@ -57,6 +58,7 @@ ELSE (WIN32)
                           GROUP_READ GROUP_WRITE GROUP_EXECUTE 
                           WORLD_READ             WORLD_EXECUTE)
 
+  EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_BINARY_DIR}/lib/r_support/R/bin/R ${CMAKE_BINARY_DIR}/bin/R)
 
     #copy to dev branch..
     IF(VISIT_R_SKIP_INSTALL)
@@ -75,4 +77,3 @@ ELSE (WIN32)
 ENDIF (WIN32)
 
 SET(HAVE_LIB_R 1)
-ADD_DEFINITIONS(-DHAVE_GNUR)

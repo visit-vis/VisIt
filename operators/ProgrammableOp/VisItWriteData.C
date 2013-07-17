@@ -1,6 +1,10 @@
 #include "VisItWriteData.h"
+#include "visit-config.h"
 
+#ifdef HAVE_LIBNETCDF
 #include <netcdf>
+#endif
+
 #include <vtkAbstractArray.h>
 #include <vtkIntArray.h>
 #include <vtkFloatArray.h>
@@ -12,6 +16,7 @@
 void
 VisItWriteData::write_data(const std::string& filename, const std::string& varname, vtkAbstractArray* vtkarray)
 {
+#ifdef HAVE_LIBNETCDF
 
     vtkDoubleArray* array = vtkDoubleArray::SafeDownCast(vtkarray);
 
@@ -30,6 +35,9 @@ VisItWriteData::write_data(const std::string& filename, const std::string& varna
 
     nc_put_var_double(ncidp, varidp, array->GetPointer(0) );
     nc_close(ncidp);
+#else
+    std::cerr << "only netcdf format writing is supported and netcdf was not available" << std::endl;
+#endif
 }
 
 void
@@ -41,6 +49,9 @@ VisItWriteData::write_data(const std::string &filename,
 			   const intVector &arrayShape,
 			   vtkAbstractArray *vtkarray)
 {
+
+#ifdef HAVE_LIBNETCDF
+
     int type = vtkarray->GetDataType();
 
     nc_type nc_type = NC_INT;
@@ -162,6 +173,8 @@ VisItWriteData::write_data(const std::string &filename,
     delete [] varIds;
     delete [] dimVarIds;
     delete [] dimIds;
-
+#else
+    std::cerr << "only netcdf write is supported and netcdf support was unavailable" << std::endl;
+#endif
 
 }

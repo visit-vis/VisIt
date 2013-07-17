@@ -30,6 +30,8 @@ ${COMMON_SOURCES}
 SET(LIBE_SOURCES
 ProgrammableOpEnginePluginInfo.C
 avtProgrammableOpFilter.C
+avtProgrammableOperation.C
+VisItWriteData.C
 ${COMMON_SOURCES}
 )
 
@@ -87,9 +89,10 @@ ${VTK_INCLUDE_DIRS}
 ${PYINCLUDES}
 )
 ADD_DEFINITIONS("-I${VISIT_INCLUDE_DIR}/avt/PythonFilters")
+ADD_DEFINITIONS("-I${NETCDF_INCLUDE_DIR}")
 
 
-LINK_DIRECTORIES(${VISIT_LIBRARY_DIR} ${QT_LIBRARY_DIR} ${GLEW_LIBRARY_DIR} ${VTK_LIBRARY_DIRS} )
+LINK_DIRECTORIES(${VISIT_LIBRARY_DIR} ${QT_LIBRARY_DIR} ${GLEW_LIBRARY_DIR} ${VTK_LIBRARY_DIRS} ${NETCDF_LIBRARY_DIR} )
 
 ADD_LIBRARY(IProgrammableOpOperator ${LIBI_SOURCES})
 TARGET_LINK_LIBRARIES(IProgrammableOpOperator visitcommon)
@@ -122,12 +125,12 @@ IF(NOT VISIT_SERVER_COMPONENTS_ONLY AND NOT VISIT_ENGINE_ONLY AND NOT VISIT_DBIO
 ENDIF(NOT VISIT_SERVER_COMPONENTS_ONLY AND NOT VISIT_ENGINE_ONLY AND NOT VISIT_DBIO_ONLY)
 
 ADD_LIBRARY(EProgrammableOpOperator_ser ${LIBE_SOURCES})
-TARGET_LINK_LIBRARIES(EProgrammableOpOperator_ser visitcommon avtexpressions_ser avtfilters_ser avtpipeline_ser )
+TARGET_LINK_LIBRARIES(EProgrammableOpOperator_ser visitcommon avtexpressions_ser avtfilters_ser avtpipeline_ser ${NETCDF_LIB} )
 SET(INSTALLTARGETS ${INSTALLTARGETS} EProgrammableOpOperator_ser)
 
 IF(VISIT_PARALLEL)
     ADD_PARALLEL_LIBRARY(EProgrammableOpOperator_par ${LIBE_SOURCES})
-    TARGET_LINK_LIBRARIES(EProgrammableOpOperator_par visitcommon avtexpressions_par avtfilters_par avtpipeline_par )
+    TARGET_LINK_LIBRARIES(EProgrammableOpOperator_par visitcommon avtexpressions_par avtfilters_par avtpipeline_par ${NETCDF_LIB} )
     SET(INSTALLTARGETS ${INSTALLTARGETS} EProgrammableOpOperator_par)
 ENDIF(VISIT_PARALLEL)
 

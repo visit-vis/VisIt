@@ -193,15 +193,15 @@ class ScriptPipelinePythonBaseFilter(Filter):
     def execute(self):
         inputs = [self.input(v) for v in self.input_ports]
         script_globals = {}
-        script_locals  = {}
+        #script_locals  = {}
         # place input names in our env
         output_stub = "def setout(v): globals()['__out_val'] = v\n"
         for v in self.input_ports:
             script_globals[v] = self.input(v)
         script_globals['as_vtkarray'] = as_vtkarray
         script_globals['as_ndarray'] = as_ndarray
-        exec(output_stub,script_globals,script_locals)
-        exec(self.filter_source,script_globals,script_locals)
+        exec(output_stub,script_globals,script_globals)
+        exec(self.filter_source,script_globals,script_globals)
         return script_globals["__out_val"]
 
 def ScriptFilter(filter_name,filter_info):

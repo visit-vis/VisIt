@@ -15823,24 +15823,34 @@ visit_exec_client_method(void *data)
         for(size_t i = 0; i < code.size(); ++i)
         {
             char *buf = NULL;
-            // Handle ClientMethod specially if we're not in a local namespace.
-            if(strncmp(code[i].c_str(), "ClientMethod(", 13) == 0)
-            {
-                if(!localNameSpace)
+
+            /// hktodo: remove this raw input abstraction,
+            /// currently I want this separated from regular interpret logic
+            if(code[i].find("raw:") == 0) {
+                std::ostringstream c;
+                c << "exec(\"" << code[i].substr(4) << "\")"; /// remove the prefix
+                PyRun_SimpleString(c.str().c_str());
+            }
+            else {
+                // Handle ClientMethod specially if we're not in a local namespace.
+                if(strncmp(code[i].c_str(), "ClientMethod(", 13) == 0)
                 {
-                    int len = code[i].size() + 6 + 1;
-                    buf = new char[len];
-                    SNPRINTF(buf, len, "visit.%s", code[i].c_str());
+                    if(!localNameSpace)
+                    {
+                        int len = code[i].size() + 6 + 1;
+                        buf = new char[len];
+                        SNPRINTF(buf, len, "visit.%s", code[i].c_str());
+                    }
                 }
+                if(buf == NULL)
+                {
+                    int len = code[i].size() + 1;
+                    buf = new char[len];
+                    strcpy(buf, code[i].c_str());
+                }
+                PyRun_SimpleString(buf);
+                delete [] buf;
             }
-            if(buf == NULL)
-            {
-                int len = code[i].size() + 1;
-                buf = new char[len];
-                strcpy(buf, code[i].c_str());
-            }
-            PyRun_SimpleString(buf);
-            delete [] buf;
         }
     }
     else if(m->GetMethodName() == "WriteState")
