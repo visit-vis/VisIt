@@ -588,7 +588,7 @@ JSONNode::EscapeString(const std::string &val) const
         else if(val[i] == '\\')
         {res += std::string("\\");}
         else if(val[i] == '/')
-        {res += std::string("\/");}
+        {res += std::string("\\/");}
         else if(val[i] == '\b')
         {res += std::string("\\b");}
         else if(val[i] == '\f')

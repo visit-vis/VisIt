@@ -211,14 +211,5 @@
             <lib name="icet"/>
             <lib name="mesa"/>
         </group>
-        
-        <!-- you have to mangle both vtk and visit, otherwise the
-             build_visit will fail -->
-        <!--
-        <group name="mangled" comment="Use mangled VTK to build VisIt">
-            <custom-flag lib="vtk" flag="mangled"/>
-            <custom-flag lib="visit" flag="mangled"/>
-        </group>
-        -->
     </license>
 </modules>

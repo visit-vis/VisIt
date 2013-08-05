@@ -145,11 +145,12 @@ ENDFOREACH(LIB in ${MESA_LIB})
 
 IF (NOT WIN32)
     IF(VISIT_VIRTUALENV_DIR)
-    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E remove -f
-                            ${CMAKE_CURRENT_BINARY_DIR}/python)
-    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink
-                            ${VISIT_VIRTUALENV_DIR}
-                            ${CMAKE_CURRENT_BINARY_DIR}/python)
+    MESSAGE("virtualenv installation will process python directory")
+    #EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E remove -f
+    #                        ${CMAKE_CURRENT_BINARY_DIR}/python)
+    #EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink
+    #                        ${VISIT_VIRTUALENV_DIR}
+    #                        ${CMAKE_CURRENT_BINARY_DIR}/python)
     ELSE(VISIT_VIRTUALENV_DIR)
     EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E remove -f
                             ${CMAKE_CURRENT_BINARY_DIR}/python)

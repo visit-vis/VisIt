@@ -374,7 +374,6 @@ WRITE_UNIFIED_FILE=""
 VISIT_INSTALLATION_BUILD_DIR=""
 VISIT_DRY_RUN=0
 DO_SUPER_BUILD="no"
-DO_MANGLED_LIBRARIES="no"
 }
 
 
@@ -1015,7 +1014,6 @@ for arg in "${arguments[@]}" ; do
         --installation-build-dir) next_arg="installation-build-dir";;
         --write-unified-file) next_arg="write-unified-file";;
         --parallel-build) DO_SUPER_BUILD="yes";;
-        --mangle-libraries) DO_MANGLED_LIBRARIES="yes";;
         --dry-run) VISIT_DRY_RUN=1;;
         --arch) next_arg="arch";;
         --build-mode) next_arg="build-mode";;
@@ -1613,11 +1611,6 @@ fi
 if [[ "$DOWNLOAD_ONLY" == "yes" ]] ; then
     info "Successfully downloaded the specified files."
     exit 0
-fi
-
-if [[ $DO_MANGLED_LIBRARIES == "yes" ]]; then
-    info "Mangling libraries while building"
-    info "Any libraries that support mangling will do so"
 fi
 
 if [[ "$DO_SUPER_BUILD" == "yes" ]]; then

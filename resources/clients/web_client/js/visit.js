@@ -487,7 +487,7 @@ function VisItProxy()
         }
         catch(err)
         {
-           alert(data);
+           //alert(data);
            return;
         }
 

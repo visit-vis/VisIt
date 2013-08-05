@@ -2247,10 +2247,11 @@ class MainLauncher(object):
         SETENV("VISITARCHHOME", self.visitarchdir)
         SETENV("VISITULTRAHOME", self.visitultradir)
 
+        # HK: We are now using virtualenv (PYTHONHOME commented out)
         # If we're using VisIt's Python, set PYTHONHOME
-        visitlibdir_python = os.path.join(self.visitlibdir, "python")
-        if self.generalArgs.exe_name == "cli":
-            SETENV("PYTHONHOME", visitlibdir_python)
+        #visitlibdir_python = os.path.join(self.visitlibdir, "python")
+        #if self.generalArgs.exe_name == "cli":
+        #    SETENV("PYTHONHOME", visitlibdir_python)
 
         # Turn off trapping of floating point exceptions.
         SETENV("TRAP_FPE", "")

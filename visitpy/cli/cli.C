@@ -428,14 +428,7 @@ main(int argc, char *argv[])
         /// argc_after_s and argv_after_s don't have argv0
         /// append it to be consistent to the reset of the system
         PyRun_SimpleString((char*)"sys.argv = ['-'] if sys.argv[0] == '' else ['-'] + sys.argv");
-        /*char* virtual_env = getenv("VIRTUAL_ENV");
-        if(virtual_env)
-        {
-            char buffer[1024];
-            sprintf(buffer,"activate_this='%s/bin/activate_this.py'",virtual_env);
-            PyRun_SimpleString(buffer);
-            PyRun_SimpleString((char*)"execfile(activate_this,dict(__file__=activate_this))");
-        }*/
+        PyRun_SimpleString("");
         PyRun_SimpleString((char*)"import os");
         PyRun_SimpleString((char*)"from os.path import join as pjoin");
 
@@ -490,6 +483,15 @@ main(int argc, char *argv[])
             }
             PyRun_SimpleString(uifile ? (char*)"args = sys.argv + ['-pyuiembedded']" :
                                         (char*)"args = sys.argv + ['-pysideclient']");
+            std::ostringstream str;
+            for(int i = 1; i < argc2; ++i)
+                str << "args.append(\"" << argv2[i] << "\")\n";
+
+            if(argc2 > 1) {
+                PyRun_SimpleString(str.str().c_str());
+            }
+
+            PyRun_SimpleString("print \"args: \", args");
             PyRun_SimpleString((char*)"tmp = visit.pyside_gui.PySideGUI.instance(args)");
             PyRun_SimpleString((char*)"visit.InitializeViewerProxy(tmp.GetViewerProxyPtr())");
             PyRun_SimpleString((char*)"from visit.pyside_support import GetRenderWindow");

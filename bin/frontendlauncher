@@ -56,25 +56,28 @@ fi
 # Come up with a list of versions, starting with current
 versions="current"
 for minor in 9 8 7 6 5 4 3 2 1 0; do
-    for patch in 2 1 0; do
+    for patch in 2 1 0 0b; do
         versions="$versions 3.$minor.$patch"
     done
 done
 for minor in 9 8 7 6; do
-    for patch in 2 1 0; do
+    for patch in 2 1 0 0b; do
         versions="$versions 2.$minor.$patch"
     done
 done
 
 # Find the most recent VisIt python
 visitpython=""
+visitbindir=""
 dir="$(dirname $0)"
 if test -x "$dir/python"; then
+    visitbindir="$dir" #check if we are in dev branch..
     visitpython="$dir/python" #check if we are in dev branch..
 else
     for ver in $versions; do
         thispython="$dir/../$ver/$platform/bin/python"
         if test -x "$thispython"; then
+            visitbindir="$dir/../$ver/$platform/bin"
             visitpython="$thispython"
             break
         fi
@@ -104,14 +107,15 @@ if test -n "$visitpython"; then
         export LD_LIBRARY_PATH="$visitdir/lib"
     fi
 
+    # HK: We are letting virtualenv setting the environment now.
     # Set up Python variables so the binary will look for modules in their new
     # home inside the VisIt installation instead of where Python was compiled.
-    export PYTHONHOME="$visitdir/lib/python"
-    unset PYTHONPATH
-    export PYTHONPATH="$PYTHONHOME/lib/python$pyver:$PYTHONHOME/lib/python$pyver/lib-dynload"
+    #export PYTHONHOME="$visitdir/lib/python"
+    #unset PYTHONPATH
+    #export PYTHONPATH="$PYTHONHOME/lib/python$pyver:$PYTHONHOME/lib/python$pyver/lib-dynload"
 
     #echo "VisIt Python: $visitpython $frontendlauncherpy $0 ${1+"$@"}"
-    . "$(dirname $0)/activate"
+    . "$visitbindir/activate"
     exec "$visitpython" $frontendlauncherpy $0 ${1+"$@"}
 else
     #echo "System python $frontendlauncherpy $0 ${1+"$@"}"

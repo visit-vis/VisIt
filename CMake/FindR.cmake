@@ -42,6 +42,37 @@
 
 INCLUDE(${VISIT_SOURCE_DIR}/CMake/SetUpThirdParty.cmake)
 
+MACRO(INSTALL_VIRTUALENV_R VISIT_R_INSTALL INSTALL_DIR INSTALL_MODE)
+
+    #now that virtual env is installed use pip to install
+    #SET(ENV{PATH} "${VISIT_R_INSTALL}/bin:$ENV{PATH}")
+    SET(PIP_COMMAND ${INSTALL_DIR}/bin/pip)
+
+    #install rpy2 if R is enabled
+
+    MESSAGE(STATUS "Installing rpy2 using ${PIP_COMMAND}")
+
+    IF(${INSTALL_MODE} STREQUAL "1")
+        MESSAGE(STATUS "$ENV{PATH} EXECUTE_PROCESS(COMMAND ${PIP_COMMAND} install rpy2 --global-option=build_ext --global-option=--undef=HAS_READLINE --global-option=--r-home=${VISIT_R_INSTALL})"
+        )
+        INSTALL(CODE
+        "
+         SET(TMPPATH \$ENV{PATH})
+         SET(ENV{PATH} \"${VISIT_R_INSTALL}/bin:\$ENV{PATH}\")
+         EXECUTE_PROCESS(COMMAND ${PIP_COMMAND} install rpy2 --global-option=build_ext --global-option=--undef=HAS_READLINE --global-option=--r-home=${VISIT_R_INSTALL})
+         SET(\$ENV{PATH} \${TMPPATH})
+        "
+        )
+
+    ELSE(${INSTALL_MODE} STREQUAL "1")
+        SET(TMPPATH $ENV{PATH})
+        SET(ENV{PATH} "${VISIT_R_INSTALL}/bin:$ENV{PATH}")
+        EXECUTE_PROCESS(COMMAND ${PIP_COMMAND} install rpy2 --global-option=build_ext --global-option=--undef=HAS_READLINE --global-option=--r-home=${VISIT_R_INSTALL})
+        SET(ENV{PATH} ${TMPPATH})
+    ENDIF(${INSTALL_MODE} STREQUAL "1")
+ENDMACRO(INSTALL_VIRTUALENV_R INSTALL_DIR INSTALL_MODE)
+
+
 IF (WIN32)
   # TODO, Windows R Support.
   #SET_UP_THIRD_PARTY(R "lib/${VISIT_MSVC_VERSION};lib" include R Rblase Rlapack)
@@ -60,10 +91,17 @@ ELSE (WIN32)
 
   EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_BINARY_DIR}/lib/r_support/R/bin/R ${CMAKE_BINARY_DIR}/bin/R)
 
+  IF(VISIT_VIRTUALENV_DIR)
+    INSTALL_VIRTUALENV_R(${CMAKE_BINARY_DIR}/lib/r_support/R ${CMAKE_BINARY_DIR} "0")
+  ELSE(VISIT_VIRTUALENV_DIR)
+    MESSAGE(STATUS "R is installed without Rpy2 support, Operators using rpy2 functionality will not work completely.")
+  ENDIF(VISIT_VIRTUALENV_DIR)
+
     #copy to dev branch..
     IF(VISIT_R_SKIP_INSTALL)
       MESSAGE("Skipping installation of R libraries")
     ELSE(VISIT_R_SKIP_INSTALL)
+
         INSTALL(DIRECTORY ${VISIT_R_DIR}/
                   DESTINATION ${VISIT_INSTALLED_VERSION_LIB}/r_support/R
             FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
@@ -73,6 +111,9 @@ ELSE (WIN32)
                                   GROUP_READ GROUP_WRITE GROUP_EXECUTE 
                                   WORLD_READ             WORLD_EXECUTE
             CONFIGURATIONS "";None;Debug;Release;RelWithDebInfo;MinSizeRel)
+
+        INSTALL_VIRTUALENV_R(${CMAKE_INSTALL_PREFIX}/${VISIT_INSTALLED_VERSION_LIB}/r_support/R ${CMAKE_INSTALL_PREFIX}/${VISIT_INSTALLED_VERSION} "1")
+
     ENDIF(VISIT_R_SKIP_INSTALL)
 ENDIF (WIN32)
 

@@ -152,7 +152,6 @@ FOREACH(_CURRENT_VERSION 2.7 2.6 2.5 2.4 2.3 2.2 2.1 2.0 1.6 1.5)
   FIND_PROGRAM(PYTHON_EXECUTABLE
                NAMES python2.7 python2.6 python2.5 python
                PATHS
-               ${VISIT_VIRTUALENV_DIR}/bin
                ${PYTHON_DIR}/bin
                ${PYTHON_DIR}
                [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\${_CURRENT_VERSION}\\InstallPath]
@@ -208,18 +207,44 @@ ENDFOREACH(_CURRENT_VERSION)
 IF(NOT EXISTS ${CMAKE_BINARY_DIR}/bin)
     FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 ENDIF()
-# symlink activate (virtualenv), python, and pip
-IF(VISIT_VIRTUALENV_DIR)
-    MESSAGE(STATUS "Setting up virtual environment for Python")
-    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${VISIT_VIRTUALENV_DIR}/bin/activate ${CMAKE_BINARY_DIR}/bin/activate)
-    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${VISIT_VIRTUALENV_DIR}/bin/activate_this.py ${CMAKE_BINARY_DIR}/bin/activate_this.py)
-    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${VISIT_VIRTUALENV_DIR}/bin/pip ${CMAKE_BINARY_DIR}/bin/pip)
-    EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${VISIT_VIRTUALENV_DIR}/bin/python ${CMAKE_BINARY_DIR}/bin/python)
-ENDIF(VISIT_VIRTUALENV_DIR)
+
 # If we want to be strict about python, add this clause:
 #IF(NOT PYTHON_VERSION)
 #MESSAGE(FATAL_ERROR "Python is required to build VisIt.")
 #ENDIF(NOT PYTHON_VERSION)
+
+MACRO(INSTALL_VIRTUALENV INSTALL_DIR PYTHON_EXEC INSTALL_MODE)
+
+    #file download fails because my libcurl does not have ssl support..
+    #for now use build_visit's virtualenv script
+    SET(VISIT_VIRTUALENV_SCRIPT "${VISIT_VIRTUALENV_DIR}/virtualenv.py")
+
+    MESSAGE("PYTHONEXEC: ${PYTHON_EXEC} ${VISIT_VIRTUALENV_SCRIPT} ${INSTALL_DIR}")
+    IF(${INSTALL_MODE} STREQUAL "1")
+        INSTALL(CODE
+        "
+        EXECUTE_PROCESS(COMMAND ${PYTHON_EXEC} ${VISIT_VIRTUALENV_SCRIPT} ${INSTALL_DIR})
+        EXECUTE_PROCESS(COMMAND ${INSTALL_DIR}/bin/pip install ply)
+        EXECUTE_PROCESS(COMMAND ${INSTALL_DIR}/bin/pip install numpy)
+        ")
+
+    ELSE(${INSTALL_MODE} STREQUAL "1")
+        # install virtualenv into dev directory..
+        MESSAGE(STATUS "Setting up virtual environment for Python")
+        MESSAGE(STATUS ${PYTHON_EXEC} ${VISIT_VIRTUALENV_SCRIPT} ${INSTALL_DIR})
+        EXECUTE_PROCESS(COMMAND ${PYTHON_EXEC} ${VISIT_VIRTUALENV_SCRIPT} ${INSTALL_DIR})
+
+        #now that virtual env is installed use pip to install
+    
+        SET(PIP_COMMAND ${INSTALL_DIR}/bin/pip)
+
+        MESSAGE(STATUS "Installing ply using ${PIP_COMMAND}...")
+        EXECUTE_PROCESS(COMMAND ${PIP_COMMAND} install ply)
+
+        MESSAGE(STATUS "Installing numpy using ${PIP_COMMAND}...")
+        EXECUTE_PROCESS(COMMAND ${PIP_COMMAND} install numpy)
+    ENDIF(${INSTALL_MODE} STREQUAL "1")
+ENDMACRO(INSTALL_VIRTUALENV INSTALL_DIR PYTHON_EXEC INSTALL_MODE)
 
 
 MARK_AS_ADVANCED(
@@ -228,6 +253,10 @@ MARK_AS_ADVANCED(
   PYTHON_INCLUDE_PATH
   PYTHON_EXECUTABLE
 )
+
+IF(VISIT_VIRTUALENV_DIR)
+    INSTALL_VIRTUALENV(${CMAKE_BINARY_DIR} ${PYTHON_EXECUTABLE} "0")
+ENDIF(VISIT_VIRTUALENV_DIR)
 
 # Python Should be built and installed as a Framework on OSX
 IF(Python_FRAMEWORKS)
@@ -439,19 +468,22 @@ IF(PYTHONLIBS_FOUND AND NOT VISIT_PYTHON_SKIP_INSTALL)
         # Only install Python support files if we are not using the system Python
         IF((NOT ${PYTHON_DIR} STREQUAL "/usr"))
             # Install the python executable
-            STRING(SUBSTRING ${PYTHON_VERSION} 0 1 PYX)
-            STRING(SUBSTRING ${PYTHON_VERSION} 0 3 PYX_X)
-            THIRD_PARTY_INSTALL_EXECUTABLE(${PYTHON_DIR}/bin/python ${PYTHON_DIR}/bin/python${PYX} ${PYTHON_DIR}/bin/python${PYX_X})
+            #STRING(SUBSTRING ${PYTHON_VERSION} 0 1 PYX)
+            #STRING(SUBSTRING ${PYTHON_VERSION} 0 3 PYX_X)
+            #THIRD_PARTY_INSTALL_EXECUTABLE(${PYTHON_DIR}/bin/python ${PYTHON_DIR}/bin/python${PYX} ${PYTHON_DIR}/bin/python${PYX_X})
 
             # Install the python modules
             # Exclude lib-tk files for now because the permissions are bad on davinci. BJW 12/17/2009
             # Exclude visit module files.
-            IF(EXISTS ${PYTHON_DIR}/lib/python${PYTHON_VERSION})
-                INSTALL(DIRECTORY ${PYTHON_DIR}/lib/python${PYTHON_VERSION}
-                    DESTINATION ${VISIT_INSTALLED_VERSION_LIB}/python/lib
-                    FILE_PERMISSIONS OWNER_READ OWNER_WRITE
-                                     GROUP_READ GROUP_WRITE
-                                     WORLD_READ
+            #IF(EXISTS ${PYTHON_DIR}/lib/python${PYTHON_VERSION})
+            #    INSTALL(DIRECTORY ${PYTHON_DIR}/lib/python${PYTHON_VERSION}
+            #        DESTINATION ${VISIT_INSTALLED_VERSION_LIB}/python/lib
+            IF(EXISTS ${PYTHON_DIR})
+                INSTALL(DIRECTORY ${PYTHON_DIR}/
+                    DESTINATION ${VISIT_INSTALLED_VERSION_LIB}/python
+                    FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+                                     GROUP_READ GROUP_WRITE GROUP_EXECUTE
+                                     WORLD_READ WORLD_EXECUTE
                     DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
                                           GROUP_READ GROUP_WRITE GROUP_EXECUTE
                                           WORLD_READ WORLD_EXECUTE
@@ -462,7 +494,12 @@ IF(PYTHONLIBS_FOUND AND NOT VISIT_PYTHON_SKIP_INSTALL)
                     PATTERN "PySide" EXCLUDE
                     PATTERN "Python-2.6-py2.6.egg-info" EXCLUDE
                 )
-            ENDIF(EXISTS ${PYTHON_DIR}/lib/python${PYTHON_VERSION})
+            ENDIF(EXISTS ${PYTHON_DIR})
+
+            #install virtualenv using the copied python installation..
+            IF(VISIT_VIRTUALENV_DIR)
+                INSTALL_VIRTUALENV(${CMAKE_INSTALL_PREFIX}/${VISIT_INSTALLED_VERSION} ${CMAKE_INSTALL_PREFIX}/${VISIT_INSTALLED_VERSION_LIB}/python/bin/python "1")
+            ENDIF(VISIT_VIRTUALENV_DIR)
 
             # Install the Python headers
             IF (NOT WIN32)
