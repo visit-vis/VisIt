@@ -1,73 +1,93 @@
 function bv_boxlib_initialize
 {
-export DO_BOXLIB="no"
-export ON_BOXLIB="off"
+    export DO_BOXLIB="no"
+    export ON_BOXLIB="off"    
+    export ALT_BOXLIB_DIR=""
+    export USE_SYSTEM_BOXLIB="no"
+    add_extra_commandline_args "boxlib" "alt-boxlib-dir" 1 "Use boxlib found in alternative directory"
 }
 
 function bv_boxlib_enable
 {
-DO_BOXLIB="yes"
-ON_BOXLIB="on"
+    DO_BOXLIB="yes"
+    ON_BOXLIB="on"
 }
 
 function bv_boxlib_disable
 {
-DO_BOXLIB="no"
-ON_BOXLIB="off"
+    DO_BOXLIB="no"
+    ON_BOXLIB="off"
 }
 
 function bv_boxlib_depends_on
 {
-echo ""
+    echo ""
+}
+
+function bv_boxlib_alt_boxlib_dir
+{
+    info "using boxlib from alternative directory $1"
+    ALT_BOXLIB_DIR="$1"
+    USE_SYSTEM_BOXLIB="yes"
+    bv_boxlib_enable    
 }
 
 function bv_boxlib_info
 {
-export BOXLIB_VERSION=${BOXLIB_VERSION:-"1.0.7"}
-export BOXLIB_FILE=${BOXLIB_FILE:-"ccse-${BOXLIB_VERSION}.tar.gz"}
-export BOXLIB_COMPATIBILITY_VERSION=${BOXLIB_COMPATIBILITY_VERSION:-"1.0.7"}
-export BOXLIB_URL=${BOXLIB_URL:-"https://ccse.lbl.gov/Software/tarfiles/"}
-export BOXLIB_BUILD_DIR=${BOXLIB_BUILD_DIR:-"ccse-${BOXLIB_VERSION}/Src/C_BaseLib"}
-export BOXLIB_MD5_CHECKSUM="d1a8d2c5095e674ddc1dcae8719dff16"
-export BOXLIB_SHA256_CHECKSUM="14cb019874ca17092fb8c01500be5c1ed5ad082a95e855dd3c97cabaa244bebc"
+    export BOXLIB_VERSION=${BOXLIB_VERSION:-"1.0.7"}
+    export BOXLIB_FILE=${BOXLIB_FILE:-"ccse-${BOXLIB_VERSION}.tar.gz"}
+    export BOXLIB_COMPATIBILITY_VERSION=${BOXLIB_COMPATIBILITY_VERSION:-"1.0.7"}
+    export BOXLIB_URL=${BOXLIB_URL:-"https://ccse.lbl.gov/Software/tarfiles/"}
+    export BOXLIB_BUILD_DIR=${BOXLIB_BUILD_DIR:-"ccse-${BOXLIB_VERSION}/Src/C_BaseLib"}
+    export BOXLIB_MD5_CHECKSUM="d1a8d2c5095e674ddc1dcae8719dff16"
+    export BOXLIB_SHA256_CHECKSUM="14cb019874ca17092fb8c01500be5c1ed5ad082a95e855dd3c97cabaa244bebc"
 }
 
 function bv_boxlib_print
 {
-  printf "%s%s\n" "BOXLIB_FILE=" "${BOXLIB_FILE}"
-  printf "%s%s\n" "BOXLIB_VERSION=" "${BOXLIB_VERSION}"
-  printf "%s%s\n" "BOXLIB_COMPATIBILITY_VERSION=" "${BOXLIB_COMPATIBILITY_VERSION}"
-  printf "%s%s\n" "BOXLIB_BUILD_DIR=" "${BOXLIB_BUILD_DIR}"
+    printf "%s%s\n" "BOXLIB_FILE=" "${BOXLIB_FILE}"
+    printf "%s%s\n" "BOXLIB_VERSION=" "${BOXLIB_VERSION}"
+    printf "%s%s\n" "BOXLIB_COMPATIBILITY_VERSION=" "${BOXLIB_COMPATIBILITY_VERSION}"
+    printf "%s%s\n" "BOXLIB_BUILD_DIR=" "${BOXLIB_BUILD_DIR}"
 }
 
 function bv_boxlib_print_usage
 {
-printf "%-15s %s [%s]\n" "--boxlib"  "Build Boxlib" "$DO_BOXLIB" 
+    printf "%-15s %s [%s]\n" "--boxlib"  "Build Boxlib" "$DO_BOXLIB" 
 }
 
 function bv_boxlib_graphical
 {
-  local graphical_output="Boxlib   $BOXLIB_VERSION($BOXLIB_FILE)    $ON_BOXLIB"
-  echo $graphical_output
+    local graphical_output="Boxlib   $BOXLIB_VERSION($BOXLIB_FILE)    $ON_BOXLIB"
+    echo $graphical_output
 }
 
 function bv_boxlib_host_profile
 {
-    if [[ "$DO_BOXLIB" == "yes" ]] ; then
-        echo >> $HOSTCONF
-        echo "##" >> $HOSTCONF
-        echo "## Boxlib" >> $HOSTCONF
-        echo "##" >> $HOSTCONF
-        echo \
-        "VISIT_OPTION_DEFAULT(VISIT_BOXLIB_DIR \${VISITHOME}/boxlib/$BOXLIB_VERSION/\${VISITARCH})" \
-        >> $HOSTCONF
+    if [[ "$USE_SYSTEM_BOXLIB" == "yes" ]]; then
+            echo >> $HOSTCONF
+            echo "##" >> $HOSTCONF
+            echo "## Boxlib" >> $HOSTCONF
+            echo "##" >> $HOSTCONF
+            echo \
+            "VISIT_OPTION_DEFAULT(VISIT_BOXLIB_DIR ${ALT_BOXLIB_DIR})" \
+            >> $HOSTCONF    
+    else
+        if [[ "$DO_BOXLIB" == "yes" ]] ; then
+            echo >> $HOSTCONF
+            echo "##" >> $HOSTCONF
+            echo "## Boxlib" >> $HOSTCONF
+            echo "##" >> $HOSTCONF
+            echo \
+            "VISIT_OPTION_DEFAULT(VISIT_BOXLIB_DIR \${VISITHOME}/boxlib/$BOXLIB_VERSION/\${VISITARCH})" \
+            >> $HOSTCONF
+        fi
     fi
-
 }
 
 function bv_boxlib_ensure
 {
-    if [[ "$DO_BOXLIB" == "yes" ]] ; then
+    if [[ "$DO_BOXLIB" == "yes" && "$USE_SYSTEM_BOXLIB" == "no" ]] ; then
         ensure_built_or_ready "boxlib" $BOXLIB_VERSION $BOXLIB_BUILD_DIR $BOXLIB_FILE $BOXLIB_URL
         if [[ $? != 0 ]] ; then
             ANY_ERRORS="yes"
@@ -79,9 +99,9 @@ function bv_boxlib_ensure
 
 function bv_boxlib_dry_run
 {
-  if [[ "$DO_BOXLIB" == "yes" ]] ; then
-    echo "Dry run option not set for boxlib."
-  fi
+    if [[ "$DO_BOXLIB" == "yes" && "$USE_SYSTEM_BOXLIB" == "no" ]] ; then
+        echo "Dry run option not set for boxlib."
+    fi
 }
 # *************************************************************************** #
 #                         Function 8.8, build_boxlib                          #
@@ -197,7 +217,7 @@ function build_boxlib
 
 function bv_boxlib_is_enabled
 {
-    if [[ $DO_BOXLIB == "yes" ]]; then
+    if [[ $DO_BOXLIB == "yes" || $USE_SYSTEM_BOXLIB == "yes" ]]; then
         return 1    
     fi
     return 0
@@ -205,6 +225,10 @@ function bv_boxlib_is_enabled
 
 function bv_boxlib_is_installed
 {
+    if [[ $USE_SYSTEM_BOXLIB == "yes" ]]; then
+        return 1    
+    fi
+
     check_if_installed "boxlib" $BOXLIB_VERSION
     if [[ $? == 0 ]] ; then
         return 1
@@ -214,18 +238,18 @@ function bv_boxlib_is_installed
 
 function bv_boxlib_build
 {
-cd "$START_DIR"
-if [[ "$DO_BOXLIB" == "yes" ]] ; then
-    check_if_installed "boxlib" $BOXLIB_VERSION
-    if [[ $? == 0 ]] ; then
-        info "Skipping Boxlib build.  Boxlib is already installed."
-    else
-        info "Building Boxlib (~2 minutes)"
-        build_boxlib
-        if [[ $? != 0 ]] ; then
-            error "Unable to build or install Boxlib.  Bailing out."
+    cd "$START_DIR"
+    if [[ "$DO_BOXLIB" == "yes" && "$USE_SYSTEM_BOXLIB" == "no" ]] ; then
+        check_if_installed "boxlib" $BOXLIB_VERSION
+        if [[ $? == 0 ]] ; then
+            info "Skipping Boxlib build.  Boxlib is already installed."
+        else
+            info "Building Boxlib (~2 minutes)"
+            build_boxlib
+            if [[ $? != 0 ]] ; then
+                error "Unable to build or install Boxlib.  Bailing out."
+            fi
+            info "Done building Boxlib"
         fi
-        info "Done building Boxlib"
     fi
-fi
 }

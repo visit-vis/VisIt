@@ -1726,14 +1726,18 @@ class MainLauncher(object):
 
     def call(self, args, stdinpipe=0):
         #print args
+        env = os.environ.copy()
         self.Logging(args)
+        #debugger fails if LD_LIBRARY_PATH is listed and has libpython in the lib directory
+        if self.debugArgs.debugger != None and self.debugArgs.debuggerArgs[-1] == self.generalArgs.exe_name:
+            env.pop("LD_LIBRARY_PATH", "")
         ret = 0
         try:
              if stdinpipe:
                   # Launchers like msub need this in order to work.
-                  p = subprocess.Popen(args, stdin=subprocess.PIPE)
+                  p = subprocess.Popen(args, stdin=subprocess.PIPE,env=env)
              else:
-                  p = subprocess.Popen(args)
+                  p = subprocess.Popen(args,env=env)
              p.communicate()
              ret = p.returncode
         except KeyboardInterrupt:

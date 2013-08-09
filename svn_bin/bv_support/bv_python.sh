@@ -5,18 +5,7 @@ export ON_PYTHON="on"
 export FORCE_PYTHON="no"
 export USE_SYSTEM_PYTHON="no"
 export VISIT_PYTHON_DIR=${VISIT_PYTHON_DIR:-""}
-#export VISIT_INSTALL_PYTHON_PIP="no"
-#export VISIT_INSTALL_PYTHON_READLINE="no"
-#export VISIT_INSTALL_PYTHON_RPY2="no"
-#export VISIT_INSTALL_PYTHON_MPI4PY="no"
 
-#add_extra_commandline_args "python" "python-install-pip" 0 "Install pip support"
-#add_extra_commandline_args "python" "python-install-readline" 0 "Install readline support (requires pip)"
-#add_extra_commandline_args "python" "python-install-rpy2" 0 "Install rpy2 support (requires pip,R)"
-#add_extra_commandline_args "python" "python-install-mpi4py" 0 "Install mpi4py support (requires pip, parallel)"
-
-#I am removing these as the mixing of VisIt
-#on system python may be dangerous...
 add_extra_commandline_args "python" "system-python" 0 "Using system python"
 add_extra_commandline_args "python" "alt-python-dir" 1 "Using alternate python directory"
 }
@@ -72,7 +61,7 @@ function python_set_vars_helper
       fi
   fi
   PYTHON_LIBRARY="${PYTHON_LIBRARY_DIR}/${PYTHON_LIBRARY}"
-  echo "build: $PYTHON_BUILD_DIR version: $PYTHON_VERSION install: $VISIT_PYTHON_DIR"
+  echo "build: $PYTHON_BUILD_DIR version: $PYTHON_VERSION install: $VISIT_PYTHON_DIR LIBRARY: $PYTHON_LIBRARY LIBDIR $PYTHON_LIBRARY_DIR CONFIG: $PYTHON_CONFIG_COMMAND"
 
 }
 
@@ -106,45 +95,9 @@ function bv_python_alt_python_dir
 
 }
 
-#function bv_python_python_install_pip
-#{
-#    #if [[ "$DO_PYTHON" == "no" && "$USE_SYSTEM_PYTHON" == "no" ]]; then
-#    #    error "Python must be available to install for secondary flags to work"
-#    #fi
-#
-#    info "enabling python-pip installation..."
-#    VISIT_INSTALL_PYTHON_PIP="yes"
-#}
-
-#function bv_python_python_install_readline
-#{
-#    info "enabling python-readline installation..."
-#    VISIT_INSTALL_PYTHON_PIP="yes"
-#    VISIT_INSTALL_PYTHON_READLINE="yes"
-#}
-
-#function bv_python_python_install_rpy2
-#{
-#    info "enabling python-rpy2 installation..."
-#    VISIT_INSTALL_PYTHON_PIP="yes"
-#    VISIT_INSTALL_PYTHON_RPY2="yes"
-#}
-
-#function bv_python_python_install_mpi4py
-#{
-#    info "enabling python-mpi4py installation..."
-#    VISIT_INSTALL_PYTHON_PIP="yes"
-#    VISIT_INSTALL_PYTHON_MPI4PY="yes"
-#}
-
 function bv_python_depends_on
 {
-    # python will be dependent on R if rpy2 is turned on..
-    #if [[ "$VISIT_INSTALL_PYTHON_RPY2" == "yes" ]]; then
-    #    echo "R"
-    #else
     echo ""
-    #fi
 }
 
 function bv_python_info
@@ -197,6 +150,7 @@ function bv_python_host_profile
         echo "##" >> $HOSTCONF
 
         if [[ "$USE_SYSTEM_PYTHON" == "yes" ]]; then
+            echo "VISIT_OPTION_DEFAULT(VISIT_SYSTEM_PYTHON TRUE)" >> $HOSTCONF
             echo "VISIT_OPTION_DEFAULT(VISIT_PYTHON_DIR $VISIT_PYTHON_DIR)" >> $HOSTCONF
             #incase the PYTHON_DIR does not find the include and library set it manually...
             echo "VISIT_OPTION_DEFAULT(PYTHON_INCLUDE_PATH $PYTHON_INCLUDE_PATH)" >> $HOSTCONF
@@ -205,8 +159,8 @@ function bv_python_host_profile
             echo "VISIT_OPTION_DEFAULT(PYTHON_VERSION $PYTHON_COMPATIBILITY_VERSION)" >> $HOSTCONF
         else
             echo "VISIT_OPTION_DEFAULT(VISIT_PYTHON_DIR $VISIT_PYTHON_DIR)" >> $HOSTCONF
-	    	echo "VISIT_OPTION_DEFAULT(VISIT_VIRTUALENV_DIR $VISITDIR/virtualenv/${VIRTUALENV_BUILD_DIR}/)" >> $HOSTCONF
         fi
+	    echo "VISIT_OPTION_DEFAULT(VISIT_VIRTUALENV_DIR $VISITDIR/virtualenv/${VIRTUALENV_BUILD_DIR}/)" >> $HOSTCONF
     fi
 }
 
@@ -223,14 +177,6 @@ function bv_python_initialize_vars
         export PYTHON_INCLUDE_DIR="${VISIT_PYTHON_DIR}/include/python${PYTHON_COMPATIBILITY_VERSION}"
         export PYTHON_LIBRARY="${VISIT_PYTHON_DIR}/lib/libpython${PYTHON_COMPATIBILITY_VERSION}.${SO_EXT}"
     fi
-
-    #if [[ "$VISIT_INSTALL_PYTHON_RPY2" == "yes" && "$DO_R" == "no" ]]; then
-    #    error "R must be enabled to install python-rpy2..."
-    #fi
-
-    #if [[ "$VISIT_INSTALL_PYTHON_MPI4PY" == "yes" && "$DO_parallel" == "no" ]]; then
-    #    error "parallel flag must be enabled in order to install python-mpi4py..."
-    #fi
 }
 
 function bv_python_ensure
@@ -574,6 +520,12 @@ function bv_python_is_installed
 
 function bv_python_execute_subcommands
 {
+
+    if [[ -e $VISITDIR/virtualenv/${VIRTUALENV_BUILD_DIR} ]]; then
+        info "virtualenv already installed skipping"
+        return 0
+    fi
+
     info "setting up virtualenv ..."
 
     download_file "$VIRTUALENV_FILE" "$VIRTUALENV_URL"

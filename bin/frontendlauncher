@@ -101,11 +101,11 @@ if test -n "$visitpython"; then
     done
 
     # VisIt's Python interpreter probably uses a shared Python library.
-    if test -n "$LD_LIBRARY_PATH" ; then
-        export LD_LIBRARY_PATH="$visitdir/lib:$LD_LIBRARY_PATH"
-    else
-        export LD_LIBRARY_PATH="$visitdir/lib"
-    fi
+    #if test -n "$LD_LIBRARY_PATH" ; then
+    #    export LD_LIBRARY_PATH="$visitdir/lib:$LD_LIBRARY_PATH"
+    #else
+    #    export LD_LIBRARY_PATH="$visitdir/lib"
+    #fi
 
     # HK: We are letting virtualenv setting the environment now.
     # Set up Python variables so the binary will look for modules in their new

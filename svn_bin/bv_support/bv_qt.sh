@@ -138,6 +138,7 @@ if [[ "$DO_DBIO_ONLY" != "yes" ]]; then
             echo "## Qt" >> $HOSTCONF
             echo "##" >> $HOSTCONF
             if [[ $USE_SYSTEM_QT == "yes" ]]; then
+                echo "VISIT_OPTION_DEFAULT(VISIT_SYSTEM_QT TRUE)" >> $HOSTCONF
                 echo "VISIT_OPTION_DEFAULT(QT_QTUITOOLS_INCLUDE_DIR ${QT_QTUITOOLS_INCLUDE_DIR})" >> $HOSTCONF
                 echo "VISIT_OPTION_DEFAULT(VISIT_QT_BIN ${QT_BIN_DIR})" >> $HOSTCONF
             else

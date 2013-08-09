@@ -181,9 +181,9 @@ avtTimeWindowLoopFilter::PreLoopInitialize()
     // values need to be number of tuples * total number of timesteps..
     /// todo: Figure out why GetTotalNumberOfTimeSlicesForRank does not work
     int totalTimes = GetEndTime() - GetStartTime() + 1; //GetTotalNumberOfTimeSlicesForRank();
-//    cout<<PAR_Rank()<<": locs: ["<<idx0<<" "<<idxN<<"] times:"<<totalTimes<< " " << numTuples*totalTimes << " "
-//       << GetEndTime() << " " << GetStartTime() << endl;
-//    cout<<"Is data replicated: " << GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors()<<endl;
+    //cout<<PAR_Rank()<<": locs: ["<<idx0<<" "<<idxN<<"] times:"<<totalTimes<< " " << numTuples*totalTimes << " "
+    //   << GetEndTime() << " " << GetStartTime() << endl;
+    //cout<<"Is data replicated: " << GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors()<<endl;
 
     //format is: T0_val0, T0_val1, ...., T1_val0, T2_val1, ....
     values.resize(numTuples*totalTimes,0);
@@ -215,7 +215,7 @@ avtTimeWindowLoopFilter::Execute()
         ds = datasets[domIndex];
 
     //std::cout << inputDataSet << "  " << ds << std::endl;
-
+    //ds = inputDataSet;
     vtkFloatArray *scalars = NULL;
 
     /// TODO: Important: make sure variable is appropriately casted.
@@ -235,11 +235,9 @@ avtTimeWindowLoopFilter::Execute()
     for (size_t i = 0; i < numTuples; i++)
         values[index++] = vals[i];
 
-    /*
-    int rank = PAR_Rank();
-    cout<<"TimeStep: " << rank << " " << currentTime<< " " << GetStartTime() << " " << GetEndTime() << " "
-	<< GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors() << endl;
-    */
+    //int rank = PAR_Rank();
+    //cout<<"TimeStep: " << rank << " " << currentTime<< " " << GetStartTime() << " " << GetEndTime() << " "
+	//<< GetInput()->GetInfo().GetAttributes().DataIsReplicatedOnAllProcessors() << endl;
 }
 
 void
@@ -283,8 +281,9 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
 	
     MPI_Allreduce(tmp, res, numTimes, MPI_FLOAT, MPI_SUM, VISIT_MPI_COMM);
     if (i >= idx0 && i < idxN)
-	    for (int j = 0; j < numTimes; j++)
+	    for (int j = 0; j < numTimes; j++) {
 		finalVals[finalIdx++] = res[j];
+        }
     }
     delete [] tmp;
     delete [] res;
@@ -312,9 +311,11 @@ avtTimeWindowLoopFilter::CreateFinalOutput()
         for(int j = 0; j < numTimes; ++j)
         {
             //std::cout << finalVals[j*totalTupleSize + i] << std::endl;
+            //std::cout << finalVals[i*numTimes + j] << " ";
             PyObject* value = PyFloat_FromDouble((double)finalVals[i*numTimes + j]); //[j*totalTupleSize + i]);
             PyTuple_SET_ITEM(retval, j, value);
         }
+        //std::cout << std::endl;
 
         environment->Interpreter()->SetGlobalObject(retval,"__internal_array");
         environment->Interpreter()->RunScript(script);
@@ -655,7 +656,7 @@ avtProgrammableOperation::avtVisItForEachLocation::func(ProgrammableOpArguments&
         environ->Interpreter()->RunScript(rsetup.str());
 #else
         std::cerr << "R is not supported at this time.." << std::endl;
-        return;
+        return false;
 #endif
     }
 
@@ -817,6 +818,29 @@ avtProgrammableOperation::avtVisItForEachLocationR::getSignature(std::string& na
     argtypes.push_back(ProgrammableOperation::VARIANT_VECTOR_TYPE);
     return ProgrammableOperation::VTK_MULTI_DIMENSIONAL_DATA_ARRAY;
 }
+
+bool
+avtProgrammableOperation::avtVisItGetRSupportDirectory::func(ProgrammableOpArguments& args, Variant& result)
+{
+    std::string vlibdir = GetVisItLibraryDirectory() + VISIT_SLASH_CHAR + "r_support";
+    std::string vlibrdir  = vlibdir  + VISIT_SLASH_CHAR + "Rscripts" + VISIT_SLASH_CHAR;
+    result = vlibrdir;
+    return true;
+}
+
+ProgrammableOperation::ResponseType
+avtProgrammableOperation::avtVisItGetRSupportDirectory::getSignature(std::string& name,
+                          stringVector& argnames,
+                          std::vector<ProgrammableOperation::ScriptType>& argtypes)
+{
+    (void) argnames;
+    (void) argtypes;
+
+    name = "visit_get_r_support_dir";
+
+    return ProgrammableOperation::CONSTANT;
+}
+
 #endif
 
 bool
@@ -887,29 +911,6 @@ avtProgrammableOperation::avtVisItForEachLocationPython::getSignature(std::strin
     argnames.push_back("kernelArgs");
     argtypes.push_back(ProgrammableOperation::VARIANT_VECTOR_TYPE);
     return ProgrammableOperation::VTK_MULTI_DIMENSIONAL_DATA_ARRAY;
-}
-
-
-bool
-avtProgrammableOperation::avtVisItGetRSupportDirectory::func(ProgrammableOpArguments& args, Variant& result)
-{
-    std::string vlibdir = GetVisItLibraryDirectory() + VISIT_SLASH_CHAR + "r_support";
-    std::string vlibrdir  = vlibdir  + VISIT_SLASH_CHAR + "Rscripts" + VISIT_SLASH_CHAR;
-    result = vlibrdir;
-    return true;
-}
-
-ProgrammableOperation::ResponseType
-avtProgrammableOperation::avtVisItGetRSupportDirectory::getSignature(std::string& name,
-                          stringVector& argnames,
-                          std::vector<ProgrammableOperation::ScriptType>& argtypes)
-{
-    (void) argnames;
-    (void) argtypes;
-
-    name = "visit_get_r_support_dir";
-
-    return ProgrammableOperation::CONSTANT;
 }
 
 bool

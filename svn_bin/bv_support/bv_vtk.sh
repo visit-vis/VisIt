@@ -557,14 +557,18 @@ function build_vtk
             py="${PYTHON_COMMAND}"
             pyinc="${PYTHON_INCLUDE_DIR}"
             pylib="${PYTHON_LIBRARY}"
-            #pyargs="--home=\${CMAKE_INSTALL_PREFIX}"
+            # this seems odd way to call python setup.py install
+            # but different versions of python installations seem
+            # to have a hard time against --prefix or --home if
+            # the site-packages directory structure is not available..
+            pyargs="--root=${vtk_inst_path} --prefix=\".\""
 
             vopts="${vopts} -DVTK_WRAP_PYTHON:BOOL=true"
             vopts="${vopts} -DPYTHON_EXECUTABLE:FILEPATH=${py}"
             vopts="${vopts} -DPYTHON_EXTRA_LIBS:STRING=${VTK_PY_LIBS}"
             vopts="${vopts} -DPYTHON_INCLUDE_DIR:PATH=${pyinc}"
             vopts="${vopts} -DPYTHON_LIBRARY:FILEPATH=${pylib}"
-            #vopts="${vopts} -DVTK_PYTHON_SETUP_ARGS=${pyargs}"
+            vopts="${vopts} -DVTK_PYTHON_SETUP_ARGS=\"${pyargs}\""
 #            vopts="${vopts} -DPYTHON_UTIL_LIBRARY:FILEPATH="
         else
             warn "Forgetting python filters because we are doing a static build."
@@ -597,7 +601,8 @@ function build_vtk
     if test -e bv_run_cmake.sh ; then
         rm -f bv_run_cmake.sh
     fi
-    echo "${CMAKE_BIN}" ${vopts} ../${VTK_SRC_DIR} > bv_run_cmake.sh
+
+    echo "\"${CMAKE_BIN}\"" ${vopts} ../${VTK_SRC_DIR} > bv_run_cmake.sh
     cat bv_run_cmake.sh
     issue_command bash bv_run_cmake.sh || error "VTK configuration failed."
 

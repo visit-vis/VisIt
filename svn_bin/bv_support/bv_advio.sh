@@ -1,34 +1,45 @@
 function bv_advio_initialize
 {
-export DO_ADVIO="no"
-export ON_ADVIO="off"
+    export DO_ADVIO="no"
+    export ON_ADVIO="off"
+    export ALT_ADVIO_DIR=""
+    export USE_SYSTEM_ADVIO="no"
+    add_extra_commandline_args "advio" "alt-advio-dir" 1 "Use advio found in alternative directory"
 }
 
 function bv_advio_enable
 {
-DO_ADVIO="yes"
-ON_ADVIO="on"
+    DO_ADVIO="yes"
+    ON_ADVIO="on"
 }
 
 function bv_advio_disable
 {
-DO_ADVIO="no"
-ON_ADVIO="off"
+    DO_ADVIO="no"
+    ON_ADVIO="off"
 }
 
 function bv_advio_depends_on
 {
-echo ""
+    echo ""
+}
+
+function bv_advio_alt_advio_dir
+{
+    info "using advio from alternative directory $1"
+    ALT_ADVIO_DIR="$1"
+    USE_SYSTEM_ADVIO="yes"
+    bv_advio_enable    
 }
 
 function bv_advio_info
 {
-export ADVIO_FILE=${ADVIO_FILE:-"AdvIO-1.2.tar.gz"}
-export ADVIO_VERSION=${ADVIO_VERSION:-"1.2"}
-export ADVIO_COMPATIBILITY_VERSION=${ADVIO_COMPATIBILITY_VERSION:-"1.2"}
-export ADVIO_BUILD_DIR=${ADVIO_BUILD_DIR:-AdvIO-1.2}
-export ADVIO_MD5_CHECKSUM="db6def939a2d5dd4d3d6203ba5d3ec7e"
-export ADVIO_SHA256_CHECKSUM=""
+    export ADVIO_FILE=${ADVIO_FILE:-"AdvIO-1.2.tar.gz"}
+    export ADVIO_VERSION=${ADVIO_VERSION:-"1.2"}
+    export ADVIO_COMPATIBILITY_VERSION=${ADVIO_COMPATIBILITY_VERSION:-"1.2"}
+    export ADVIO_BUILD_DIR=${ADVIO_BUILD_DIR:-AdvIO-1.2}
+    export ADVIO_MD5_CHECKSUM="db6def939a2d5dd4d3d6203ba5d3ec7e"
+    export ADVIO_SHA256_CHECKSUM=""
 }
 
 function bv_advio_print
@@ -41,32 +52,42 @@ function bv_advio_print
 
 function bv_advio_print_usage
 {
-printf "%-15s %s [%s]\n" "--advio"   "Build AdvIO" "$DO_ADVIO"
+    printf "%-15s %s [%s]\n" "--advio"   "Build AdvIO" "$DO_ADVIO"
+    printf "%-15s %s [%s]\n" "--alt-advio-dir <dir>"   "Build AdvIO" "$DO_ADVIO"
 }
 
 function bv_advio_graphical
 {
-local graphical_out="AdvIO    $ADVIO_VERSION($ADVIO_FILE)     $ON_ADVIO"
-echo $graphical_out
+    local graphical_out="AdvIO    $ADVIO_VERSION($ADVIO_FILE)     $ON_ADVIO"
+    echo $graphical_out
 }
 
 function bv_advio_host_profile
 {
-    if [[ "$DO_ADVIO" == "yes" ]] ; then
+    if [[ "$USE_SYSTEM_ADVIO" == "yes" ]]; then
         echo >> $HOSTCONF
         echo "##" >> $HOSTCONF
         echo "## AdvIO" >> $HOSTCONF
         echo "##" >> $HOSTCONF
         echo \
-        "VISIT_OPTION_DEFAULT(VISIT_ADVIO_DIR \${VISITHOME}/AdvIO/$ADVIO_VERSION/\${VISITARCH}/)"\
+        "VISIT_OPTION_DEFAULT(VISIT_ADVIO_DIR ${ALT_ADVIO_DIR}"\
         >> $HOSTCONF
+    else
+        if [[ "$DO_ADVIO" == "yes" ]] ; then
+            echo >> $HOSTCONF
+            echo "##" >> $HOSTCONF
+            echo "## AdvIO" >> $HOSTCONF
+            echo "##" >> $HOSTCONF
+            echo \
+            "VISIT_OPTION_DEFAULT(VISIT_ADVIO_DIR \${VISITHOME}/AdvIO/$ADVIO_VERSION/\${VISITARCH}/)"\
+            >> $HOSTCONF
+        fi
     fi
-
 }
 
 function bv_advio_ensure
 {
-    if [[ "$DO_ADVIO" == "yes" ]] ; then
+    if [[ "$DO_ADVIO" == "yes" && "$USE_SYSTEM_ADVIO" == "no" ]] ; then
         ensure_built_or_ready "AdvIO" $ADVIO_VERSION $ADVIO_BUILD_DIR $ADVIO_FILE
         if [[ $? != 0 ]] ; then
             ANY_ERRORS="yes"
@@ -78,7 +99,7 @@ function bv_advio_ensure
 
 function bv_advio_dry_run
 {
-  if [[ "$DO_ADVIO" == "yes" ]] ; then
+  if [[ "$DO_ADVIO" == "yes" && "$USE_SYSTEM_ADVIO" == "no" ]] ; then
     echo "Dry run option not set for advio."
   fi
 }
@@ -151,7 +172,7 @@ function build_advio
 
 function bv_advio_is_enabled
 {
-    if [[ $DO_ADVIO == "yes" ]]; then
+    if [[ $DO_ADVIO == "yes" || "$USE_SYSTEM_ADVIO" == "yes" ]]; then
         return 1    
     fi
     return 0
@@ -159,6 +180,10 @@ function bv_advio_is_enabled
 
 function bv_advio_is_installed
 {
+    if [[ "$USE_SYSTEM_ADVIO" == "yes" ]]; then
+        return 1    
+    fi
+
     check_if_installed "AdvIO" $ADVIO_VERSION
     if [[ $? == 0 ]] ; then
         return 1
@@ -168,18 +193,18 @@ function bv_advio_is_installed
 
 function bv_advio_build
 {
-cd "$START_DIR"
-if [[ "$DO_ADVIO" == "yes" ]] ; then
-    check_if_installed "AdvIO" $ADVIO_VERSION
-    if [[ $? == 0 ]] ; then
-        info "Skipping AdvIO build.  AdvIO is already installed."
-    else
-        info "Building AdvIO (~1 minutes)"
-        build_advio
-        if [[ $? != 0 ]] ; then
-            error "Unable to build or install AdvIO.  Bailing out."
+    cd "$START_DIR"
+    if [[ "$DO_ADVIO" == "yes" && "$USE_SYSTEM_ADVIO" == "no" ]] ; then
+        check_if_installed "AdvIO" $ADVIO_VERSION
+        if [[ $? == 0 ]] ; then
+            info "Skipping AdvIO build.  AdvIO is already installed."
+        else
+            info "Building AdvIO (~1 minutes)"
+            build_advio
+            if [[ $? != 0 ]] ; then
+                error "Unable to build or install AdvIO.  Bailing out."
+            fi
+            info "Done building AdvIO"
         fi
-        info "Done building AdvIO"
     fi
-fi
 }

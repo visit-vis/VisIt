@@ -215,6 +215,17 @@ IF(VISIT_PYTHON_FILTERS)
         # on windows, make this a custom target so they are copied to the
         # correct lib/${CFG} directory
         ADD_CUSTOM_TARGET(vtk_python_modules ALL)
+        IF(IS_DIRECTORY VTK_EGG_FILE)
+        ADD_CUSTOM_COMMAND(TARGET vtk_python_modules POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+                    ${VISIT_VTK_DIR}/lib/site-packages/vtk
+                    ${VISIT_LIBRARY_DIR}/site-packages/vtk
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+                    ${VTK_EGG_FILE}
+                    ${VISIT_LIBRARY_DIR}/site-packages
+            COMMENT "Copying ${VISIT_VTK_DIR}/lib/site-packages to ${VISIT_LIBRARY_DIR}/site-packages/vtk"
+            )
+        ELSE(IS_DIRECTORY VTK_EGG_FILE)
         ADD_CUSTOM_COMMAND(TARGET vtk_python_modules POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
                     ${VISIT_VTK_DIR}/lib/site-packages/vtk
@@ -224,6 +235,7 @@ IF(VISIT_PYTHON_FILTERS)
                     ${VISIT_LIBRARY_DIR}/site-packages
             COMMENT "Copying ${VISIT_VTK_DIR}/lib/site-packages to ${VISIT_LIBRARY_DIR}/site-packages/vtk"
             )
+        ENDIF(IS_DIRECTORY VTK_EGG_FILE)
     ENDIF (NOT WIN32)
 ENDIF(VISIT_PYTHON_FILTERS)
 

@@ -1,77 +1,94 @@
 function bv_adios_initialize
 {
-export DO_ADIOS="no"
-export ON_ADIOS="off"
+    export DO_ADIOS="no"
+    export ON_ADIOS="off"
+    export ALT_ADIOS_DIR=""    
+    export USE_SYSTEM_ADIOS="no"
+    add_extra_commandline_args "adios" "alt-adios-dir" 1 "Use adios found in alternative directory"
 }
 
 function bv_adios_enable
 {
-DO_ADIOS="yes"
-ON_ADIOS="on"
-#TODO: temporary until I get dependencies working
-DO_MXML="yes"
-ON_MXML="on"
+    DO_ADIOS="yes"
+    ON_ADIOS="on"
 }
 
 function bv_adios_disable
 {
-DO_ADIOS="no"
-ON_ADIOS="off"
+    DO_ADIOS="no"
+    ON_ADIOS="off"
 }
 
 function bv_adios_depends_on
 {
-echo "mxml"
+    echo "mxml"
+}
+
+function bv_adios_alt_adios_dir
+{
+    info "Using adios from alternative directory $1"
+    ALT_ADIOS_DIR="$1"
+    USE_SYSTEM_ADIOS="yes"
+    bv_adios_enable
 }
 
 function bv_adios_info
 {
-export ADIOS_FILE=${ADIOS_FILE:-"adios-1.3-mpi1.tar.gz"}
-export ADIOS_VERSION=${ADIOS_VERSION:-"1.3"}
-export ADIOS_COMPATIBILITY_VERSION=${ADIOS_COMPATIBILITY_VERSION:-"1.3"}
-export ADIOS_BUILD_DIR=${ADIOS_BUILD_DIR:-"adios-1.3"}
-export ADIOS_MD5_CHECKSUM="5eb937491eac015966dc6c6146fe5876"
-export ADIOS_SHA256_CHECKSUM=""
+    export ADIOS_FILE=${ADIOS_FILE:-"adios-1.3-mpi1.tar.gz"}
+    export ADIOS_VERSION=${ADIOS_VERSION:-"1.3"}
+    export ADIOS_COMPATIBILITY_VERSION=${ADIOS_COMPATIBILITY_VERSION:-"1.3"}
+    export ADIOS_BUILD_DIR=${ADIOS_BUILD_DIR:-"adios-1.3"}
+    export ADIOS_MD5_CHECKSUM="5eb937491eac015966dc6c6146fe5876"
+    export ADIOS_SHA256_CHECKSUM=""
 }
 
 function bv_adios_print
 {
-  printf "%s%s\n" "ADIOS_FILE=" "${ADIOS_FILE}"
-  printf "%s%s\n" "ADIOS_VERSION=" "${ADIOS_VERSION}"
-  printf "%s%s\n" "ADIOS_COMPATIBILITY_VERSION=" "${ADIOS_COMPATIBILITY_VERSION}"
-  printf "%s%s\n" "ADIOS_BUILD_DIR=" "${ADIOS_BUILD_DIR}"
+    printf "%s%s\n" "ADIOS_FILE=" "${ADIOS_FILE}"
+    printf "%s%s\n" "ADIOS_VERSION=" "${ADIOS_VERSION}"
+    printf "%s%s\n" "ADIOS_COMPATIBILITY_VERSION=" "${ADIOS_COMPATIBILITY_VERSION}"
+    printf "%s%s\n" "ADIOS_BUILD_DIR=" "${ADIOS_BUILD_DIR}"
 }
 
 function bv_adios_print_usage
 {
-printf "%-15s %s [%s]\n" "--adios"   "Build ADIOS" "$DO_ADIOS"
+    printf "%-15s %s [%s]\n" "--adios"   "Build ADIOS" "$DO_ADIOS"
+    printf "%-15s %s [%s]\n" "--alt-adios-dir <dir>"   "Build ADIOS" "$DO_ADIOS"
 }
 
 function bv_adios_graphical
 {
-local graphical_out="ADIOS    $ADIOS_VERSION($ADIOS_FILE)    $ON_ADIOS"
-echo $graphical_out
+    local graphical_out="ADIOS    $ADIOS_VERSION($ADIOS_FILE)    $ON_ADIOS"
+    echo $graphical_out
 }
 
 function bv_adios_host_profile
 {
-    if [[ "$DO_ADIOS" == "yes" ]] ; then
+    if [[ "$USE_SYSTEM_ADIOS" == "yes" ]] ; then
         echo >> $HOSTCONF
         echo "##" >> $HOSTCONF
         echo "## ADIOS" >> $HOSTCONF
-        if [[ "$VISIT_MPI_COMPILER" != "" ]] ; then
-            echo "## (configured w/ mpi compiler wrapper)" >> $HOSTCONF
-        fi
         echo "##" >> $HOSTCONF
-        echo \
-        "VISIT_OPTION_DEFAULT(VISIT_ADIOS_DIR \${VISITHOME}/ADIOS/$ADIOS_VERSION/\${VISITARCH})" \
-        >> $HOSTCONF
+        echo "VISIT_OPTION_DEFAULT(VISIT_ADIOS_DIR ${ALT_ADIOS_DIR})" >> $HOSTCONF
+    else
+        if [[ "$DO_ADIOS" == "yes" ]] ; then
+            echo >> $HOSTCONF
+            echo "##" >> $HOSTCONF
+            echo "## ADIOS" >> $HOSTCONF
+            if [[ "$VISIT_MPI_COMPILER" != "" ]] ; then
+                echo "## (configured w/ mpi compiler wrapper)" >> $HOSTCONF
+            fi
+            echo "##" >> $HOSTCONF
+            echo \
+            "VISIT_OPTION_DEFAULT(VISIT_ADIOS_DIR \${VISITHOME}/ADIOS/$ADIOS_VERSION/\${VISITARCH})" \
+            >> $HOSTCONF
+        fi
     fi
 }
 
 function bv_adios_ensure
 {
-    if [[ "$DO_ADIOS" == "yes" ]] ; then
+    if [[ "$DO_ADIOS" == "yes" && "$USE_SYSTEM_ADIOS" == "no" ]] ; then
         ensure_built_or_ready "ADIOS" $ADIOS_VERSION $ADIOS_BUILD_DIR $ADIOS_FILE
         if [[ $? != 0 ]] ; then
             ANY_ERRORS="yes"
@@ -83,7 +100,7 @@ function bv_adios_ensure
 
 function bv_adios_dry_run
 {
-  if [[ "$DO_ADIOS" == "yes" ]] ; then
+  if [[ "$DO_ADIOS" == "yes" && "$USE_SYSTEM_ADIOS" == "no" ]] ; then
     echo "Dry run option not set for adios."
   fi
 }
@@ -159,7 +176,7 @@ function build_ADIOS
 
 function bv_adios_is_enabled
 {
-    if [[ $DO_ADIOS == "yes" ]]; then
+    if [[ "$DO_ADIOS" == "yes" || "$USE_SYSTEM_ADIOS" == "yes" ]]; then
         return 1    
     fi
     return 0
@@ -167,6 +184,10 @@ function bv_adios_is_enabled
 
 function bv_adios_is_installed
 {
+    if [[ "$USE_SYSTEM_ADIOS" == "yes" ]]; then
+        return 1    
+    fi
+
     check_if_installed "ADIOS" $ADIOS_VERSION
     if [[ $? == 0 ]] ; then
         return 1
@@ -176,30 +197,30 @@ function bv_adios_is_installed
 
 function bv_adios_build
 {
-cd "$START_DIR"
-if [[ "$DO_ADIOS" == "yes" ]] ; then
-    check_if_installed "ADIOS" $ADIOS_VERSION
-    if [[ $? == 0 ]] ; then
-        info "Skipping ADIOS build.  ADIOS is already installed."
-    else
-        check_if_installed "mxml" $MXML_VERSION
+    cd "$START_DIR"
+    if [[ "$DO_ADIOS" == "yes" && "$USE_SYSTEM_ADIOS" == "no" ]] ; then
+        check_if_installed "ADIOS" $ADIOS_VERSION
         if [[ $? == 0 ]] ; then
-            info "Skipping build of MXML"
+            info "Skipping ADIOS build.  ADIOS is already installed."
         else
-            build_mxml
-            if [[ $? != 0 ]] ; then
-                 error "Unable to build or install mxml.  Bailing out."
+            check_if_installed "mxml" $MXML_VERSION
+            if [[ $? == 0 ]] ; then
+                info "Skipping build of MXML"
+            else
+                build_mxml
+                if [[ $? != 0 ]] ; then
+                     error "Unable to build or install mxml.  Bailing out."
+                fi
+                info "Done building mxml"
             fi
-            info "Done building mxml"
-        fi
 
-        info "Building ADIOS (~1 minutes)"
-        build_ADIOS
-        if [[ $? != 0 ]] ; then
-            error "Unable to build or install ADIOS.  Bailing out."
-        fi
-        info "Done building ADIOS"
-   fi
-fi
+            info "Building ADIOS (~1 minutes)"
+            build_ADIOS
+            if [[ $? != 0 ]] ; then
+                error "Unable to build or install ADIOS.  Bailing out."
+            fi
+            info "Done building ADIOS"
+       fi
+    fi
 }
 
