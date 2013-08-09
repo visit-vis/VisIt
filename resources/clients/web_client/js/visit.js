@@ -259,7 +259,7 @@ function VisItProxy()
     var hostname = "localhost";
     var port = "9002";
     var password = "bob";
-    var wsUri = "ws://" + hostname + ":" + port;
+    var wsUri = "wss://" + hostname + ":" + port;
 
     var userName = "";
     var windowId = 1;
