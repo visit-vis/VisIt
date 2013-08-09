@@ -42,8 +42,11 @@
 #include <string>
 #include <VisItException.h>
 #include "avtCalendar.h"
+
+extern "C" {
 #include "cdms.h"
 #include "cdmsint.h"
+}
 
 int cuErrOpts = 0;
 
@@ -55,8 +58,11 @@ typedef avtCalendar::ComptimeObject ComptimeObject;
 avtCalendar::Calendar avtCalendar::defaultCalendar = avtCalendar::Default;
 
 int cdParseRelunits(cdCalenType timetype, char* relunits, int* unit, cdCompTime* base_comptime);
+
+extern "C" {
 int cdValidateTime(cdCalenType timetype, cdCompTime comptime);
 void cdCompAddMixed(cdCompTime ct, double value, cdCompTime *result);
+}
 
 #define VALCMP(a,b) ((a)<(b)?-1:(b)<(a)?1:0)
 

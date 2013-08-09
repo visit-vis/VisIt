@@ -76,12 +76,12 @@ ${VTK_INCLUDE_DIRS}
 LINK_DIRECTORIES(${LIBRARY_OUTPUT_DIRECTORY} ${VTK_LIBRARY_DIRS})
 
 ADD_LIBRARY(avtteca_ser ${AVTTECA_SOURCES})
-TARGET_LINK_LIBRARIES(avtteca_ser avtcalendar visitcommon)
+TARGET_LINK_LIBRARIES(avtteca_ser avtcalendar visitcommon avtpipeline_ser avtfilters_ser)
 VISIT_INSTALL_TARGETS(avtteca_ser)
 
 IF(VISIT_PARALLEL)
     ADD_PARALLEL_LIBRARY(avtteca_par ${AVTTECA_SOURCES})
-    TARGET_LINK_LIBRARIES(avtteca_par avtcalendar visitcommon)
+    TARGET_LINK_LIBRARIES(avtteca_par avtcalendar visitcommon avtpipeline_par avtfilters_par)
     VISIT_INSTALL_TARGETS(avtteca_par)
 ENDIF(VISIT_PARALLEL)
 
