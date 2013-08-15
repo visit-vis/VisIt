@@ -43,13 +43,16 @@
 MESSAGE(STATUS "Looking for Python PIP Env")
 
 IF(VISIT_PIP_DIR)
-    IF(EXISTS ${VISIT_PIP_DIR})
+    IF(EXISTS ${VISIT_PIP_DIR} AND 
+       EXISTS "${VISIT_PIP_DIR}/pkg-sources/"
+       EXISTS "${VISIT_PIP_DIR}/site-packages/")
         SET(VISIT_PIP_FOUND 1)
-        SET(VISIT_PIP_PKGS_DIR,"${VISIT_PIP_DIR}/sources/")
-        SET(VISIT_PIP_SITEPACKAGES_DIR,"${VISIT_PIP_DIR}/site-packages/")
-    ENDIF(EXISTS ${VISIT_PIP_DIR})
+        SET(VISIT_PIP_PKG_SOURCES_DIR,  "${VISIT_PIP_DIR}/pkg-sources/")
+        SET(VISIT_PIP_SITE_PACKAGES_DIR,"${VISIT_PIP_DIR}/site-packages/")
+    ENDIF()
 ENDIF(VISIT_PIP_DIR)
 
 IF(${VISIT_PIP_FOUND})
-        MESSAGE(STATUS "  Found Pip Package Support")
+        MESSAGE(STATUS "  Found Python Pip Support Source Packages: ${VISIT_PIP_PKG_SOURCES_DIR}")
+        MESSAGE(STATUS "  Found Python Pip Support Modules: ${VISIT_PIP_SITE_PACKAGES_DIR}")
 ENDIF(${VISIT_PIP_FOUND})
