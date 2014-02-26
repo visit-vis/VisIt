@@ -174,7 +174,8 @@ function build_silo
        WITHSILOQTARG="--disable-silex"
     else
        export SILOQTDIR="$QT_INSTALL_DIR" #"${VISITDIR}/qt/${QT_VERSION}/${VISITARCH}"
-       WITHSILOQTARG='--with-Qt-dir=$SILOQTDIR --with-Qt-lib="QtGui -lQtCore"'
+       #WITHSILOQTARG='--with-Qt-dir=$SILOQTDIR --with-Qt-lib="QtGui -lQtCore"'
+       WITHSILOQTARG="--disable-silex"
     fi
 
     if [[ "$DO_ZLIB" == "yes" ]] ; then
