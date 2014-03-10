@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Render Window</title>
+</head>
+
+<body>
+
+<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.4.0.min.js"></script>
+<script src="js/sylvester.js"> </script>
+<script src="js/trackball.js"> </script>
+
+<div id="container"></div><br>
+
+<!--
+<img src="" id="visitImage" />
+-->
+
+<script>
+    var vp = null;
+    var renWin = null;
+    
+    window.SetVisItProxy = function(args) {
+        vp = args;
+        
+        renWin = new RenderWindow();
+        renWin.setupScene();
+        
+        vp.addCallback(renWin.visitInitialized);
+    }
+    
+    function RenderWindow() {
+        var stage, layer, imageObj, kineticImage;
+        
+        this.setupScene = function() {
+            stage = new Kinetic.Stage({
+                        container: 'container',
+                        width: vp.getWindowWidth(),
+                        height: vp.getWindowHeight()
+                        });
+            layer = new Kinetic.Layer();
+            imageObj = new Image();
+            
+            imageObj.onload = function() {
+            layer.removeChildren();
+    
+            kineticImage = new Kinetic.Image({
+            x: 0, y: 0,
+            image: imageObj,
+            width: stage.getWidth(),
+            height: stage.getHeight()
+            });
+    
+            kineticImage.setListening(false);
+    
+            layer.add(kineticImage);
+            stage.add(layer);
+            };
+    
+            trackball.init(stage); 
+        }
+        
+        this.updateViewerClientInformation = function(obj) 
+        {
+            var vars = obj.get("vars");
+            var supportedFormats = obj.get("supportedFormats");
+    
+            //debug(vars[0][2]);
+            //debug(supportedFormats);
+    
+            if(vars[0][2] === supportedFormats.indexOf("Image")) 
+            {
+                var image  = "data:image/jpeg;base64,";
+                image += vars[0][0];
+                imageObj.src = image;
+            }
+        }
+        
+        this.visitInitialized = function() {
+            vp.GetViewerState().registerCallback("ViewerClientInformation",
+                                                  renWin.updateViewerClientInformation);
+        }
+    }
+</script>
+
+
+</body>
+</html>

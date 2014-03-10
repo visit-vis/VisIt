@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Slice Widget</title>
+</head>
+<script src="../js/jquery.min.js"> </script>
+
+<input type=radio id="Pseudocolor" name="plotType" checked>Pseudocolor</input>
+<input type=radio id="Contour" name="plotType">Contour</input><br>
+
+<body>
+<table>
+    <tr>
+        <td>
+            Normal:
+            <table border="1">
+            <tr>
+            <td>
+            Orthogonal:
+            <input type=radio id="XAxis" name="axis" checked>X Axis</input>
+            <input type=radio id="YAxis" name="axis">Y Axis</input>
+            <input type=radio id="ZAxis" name="axis">Z Axis</input>
+            <input type=checkbox id="flip">flip</input>
+            
+            </td></tr>
+            <tr>
+            <td>
+            Arbitrary:
+            <input type=radio id="ArbitraryAxis" name="axis"></input>
+            <input type=text  id="ArbitraryValues" value="-1 0 0"></input>    
+            
+            </td></tr>
+            
+            <tr><td>
+            ThetaPhi:
+            <input type=radio id="ThetaPhi" name="axis"></input>
+            <input type=text  id="ThetaPhiValues" value="90 0"></input> <br>
+            </td>
+            </tr>
+            </table>
+            Origin:
+            <table border=1>
+                <tr>
+                    <td>
+                        Point: <input type=text  id="Point" value="0 0 0"></input> <br>
+                    </td>
+                </tr>
+            </table>
+            Up Axis:
+            <table border=1>
+                <tr>
+                    <td>
+                        Direction: <input type=text  id="UpAxis" value="0 0 1"></input> <br>
+                    </td>
+                </tr>
+            </table>
+            
+        </td>
+        <td>
+            <iframe id="renderFrame" src="../renderWindow.html" width=1000 height=300 seamless onload="connectRenderWindow()">
+</iframe>
+        </td>
+    </tr>
+</table>
+<br>
+<br>
+    
+<button id="Apply" onclick="sliceWidget.Apply()">Apply</button>
+<button id="Dismiss" onclick="window.close()">Dismiss</button>
+
+<script>
+    var vp = null;
+    var sliceWidget = null;
+    var sliceIndex = -1;
+    var sliceVariable = "";
+    
+    var pseudocolorPlot = document.getElementById("Pseudocolor");
+    var contourPlot = document.getElementById("Contour");
+    var xAxis = document.getElementById("XAxis");
+    var yAxis = document.getElementById("YAxis");
+    var zAxis = document.getElementById("ZAxis");
+    var flip = document.getElementById("flip");
+
+    var arbitraryAxis = document.getElementById("ArbitraryAxis");
+    var arbitraryValues = document.getElementById("ArbitraryValues");
+
+    var thetaPhi = document.getElementById("ThetaPhi");
+    var thetaPhiValues = document.getElementById("ThetaPhiValues");
+    
+    var centerPoint = document.getElementById("Point");
+    var direction = document.getElementById("UpAxis");
+    
+    function connectRenderWindow() {
+    }
+    
+    window.SetVisItProxy = function(args) {
+        vp = args;
+        sliceWidget = new SliceWidget();
+        sliceIndex = vp.GetViewerState().getIndexFromTypename("SliceAttributes");
+        renderFrame = document.getElementById("renderFrame");
+        renderFrame.contentWindow.SetVisItProxy(vp);
+    }
+    
+    window.SetVariable = function(variable) {
+        sliceVariable = variable;
+    }
+    
+    function SliceWidget() {
+        this.Apply = function() {
+            
+                        vp.GetViewerMethods().DeleteActivePlots();
+     
+            if(pseudocolorPlot.checked)  {
+                vp.GetViewerMethods().AddPlot("Pseudocolor", sliceVariable);
+            }
+            else {
+                vp.GetViewerMethods().AddPlot("Contour", sliceVariable);    
+            }
+            vp.GetViewerMethods().AddOperator("Slice");
+            
+            
+            ///Clone the sliceAttributes
+            var attributes = vp.GetViewerMethods().GetOperatorOptions("SliceAttributes");
+            
+            /// set values..
+            var axisType = 0;
+            var axisValues = [-1, 0, 0];
+            
+            if (yAxis.checked) {
+                axisType = 1;
+                axisValues = [0, -1, 0];
+            }
+            else if (zAxis.checked) {
+                axisType = 2;
+                axisValues = [0, 0, 1];
+            }
+            else if (arbitraryAxis.checked) {
+                axisType = 3;
+                axisValues = [0, 0, 1]; //stub..
+            } else if(thetaPhi.checked) {
+                axisType = 4;
+                axisValues = [0, 0, 1]; //stub
+            }
+            
+            if (arbitraryAxis.checked || thetaPhi.checked) {
+                var values = arbitraryValues.value.split(" ");
+                
+                if (values.length != 3) {
+                    alert("parse failed");
+                    return;
+                }
+                
+                for(var i = 0; i < values.length; ++i) {
+                    try { 
+                        axisValues.push(parseFloat(values));   
+                    }catch(exp) {
+                        alert("exception parse failed");
+                        return;
+                    }
+                }
+            }
+        
+            var thetaPhiArray = [0, 0];
+            
+            if (thetaPhi.checked) {
+                var values = thetaPhiValues.value.split(" ");
+                
+                if (values.length != 2) {
+                    alert("parse failed");
+                    return;
+                }
+                
+                for(var i = 0; i < values.length; ++i) {
+                    try { 
+                        thetaPhiArray.push(parseFloat(values));   
+                    }catch(exp) {
+                        alert("exception parse failed");
+                        return;
+                    }
+                }
+            }
+            
+            attributes.set("axisType", axisType);
+            attributes.set("axis", axisValues);
+            attributes.set("theta", thetaPhiArray[0]);
+            attributes.set("phi", thetaPhiArray[1]);
+            
+            //vp.GetViewerMethods().SetOperatorOptions(attributes);
+            vp.GetViewerMethods().DrawPlots();
+        }
+    }
+</script>
+
+</body>
+</html>

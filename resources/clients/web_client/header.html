@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Header</title>
+</head>
+
+<body>
+Machine: <input type="text" name="host" id="host" value="starsky.lbl.gov" size=10 />
+Port: <input type="text" name="port" id="port" value="9002" size=5 />
+Password: <input type="password" name="password" id="password" value="bob" size=5 />
+<button id="connectButton" onclick="header.connect()">Connect</button><br>
+Name:
+<input type="text" name="userName" id="userName" value="" size=5 />
+Id:
+<input type="text" name="windowId" id="windowId" value="1" size=5 />
+Dim: <input type="text" name="windowWidth" id="windowWidth" value="600" size=5 />
+<input type="text" name="windowHeight" id="windowHeight" value="600" size=5 />
+</body>
+
+<script>
+    var vp = null;
+    var header = new Header();
+    
+    window.SetVisItProxy = function(args) {
+        vp = args;
+    }
+    
+    function Header() {
+        this.connect = function() {
+        
+            var hostname = document.getElementById("host").value;
+            var port = document.getElementById("port").value;
+            var password = document.getElementById("password").value;
+        
+            var userName = document.getElementById("userName").value;
+            var windowId = document.getElementById("windowId").value;
+            var windowWidth = document.getElementById("windowWidth").value;
+            var windowHeight = document.getElementById("windowHeight").value;
+    
+            vp.setProperties(userName, windowId, windowWidth, windowHeight);
+            vp.connect(hostname, port, password);
+        }    
+    }
+    
+</script>
+</html>

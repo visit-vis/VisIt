@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Debug</title>
+</head>
+
+<body>
+
+
+Debug:
+<input type="text" name="inspect" id="inspect" size=15></input>
+<button onClick="debug.inspectClass();">Inspect</button>
+<button onClick="debug.showAllClasses();">Show All</button>
+<button onClick="debug.clearScreen();">Clear Screen</button><br>
+<textarea id="debugTextArea" width=250 height=50></textarea><br>
+
+<script>
+    var vp = null;
+    var debug = null;
+    var debugTextArea = document.getElementById("debugTextArea");
+    
+    window.SetVisItProxy = function(proxy) {
+        vp = proxy;
+        debug = new Debug();
+    }
+    
+    function Debug() {
+        this.debug = function(message)
+        {
+            debugTextArea.value += message + "\n";
+            debugTextArea.scrollTop = debugTextArea.scrollHeight;
+        }
+        
+        this.showAllClasses = function()
+        {
+            var states = vp.GetViewerState().getStates();
+            for(var i = 0; i < states.length; ++i)
+            {
+                id = states[i].getId();
+                key = states[i].getTypename();
+                
+                this.debug("key: " + id + " " + key);
+            }
+        }
+        
+        this.inspectClass = function()
+        {
+            var key = document.getElementById("inspect").value;
+            var index = parseInt(key);
+            
+            if(isNaN(index)) {
+                index = vp.GetViewerState().getIndexFromTypename(key);
+            }
+        
+            var as = vp.GetViewerState().getAttributeSubject(index);
+           
+            this.debug("Index: " + index);
+            this.debug(as.toString());
+        }
+        
+        this.clearScreen = function()
+        {
+            debugTextArea.value = "";
+            debugTextArea.scrollTop = debugTextArea.scrollHeight;
+        }       
+    }
+
+</script>
+</body>
+</html>

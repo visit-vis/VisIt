@@ -1,4 +1,8 @@
 
+debug = function(message) {
+    console.log(message);
+}
+
 function AttributeSubject()
 {
     var callbackList = [];
@@ -18,7 +22,7 @@ function AttributeSubject()
         {
             data = rawData;
             for(var i = 0; i < callbackList.length; ++i) {
-                callbackList[i](this);
+                callbackList[i](this);    
             }
         }
     }
@@ -240,6 +244,118 @@ function ViewerMethods(state)
         viewerState.set(0,"RPCType",RPCType.DetachRPC);
         viewerState.notify(0);
     }
+    
+    this.GetEnabledID = function(plot_type, name) {
+        var index = viewerState.getIndexFromTypename("PluginManagerAttributes");
+        var attr = viewerState.getAttributeSubject(index);
+        
+        var names = attr.get("name");
+        var types = attr.get("type");
+        var enabled = attr.get("enabled");
+        var mapper = [];
+     
+        for (var i = 0; i < names.length; ++i) {
+            if (enabled[i] == true && plot_type == types[i]) {
+                mapper.push(names[i]);
+            }
+        }
+
+        mapper.sort();
+
+        for (var i = 0; i < mapper.length; ++i) {
+            if (name == mapper[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    this.AddPlotByID = function(plot_type, plot_var) {
+        viewerState.set(0,"RPCType",RPCType.AddPlotRPC);
+        viewerState.set(0,"plotType",plot_type);
+        viewerState.set(0,"variable",plot_var);
+        viewerState.notify(0);
+    }
+
+    this.AddPlot = function(name, plot_var) {
+        index = this.GetEnabledID("plot",name);
+        if (index >= 0) {
+            this.AddPlotByID(index,plot_var);
+        }
+    }
+
+    this.AddOperatorByID = function(op_type) {
+        viewerState.set(0,"RPCType",RPCType.AddOperatorRPC);
+        viewerState.set(0,"operatorType",op_type);
+        viewerState.set(0,"boolFlag",false);
+        viewerState.notify(0);
+    }
+
+    this.AddOperator = function(name) {
+        index = this.GetEnabledID("operator",name);
+        if (index >= 0) {
+            this.AddOperatorByID(index);
+        }
+    }
+                
+    this.GetPlotOptions = function(plot) {
+        var index = viewerState.getIndexFromTypename(plot);
+        if (index < 0) {
+            return null;
+        }
+        var attr = viewerState.getAttributeSubject(index);
+        var options = JSON.parse(attr.toString()); //jQuery.extend(true, {}, attr);
+        return options;
+    }
+    
+    this.SetPlotOptionsByID = function(index) {
+        
+        viewerState.set(0, "RPCType", RPCType.SetPlotOptionsRPC);
+        viewerState.set(0, "plotType", index);
+        viewerState.notify(0);
+    }
+    
+    this.SetPlotOptions = function(plotOptions) { 
+        var index = viewerState.getIndexFromTypename(plotOptions.getTypename());
+
+        if (index < 0) {
+            return;
+        }
+
+        var attr = viewerState.getAttributeSubject(index);
+        viewerState.notify(index);
+        this.SetPlotOptionsByID(index);   
+    }
+    
+    this.GetOperatorOptions = function(operator) {
+        var index = viewerState.getIndexFromTypename(operator);
+        if (index < 0) {
+            return null;
+        }
+        var attr = viewerState.getAttributeSubject(index);
+        //var options = JSON.parse(attr.toString()); //jQuery.extend(true, {}, attr);
+        return attr;        
+    }
+    
+    this.SetOperatorOptionsByID = function(index) {
+        
+        viewerState.set(0, "RPCType", RPCType.SetOperatorOptionsRPC);
+        viewerState.set(0, "operatorType", index);
+        viewerState.notify(0);
+    }
+    
+    this.SetOperatorOptions = function(operatorOptions) {
+        var index = viewerState.getIndexFromTypename(operatorOptions.getTypename());
+
+        if (index < 0) {
+            return;
+        }
+
+        var attr = viewerState.getAttributeSubject(index);
+        viewerState.notify(index);
+        
+        this.SetOperatorOptionsByID(index);
+    }
 }
 
 function VisItProxy()
@@ -280,24 +396,44 @@ function VisItProxy()
 
     var hasInitialized = false;
     var lastInitializedId = 140; //TODO: Get this information from header..    
-    var initializedCallback = null;
-
-    this.connect = function(host, prt, passwd, uname, wid, width, height, iCallback)
-    {
-        hostname = host;
-        port = prt;
-        password = passwd;
+    var initializedCallbacks = []
+    
+    this.setProperties = function(uname, wid, width, height) {
         userName = uname;
-        wsUri = "ws://" + hostname + ":" + port;
-
         windowId = parseInt(wid);
         if(windowId == 0)
             windowId = 1;
 
         windowWidth = width;
         windowHeight = height;
-
-        initializedCallback = iCallback;
+    }
+    
+    this.getUserName = function() {
+        return userName;
+    }
+    
+    this.getWindowWidth = function() {
+        return windowWidth;
+    }
+    
+    this.getWindowHeight = function() {
+        return windowHeight;
+    }
+    
+    this.addCallback = function(iCallback) {
+        if (hasInitialized) {
+            iCallback();
+        } else {
+            initializedCallbacks.push(iCallback);        
+        }
+    }
+    
+    this.connect = function(host, prt, passwd)
+    {
+        hostname = host;
+        port = prt;
+        password = passwd;
+        wsUri = "ws://" + hostname + ":" + port;
         this.initWebSocket();
     };
         
@@ -453,7 +589,7 @@ function VisItProxy()
     {
         debug("Initializing VisIt: " + data);
         visitState = jQuery.parseJSON(data);
-        var uri = "ws://" + visitState.host + ":" + visitState.port;
+        var uri = "ws://" + hostname + ":" + visitState.port;
         debug(uri);
         //websocket.close();
         connectToVisIt(uri);
@@ -502,7 +638,10 @@ function VisItProxy()
 
         /// TODO: have a robust mechanism for initialization..
         if(hasInitialized == false && viewerState.getStates().length == lastInitializedId) {
-            initializedCallback();
+            for(var i = 0; i < initializedCallbacks.length; ++i) {
+                callback = initializedCallbacks[i];
+                callback();
+            }
             hasInitialized = true;
         }
 

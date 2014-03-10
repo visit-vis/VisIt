@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Information Window</title>
+</head>
+
+<body>
+Recording: <button onClick="informationWindow.macroStart();">Start</button>
+            <button onClick="informationWindow.macroStop();">End</button>
+            <button onClick="informationWindow.writeState();">Current</button><br>
+            <textarea id="historyTextArea" width=250 height=50></textarea><br>
+            Message:<br>
+            <textarea id="messageTextArea" width=250 height=50></textarea><br>
+            <button onClick="informationWindow.sendMessage();">Send</button>
+            <button onClick="informationWindow.interpretMessage();">Interpret</button>
+            
+<script>
+    var vp = null;
+    var informationWindow = null;
+    var historyTextArea = document.getElementById("historyTextArea");
+    var messageTextArea = document.getElementById("messageTextArea");
+    
+    function history(message)
+    {
+        historyTextArea.value += message + "\n";
+        historyTextArea.scrollTop = historyTextArea.scrollHeight;
+    }
+        
+    window.SetVisItProxy = function(args) {
+        vp = args;
+        informationWindow = new InformationWindow();
+        vp.addCallback(informationWindow.visitInitialized);
+    }
+    
+    function InformationWindow() {
+        this.visitInitialized = function()
+        {
+            vp.GetViewerState().registerCallback("ClientMethod",
+                                                  informationWindow.updateClientMethod);
+        }
+        
+        this.sendMessage = function()
+        {
+            message = messageTextArea.value;
+            //vp.SendMessage(message);
+            messageTextArea.value = "";
+        }
+    
+        this.updateClientMethod = function(obj) 
+        {
+            var name = obj.get("methodName");
+            if(name === "AcceptRecordedMacro") {
+                var args = obj.get("stringArgs");
+    
+                for(var i = 0; i < args.length; ++i) {
+                    history(args[i]);
+                }
+            }
+        }
+    
+        this.updateViewerClientAttributes = function(obj) 
+        {
+            var state = obj.get("state");                
+            if(state === "message") debug(obj.get("message"));
+        }
+    
+        this.macroStart = function() {
+            var vs = vp.GetViewerState();
+            var index = vs.getIndexFromTypename("ClientMethod");
+            var as = vs.getAttributeSubject(index);
+            var stringArgs = [];
+    
+            stringArgs.push("ClientMethod('MacroStart')");
+            as.set("stringArgs", stringArgs);
+            as.set("methodName", "Interpret");
+            vs.notify(index);
+    
+        }
+    
+        this.macroStop = function() {
+            var vs = vp.GetViewerState();
+            var index = vs.getIndexFromTypename("ClientMethod");
+            var as = vs.getAttributeSubject(index);
+            var stringArgs = [];
+    
+            stringArgs.push("ClientMethod('MacroEnd')");
+            as.set("stringArgs", stringArgs);
+            as.set("methodName", "Interpret");
+            vs.notify(index);
+        }
+    
+        this.writeState = function() {
+            var vs = vp.GetViewerState();
+            var index = vs.getIndexFromTypename("ClientMethod");
+            var as = vs.getAttributeSubject(index);
+            var stringArgs = [];
+    
+            stringArgs.push("ClientMethod('WriteState')");
+            as.set("stringArgs", stringArgs);
+            as.set("methodName", "Interpret");
+            vs.notify(index);
+        }
+    
+        this.interpretMessage = function() {
+    
+            var message = messageTextArea.value;
+    
+            if (message.length == 0) {
+                alert("Please enter an appropriate command");
+                return;
+            }
+            var vs = vp.GetViewerState();
+            var index = vs.getIndexFromTypename("ClientMethod");
+            var as = vs.getAttributeSubject(index);
+            var stringArgs = [];
+    
+            message += "\n";
+            message = "raw:" + message;
+            //message.replace("\n","\\n");
+            //message.replace("\"","\\\"");
+    
+            //var splitMessage = message.split("\n");
+            //for(var i = 0; i < splitMessage.length; ++i)
+                //stringArgs.push(splitMessage[i]);
+            stringArgs.push(message);
+            as.set("stringArgs", stringArgs);
+            as.set("methodName", "Interpret");
+            vs.notify(index);
+    
+            messageTextArea.value = "";
+        }
+    }
+    
+
+</script>
+
+</body>
+</html>

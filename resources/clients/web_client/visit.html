@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>VisIt client</title>
+</head>
+
+<body>
+<script src="js/jquery.min.js"> </script>
+<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.4.0.min.js"></script>
+        
+<script src="js/visit.js"> </script>
+<script src="js/sylvester.js"> </script>
+<script src="js/trackball.js"> </script>
+     
+<iframe id="headerFrame" src="header.html" width = 500 seamless onload="connectHeader()">
+</iframe>
+Database:<input type="text" name="database" id="database" size=14 /><br>
+Variable:<input type="text" name="variable" id="variable" size=14 />
+<button onClick="OpenDatabase();">Load</button><br>
+<br>
+<br>
+<button id="sliceWidget" name="sliceWidget" onclick="showSliceWidget()">SliceWidget</button>
+<iframe id="renderFrame" src="renderWindow.html" width = 500 seamless onload="connectRenderWindow()">
+</iframe>
+
+<iframe id="informationFrame" src="information.html" width = 500 onload="connectInformationWindow()">
+</iframe>
+
+<!-- debug window -->
+<iframe id="debugFrame" src="debug.html" width = 500 onload="connectDebugHeader()">
+</iframe>
+
+
+
+<!-- load plots -->
+<script>
+    
+    var vp = new VisItProxy();
+    var sliceWindow = null;
+    
+    var activeFileName = "noise.silo";
+    var activeVariable = "x";
+    
+    function OpenDatabase()
+    {
+        var variable = document.getElementById("variable").value;
+        var filename = document.getElementById("database").value;
+        if(filename !== "")
+        {
+            vp.GetViewerMethods().OpenDatabase(filename);
+        }
+    }
+    
+    function showSliceWidget() {
+        var features = "left=300,top=100,menubar=no,location=no,width=340,height=220";
+        sliceWindow = window.open("plots/SliceWidget.html", features);
+        sliceWindow.onload = function() {
+            sliceWindow.window.SetVisItProxy(vp);
+            sliceWindow.window.SetVariable(activeVariable);
+        }
+    }
+    
+    function connectHeader() {
+        headerFrame = document.getElementById("headerFrame");
+        headerFrame.contentWindow.SetVisItProxy(vp);
+    }
+    
+    function connectDebugHeader() {
+        debugFrame = document.getElementById("debugFrame");
+        debugFrame.contentWindow.SetVisItProxy(vp);
+    }
+    
+    function connectRenderWindow() {
+        renderFrame = document.getElementById("renderFrame");
+        renderFrame.contentWindow.SetVisItProxy(vp);
+    }
+    
+    function connectInformationWindow() {
+        informationFrame = document.getElementById("informationFrame");
+        informationFrame.contentWindow.SetVisItProxy(vp);
+    }
+    
+</script>
+</body>
+</html>
