@@ -97,6 +97,7 @@ QvisApplication::~QvisApplication()
 {
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #if defined(Q_WS_MACX) || defined(Q_OS_MAC)
 // ****************************************************************************
 // Method: QvisApplication::macEventFilter
@@ -286,6 +287,7 @@ QvisApplication::macEventFilter(EventHandlerCallRef er, EventRef event)
 
     return ret;
 }
+#endif
 #endif
 
 // ****************************************************************************

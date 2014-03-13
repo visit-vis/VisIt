@@ -6795,7 +6795,7 @@ void
 QvisGUIApplication::PrintWindow()
 {
     PrinterAttributes *p = GetViewerState()->GetPrinterAttributes();
-
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #if (defined(Q_WS_MACX) || defined(Q_OS_MAC)) && !defined(VISIT_MAC_NO_CARBON)
     //
     // If we're on MacOS X and the Mac application style is being used, manage
@@ -7001,6 +7001,7 @@ QvisGUIApplication::PrintWindow()
         }
 #if (defined(Q_WS_MACX) || defined(Q_OS_MAC)) && !defined(VISIT_MAC_NO_CARBON)
     }
+#endif
 #endif
 }
 
