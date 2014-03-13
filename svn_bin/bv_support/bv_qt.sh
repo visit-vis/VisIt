@@ -379,10 +379,18 @@ function build_qt
     if [[ $IS_QT5 == "yes" ]]; then
         QT_VER_MSG="Qt5"
         qt_flags="${qt_flags} -skip webkit -skip webkit-examples"
+        qt_flags="${qt_flags} -skip sensors"
+        qt_flags="${qt_flags} -skip doc"
+        qt_flags="${qt_flags} -skip serialport"
+        qt_flags="${qt_flags} -skip quick1"
+        qt_flags="${qt_flags} -skip quickcontrols"
+        qt_flags="${qt_flags} -skip connectivity"
         qt_flags="${qt_flags} -nomake examples"
         qt_flags="${qt_flags} -nomake tests"
+        qt_flags="${qt_flags} -no-qml-debug"
+        qt_flags="${qt_flags} -no-javascript-jit"
         if [[ "$OPSYS" == "Linux" ]] ; then
-            qt_flags="${qt_flags} -qt-xcb"
+            qt_flags="${qt_flags} -qt-xcb -qt-xkbcommon"
         fi
     else
         qt_flags="${qt_flags} -fast -no-libtiff -no-qt3support -nomake docs -nomake demos"
