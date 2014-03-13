@@ -95,6 +95,7 @@ function bv_qt_qt5
     QT_MD5_CHECKSUM=""
     QT_SHA256_CHECKSUM=""
     IS_QT5="yes"
+    bv_pyside_disable
 }
 
 function bv_qt_initialize_vars
@@ -158,7 +159,7 @@ if [[ "$DO_DBIO_ONLY" != "yes" ]]; then
             echo "## Qt" >> $HOSTCONF
             echo "##" >> $HOSTCONF
             if [[ "$IS_QT5" == "yes" ]]; then
-                echo "VISIT_OPTION_DEFAULT(VISIT_QT5 BOOL TYPE ON)" >> $HOSTCONF
+                echo "VISIT_OPTION_DEFAULT(VISIT_QT5 ON TYPE BOOL)" >> $HOSTCONF
                 echo "VISIT_OPTION_DEFAULT(VISIT_QT_DIR ${QT_INSTALL_DIR})" >> $HOSTCONF
                 echo "VISIT_OPTION_DEFAULT(VISIT_QT_BIN ${QT_BIN_DIR})" >> $HOSTCONF
             else 
@@ -295,8 +296,10 @@ function build_qt
 
         QT_PLATFORM=${QT_PLATFORM:-"macx-g++"}
         # webkit causes the linker on Hank's mac to run out of memory
-        EXTRA_QT_FLAGS="$EXTRA_QT_FLAGS -no-webkit -no-phonon -no-phonon-backend"
-
+        # Hari: for Qt5 I have disabled webkit all together
+        if [[ "$IS_QT5" == "no" ]]; then
+            EXTRA_QT_FLAGS="$EXTRA_QT_FLAGS -no-webkit -no-phonon -no-phonon-backend"
+        fi
         # Figure out whether we need to build 64-bit version of Qt
         echo "int main() {}" >> arch_test.c
         ${C_COMPILER} arch_test.c -o arch_test
@@ -375,6 +378,9 @@ function build_qt
     QT_VER_MSG="Qt4"
     if [[ $IS_QT5 == "yes" ]]; then
         QT_VER_MSG="Qt5"
+        qt_flags="${qt_flags} -skip webkit -skip webkit-examples"
+        qt_flags="${qt_flags} -nomake examples"
+        qt_flags="${qt_flags} -nomake tests"
         if [[ "$OPSYS" == "Linux" ]] ; then
             qt_flags="${qt_flags} -qt-xcb"
         fi
