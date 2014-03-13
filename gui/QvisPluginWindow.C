@@ -274,8 +274,8 @@ QvisPluginWindow::CreateWindowContents()
     operatorView = new QTreeView(pageOperators);
     operatorView->setModel(operatorDataModel);
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    plotView->header()->setResizeMode(0,QHeaderView::ResizeToContents);
-    plotView->header()->setResizeMode(1,QHeaderView::ResizeToContents);
+    operatorView->header()->setResizeMode(0,QHeaderView::ResizeToContents);
+    operatorView->header()->setResizeMode(1,QHeaderView::ResizeToContents);
 #else
     operatorView->header()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
     operatorView->header()->setSectionResizeMode(1,QHeaderView::ResizeToContents);
