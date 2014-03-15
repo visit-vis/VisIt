@@ -320,10 +320,11 @@ TimingsManager::SetFilename(const std::string &fname)
     {
         char currentDir[1024];
 #if defined(_WIN32)
-        _getcwd(currentDir,1023);
+        char* res = _getcwd(currentDir,1023);
 #else
-        getcwd(currentDir,1023);
+        char* res = getcwd(currentDir,1023);
 #endif
+        (void) res;
         currentDir[1023]='\0';
         std::string filenameTmp(currentDir);
         if(filenameTmp[filenameTmp.size()-1] != VISIT_SLASH_CHAR)
@@ -505,11 +506,11 @@ TimingsManager::StartTimer(bool forced)
         return -1;
     numCurrentTimings += 1;
     int rv = PlatformStartTimer();
-    if (rv == usedEntry.size())
+    if ((size_t)rv == usedEntry.size())
     {
         usedEntry.push_back(true);
     }
-    else if (rv > usedEntry.size())
+    else if ((size_t)rv > usedEntry.size())
     {
         debug1 << "TimingsManager::StartTimer: Cannot start timer. "
                << "Returning -1 as if timing was disabled." << std::endl;
@@ -577,7 +578,7 @@ TimingsManager::StopTimer(int index, const std::string &summary, bool forced)
 
     if (enabled || forced)
     {
-        if (index >= 0 && index < usedEntry.size())
+        if (index >= 0 && (size_t)index < usedEntry.size())
             usedEntry[index] = false;
         t = PlatformStopTimer(index);
         if (!neverOutput)
@@ -937,7 +938,7 @@ SystemTimingsManager::PlatformStartTimer(void)
 double
 SystemTimingsManager::PlatformStopTimer(int index)
 {
-    if (index < 0 || index >= values.size())
+    if (index < 0 || (size_t)index >= values.size())
     {
         debug1 << "Invalid timing index (" << index << ") specified." << endl;
         return 0.0;
@@ -1019,7 +1020,7 @@ MPITimingsManager::PlatformStartTimer(void)
 double
 MPITimingsManager::PlatformStopTimer(int index)
 {
-    if (index < 0 || index >= values.size())
+    if (index < 0 || (size_t)index >= values.size())
     {
         debug1 << "Invalid timing index (" << index << ") specified." << endl;
         return 0.0;
