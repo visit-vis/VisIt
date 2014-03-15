@@ -206,7 +206,7 @@ vtkMultiSplitter::RequestData(
     ndx = 0;
     int nx = dims[0];
     int ny = dims[1];
-    int nz = dims[2];
+    //int nz = dims[2];
     FixedLengthBitField<64> bf_zero;
     for (int k = 0; k < dims[2] - 1; k++)
     {

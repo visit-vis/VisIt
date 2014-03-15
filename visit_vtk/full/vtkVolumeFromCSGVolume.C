@@ -213,7 +213,7 @@ vtkVolumeFromCSGVolume::ConstructDataSet(vtkCellData *inCD,
     for (int i = 0 ; i < nshapes ; i++)
     {
         vector<FixedLengthBitField<64> > *tagList = shapeTags[i];
-        for (int j = 0; j < tagList->size(); j++)
+        for (size_t j = 0; j < tagList->size(); j++)
         {
             if (tagList->operator[](j).TestBit(511) == false)
                tags->push_back(tagList->operator[](j));
