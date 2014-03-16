@@ -1724,7 +1724,7 @@ avtUnstructuredDomainBoundaries::CommunicateMeshInformation(
             // If this process owns the sending domain, we send information.
             else if (domain2proc[sendDom] == rank)
             {
-                int i;
+                size_t i;
                 MPI_Datatype type = GetMPIDataType<T>();
                 int tRank = domain2proc[recvDom];
 
@@ -1916,7 +1916,7 @@ avtUnstructuredDomainBoundaries::CommunicateMixvarInformation(
                 if (index < 0)
                     continue;
 
-                avtMaterial      *givingMat = mats[i];
+                //avtMaterial      *givingMat = mats[i];
                 avtMixedVariable *givingVar = mixvars[i];
                 
                 size_t nCells = givenCells[index].size();
@@ -1970,7 +1970,7 @@ avtUnstructuredDomainBoundaries::CommunicateMixvarInformation(
                     if (matlist[cell] < 0)
                     {
                         int current = -matlist[cell]-1;
-                        int nmats = 0;
+                        //int nmats = 0;
                         do
                         {
                             vals[sendDom][recvDom][nMixlen++] = buff[current];
@@ -2005,7 +2005,7 @@ avtUnstructuredDomainBoundaries::CommunicateMixvarInformation(
             // If this process owns the sending domain, we send information.
             else if (domain2proc[sendDom] == rank)
             {
-                int i;
+                size_t i;
                 int tRank = domain2proc[recvDom];
 
                 int index = GetGivenIndex(sendDom, recvDom); 
@@ -2023,7 +2023,7 @@ avtUnstructuredDomainBoundaries::CommunicateMixvarInformation(
                     if (domainNum[i] == sendDom)
                         break;
 
-                avtMaterial *givingMat = mats[i];
+                //avtMaterial *givingMat = mats[i];
                 avtMixedVariable *givingVar = mixvars[i];
                 
                 int nCells = givenCells[index].size();
@@ -2037,7 +2037,7 @@ avtUnstructuredDomainBoundaries::CommunicateMixvarInformation(
                 const int *mix_next = mats[i]->GetMixNext();
                 const int *matlist  = mats[i]->GetMatlist();
                 int nMixlen = 0;
-                for (i = 0; i < nCells; ++i)
+                for (i = 0; i < (size_t)nCells; ++i)
                 {
                     int cell = givenCells[index][i];
                     if (matlist[cell] >= 0)
@@ -2073,13 +2073,13 @@ avtUnstructuredDomainBoundaries::CommunicateMixvarInformation(
                 if (givingVar != NULL)
                     buff = givingVar->GetBuffer();
                 nMixlen = 0;
-                for (i = 0; i < nCells; ++i)
+                for (i = 0; i < (size_t)nCells; ++i)
                 {
                     int cell = givenCells[index][i];
                     if (matlist[cell] < 0)
                     {
                         int current = -matlist[cell]-1;
-                        int nmats = 0;
+                        //int nmats = 0;
                         do
                         {
                             sendBuff[nMixlen++] = buff[current];
@@ -2246,7 +2246,7 @@ avtUnstructuredDomainBoundaries::CommunicateMaterialInformation(
 
                 const int   *mix_mat  = givingMat->GetMixMat();
                 const float *mix_vf   = givingMat->GetMixVF();
-                const int   *mix_zone = givingMat->GetMixZone();
+                //const int   *mix_zone = givingMat->GetMixZone();
 
                 int mixcnt = 0;
                 for (i = 0; i < nCells; ++i)
@@ -2318,7 +2318,7 @@ avtUnstructuredDomainBoundaries::CommunicateMaterialInformation(
             // If this process owns the sending domain, we send information.
             else if (domain2proc[sendDom] == rank)
             {
-                int i;
+                size_t i;
                 int tRank = domain2proc[recvDom];
 
                 int index = GetGivenIndex(sendDom, recvDom); 
@@ -2344,7 +2344,7 @@ avtUnstructuredDomainBoundaries::CommunicateMaterialInformation(
                 const int *mix_next = mats[i]->GetMixNext();
                 const int *matlist  = mats[i]->GetMatlist();
                 int nMixlen = 0;
-                for (i = 0; i < nCells; ++i)
+                for (i = 0; i < (size_t)nCells; ++i)
                 {
                     int cell = givenCells[index][i];
                     if (matlist[cell] >= 0)
@@ -2381,10 +2381,10 @@ avtUnstructuredDomainBoundaries::CommunicateMaterialInformation(
 
                 const int   *mix_mat  = givingMat->GetMixMat();
                 const float *mix_vf   = givingMat->GetMixVF();
-                const int   *mix_zone = givingMat->GetMixZone();
+                //const int   *mix_zone = givingMat->GetMixZone();
 
                 int mixcnt = 0;
-                for (i = 0; i < nCells; ++i)
+                for (i = 0; i < (size_t)nCells; ++i)
                 {
                     int cell = givenCells[index][i];
                     if (matlist[cell] >= 0)
@@ -2606,7 +2606,7 @@ avtUnstructuredDomainBoundaries::CommunicateDataInformation(
                     continue;
 
                 // Gather the data for sending
-                int dIndex;
+                size_t dIndex;
                 for (dIndex = 0; dIndex < domainNum.size(); ++dIndex)
                     if (domainNum[dIndex] == sendDom)
                         break;

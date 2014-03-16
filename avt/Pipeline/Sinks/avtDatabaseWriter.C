@@ -254,7 +254,7 @@ avtDatabaseWriter::Write(const std::string &filename,
                          const avtDatabaseMetaData *md,
                          std::vector<std::string> &varlist, bool allVars)
 {
-    int  i, j;
+    size_t  i, j;
 
     avtDataObject_p dob = GetInput();
     if (*dob == NULL)
@@ -303,13 +303,13 @@ avtDatabaseWriter::Write(const std::string &filename,
                 if (varlist[j] == "default")
                     varlist[j] = ds->GetVariable();
 
-                for (i = 0 ; i < md->GetNumScalars() ; i++)
+                for (i = 0 ; i < (size_t)md->GetNumScalars() ; i++)
                 {
                     const avtScalarMetaData *smd = md->GetScalar(i);
                     if (smd->name == varlist[j])
                        scalarList.push_back(smd->name);
                 }
-                for (i = 0 ; i < md->GetNumVectors() ; i++)
+                for (i = 0 ; i < (size_t)md->GetNumVectors() ; i++)
                 {
                     const avtVectorMetaData *vmd = md->GetVector(i);
                     if (vmd->name == varlist[j])
@@ -320,7 +320,7 @@ avtDatabaseWriter::Write(const std::string &filename,
                     ParsingExprList *pel = ParsingExprList::Instance();
                     ExpressionList *el = pel->GetList();
                     int index = 0;
-                    for (i = 0 ; i < el->GetNumExpressions() ; i++)
+                    for (i = 0 ; i < (size_t)el->GetNumExpressions() ; i++)
                     {
                         const Expression &expr = el->GetExpressions(i);
                         if (expr.GetName() == varlist[j])
@@ -367,7 +367,7 @@ avtDatabaseWriter::Write(const std::string &filename,
             // up the data specification to include every variable in the 
             // dataset that pertains to the active mesh 
             //
-            for (i = 0 ; i < md->GetNumScalars() ; i++)
+            for (i = 0 ; i < (size_t)md->GetNumScalars() ; i++)
             {
                 const avtScalarMetaData *smd = md->GetScalar(i);
                 if (md->MeshForVar(smd->name) == meshname)
@@ -376,7 +376,7 @@ avtDatabaseWriter::Write(const std::string &filename,
                     scalarList.push_back(smd->name);
                 }
             }
-            for (i = 0 ; i < md->GetNumVectors() ; i++)
+            for (i = 0 ; i < (size_t)md->GetNumVectors() ; i++)
             {
                 const avtVectorMetaData *vmd = md->GetVector(i);
                 if (md->MeshForVar(vmd->name) == meshname)
@@ -389,7 +389,7 @@ avtDatabaseWriter::Write(const std::string &filename,
             if (!shouldNeverDoExpressions)
             {
                 int index = 0;
-                for (i = 0 ; i < md->GetNumberOfExpressions() ; i++)
+                for (i = 0 ; i < (size_t)md->GetNumberOfExpressions() ; i++)
                 {
                     const Expression *expr = md->GetExpression(i);
                     if (expr->GetAutoExpression())
@@ -437,7 +437,7 @@ avtDatabaseWriter::Write(const std::string &filename,
             }
         }
 
-        for (i = 0 ; i < md->GetNumMaterials() ; i++)
+        for (i = 0 ; i < (size_t)md->GetNumMaterials() ; i++)
         {
             const avtMaterialMetaData *mat_md = md->GetMaterial(i);
             if (md->MeshForVar(mat_md->name) == meshname)
@@ -530,7 +530,7 @@ avtDatabaseWriter::Write(const std::string &filename,
     // go, so nodelist.size() keeps going.  This is in lieu of recursion.
     //
     int chunkID = startIndex;
-    for (int cur_index = 0 ; cur_index < nodelist.size() ; cur_index++)
+    for (size_t cur_index = 0 ; cur_index < nodelist.size() ; cur_index++)
     {
         avtDataTree_p dt = nodelist[cur_index];
         if (*dt == NULL)

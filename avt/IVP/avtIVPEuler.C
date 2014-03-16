@@ -424,7 +424,8 @@ avtIVPEuler::Step(avtIVPField* field, double t_max, avtIVPStep* ivpstep)
     }
     else  //if( field->GetOrder() == 1 )
     {
-        if ((fieldResult = (*field)(t, yCur, vCur)) != avtIVPSolver::OK)
+        /// HKTODO: Modified Comparison from SolverResult to FieldResult
+        if ((fieldResult = (*field)(t, yCur, vCur)) != avtIVPField::OK)
             return ConvertResult(fieldResult);
         yNew = yCur + vCur * h;     // New position
     }

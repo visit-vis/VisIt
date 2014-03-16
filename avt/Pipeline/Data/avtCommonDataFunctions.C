@@ -794,7 +794,7 @@ CPruneByDomainList(avtDataRepresentation & data, void *arg, bool &success)
     bool keepIt = false;
     if (data.GetDomain() < 0)
         keepIt = true;
-    else if (data.GetDomain() < pmap->lookup.size())
+    else if ((size_t)data.GetDomain() < pmap->lookup.size())
         keepIt = pmap->lookup[data.GetDomain()];
     if (keepIt)
     {
@@ -1333,8 +1333,8 @@ GetScalarRange(T *buf, int n, double *exts, unsigned char *ghosts,
                bool checkFinite)
 {
     T *buf_orig = buf;
-    T min; 
-    T max;
+    T min = 0;
+    T max = 0;
     bool setOne = false;
     for (int i = 0; i < n; i++, buf++)
     {
@@ -1446,8 +1446,8 @@ GetDataScalarRange(vtkDataSet *ds, double *exts, const char *vname,
 template <class T> static bool
 GetComponentRange(T *buf, int n, int c, int nc, double *exts, unsigned char *ghosts)
 {
-    T min; 
-    T max;
+    T min = 0;
+    T max = 0;
     bool setOne = false;
     buf += c;
     for (int i = c; i < n*nc; i+=nc, buf+=nc)

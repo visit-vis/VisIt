@@ -533,7 +533,8 @@ avtIVPDopri5::Step(avtIVPField* field, double t_max,
     // maybe also needed for hinit())
     if( n_steps == 0 )
     {
-        if ((fieldResult = (*field)( t, y, k1 )) != avtIVPSolver::OK)
+        /// HKTODO: Modified Comparison from SolverResult to FieldResult
+        if ((fieldResult = (*field)( t, y, k1 )) != avtIVPField::OK)
             return ConvertResult(fieldResult);
         n_eval++;
     }
@@ -566,9 +567,10 @@ avtIVPDopri5::Step(avtIVPField* field, double t_max,
         // stepsize underflow?
         if( 0.1*std::abs(h) <= std::abs(t)*epsilon ) 
         {
-            if (DebugStream::Level5())
+            if (DebugStream::Level5()) {
                 debug5 << "\tavtIVPDopri5::Step(): exiting at t = " 
                        << t << ", step size too small (h = " << h << ")\n";
+            }
             return avtIVPSolver::STEPSIZE_UNDERFLOW;
         }
 
@@ -585,9 +587,10 @@ avtIVPDopri5::Step(avtIVPField* field, double t_max,
 
         n_steps++;
 
-        if (DebugStream::Level5())
+        if (DebugStream::Level5()) {
             debug5 << "\tavtIVPDopri5::Step(): t = " << t << ", y = " << y 
                    << ", h = " << h << ", t+h = " << t+h << '\n';
+        }
 
         avtVector k2, k3, k4, k5, k6, k7;
 
@@ -679,10 +682,11 @@ avtIVPDopri5::Step(avtIVPField* field, double t_max,
                 
                     if( iasti == 15 ) 
                     {
-                        if (DebugStream::Level5())
+                        if (DebugStream::Level5()) {
                             debug5 << "\tavtIVPDopri5::Step(): exiting at t = " 
                                    << t << ", problem seems stiff (y = " << y 
                                    << ")\n";
+                        }
                         return avtIVPSolver::STIFFNESS_DETECTED;
                     }
                 }
@@ -752,9 +756,10 @@ avtIVPDopri5::Step(avtIVPField* field, double t_max,
 
             h = h_new;
             
-            if (DebugStream::Level5())
+            if (DebugStream::Level5()) {
                 debug5 << "\tavtIVPDopri5::Step(): step rejected, retry with h = "
                        << h << '\n';
+            }
         }
     }
 }

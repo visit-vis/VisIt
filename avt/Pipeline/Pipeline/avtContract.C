@@ -84,7 +84,7 @@ ostream& operator<<(ostream &os, const avtContract& c)
    else
    {
        os << "\tcalculate extents for these variables:";
-       for (int i = 0 ; i < c.needExtentsForTheseVariables.size() ; i++)
+       for (size_t i = 0 ; i < c.needExtentsForTheseVariables.size() ; i++)
            os << c.needExtentsForTheseVariables[i] << "; ";
        os << "\n";
    }
@@ -300,7 +300,7 @@ avtContract::UseLoadBalancing(bool newVal)
 bool
 avtContract::ShouldCalculateVariableExtents(const std::string &s)
 {
-    for (int i = 0 ; i < needExtentsForTheseVariables.size() ; i++)
+    for (size_t i = 0 ; i < needExtentsForTheseVariables.size() ; i++)
         if (needExtentsForTheseVariables[i] == s)
             return true;
     return false;
@@ -324,7 +324,7 @@ avtContract::SetCalculateVariableExtents(const std::string &s, bool v)
     if (v)
     {
         bool alreadyHaveIt = false;
-        for (int i = 0 ; i < needExtentsForTheseVariables.size() ; i++)
+        for (size_t i = 0 ; i < needExtentsForTheseVariables.size() ; i++)
             if (needExtentsForTheseVariables[i] == s)
                 alreadyHaveIt = true;
         if (!alreadyHaveIt)
@@ -333,7 +333,7 @@ avtContract::SetCalculateVariableExtents(const std::string &s, bool v)
     else
     {
         std::vector<std::string> newList;
-        for (int i = 0 ; i < needExtentsForTheseVariables.size() ; i++)
+        for (size_t i = 0 ; i < needExtentsForTheseVariables.size() ; i++)
             if (needExtentsForTheseVariables[i] != s)
                 newList.push_back(needExtentsForTheseVariables[i]);
         needExtentsForTheseVariables = newList;
@@ -403,7 +403,7 @@ avtContract::DebugDump(avtWebpage *webpage)
     else
     {
         strcpy(str, needExtentsForTheseVariables[0].c_str());
-        for (int i = 1 ; i < needExtentsForTheseVariables.size() ; i++)
+        for (size_t i = 1 ; i < needExtentsForTheseVariables.size() ; i++)
         {
             strcpy(str+strlen(str), "; ");
             strcpy(str+strlen(str), needExtentsForTheseVariables[i].c_str());

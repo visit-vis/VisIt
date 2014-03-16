@@ -93,7 +93,7 @@ avtIVPNek5000Field::avtIVPNek5000Field( vtkDataSet* dataset,
 
   float *vec_ptr = (float *) vecs->GetVoidPointer(0);
 
-  unsigned int iDim, iBlockSize[3], iNumBlocks, npts = 1;
+  unsigned int iDim = 0, iBlockSize[3], iNumBlocks = 0, npts = 1;
 
   // Get the number of point per spectrial elements
   vtkIntArray *semVTK =

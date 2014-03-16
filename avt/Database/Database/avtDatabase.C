@@ -808,7 +808,7 @@ avtDatabase::PopulateDataObjectInformation(avtDataObject_p &dob,
                                           const vector<bool> &selectionsApplied,
                                           avtDataRequest_p spec)
 {
-    int   i;
+    size_t   i;
 
     int timerHandle = visitTimer->StartTimer();
 
@@ -1098,7 +1098,7 @@ avtDatabase::PopulateDataObjectInformation(avtDataObject_p &dob,
     if (*spec != NULL)
     {
         vector<avtDataSelection_p> selList = spec->GetAllDataSelections();
-        for (int i = 0; i < selList.size(); i++)
+        for (size_t i = 0; i < selList.size(); i++)
         {
             if (string(selList[i]->GetType()) == "Multi Resolution Data Selection")
             {
@@ -1939,7 +1939,7 @@ avtDatabase::GetMetaData(int timeState, bool forceReadAllCyclesTimes,
         avtDatabaseMetaData *thisMd;
         if (false == found)
         {
-            if (metadata.size() >= mdCacheSize)
+            if (metadata.size() >= (size_t)mdCacheSize)
             {
                 CachedMDEntry tmp = metadata.back(); 
                 metadata.pop_back();
@@ -2132,7 +2132,7 @@ avtDatabase::GetSIL(int timeState, bool treatAllDBsAsTimeVarying)
        // and read new sil
        if (false == found)
        {
-           if (sil.size() >= silCacheSize)
+           if (sil.size() >= (size_t)silCacheSize)
            {
                CachedSILEntry tmp = sil.back(); 
                sil.pop_back();
@@ -2555,7 +2555,7 @@ avtDatabase::Query(PickAttributes *pa)
         string mesh = GetMetaData(ts)->MeshForVar(pa->GetActiveVariable());
         const vector<int> &wholes = sil->GetWholes();
         avtSILSet_p top = NULL;
-        for (int i = 0 ; i < wholes.size() ; i++)
+        for (size_t i = 0 ; i < wholes.size() ; i++)
         {
             avtSILSet_p candidate = sil->GetSILSet(wholes[i]);
             if (candidate->GetName() == mesh)
@@ -2569,7 +2569,7 @@ avtDatabase::Query(PickAttributes *pa)
         else
         {
             const vector<int> &mapsOut = top->GetMapsOut();
-            for (int j = 0; j < mapsOut.size() ; j++)
+            for (size_t j = 0; j < mapsOut.size() ; j++)
             {
                 int cIndex = mapsOut[j];
                 avtSILCollection_p collection = sil->GetSILCollection(cIndex);
@@ -2669,7 +2669,7 @@ avtDatabase::Query(PickAttributes *pa)
             pa->SetFulfilled(false);
             return;
         }
-        for (int j = 0; j < userVars.size(); j++)
+        for (size_t j = 0; j < userVars.size(); j++)
         {
             PickVarInfo varInfo;
             varInfo.SetVariableName(userVars[j]);
@@ -2683,7 +2683,7 @@ avtDatabase::Query(PickAttributes *pa)
               pa->GetShowMeshName());
     pa->SetMeshInfo(meshInfo);
 
-    for (int varNum = 0; varNum < userVars.size(); varNum++)
+    for (size_t varNum = 0; varNum < userVars.size(); varNum++)
     {
         vName = userVars[varNum];
         if (strcmp(vName.c_str(), "default") == 0)
@@ -2784,6 +2784,8 @@ avtDatabase::Query(PickAttributes *pa)
                 default : 
                    break; 
             }
+
+            (void) success; /// remove unused warning..
         }
         CATCH (InvalidVariableException)
         {

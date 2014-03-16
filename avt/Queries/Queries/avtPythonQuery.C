@@ -40,6 +40,7 @@
 //                            avtPythonQuery.C                               //
 // ************************************************************************* //
 
+#include <Python.h>
 #include <avtPythonQuery.h>
 
 #include <string>
@@ -51,7 +52,6 @@
 #include <avtOriginatingSource.h>
 
 #include <DebugStream.h>
-#include <Python.h>
 #include <PyContract.h>
 
 // Helper for throwing an exception when things go wrong.
@@ -399,7 +399,7 @@ avtPythonQuery::UpdateContract()
     vector<string> secondary_vars;
     GetSecondaryVariables(secondary_vars);
 
-    for(int i = 0 ; i < secondary_vars.size(); i++)
+    for(size_t i = 0 ; i < secondary_vars.size(); i++)
         drequest->AddSecondaryVariable(secondary_vars[i].c_str());
 
     avtContract_p contract = new avtContract(drequest,
@@ -455,7 +455,7 @@ avtPythonQuery::UpdateContract()
                       "'input_var_names' list.");
 
     // add secondary vars to input_var_names.
-    for(int i = 0 ; i < secondary_vars.size(); i++)
+    for(size_t i = 0 ; i < secondary_vars.size(); i++)
     {
         py_txt = PyString_FromString(secondary_vars[i].c_str());
         if(py_txt == NULL || PyList_Append(py_vars_list,py_txt) == -1)

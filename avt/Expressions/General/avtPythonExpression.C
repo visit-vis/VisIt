@@ -39,8 +39,8 @@
 // ************************************************************************* //
 //                              avtPythonExpression.C                        //
 // ************************************************************************* //
-#include <avtPythonExpression.h>
 #include <Python.h>
+#include <avtPythonExpression.h>
 
 #include <avtExprNode.h>
 #include <avtExpressionEvaluatorFilter.h>
