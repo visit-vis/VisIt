@@ -1011,7 +1011,7 @@ std::string
 MDServerConnection::FilteredPath(const std::string &path) const
 {
     // Remove multiple slashes in a row.
-    int i, state = 0;
+    size_t i, state = 0;
     std::string filteredPath;
     for(i = 0; i < path.length(); ++i)
     {
@@ -1337,7 +1337,7 @@ MDServerConnection::ReadCWD()
 #if defined(_WIN32)
     _getcwd(tmpcwd,1023);
 #else
-    getcwd(tmpcwd,1023);
+    char* res = getcwd(tmpcwd,1023); (void) res;
 #endif
     tmpcwd[1023]='\0';
 
@@ -1716,7 +1716,7 @@ MDServerConnection::FileMatchesFilterList(const std::string &fileName) const
     // Try the filename against all the filters in the list until
     // it matches or we've tested all the filters.
     bool match = false;
-    for(int i = 0; i < filterList.size() && !match; ++i)
+    for(size_t i = 0; i < filterList.size() && !match; ++i)
     {
         match = WildcardStringMatch(filterList[i], fileName);
     }
@@ -1776,7 +1776,7 @@ bool
 MDServerConnection::GetPattern(const std::string &file, std::string &p,
     int &digitLength) const
 {
-    int i, isave = 0, ipat = 0;
+    size_t i, isave = 0, ipat = 0;
     char pattern[256];
     for(i = 0; i < 256; ++i) pattern[i] = '\0';
 
@@ -1806,7 +1806,7 @@ MDServerConnection::GetPattern(const std::string &file, std::string &p,
         while (excludedCompressionTypeExtensions[currExtIdx])
         {
             int extLen = strlen(excludedCompressionTypeExtensions[currExtIdx]);
-            if (searchstring.size() > extLen &&
+            if (searchstring.size() > (size_t)extLen &&
                 searchstring.substr(
                     searchstring.size()-extLen, searchstring.size()-1
                                    ) == excludedCompressionTypeExtensions[currExtIdx])
@@ -1821,7 +1821,7 @@ MDServerConnection::GetPattern(const std::string &file, std::string &p,
         while (excludedFileTypeExtensions[currExtIdx])
         {
             int extLen = strlen(excludedFileTypeExtensions[currExtIdx]);
-            if (searchstring.size() > extLen &&
+            if (searchstring.size() > (size_t)extLen &&
                 searchstring.substr(
                     searchstring.size()-extLen, searchstring.size()-1
                                    ) == excludedFileTypeExtensions[currExtIdx])
@@ -1836,7 +1836,7 @@ MDServerConnection::GetPattern(const std::string &file, std::string &p,
         while (excludedDimensionExtensions[currExtIdx])
         {
             int extLen = strlen(excludedDimensionExtensions[currExtIdx]);
-            if (searchstring.size() > extLen &&
+            if (searchstring.size() > (size_t)extLen &&
                 searchstring.substr(
                     searchstring.size()-extLen, searchstring.size()-1
                                    ) == excludedDimensionExtensions[currExtIdx])
@@ -2144,7 +2144,7 @@ MDServerConnection::GetFilteredFileList(GetFileListRPC::FileList &files)
                                 {
                                     std::string listName(*it);
                                     apos = listName.find("_abort_");
-                                    if(apos != -1)
+                                    if(apos != std::string::npos)
                                         listName.replace(apos, 7, "_");
 
                                     if(listName >= altName)
@@ -2259,7 +2259,7 @@ MDServerConnection::GetFilteredFileList(GetFileListRPC::FileList &files)
         // Create virtual databases using the information stored in the
         // newVirtualFiles map.
         //
-        int fileIndex, stage3 = visitTimer->StartTimer();
+        size_t fileIndex, stage3 = visitTimer->StartTimer();
         GetFileListRPC::FileList virtualFilesToCheck;
         for(fileIndex = 0; fileIndex < files.names.size(); ++fileIndex)
         {
@@ -2329,7 +2329,7 @@ MDServerConnection::GetFilteredFileList(GetFileListRPC::FileList &files)
 
                 // The virtual database is not of files so it cannot be a virtual
                 // database. Put the rest of its files back into the files list.
-                for(int i = 1; i < pos->second.files.size(); ++i)
+                for(size_t i = 1; i < pos->second.files.size(); ++i)
                 {
                     debug5 << "\t" << pos->second.files[i].c_str() << endl;
 
@@ -2355,7 +2355,7 @@ MDServerConnection::GetFilteredFileList(GetFileListRPC::FileList &files)
         int stage7 = visitTimer->StartTimer();
         if(newVirtualFiles.size() > 0)
         {
-            for(int fileIndex = 0; fileIndex < files.names.size(); ++fileIndex)
+            for(size_t fileIndex = 0; fileIndex < files.names.size(); ++fileIndex)
             {
                 pos = newVirtualFiles.find(files.names[fileIndex]);
                 if(pos == newVirtualFiles.end())
@@ -2486,7 +2486,7 @@ MDServerConnection::ConsolidateVirtualDatabases(
     for(it = newVirtualFiles.begin(); it != newVirtualFiles.end(); ++it)
     {
         std::string key(it->first.name);
-        int starpos = key.find("*");
+        size_t starpos = key.find("*");
 
         bool lastCharIsStar = starpos == key.size()-1;
         bool secondLastCharIsStarWithZ = starpos == key.size()-2 &&
@@ -2539,7 +2539,7 @@ MDServerConnection::ConsolidateVirtualDatabases(
             long vdb_sizes;
             bool vdb_info_set = false;
 
-            for(int s = 0; s < it->second.files.size(); ++s)
+            for(size_t s = 0; s < it->second.files.size(); ++s)
             {
                 VirtualFileInformationMap::iterator ci = 
                     newVirtualFiles.find(it->second.files[s]);
@@ -2562,7 +2562,7 @@ MDServerConnection::ConsolidateVirtualDatabases(
                     virtualDBNames += (ci->first.name + " ");
     
                     consolidatedInfo.path = ci->second.path;
-                    for(int index = 0; index < ci->second.files.size(); ++index)
+                    for(size_t index = 0; index < ci->second.files.size(); ++index)
                         consolidatedInfo.files.push_back(ci->second.files[index]);
     
                     // Get the file access information.
@@ -2570,7 +2570,7 @@ MDServerConnection::ConsolidateVirtualDatabases(
                     intVector::iterator vdb_access_it   = files.access.begin();
                     intVector::iterator vdb_types_it    = files.types.begin();
                     longVector::iterator vdb_sizes_it   = files.sizes.begin();
-                    for(int fileIndex = 0; fileIndex < files.names.size(); ++fileIndex)
+                    for(size_t fileIndex = 0; fileIndex < files.names.size(); ++fileIndex)
                     {
                         if(files.names[fileIndex] == ci->first.name)
                         {
@@ -2716,11 +2716,12 @@ MDServerConnection::GetVirtualFileDefinition(const std::string &file)
                   "it before but it was closed and its definition "
                   "(list of files) was erased. Try and re-read its "
                   "definition using the filter that we've saved for it (";
-        for(int i = 0; i < virtualFile->second.filterList.size(); ++i)
+        for(size_t i = 0; i < virtualFile->second.filterList.size(); ++i)
         {
             debug2 << virtualFile->second.filterList[i].c_str();
-            if(i < virtualFile->second.filterList.size()-1)
+            if(i < virtualFile->second.filterList.size()-1) {
                 debug2 << ", ";
+            }
         }
         debug2 << ")." << endl;
 
@@ -2890,7 +2891,7 @@ MDServerConnection::GetDatabase(std::string file, int timeState,
             const stringVector &fileNames = virtualFile->second.files;
             const std::string &path = virtualFile->second.path;
             char **names = new char *[fileNames.size()];
-            int i;
+            size_t i;
             debug3 << "New virtual database: " << file.c_str()
                    << ", path=" << path.c_str() << endl;
             for(i = 0; i < fileNames.size(); ++i)
