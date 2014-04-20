@@ -45,7 +45,7 @@
 #define AVT_WellLogs_FILE_FORMAT_H
 
 #include <avtSTSDFileFormat.h>
-
+#include <map>
 
 // ****************************************************************************
 //  Class: avtWellLogsFileFormat
@@ -86,6 +86,8 @@ class avtWellLogsFileFormat : public avtSTSDFileFormat
     virtual vtkDataArray  *GetVectorVar(const char *);
 
   protected:
+    std::map<std::string, std::vector<std::string> > data;
+
     std::string               wlFilename;
     bool                      haveReadFile;
     std::vector<std::string>  wellNames;
@@ -97,6 +99,7 @@ class avtWellLogsFileFormat : public avtSTSDFileFormat
     int                       filetype; //type of file being read in..
 
     void                   ReadFile();
+    void                   ParseFile();
     virtual void           PopulateDatabaseMetaData(avtDatabaseMetaData *);
 };
 

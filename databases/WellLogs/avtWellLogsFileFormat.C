@@ -173,18 +173,14 @@ avtWellLogsFileFormat::ReadFile(void)
         EXCEPTION1(InvalidFilesException, wlFilename.c_str());
     }   
 
+    std::map<int,std::string> index_map;
+
     char line[1024];
     ifile.getline(line, 1024);
 
-    int wellId = -1;
-    int utm83EId = -1;
-    int utm83NId = -1;
-    int wellBottomId = -1;
-    int groundElevationId = -1;
-    int depenvId = -1;
-
     char *s = line;
     int idx = 0;
+
     do 
     {
         char *next = strstr(s, ",");
@@ -195,64 +191,26 @@ avtWellLogsFileFormat::ReadFile(void)
            *(next) = '\0';
         if (!atEnd)
             next++;
-        if (strcmp(s, "WELL_ID") == 0 || strcmp(s, "site_id") == 0)
-        {
-            filetype = strcmp(s, "WELL_ID") == 0 ? 1 : 2; //assign which type of file is being read in..
-            wellId = idx;
-        }
-        else if (strcmp(s, "UTM83E") == 0 || strcmp(s, "UTME") == 0)
-            utm83EId = idx;
-        else if (strcmp(s, "UTM83N") == 0 || strcmp(s, "UTMN") == 0)
-            utm83NId = idx;
-        else if (strcmp(s, "WELL_BOTTOM") == 0 || strcmp(s, "interval_bottom") == 0)
-            wellBottomId = idx;
-        else if (strcmp(s, "GROUND_ELEVATION") == 0)
-            groundElevationId = idx;
-        else if (strcmp(s, "dep_env") == 0)
-            depenvId = idx;
 
+        std::string key = s;
+
+        /// create column for key
+        data[key] = std::vector<std::string>();
+        index_map[idx] = key;
+        //std::cout << idx << " " << key << std::endl;
         s = next;
         idx++;
     } while (s != NULL && *s != '\0');
 
-    if (filetype == 1)
-    {
-        if (wellId < 0 || utm83EId < 0 || utm83NId < 0 || wellBottomId < 0 ||
-            groundElevationId < 0)
-        {
-            EXCEPTION1(InvalidFilesException, wlFilename.c_str())
-        }
-    }
-    else
-    {
-        if (wellId < 0 || utm83EId < 0 || utm83NId < 0 || wellBottomId < 0 ||
-            depenvId < 0)
-        {
-            EXCEPTION1(InvalidFilesException, wlFilename.c_str())
-        }
-    }
-
-    std::cerr << setprecision(9);
-    std::cerr << "Ids = " << wellId << ", " << utm83EId << ", " << utm83NId << ", "
-         << wellBottomId << ", " << groundElevationId << " " << depenvId << " " << filetype << endl;
-
-    std::string lastWellName = "";
-    float lastWellBottom = 0.0f,lasttD = 0.0f;
-
-    std::string twellName = "";
-    float tX = -1,tY = -1,tZ = -1,tD = -1;
-    float prevtX = -1,prevtY = -1,prevtZ = -1,prevtD = -1;
-
-    std::map<int,int> idmap;
-
-    while (! ifile.eof())
+    /// read the rest of the file...
+    while (!ifile.eof())
     {
         ifile.getline(line, 1024);
         int idx = 0;
         char *s = line;
         if (s[0] == '\0')
             continue;
-        do 
+        do
         {
             char *next = strstr(s, ",");
             bool atEnd = false;
@@ -262,77 +220,160 @@ avtWellLogsFileFormat::ReadFile(void)
                *(next) = '\0';
             if (!atEnd)
                 next++;
- 
-            if(filetype == 1)
-            {
-                if (wellId == idx)
-                {
-                    wellNames.push_back(s);
-                    wellIds.push_back(wellNames.size()-1);
-                }
-                else if (utm83EId == idx)
-                    X.push_back(atof(s));
-                else if (utm83NId == idx)
-                    Y.push_back(atof(s));
-                else if (wellBottomId == idx)
-                    Z1.push_back(atof(s));
-                else if (groundElevationId == idx || depenvId == idx)
-                    Z2.push_back(atof(s));
-            }
-            else
-            {
-                //store all variables..
-                if (wellId == idx)
-                    twellName = s;
-                else if (utm83EId == idx)
-                    tX = (atof(s));
-                else if (utm83NId == idx)
-                    tY = (atof(s));
-                else if (wellBottomId == idx)
-                    tZ = (atof(s));
-                else if (depenvId == idx)
-                    tD = (atof(s));
-            }
+
+            std::string value = s;
+
+            /// store values...
+            data[index_map[idx]].push_back(value);
+            //std::cout << value << std::endl;
             s = next;
             idx++;
         } while (s != NULL && *s != '\0');
+    }
 
-        if(filetype == 2)
-        {
-            //now that everything has been read in, record it..
-//            if(twellName != lastWellName)
-//            {
-//                //start of a new well..
-//                lastWellName = twellName;
-//                lastWellBottom = tZ;
-//                //std::cout << lastWellName << " " << lastWellBottom << std::endl;
-//            }
-//            else
-//            {
-//                wellIds.push_back(tD);
-//                X.push_back(tX);
-//                Y.push_back(tY);
-//                Z1.push_back(lastWellBottom);
-//                Z2.push_back(tZ);
-//                //std::cout << twellName << " " << tD << " " << tX << " " << tY << " " << lastWellBottom << " " << tZ << std::endl;
-//                lastWellBottom = tZ;
-//            }
+    ParseFile();
+}
+
+void
+avtWellLogsFileFormat::ParseFile() 
+{
+    std::string utm83E = "";
+    std::string utm83N = "";
+    std::string wellBottom = "";
+    std::string groundElevation = "";
+    std::string depEnv = "";
+
+    if (data.find("UTME") != data.end())
+        utm83E = "UTME";
+    if (data.find("UTM83E") != data.end())
+        utm83E = "UTM83E";
+
+    if (data.find("UTM83N") != data.end())
+        utm83N = "UTM83N";
+    if (data.find("UTMN") != data.end()) 
+        utm83N = "UTMN";
+
+    if (data.find("WELL_BOTTOM") != data.end())
+        wellBottom = "WELL_BOTTOM";
+    if(data.find("interval_bottom") != data.end())
+        wellBottom = "interval_bottom";
+    if(data.find("BOTTOM_SCREEN_ZONE") != data.end())
+        wellBottom = "BOTTOM_SCREEN_ZONE";
+
+    if (data.find("GROUND_ELEVATION") != data.end()) {
+        groundElevation = "GROUND_ELEVATION";
+    }
+    if (data.find("dep_env") != data.end()) {
+        depEnv = "dep_env";
+    }
+
+    if (utm83E.length() == 0 || utm83N.length() == 0 || 
+        wellBottom.length() == 0)
+    {
+        EXCEPTION1(InvalidFilesException, wlFilename.c_str())
+    }
+
+    /// checks
+    std::string well = "";
+    if (data.find("WELL_ID") != data.end())
+    {
+        well = "WELL_ID";
+        if (groundElevation.length() == 0) {
+            EXCEPTION1(InvalidFilesException, wlFilename.c_str())
+        }
+    }
+    else if(data.find("site_id") != data.end()) 
+    {
+        well = "site_id";
+        if (depEnv.length() == 0) {
+            EXCEPTION1(InvalidFilesException, wlFilename.c_str())
+        }
+    } else if(data.find("STATION_NAME") != data.end())
+    {
+        well = "STATION_NAME";
+        if (groundElevation.length() == 0) {
+            EXCEPTION1(InvalidFilesException, wlFilename.c_str())
+        }
+    }else {
+        EXCEPTION1(InvalidFilesException, wlFilename.c_str())
+    }
+
+    std::cerr << setprecision(9);
+    std::cerr << "Ids = " << well << ", " << utm83E << ", " << utm83N << ", "
+              << wellBottom << ", " << groundElevation << "," << depEnv << ","              << std::endl;
+
+    /// VERSION 1...
+    if(data.find("WELL_ID") != data.end() || 
+       data.find("STATION_NAME") != data.end()) 
+    {
+        wellNames = data.find("WELL_ID") != data.end() ? 
+                    data["WELL_ID"] : data["STATION_NAME"];
+
+        for(size_t i = 0; i < wellNames.size(); ++i) {
+            wellIds.push_back(i);
+        }
+
+        for(size_t i = 0; i < data[utm83E].size(); ++i) {
+            X.push_back(atof(data[utm83E][i].c_str()));
+        }
+
+        for(size_t i = 0; i < data[utm83N].size(); ++i) {
+            Y.push_back(atof(data[utm83N][i].c_str()));
+        }
+
+        for(size_t i = 0; i < data[wellBottom].size(); ++i) {
+            Z1.push_back(atof(data[wellBottom][i].c_str()));
+        }
+
+        if(data.find(groundElevation) != data.end()) {
+            const std::vector<std::string> &gv = data[groundElevation];
+            for(size_t i = 0; i < gv.size(); ++i) {
+                Z2.push_back(atof(gv[i].c_str()));
+            }
+        }
+
+        if(data.find(depEnv) != data.end()) {
+            const std::vector<std::string> &gv = data[depEnv];
+            for(size_t i = 0; i < gv.size(); ++i) {
+                Z2.push_back(atof(gv[i].c_str()));
+            }
+        }
+
+        std::cout << X.size() << " " << Y.size() << " " << Z1.size() << " " << Z2.size() << std::endl;
+    } else {
+
+        /// VERSION 2
+        std::map<int,int> idmap;
+        const std::vector<std::string>& wellIdx = data[well];
+
+        for(size_t i = 0; i < wellIdx.size(); ++i) {
+
+            std::string lastWellName = "";
+            float lastWellBottom = 0.0f,lasttD = 0.0f;
+
+            std::string twellName = "";
+            float tX = -1,tY = -1,tZ = -1,tD = -1;
+            float prevtX = -1,prevtY = -1,prevtZ = -1,prevtD = -1;
+
+            twellName = wellIdx[i];
+
+            tX = atof(data[utm83E][i].c_str());
+            tY = atof(data[utm83N][i].c_str());
+            tZ = atof(data[wellBottom][i].c_str());
+            tD = atof(data[depEnv][i].c_str());
 
             if(twellName != lastWellName || tD != lasttD)
             {
                 if(lastWellBottom != -1 && prevtD != -1)
                 {
-
                     int id = -1;
                     if(idmap.count(prevtD) == 0)
                     {
-
                         char buffer[1024];
                         sprintf(buffer,"DEP_%d",(int)prevtD);
                         wellNames.push_back(buffer);
                         id = wellNames.size() - 1;
                         idmap[prevtD] = id;
-
                     }
                     else
                     {
@@ -362,40 +403,36 @@ avtWellLogsFileFormat::ReadFile(void)
                 lasttD = tD;
                 //std::cout << lastWellName << " " << lastWellBottom << " " << lasttD << std::endl;
             }
-            else
-            {
+            else {
                 prevtD = tD;
                 prevtX = tX;
                 prevtY = tY;
                 prevtZ = tZ;
             }
+
+            //end of file write last line out if it exists
+            if(lastWellBottom != -1 && prevtD != -1)
+            {
+                int id = -1;
+                if(idmap.count(prevtD) == 0)
+                {
+                    char buffer[1024];
+                    sprintf(buffer,"DEP_%d",(int)prevtD);
+                    wellNames.push_back(buffer);
+                    id = wellNames.size() - 1;
+                    idmap[prevtD] = id;
+                }
+                else {
+                    id = idmap[prevtD];
+                }
+
+                wellIds.push_back(id);
+                X.push_back(prevtX);
+                Y.push_back(prevtY);
+                Z1.push_back(lastWellBottom);
+                Z2.push_back(prevtZ);
+            }
         }
-    }
-
-    //end of file write last line out if it exists
-    if(lastWellBottom != -1 && prevtD != -1)
-    {
-        int id = -1;
-        if(idmap.count(prevtD) == 0)
-        {
-
-            char buffer[1024];
-            sprintf(buffer,"DEP_%d",(int)prevtD);
-            wellNames.push_back(buffer);
-            id = wellNames.size() - 1;
-            idmap[prevtD] = id;
-
-        }
-        else
-        {
-            id = idmap[prevtD];
-        }
-
-        wellIds.push_back(id);
-        X.push_back(prevtX);
-        Y.push_back(prevtY);
-        Z1.push_back(lastWellBottom);
-        Z2.push_back(prevtZ);
     }
     //std::cout << "Sizes " << wellIds.size() << std::endl;
     haveReadFile = true;
