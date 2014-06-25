@@ -118,5 +118,5 @@ PrintElementType(ElementType_t et)
     else if(et == HEXA_20) debug4 << "HEXA_20";
     else if(et == HEXA_27) debug4 << "HEXA_27";
     else if(et == MIXED) debug4 << "MIXED";
-    else if(et == NGON_n) debug4 << "NGON_n";
+    else if(et == NGON_n) { debug4 << "NGON_n"; }
 }

@@ -1027,10 +1027,10 @@ SimV2_Add_PolyhedralCell(vtkUnstructuredGrid *ugrid, const int **cellptr,
             fc[1] /= double(nPointsInFace);
             fc[2] /= double(nPointsInFace);
 
-            double n[3] = {0.,0.,0.};
-            n[0] = center[0] - fc[0];
-            n[1] = center[1] - fc[1];
-            n[2] = center[2] - fc[2];
+            //double n[3] = {0.,0.,0.};
+            //n[0] = center[0] - fc[0];
+            //n[1] = center[1] - fc[1];
+            //n[2] = center[2] - fc[2];
 
             // Tesselate the shape into triangles and add tets. We create
             // a tessellator each time so we can add the face's points to

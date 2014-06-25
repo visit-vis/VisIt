@@ -522,7 +522,7 @@ WindowMetrics::CalculateBorders(QWidget *win,
     int height = leaf_attributes.height;
     int width  = leaf_attributes.width;
     int border_width = leaf_attributes.border_width;
-    int big_height, big_width;
+    int big_height = 0, big_width = 0;
 
     int desktop_width  = qApp->desktop()->width();
     int desktop_height = qApp->desktop()->height();

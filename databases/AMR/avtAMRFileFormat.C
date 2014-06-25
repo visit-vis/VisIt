@@ -528,7 +528,7 @@ avtAMRFileFormat::GetVar(int domain, const char *name)
     int np,ne;
     reader_->GetInterfaceSizes( &np, &ne );
 
-    int vid,cmp,sz;
+    int vid,cmp = -1,sz;
     if( varname.compare("u velocity")==0 ) {
       vid=AMRreader::i_velo;  cmp=0; sz=np; }
     else if( varname.compare("v velocity")==0 ) {

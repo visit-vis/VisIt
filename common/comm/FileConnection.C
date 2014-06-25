@@ -58,7 +58,7 @@ FileConnection::FileConnection(const char *filename, bool writeMode_) :
 {
     fileStream = 0;
     fileSize = 0;
-    writeMode = writeMode;
+    writeMode = writeMode_;
 
     if(writeMode)
     {

@@ -365,7 +365,7 @@ void SharedDaemon::handleConnection()
     {
         const JSONNode::JSONArray& array = jo["windowIds"].GetArray();
 
-        for(int i = 0; i < array.size(); ++i)
+        for(size_t i = 0; i < array.size(); ++i)
         {
             const JSONNode& node = array[i];
 

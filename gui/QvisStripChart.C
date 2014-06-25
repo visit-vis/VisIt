@@ -735,7 +735,8 @@ void VisItSimStripChart::setFontSize()
 
 void VisItSimStripChart::zoomOut()
 {
-    if (zoom > 0.5) zoom = zoom -= 0.25;
+    /// HKTODO if (zoom > 0.5) zoom = zoom -= 0.25; is incorrect
+    if (zoom > 0.5) zoom -= 0.25;
     else  zoom = zoom/2.0;
     if (zoom <= zoomOutLimit ) zoom = zoomOutLimit;
     setFontSize();

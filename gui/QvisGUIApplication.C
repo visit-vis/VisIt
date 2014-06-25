@@ -979,7 +979,7 @@ QvisGUIApplication::QvisGUIApplication(int &argc, char **argv, ViewerProxy *prox
 
 QvisGUIApplication::~QvisGUIApplication()
 {
-    int i;
+    size_t i;
 #if !defined(_WIN32) && !defined(__APPLE__)
     // Delete the windows.
     for(WindowBaseMap::iterator pos = otherWindows.begin();
@@ -1038,7 +1038,7 @@ QvisGUIApplication::~QvisGUIApplication()
         delete mainApp;
 
     // Delete the args for QT
-    for (i = 0 ; i < qt_argc ; i++)
+    for (i = 0 ; i < (size_t)qt_argc ; i++)
     {
         if (qt_argv[i])
             free(qt_argv[i]);
@@ -4386,7 +4386,7 @@ QvisGUIApplication::WriteConfigFile(const char *filename)
 void
 QvisGUIApplication::WritePluginWindowConfigs(DataNode *parentNode)
 {
-    int i;
+    size_t i;
 
     // Iterate through each plot window and have it add its window information
     // to the config file data.
@@ -5817,7 +5817,7 @@ QvisGUIApplication::GetVirtualDatabaseDefinitions(
 
     // Add the definitions for all virtual files to the map.
     defs.clear();
-    for(int i = 0; i < files.size(); ++i)
+    for(size_t i = 0; i < files.size(); ++i)
     {
         if(files[i].IsVirtual())
         {
@@ -5881,7 +5881,7 @@ QvisGUIApplication::RefreshFileList()
     //
     std::map<QualifiedFilename, bool> paths;
     const QualifiedFilenameVector &appliedFiles = fileServer->GetAppliedFileList();
-    int i;
+    size_t i;
     for(i = 0; i < appliedFiles.size(); ++i)
     {
         QualifiedFilename temp(appliedFiles[i]);
@@ -6126,7 +6126,7 @@ QvisGUIApplication::LoadFile(QualifiedFilename &f, bool addDefaultPlots)
 
                             // See if the file that we want to open is in the virtual
                             // file definition.                       
-                            for(int state = 0; state < def.size(); ++state)
+                            for(size_t state = 0; state < def.size(); ++state)
                             {
                                 if(f.filename == def[state])
                                 {
@@ -6425,7 +6425,7 @@ QvisGUIApplication::SaveSettings()
 void
 QvisGUIApplication::ActivatePlotWindow(int index)
 {
-    if(index >= 0 && index < plotWindows.size())
+    if(index >= 0 && (size_t)index < plotWindows.size())
     {
         EnsurePlotWindowIsCreated(index);
         plotWindows[index]->show();
@@ -6452,7 +6452,7 @@ QvisGUIApplication::ActivatePlotWindow(int index)
 void
 QvisGUIApplication::ActivateOperatorWindow(int index)
 {
-    if(index >= 0 && index < operatorWindows.size())
+    if(index >= 0 && (size_t)index < operatorWindows.size())
     {
         EnsureOperatorWindowIsCreated(index);
         operatorWindows[index]->show();
@@ -6512,7 +6512,7 @@ QvisGUIApplication::IconifyWindows(bool isSpontaneous)
         mainWin->showMinimized();
 
 #if !defined(_WIN32)
-    int index;
+    size_t index;
 
     // Iconify all of the regular windows.
     for(WindowBaseMap::iterator pos = otherWindows.begin();
@@ -6573,7 +6573,7 @@ QvisGUIApplication::DeIconifyWindows()
     mainWin->showNormal();
 
 #if !defined(_WIN32)
-    int index;
+    size_t index;
 
     // deIconify all of the regular windows.
     for(WindowBaseMap::iterator pos = otherWindows.begin();
@@ -7613,7 +7613,7 @@ QvisGUIApplication::SendInterface()
     debug5 << "GUI info: " << info->GetClientName().c_str()
            << endl;
     debug5 << "methods:" << endl;
-    for(int j = 0; j < info->GetMethodNames().size(); ++j)
+    for(size_t j = 0; j < info->GetMethodNames().size(); ++j)
     {
         debug5 << "\t" << info->GetMethod(j).c_str() << "("
                << info->GetMethodPrototype(j).c_str() << ")" << endl;
@@ -7653,7 +7653,7 @@ void
 QvisGUIApplication::HandleClientMethod()
 {
     ClientMethod *method = GetViewerState()->GetClientMethod();
-    int index;
+    size_t index;
 
     if(method->GetMethodName() == "_QueryClientInformation")
     {
@@ -7891,7 +7891,7 @@ std::string
 QuoteSpaces(const std::string &s)
 {
     bool nospaces = true;
-    for(int i = 0; i < s.size() && nospaces; ++i)
+    for(size_t i = 0; i < s.size() && nospaces; ++i)
         nospaces &= (s[i] != ' ');
 
     std::string retval(s);
@@ -7943,7 +7943,7 @@ GetMovieCommandLine(const MovieAttributes *movieAtts, stringVector &args)
     // iterate over the formats
     args.push_back("-format");
     const stringVector &fmt = movieAtts->GetFileFormats();
-    int i;
+    size_t i;
     std::string F;
     for(i = 0; i < fmt.size(); ++i)
     {
@@ -8063,7 +8063,7 @@ UpdateCurrentWindowSizes(MovieAttributes *movieAtts, int currentWidth,
     intVector heights(movieAtts->GetHeights());
     const unsignedCharVector &useCurrentSize = movieAtts->GetUseCurrentSize();
     const doubleVector &scales = movieAtts->GetScales();
-    for(int i = 0; i < widths.size(); ++i)
+    for(size_t i = 0; i < widths.size(); ++i)
     {
         if(useCurrentSize[i] == 1)
         {
@@ -8252,7 +8252,7 @@ QvisGUIApplication::SaveMovie()
     const GlobalAttributes *globalAtts = GetViewerState()->GetGlobalAttributes();
     const intVector &winids = globalAtts->GetWindows();
     int winid = globalAtts->GetActiveWindow() + 1;
-    for(int i = 0; i < winids.size(); ++i)
+    for(size_t i = 0; i < winids.size(); ++i)
     {
         if(winids[i] == winid)
         {
@@ -8378,7 +8378,7 @@ QvisGUIApplication::SaveMovieMain()
             const intVector &widths  = movieAtts->GetWidths();
             const intVector &heights = movieAtts->GetHeights();
             const intVector &stereos = movieAtts->GetStereoFlags();
-            for(int i = 0; i < formats.size(); ++i)
+            for(size_t i = 0; i < formats.size(); ++i)
             {
                 const char *stereoNames[] = {"off", "leftright", 
                     "redblue", "redgreen"};
@@ -8499,7 +8499,7 @@ QvisGUIApplication::SaveMovieMain()
                 args.push_back(movieAtts->GetEmailAddress());
             }
 
-            for(int m = 0; m < movieArguments.size(); ++m)
+            for(size_t m = 0; m < movieArguments.size(); ++m)
                 args.push_back(movieArguments[m]);
 
             if (movieAtts->GetGenerationMethod() == MovieAttributes::NowNewInstance)
@@ -8511,7 +8511,7 @@ QvisGUIApplication::SaveMovieMain()
                 QString program(args[0].c_str());
                 QProcess *movieMaker = new QProcess(this);
                 QStringList sargs;
-                for(int i = 1; i < args.size(); ++i)
+                for(size_t i = 1; i < args.size(); ++i)
                     sargs.append(args[i].c_str());
                 
                 movieMaker->start(program,sargs);
@@ -8535,7 +8535,7 @@ QvisGUIApplication::SaveMovieMain()
             if(!errFlag)
             {
                 // Finish creating the message.
-                for(int i = 0; i < args.size(); ++i)
+                for(size_t i = 0; i < args.size(); ++i)
                 {
                     msg += args[i].c_str();
                     msg += " ";

@@ -110,7 +110,7 @@ QvisElementButton::QvisElementButton(QWidget *parent, const void *data) :
 QvisElementButton::~QvisElementButton()
 {
     // Remove the "this" pointer from the vector.
-    size_t index;
+    size_t index = 0;
     bool notFound = true;
     for(size_t i = 0; i < buttons.size() && notFound; ++i)
     {

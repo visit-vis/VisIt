@@ -206,7 +206,9 @@ CellReconstructor::CreateCentroidPoint(TempCell &old, int interpID,
             if (ptId < nPoints)
             {
                 // it's an original
-                newCoord.weight[old.localids[pt]] += weight;
+                /// HKTODO: this is throwing array out of bounds warning
+                /// added % MAX_NODES_PER_ZONE temporarily
+                newCoord.weight[old.localids[pt % MAX_NODES_PER_ZONE]] += weight;
             }
             else
             {

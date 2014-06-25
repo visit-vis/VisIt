@@ -3002,7 +3002,7 @@ VisItGetSockets(VISIT_SOCKET *lSocket, VISIT_SOCKET *cSocket)
 *******************************************************************************/
 int VisItAttemptToCompleteConnection(void)
 {
-    VISIT_SOCKET socket;
+    VISIT_SOCKET socket = -1; //TODO: verify initialization is safe
 
     LIBSIM_API_ENTER(VisItAttemptToCompleteConnection);
 

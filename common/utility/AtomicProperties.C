@@ -985,7 +985,7 @@ InitializeElementNameToAtomicNumberMap()
     elementname_to_atomicnumber["Mt"] = 109;
 }
 
-static void PrintColorTablesFor_avtColorTables();
+//static void PrintColorTablesFor_avtColorTables();
 
 static bool maps_initialized = false;
 void
@@ -1469,6 +1469,7 @@ int ResidueLongnameMaxlen()
 //    which means "unknown", and hydrogen now starts at 1.  This 
 //    also means we don't have to correct for 1-origin atomic numbers.
 //
+/*
 static void PrintColorTablesFor_avtColorTables()
 {
     cout << "static const float ct_shapely_colors[] = {\n";
@@ -1571,4 +1572,4 @@ static void PrintColorTablesFor_avtColorTables()
     }
     cout << "};\n";
 }
-
+*/

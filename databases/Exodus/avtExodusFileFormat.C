@@ -272,7 +272,7 @@ GetData(int exncfid, int ts, const char *visit_varname, int numBlocks, nc_type *
     int i;
     avtCentering cent = AVT_NODECENT;
     void *buf;
-    int num_vals;
+    int num_vals = -1; // TODO: check on fix for uninitialized warning 
     int num_comps;
     nc_type type;
     size_t len = strlen(visit_varname);
@@ -1065,7 +1065,7 @@ avtExodusFileFormat::GetTimesteps(int *ntimes, vector<double> *times)
             float *vals = new float[len];
             VisItNCErr = nc_get_var_float(ncExIIId, timesVarId, vals);
             CheckNCError(nc_inq_dimid);
-            for (int i = 0; i < len; i++)
+            for (size_t i = 0; i < len; i++)
                 atimes[i] = vals[i];
             delete [] vals;
         }
@@ -1173,6 +1173,7 @@ static void PlusEqualTemplate(T *lhs, T *rhs)
 }
 
 #define PUT(T,t) PlusEqualTemplate<vtk ## T ## Array, t>((vtk ## T ## Array *)lhs,(vtk ## T ## Array *)rhs)
+#if 0
 static void PlusEqual(vtkDataArray *lhs, vtkDataArray *rhs)
 {
     switch (lhs->GetDataType())
@@ -1187,7 +1188,7 @@ static void PlusEqual(vtkDataArray *lhs, vtkDataArray *rhs)
         case VTK_DOUBLE:         PUT(Double,double); break;
     }
 }
-
+#endif
 // ****************************************************************************
 //  Modifications:
 //    Kathleen Biagas, Tue Sep 10 16:06:30 PDT 2013
@@ -1550,11 +1551,11 @@ avtExodusFileFormat::PopulateDatabaseMetaData(avtDatabaseMetaData *md,
 
     int topologicalDimension = -1;
     numBlocks = (int) num_el_blk_len;
-    for (int i = 0; i < num_el_blk_len; i++)
+    for (size_t i = 0; i < num_el_blk_len; i++)
     {
         int connect_varid;
         char connect_varname[NC_MAX_NAME+1];
-        SNPRINTF(connect_varname, sizeof(connect_varname), "connect%d", i+1);
+        SNPRINTF(connect_varname, sizeof(connect_varname), "connect%d", (int)i+1);
         VisItNCErr = nc_inq_varid(ncExIIId, connect_varname, &connect_varid);
         if (VisItNCErr == NC_ENOTVAR) continue;
         CheckNCError(nc_inq_varid);
@@ -1590,7 +1591,7 @@ avtExodusFileFormat::PopulateDatabaseMetaData(avtDatabaseMetaData *md,
     mesh->topologicalDimension = topologicalDimension;
     mesh->blockTitle = "File";
     if (globalFileLists != NULL && fileList >= 0 && 
-        (fileList < globalFileLists->size()))
+        (fileList < (int)globalFileLists->size()))
     {
         mesh->blockNames = (*globalFileLists)[fileList];
     }
@@ -1735,7 +1736,7 @@ avtExodusFileFormat::PopulateDatabaseMetaData(avtDatabaseMetaData *md,
         TRY
         {
             const bool do_expr = false;
-            avtVarType vt = md->DetermineVarType(vname, do_expr);
+            avtVarType vt = md->DetermineVarType(vname, do_expr); (void) vt;
         }
         CATCH(InvalidVariableException)
         {
@@ -1752,7 +1753,7 @@ avtExodusFileFormat::PopulateDatabaseMetaData(avtDatabaseMetaData *md,
     if (nsids.size())
     {
         avtScalarMetaData *smd = new avtScalarMetaData("Nodesets", "Mesh", AVT_NODECENT);
-        for (int i = 0; i < nsids.size(); i++)
+        for (size_t i = 0; i < nsids.size(); i++)
         {
             char tmp[32];
             SNPRINTF(tmp, sizeof(tmp), "%d", nsids[i]);
@@ -1772,7 +1773,7 @@ avtExodusFileFormat::PopulateDatabaseMetaData(avtDatabaseMetaData *md,
     if (ssids.size())
     {
         avtScalarMetaData *smd = new avtScalarMetaData("Sidesets", "Mesh", AVT_NODECENT);
-        for (int i = 0; i < ssids.size(); i++)
+        for (size_t i = 0; i < ssids.size(); i++)
         {
             char tmp[32];
             SNPRINTF(tmp, sizeof(tmp), "%d", ssids[i]);
