@@ -8151,7 +8151,7 @@ void
 QvisGUIApplication::UpdateSessionDir( const std::string &sessionFileName )
 {
     size_t idx = sessionFileName.rfind("/");
-    if (idx < 0)
+    if (idx == std::string::npos)
         idx = sessionFileName.rfind("\\");
     if ( idx > 0 )
         sessionDir = sessionFileName.substr( 0, idx+1 );

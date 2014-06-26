@@ -211,7 +211,7 @@ avtShiftCenteringFilter::ExecuteData(vtkDataSet *inDS, int, std::string)
         {
             dsToShift = (vtkDataSet *) inDS->NewInstance();
             dsToShift->ShallowCopy(inDS);
-            for (size_t k = arraysToSwap.size()-1 ; k >= 0 ; k--)
+            for (size_t k = arraysToSwap.size() ; k-- > 0 ;) ///TODO: check on change of condition to remove autological comparision warning
             {
                 vtkDataArray *arr = inDS->GetCellData()->GetArray(arraysToSwap[k].c_str());
                 vtkDataArray *fa = arr->NewInstance();
@@ -324,7 +324,7 @@ avtShiftCenteringFilter::ExecuteData(vtkDataSet *inDS, int, std::string)
         {
             dsToShift = (vtkDataSet *) inDS->NewInstance();
             dsToShift->ShallowCopy(inDS);
-            for (size_t k = arraysToSwap.size()-1 ; k >= 0 ; k--)
+            for (size_t k = arraysToSwap.size(); k-- > 0 ;)
             {
                 vtkDataArray *arr = inDS->GetPointData()->GetArray(arraysToSwap[k].c_str());
                 vtkDataArray *fa = arr->NewInstance();

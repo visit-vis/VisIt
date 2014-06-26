@@ -1485,7 +1485,7 @@ QvisCMFEWizard::GetMeshForTargetDatabase(void)
     std::string filename = qfilename.FullName();
 
     if(filename == "")
-        filename == windowInfo->GetActiveSource();
+        filename = windowInfo->GetActiveSource();
 
     if (filename == "notset")
         return "";
