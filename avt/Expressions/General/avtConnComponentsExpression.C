@@ -700,7 +700,7 @@ avtConnComponentsExpression::LabelBoundaryNeighbors(vtkDataSet *data_set)
                                   true, true, NULL);
     delete flf;
     clone_ds->Delete();
-    vtkDataSet *ds = tree->GetSingleLeaf();
+    //vtkDataSet *ds = tree->GetSingleLeaf();
     // we do not need to Delete ds because it is contained by tree
     // we do not need to delete tree, since it is a ref_ptr
 

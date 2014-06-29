@@ -777,7 +777,7 @@ void
 ClipEditor::LoadFromFile()
 {
     char fname[200];
-    const char *lower, *upper;
+    const char *lower = NULL, *upper = NULL; ///TODO: check sometimes uninitialized warning
     switch (shapetype)
     {
       case ST_HEX:     lower="Hex"; upper="HEX"; break;
@@ -1017,7 +1017,7 @@ ClipEditor::SaveToFile()
     }
 
     char fname[200];
-    const char *lower, *upper;
+    const char *lower = NULL, *upper = NULL; ///TODO: check on fix for uninitialized pointer
     switch (shapetype)
     {
       case ST_HEX:     lower="Hex"; upper="HEX"; break;

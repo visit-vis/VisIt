@@ -132,7 +132,9 @@ WindowMetrics::Instance()
 // ****************************************************************************
 bool WindowMetrics::embedded = false;
 WindowMetrics::WindowMetrics()
+#ifdef Q_WS_X11
 : testWindow(0)
+#endif
 {
     //
     // Default values

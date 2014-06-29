@@ -509,7 +509,7 @@ void SharedDaemon::AddNewClient(const std::string &host, const stringVector &arg
         if(wsocket->internalSocket()->state() != QAbstractSocket::UnconnectedState)
             wsocket->internalSocket()->waitForBytesWritten();
 
-        wsocket->close();
+        wsocket->close("");
         wsocket->internalSocket()->disconnectFromHost();
         if(wsocket->internalSocket()->state() != QAbstractSocket::UnconnectedState)
             wsocket->internalSocket()->waitForDisconnected();

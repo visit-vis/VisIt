@@ -277,6 +277,7 @@ class IVP_API avtPICSFilter :
     virtual bool              CheckOnDemandViability(void);
 
     void                      AdvectParticle(avtIntegralCurve *ic);
+    virtual vtkDataSet        *GetDomain(int a, int b){ return avtDatasetOnDemandFilter::GetDomain(a,b); }
     virtual vtkDataSet        *GetDomain(const BlockIDType &, const avtVector &);
     bool                      LoadNextTimeSlice();
     virtual int               GetTimeStep(double t) const;

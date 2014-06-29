@@ -740,6 +740,7 @@ const char *residue_names[KNOWN_AMINO_ACIDS] = {
     "GLX"  // 22   GLU/GLN ambiguous   Z
 };
 
+#if 0
 const char residue_abbrs[KNOWN_AMINO_ACIDS] = {
     '?', // UNK  Unknown
     'A', // ALA  Alanine
@@ -765,7 +766,7 @@ const char residue_abbrs[KNOWN_AMINO_ACIDS] = {
     'Y', // TYR  Tyrosine
     'Z', // GLX  GLU/GLN ambiguous
 };
-
+#endif 
 static void
 InitializeResidueNameToAbbrMap()
 {

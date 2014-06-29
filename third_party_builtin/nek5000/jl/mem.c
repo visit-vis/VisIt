@@ -8,7 +8,7 @@
 #include "fail.h"
 #include "mem.h"
 
-inline void *smalloc(size_t size, const char *file, unsigned line)
+/*inline void *smalloc(size_t size, const char *file, unsigned line)
 {
   void *restrict res = malloc(size);
   #if PRINT_MALLOCS
@@ -18,9 +18,9 @@ inline void *smalloc(size_t size, const char *file, unsigned line)
   if(!res && size)
     fail(1,file,line,"allocation of %ld bytes failed\n",(long)size);
   return res;
-}
+}*/
 
-inline void *scalloc(
+/*inline void *scalloc(
   size_t nmemb, size_t size, const char *file, unsigned line)
 {
   void *restrict res = calloc(nmemb, size);
@@ -32,9 +32,9 @@ inline void *scalloc(
     fail(1,file,line,"allocation of %ld bytes failed\n",
            (long)size*nmemb);
   return res;
-}
+}*/
 
-inline void *srealloc(
+/*inline void *srealloc(
   void *restrict ptr, size_t size, const char *file, unsigned line)
 {
   void *restrict res = realloc(ptr, size);
@@ -52,7 +52,7 @@ inline void *srealloc(
   if(!res && size)
     fail(1,file,line,"allocation of %ld bytes failed\n",(long)size);
   return res;
-}
+}*/
 
 
 void array_init_(struct array *a, size_t max, size_t size,

@@ -488,7 +488,8 @@ function VisItProxy()
     {
         debug("Initializing VisIt: " + data);
         visitState = jQuery.parseJSON(data);
-        var uri = "ws://" + visitState.host + ":" + visitState.port;
+        //var uri = "ws://" + visitState.host + ":" + visitState.port;
+        var uri = "ws://" + hostname + ":" + visitState.port;
         debug(uri);
         //websocket.close();
         connectToVisIt(uri);

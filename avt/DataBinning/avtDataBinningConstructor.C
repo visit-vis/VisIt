@@ -166,6 +166,7 @@ class ValueRetriever
 {
   public:
     virtual double GetValue(int) = 0;
+    virtual ~ValueRetriever() {}
 };
 
 class VariableValueRetriever : public ValueRetriever

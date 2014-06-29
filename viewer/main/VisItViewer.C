@@ -934,6 +934,7 @@ ViewerWarningCallback(void *ptr, const char *msg)
     ((ViewerSubject *)ptr)->Warning(msg);
 }
 
+#if !defined(_WIN32) && !defined(Q_WS_MACX)
 // ****************************************************************************
 //  Function: Log output from a piped system command to debug logs
 //
@@ -970,7 +971,7 @@ LogCommand(const char *cmd, const char *truncate_at_pattern)
     }
 #endif
 }
-
+#endif
 // ****************************************************************************
 //  Function: Log output from xdpyinfo and glxinfo commands w/truncation 
 //

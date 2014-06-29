@@ -216,6 +216,7 @@ const int INTERRUPT_MESSAGE_TAG = GetUniqueStaticMessageTag();
 
 class ViewerRemoteProcess : public RemoteProcess
 {
+    using RemoteProcess::Launch;
 public:
     ViewerRemoteProcess(const std::string &p) : RemoteProcess(p)
     {

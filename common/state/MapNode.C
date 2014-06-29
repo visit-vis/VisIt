@@ -431,14 +431,16 @@ MapNode::Reset()
 //
 // ****************************************************************************
 string
-MapNode::ToXML(bool encodeToString) const
+MapNode::ToXML(const std::string& indent, bool encodeToString) const
 {
+    (void) indent;
     return ToXMLNode(encodeToString).ToString();
 }
 
 string
-MapNode::ToJSON(bool encodeToString) const
+MapNode::ToJSON(const std::string& indent, bool encodeToString) const
 {
+    (void) indent;
     return ToJSONNode(encodeToString).ToString();
 }
 
@@ -677,6 +679,12 @@ MapNode::SetValue(const JSONNode& data, const JSONNode& metadata, bool decodeStr
             Variant::SetValue(data,metadata,decodeString);
         }
     }
+}
+
+void
+MapNode::SetValue(const JSONNode* data, const JSONNode* metadata, bool decodeString)
+{
+    MapNode::SetValue(*data, *metadata, decodeString);
 }
 
 // ****************************************************************************

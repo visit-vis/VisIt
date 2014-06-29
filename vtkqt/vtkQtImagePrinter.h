@@ -63,6 +63,9 @@
 
 class VTKQT_API vtkQtImagePrinter : public vtkImageWriter
 {
+    /// TODO: whether the WriteFile functions are meant to hide vtkImageWriter functions
+    using vtkImageWriter::WriteFile;
+    using vtkImageWriter::WriteFileHeader;
 public:
   static vtkQtImagePrinter *New();
   vtkTypeMacro(vtkQtImagePrinter,vtkImageWriter);

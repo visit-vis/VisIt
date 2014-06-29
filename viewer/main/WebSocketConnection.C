@@ -885,7 +885,7 @@ WebSocketConnection::closeConnection()
     QObject::disconnect(socket,SIGNAL(frameReceived(QByteArray)),this, SLOT(ReadFrame(QByteArray)));
     QObject::disconnect(socket,SIGNAL(frameReceived(QString)),this, SLOT(ReadFrame(QString)));
     QObject::disconnect(socket,SIGNAL(aboutToClose()),this, SLOT(closeConnection()));
-    socket->close();
+    socket->close("closing the connection");
     socket->internalSocket()->close();
 }
 
@@ -928,7 +928,7 @@ WebSocketConnection::ReadFrame(const QString &str)
 
 WebSocketConnection::~WebSocketConnection()
 {
-    socket->close();
+    socket->close("closing the connection");
     delete socket;
 }
 

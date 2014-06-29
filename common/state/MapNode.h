@@ -116,10 +116,10 @@ class STATE_API MapNode : public Variant
     int                  GetNumEntries() const {return (int)entries.size();}
     void                 Reset();
 
-    virtual std::string  ToXML(bool encodeString = true) const;
+    virtual std::string  ToXML(const std::string& indent="", bool encodeString = true) const;
     virtual XMLNode      ToXMLNode(bool encodeString = true) const;
 
-    virtual std::string  ToJSON(bool encodeString = true) const;
+    virtual std::string  ToJSON(const std::string& indent="", bool encodeString = true) const;
     virtual JSONNode     ToJSONNode(bool encodeString = true, bool id = true) const;
 
     int                  CalculateMessageSize(Connection &conn) const;
@@ -134,6 +134,7 @@ class STATE_API MapNode : public Variant
     void  SetValue(const XMLNode &, bool decodeString = true);
     void  SetValue(const JSONNode &, bool decodeString = true);
     void  SetValue(const JSONNode& data, const JSONNode& metadata,bool decodeString);
+    void  SetValue(const JSONNode* data, const JSONNode* metadata,bool decodeString);
     std::map<std::string,MapNode> entries;
 };
 

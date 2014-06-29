@@ -101,11 +101,11 @@ public:
     void SelectValue();
 
     // Property setting methods
-    void SetValue(const std::string &value_);
+    void SetPointValue(const std::string &value_);
 
     // Property getting methods
-    const std::string &GetValue() const;
-          std::string &GetValue();
+    const std::string &GetPointValue() const;
+          std::string &GetPointValue();
 
     // Persistence methods
     virtual bool CreateNode(DataNode *node, bool completeSave, bool forceAdd);

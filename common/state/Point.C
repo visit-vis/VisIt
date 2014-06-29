@@ -496,7 +496,7 @@ Point::SetFromNode(DataNode *parentNode)
 
     DataNode *node;
     if((node = searchNode->GetNode("value")) != 0)
-        SetValue(node->AsString());
+        SetPointValue(node->AsString());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -504,7 +504,7 @@ Point::SetFromNode(DataNode *parentNode)
 ///////////////////////////////////////////////////////////////////////////////
 
 void
-Point::SetValue(const std::string &value_)
+Point::SetPointValue(const std::string &value_)
 {
     value = value_;
     Select(ID_value, (void *)&value);
@@ -515,13 +515,13 @@ Point::SetValue(const std::string &value_)
 ///////////////////////////////////////////////////////////////////////////////
 
 const std::string &
-Point::GetValue() const
+Point::GetPointValue() const
 {
     return value;
 }
 
 std::string &
-Point::GetValue()
+Point::GetPointValue()
 {
     return value;
 }

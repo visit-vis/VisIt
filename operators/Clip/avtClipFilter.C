@@ -590,7 +590,7 @@ avtClipFilter::ComputeFastClip(vtkDataSet *inDS, vtkDataSet **outDS,
     vtkImplicitBoolean *ifuncs = vtkImplicitBoolean::New();
     vtkDataSet *output = NULL;
  
-    int nDataSets = 0;
+    //int nDataSets = 0;
     bool inverse = false; 
     bool funcSet = SetUpClipFunctions(ifuncs, inverse);
     if (!funcSet)
@@ -845,7 +845,7 @@ avtClipFilter::Clip1DRGrid(vtkImplicitBoolean *ifuncs, bool inv,
     vtkDataArray *outXC = outGrid->GetXCoordinates();
     vtkDataArray *outVal = inVal->NewInstance();
 
-    int nx = inXC->GetNumberOfTuples();
+    //int nx = inXC->GetNumberOfTuples();
 
     double lastX = inXC->GetTuple1(0);
     double lastVal = inVal->GetTuple1(0);

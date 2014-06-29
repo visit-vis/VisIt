@@ -329,7 +329,7 @@ PyThresholdAttributes_GetLogString()
 static void
 PyThresholdAttributes_CallLogRoutine(Subject *subj, void *data)
 {
-    ThresholdAttributes *atts = (ThresholdAttributes *)subj;
+    ThresholdAttributes *atts = (ThresholdAttributes *)subj; (void) atts;
     typedef void (*logCallback)(const std::string &);
     logCallback cb = (logCallback)data;
 

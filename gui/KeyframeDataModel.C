@@ -69,6 +69,7 @@ public:
         _name(n), _parent(p), _id(i), _delegateType(dt)
     {
     }
+    virtual ~RowInfo() {}
 
     QString name() const             { return _name;   }
     int     parent() const           { return _parent; }

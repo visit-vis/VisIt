@@ -2796,8 +2796,10 @@ Variant::ToXMLNode(bool encodeString) const
 }
 
 JSONNode
-Variant::ToJSONNode(bool encodeString) const
+Variant::ToJSONNode(bool encodeString, bool id) const
 {
+    (void) id;
+
     JSONNode node;
 
     if(dataType == BOOL_TYPE)

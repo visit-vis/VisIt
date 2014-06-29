@@ -237,7 +237,7 @@ FileConnection::Size()
 // *******************************************************************
 
 void
-FileConnection::Append(unsigned char *address, int nChars)
+FileConnection::Append(const unsigned char *address, int nChars)
 {
     if(writeMode)
     {

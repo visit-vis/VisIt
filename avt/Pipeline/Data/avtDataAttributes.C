@@ -5414,7 +5414,7 @@ avtDataAttributes::DebugDump(avtWebpage *webpage)
     webpage->AddSubheading("Plot Information");
     webpage->StartTable();
     webpage->AddTableHeader2("Field", "Value");
-    std::string data(GetPlotInformation().GetData().ToXML(false));
+    std::string data(GetPlotInformation().GetData().ToXML("",false));
     data = StringHelpers::Replace(data, " ", "&nbsp;");
     data = StringHelpers::Replace(data, "<", "&lt;");
     data = StringHelpers::Replace(data, ">", "&gt;");
