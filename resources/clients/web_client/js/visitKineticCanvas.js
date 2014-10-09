@@ -24,7 +24,7 @@ var isEventSupported = (function(){
 
 function VisItCanvas(container_div_id, screenWidth, screenHeight)
 {
-
+    var windowId = 1;
     var ctrlKey = false;
     var shiftKey = false;
     var m_screenWidth = screenWidth;
@@ -164,6 +164,7 @@ function VisItCanvas(container_div_id, screenWidth, screenHeight)
         var end_x = x / m_stage.getWidth();
         var end_y = y / m_stage.getHeight();
 
+        vp.GetViewerMethods().SetActiveWindow(windowId);
         vp.GetViewerMethods().UpdateMouseActions(1, "LeftPress", start_x, start_y, end_x, end_y, ctrlKey, shiftKey);
         vp.GetViewerMethods().UpdateMouseActions(1, "Move", start_x, start_y, end_x, end_y, ctrlKey, shiftKey);
         vp.GetViewerMethods().UpdateMouseActions(1, "LeftRelease", start_x, start_y, end_x, end_y, ctrlKey, shiftKey);
@@ -172,16 +173,19 @@ function VisItCanvas(container_div_id, screenWidth, screenHeight)
     this.setVisItConnection = function(conn) {
         vp = conn;
         vp.GetViewerState().registerCallback("ViewerClientInformation",
-                                             updateViewer);
+                                             [this.updateViewer, this] );
+        /// TODO: determine next window id and whether this is first..
+        vp.GetViewerMethods().RegisterNewWindow(windowId, "Image");
     }
 
-    function updateViewer(obj) 
+    this.updateViewer = function(obj) 
     {
         var vars = obj.get("vars");
         var supportedFormats = obj.get("supportedFormats");
 
-        for(var i = 0; i < 1 /*vars.length*/; ++i) {
-            if(vars[i].get("format") === supportedFormats.indexOf("Image")) 
+        for(var i = 0; i < vars.length; ++i) {
+            if(vars[i].get("format") === supportedFormats.indexOf("Image") &&
+               vars[i].get("windowId") == windowId) 
             {
                 var image  = "data:image/jpeg;base64,";
                 image += vars[i].get("data");

@@ -1,78 +1,349 @@
 <html>
     <head>
         <title>VisIt client</title>
+        <style type="text/css">
+        #tabs ul {
+        padding: 0px;
+        margin: 0px;
+        margin-left: 10px;
+        list-style-type: none;
+        }
+
+        #tabs ul li {
+        display: inline-block;
+        clear: none;
+        float: left;
+        height: 24px;
+        }
+
+        #tabs ul li a {
+        position: relative;
+        margin-top: 16px;
+        display: block;
+        margin-left: 6px;
+        line-height: 24px;
+        padding-left: 10px;
+        background: #f6f6f6;
+        z-index: 9999;
+        border: 1px solid #ccc;
+        border-bottom: 0px;
+        -moz-border-radius-topleft: 4px;
+        border-top-left-radius: 4px;
+        -moz-border-radius-topright: 4px;
+        border-top-right-radius: 4px;
+        width: 130px;
+        color: #000000;
+        text-decoration: none;
+        font-weight: bold;
+        }
+
+    #tabs ul li a:hover {
+    text-decoration: underline;
+    }
+    #tabs #Content_Area {
+    padding: 0 15px;
+    clear:both;
+    overflow:scroll;
+    line-height:19px;
+    position: relative;
+    top: 20px;
+    z-index: 5;
+    height: 100px;
+    overflow: scroll;
+    }
+    </style>
+
+    <script>
+
+
+    </script>
     </head>
     <body onunload="vp.stopWebSocket()">
+
+        <script type="text/javascript">
+        function tab(tab) {
+            document.getElementById('tab0').style.display = 'none';
+            document.getElementById('li_tab0').setAttribute("class", "");
+            
+            document.getElementById('tab1').style.display = 'none';
+            document.getElementById('li_tab1').setAttribute("class", "");
+            document.getElementById('tab2').style.display = 'none';
+            document.getElementById('li_tab2').setAttribute("class", "");
+            
+            document.getElementById('tab_info').style.display = 'none';
+            document.getElementById('li_tab_info').setAttribute("class", "");
+
+            document.getElementById('tab_slice').style.display = 'none';
+            document.getElementById('li_tab_slice').setAttribute("class", "");
+
+            document.getElementById(tab).style.display = 'block';
+            document.getElementById('li_'+tab).setAttribute("class", "active");
+        }
+        </script>
+
        <table>
             <col width="35%"/>
             <tr>
                 <td valign="top">
-            <table border=1>
+                  <table border=1>
                     <tr><td>
-                        <input type="text" name="host" id="host" value="starsky.lbl.gov" size=14 />
-                        <input type="text" name="port" id="port" value="9002" size=5 />
-                        <input type="password" name="password" id="password" value="bob" size=5 /><br>
+                    <div id="tabs">
+                    <ul>
+                    <li id="li_tab0" onclick="tab('tab0')"><a>Connect</a></li>
+                    <li id="li_tab1" onclick="tab('tab1')"><a>Database</a></li>
+                    <li id="li_tab2" onclick="tab('tab2')"><a>Console</a></li>
+                    <li id="li_tab_info" onclick="tab('tab_info')"><a>User Info</a></li>
+                    <li id="li_tab_slice" onclick="tab('tab_slice')"><a>Slice</a></li>                    
+                    </ul>
+                    <div id="Content_Area">
+                        <div id="tab0">
+                            <input type="text" name="host" id="host" value="starsky.lbl.gov" size=14 />
+                            <input type="text" name="port" id="port" value="9002" size=5 />
+                            <input type="password" name="password" id="password" value="bob" size=5 /><br>
+                            <button onClick="connect();">Connect</button>
+                            <button onClick="vp.stopWebSocket();">Disconnect</button>
+                        </div>
+                        <div id="tab_info">
+                            Name: <input type="text" name="userName" id="userName" value="" size=10 />
+                            Window Id (-1 for New):
+                            <input type="text" name="windowId" id="windowId" value="1" size=1 />
+                            Dimensions: <input type="text" name="windowWidth" id="windowWidth" value="600" size=5 />
+                            <input type="text" name="windowHeight" id="windowHeight" value="600" size=5 /><br>
+                            
+                        </div>
+                        <div id="tab1">
+                                    <table border=1>
+                                    <tr><td>
+                                        Database :
+                                        <input type="text" name="database" id="database" size=14 />
+                                        <button onClick="OpenDatabase();">Load</button><br>
+                                        <button onClick="vp.GetViewerMethods().InvertBackgroundColor();">InvertBGColor</button>
+                                        <button onClick="vp.GetViewerMethods().DeleteActivePlots();">DeleteActivePlot</button>
+                                    </td></tr>
+                                    <tr><td>
+                                        Variable :
+                                        <input type="text" name="variable" id="variable" size=14 />
+                                        <button onClick="vp.GetViewerMethods().DrawPlots();">Draw</button><br>
+                                        <button onClick="AddPseudocolorPlot();">Pseudocolor</button>
+                                        <button onClick="AddContourPlot();">Contour</button>
+                                    </td></tr>
+                            </table>
+                        </div>
+
+                        <div id="tab2">
+                            <table border=1>
+                                <tr><td>
+                                    Inspect:
+                                    <input type="text" name="inspect" id="inspect" size=15></input><br>
+                                    <button onClick="inspectClass();">Inspect</button>
+                                    <button onClick="showAllClasses();">Show All</button>
+                                    <button onClick="clearScreen();">Clear Screen</button><br>
+                                    Output:<br>
+                                    <textarea id="debugTextArea" style="width:250;height:50;"></textarea><br>
+                                    Recording: <button onClick="macroStart();">Start</button>
+                                    <button onClick="macroStop();">End</button>
+                                    <button onClick="writeState();">Current</button><br>
+                                    <textarea id="historyTextArea" style="width:250;height:50;"></textarea><br>
+                                    Message:<br>
+                                    <textarea id="messageTextArea" style="width:250;height:50;"></textarea><br>
+                                    <button onClick="sendMessage();">Send</button>
+                                    <button onClick="interpretMessage();">Interpret</button>
+                                </td></tr>
+                            </table>
+                        </div>
+
+                        <div id="tab_slice">
+                            <input type="checkbox" name="slice" id="slice" size=15 onclick="enableSlicing();">Enable Slicing</input><br>
+                              Origin: <input type="text" value="0,0,0" id="sliceOrigin"></input> <br>
+                              Direction: <input type="text" value="0,0,1" id="sliceVector"></input> <br>
+                              X: <input type="range" min="-10" max="10" id="xRange"> <br>
+                              Y: <input type="range" min="-10" max="10" id="yRange"> <br>
+                              Z: <input type="range" min="-10" max="10" id="zRange"> <br>
+                        </div>
+
+                    </div>
+                    </div>
+
+                    </td></tr>
             </tr></td>
-            <tr><td>
-            Username:
-                        <input type="text" name="userName" id="userName" value="" size=20 /><br>
-            Window Id: (-1 for new):
-                        <input type="text" name="windowId" id="windowId" value="1" size=5 /><br>
-                    </td></tr>
-                    <tr><td>
-                        Dimensions: <input type="text" name="windowWidth" id="windowWidth" value="600" size=5 />
-                        <input type="text" name="windowHeight" id="windowHeight" value="600" size=5 /><br>
-                        <button onClick="connect();">Connect</button>
-                        <button onClick="vp.stopWebSocket();">Disconnect</button>
-                    </td></tr>
-                    <!-- VisIt Methods -->
+            <tr>
+                <td>
+                     <div>
+                     <canvas id="glcanvas" width="400" height="400"></canvas>
+                     </div>
+                </td>
+            </tr>
             </table>
-            <table border=1>
-                    <tr><td>
-                        Database :
-                        <input type="text" name="database" id="database" size=14 />
-                        <button onClick="OpenDatabase();">Load</button><br>
-                        <button onClick="vp.GetViewerMethods().InvertBackgroundColor();">InvertBGColor</button>
-                        <button onClick="vp.GetViewerMethods().DeleteActivePlots();">DeleteActivePlot</button>
-                    </td></tr>
-                    <tr><td>
-                        Variable :
-                        <input type="text" name="variable" id="variable" size=14 />
-                        <button onClick="vp.GetViewerMethods().DrawPlots();">Draw</button><br>
-                        <button onClick="AddPseudocolorPlot();">Pseudocolor</button>
-                        <button onClick="AddContourPlot();">Contour</button>
-                    </td></tr>
-                </table>
-                <table border=1>
-                    <tr><td>
-                        Inspect:
-                        <input type="text" name="inspect" id="inspect" size=15></input><br>
-                        <button onClick="inspectClass();">Inspect</button>
-                        <button onClick="showAllClasses();">Show All</button>
-                        <button onClick="clearScreen();">Clear Screen</button><br>
-                        <!-- <canvas id="myCanvas" width="200" height="200" style="border:1px solid"></canvas><br> -->
-                        Output:<br>
-                        <textarea id="debugTextArea" style="width:250;height:50;"></textarea><br>
-                        Recording: <button onClick="macroStart();">Start</button>
-                        <button onClick="macroStop();">End</button>
-                        <button onClick="writeState();">Current</button><br>
-                        <textarea id="historyTextArea" style="width:250;height:50;"></textarea><br>
-                        Message:<br>
-                        <textarea id="messageTextArea" style="width:250;height:50;"></textarea><br>
-                        <button onClick="sendMessage();">Send</button>
-                        <button onClick="interpretMessage();">Interpret</button>
-                    </td></tr>
-        </table>
                 </td>
                 <td valign="top">
                     <div id="container"></div><br>
-                    <img src="" id="visitImage" />
                 </td>
             </tr>
-        </table>
+       </table>
+        <script type="text/javascript">
+          tab('tab0')
+        </script>
+        <!-- <script src="js/jquery.min.js"> </script> -->
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/bootstrap.js"></script>
+        <script type="text/javascript" src="js/gl-matrix.js"></script>
+        <script type="text/javascript" src="js/select2.min.js"></script>
+        <script type="text/javascript" src="js/vgl.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
 
-        <script src="js/jquery.min.js"> </script>
+<!--
         <script>
+
+        var width = 600;
+        var height = 300;
+         
+        var holder = d3.select("body")
+              .append("svg")
+              .attr("width", width)    
+              .attr("height", height); 
+
+        // draw the circle
+        holder.append("circle")
+          .attr("cx", 300)
+          .attr("cy", 150) 
+          .style("fill", "none")   
+          .style("stroke", "blue") 
+          .attr("r", 120);
+
+        // when the input range changes update the circle 
+        d3.select("#nRadius").on("input", function() {
+          update(+this.value);
+        });
+
+        // Initial starting radius of the circle 
+        update(120);
+
+        // update the elements
+        function update(nRadius) {
+
+          // adjust the text on the range slider
+          d3.select("#nRadius-value").text(nRadius);
+          d3.select("#nRadius").property("value", nRadius);
+
+          // update the circle radius
+          holder.selectAll("circle") 
+            .attr("r", nRadius);
+        }
+
+        </script>
+-->
+        <script>
+                var vtkInitialized = false;
+        var node, viewer, reader;
+        var geoms, mapper, material, actor;
+        var interactorStyle;
+
+        var m_camera;
+
+        var m_plane;
+
+        function updateViewMatrix() {
+            var up = m_camera.viewUpDirection();
+            var n  = m_camera.viewPlaneNormal();
+
+            vp.GetViewerMethods().UpdateView([up[0],up[1],up[2]], 
+                                             [n[0],n[1],n[2]]);
+        }
+
+        function initVGLRenderer() {
+            node = document.getElementById("glcanvas");
+            viewer = vgl.viewer(node);
+            reader = vgl.geojsonReader();
+
+            interactorStyle = vgl.trackballInteractorStyle();
+
+            viewer.init();
+            viewer.renderWindow().resize($(node).width(), $(node).height());
+            viewer.setInteractorStyle(interactorStyle);
+
+            renderer = viewer.renderWindow().activeRenderer();
+            $(viewer).on(vgl.event.mouseRelease, updateViewMatrix);
+            $(viewer).on(vgl.event.mouseWheel, updateViewMatrix);
+
+            //m_plane = vgl.utils.createPlane(0,0,0,1,0,0);
+            //m_plane.mapper().setColor([0.0,0.0,1.0]);
+
+            //renderer.addActor(m_plane);
+
+          //m_camera = renderer.camera();
+          //renderer.setBackgroundColor(1.0, 1.0, 1.0, 1.0);
+          //renderer.resetCamera();
+          //viewer.render();
+        }
+
+
+        function readGeoJsonData(data) {
+          data = jQuery.parseJSON(data);
+          geoms = reader.readGJObject(data);
+          material = vgl.utils.createPhongMaterial([0.0,0.1,1.0]);
+          //material = vgl.utils.createColorMappedMaterial();
+          for (var i = 0; i < geoms.length; ++i) {
+            mapper = vgl.mapper();
+            mapper.setGeometryData(geoms[i]);
+
+            actor = vgl.actor();
+            actor.setMapper(mapper);
+            actor.setMaterial(material);
+
+            renderer.addActor(actor);
+          }
+          //m_plane = vgl.utils.createPlane(200,200,0,0,0,0,1,1,0);
+          //m_plane.mapper().setColor([0.0,0.0,1.0]);
+
+          //renderer.addActor(m_plane);
+
+          m_camera = renderer.camera();
+          renderer.setBackgroundColor(1.0, 1.0, 1.0, 1.0);
+          renderer.resetCamera();
+          viewer.render();
+        }
+
+        function readVTKData(data) {
+          alert(data);
+          var count = 5;
+          var index = 0;
+          var findex = 0;
+          while(index < count) {
+            data = data.substring(data.indexOf("\n")+1);
+            alert(data);
+            index++;
+          }
+          var obj = {};
+          obj["data"] = data;
+
+          var vtk_reader = vgl.vtkReader();
+          ret = vtk_reader.parseObject(obj);
+          renderer.addActor(ret[0]);
+          m_camera = renderer.camera();
+          renderer.setBackgroundColor(1.0, 1.0, 1.0, 1.0);
+          renderer.resetCamera();
+          viewer.render();
+        }
+
+        function updateVTKWindow(obj) {
+            var vars = obj.get("vars");
+            var supportedFormats = obj.get("supportedFormats");
+
+            for(var i = 0; i < vars.length; ++i) {
+                if(vars[i].get("format") === supportedFormats.indexOf("Data") &&
+                   vars[i].get("windowId") == 2)
+                {
+                    var data = atob(vars[i].get("data"));
+                    if(vtkInitialized == false) {
+                        initVGLRenderer();
+                        readGeoJsonData(data);
+                        //readVTKData(data);
+                        vtkInitialized = true;
+                    }
+                }
+            }   
+        }
         function debug(message)
         {
             debugTextArea.value += message + "\n";
@@ -120,15 +391,13 @@
 
         </script>
         <script src="js/visit.js"> </script>
-        <script src="js/sylvester.js"> </script>
-        <script src="js/trackball.js"> </script>
+        <script src="js/visitKineticCanvas.js"> </script>
         <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.4.0.min.js"></script>
      
         <script>
 
-        var stage, layer, imageObj, kineticImage;
-
-        vp = new VisItProxy();
+        var canvas = null;
+        var vp = new VisItProxy();
 
         function connect()
         {
@@ -140,77 +409,67 @@
             var windowWidth = document.getElementById("windowWidth").value;
             var windowHeight = document.getElementById("windowHeight").value;
 
-            stage = new Kinetic.Stage({
-                    container: 'container',
-                    width: windowWidth,
-                    height: windowHeight
-                    });
-                layer = new Kinetic.Layer();
-                imageObj = new Image();
-                
-                imageObj.onload = function() {
-                layer.removeChildren();
+            canvas = new VisItCanvas('container', windowWidth, windowHeight);
+            vp.connect(hostname, port, password,
+                       userName, windowId, windowWidth, 
+                       windowHeight, visitInitialized);
+        }
 
-                kineticImage = new Kinetic.Image({
-                x: 0, y: 0,
-                image: imageObj,
-                width: stage.getWidth(),
-                height: stage.getHeight()
-                });
+        function visitInitialized(){
+            /// only register when visit has initialized..
+            /// todo: fix this by letting viewerState handle 
+            /// this situation gracefully.
 
-                kineticImage.setListening(false);
-    
-                layer.add(kineticImage);
-                stage.add(layer);
-                };
+            canvas.setVisItConnection(vp);
+            vp.GetViewerState().registerCallback("ClientMethod",
+                                                  updateClientMethod);
 
-                trackball.init(stage); 
-                vp.connect(hostname, port, password,
-                           userName, windowId, windowWidth, 
-                           windowHeight, visitInitialized);
+            /// 
+            var ids = vp.GetViewerMethods().GetWindowIds();
+            if(ids.length < 2) {
+                vp.GetViewerMethods().AddWindow();
             }
+            var nids = vp.GetViewerMethods().GetWindowIds();
 
-            function visitInitialized(){
-                vp.GetViewerState().registerCallback("ViewerClientInformation",
-                                                      updateViewerClientInformation);
-                vp.GetViewerState().registerCallback("ClientMethod",
-                                                      updateClientMethod);
-            }
+            vp.GetViewerMethods().RegisterNewWindow(2, "Data");
+            vp.GetViewerState().registerCallback("ViewerClientInformation",
+                                                  updateVTKWindow);
+        }
 
-            function sendMessage()
+        function sendMessage()
+        {
+            message = document.getElementById("messageTextArea").value;
+            //vp.SendMessage(message);
+            document.getElementById("messageTextArea").value = "";
+        }
+
+        function AddPseudocolorPlot()
+        {
+            var variable = document.getElementById("variable").value;
+
+            if(variable === "")
             {
-                message = document.getElementById("messageTextArea").value;
-                //vp.SendMessage(message);
-                document.getElementById("messageTextArea").value = "";
+                alert("please add variable");
+                return;
             }
 
-            function AddPseudocolorPlot()
+            vp.GetViewerMethods().AddPseudocolorPlot(variable);
+            vp.GetViewerMethods().DrawPlots();
+        }
+
+        function AddContourPlot()
+        {
+            var variable = document.getElementById("variable").value;
+
+            if(variable === "")
             {
-                var variable = document.getElementById("variable").value;
-
-                if(variable === "")
-                {
-                    alert("please add variable");
-                    return;
-                }
-
-                vp.GetViewerMethods().AddPseudocolorPlot(variable);
-                vp.GetViewerMethods().DrawPlots();
+                alert("please add variable");
+                return;
             }
 
-            function AddContourPlot()
-            {
-                var variable = document.getElementById("variable").value;
-
-                if(variable === "")
-                {
-                    alert("please add variable");
-                    return;
-                }
-
-                vp.GetViewerMethods().AddContourPlot(variable);
-                vp.GetViewerMethods().DrawPlots();
-            }
+            vp.GetViewerMethods().AddContourPlot(variable);
+            vp.GetViewerMethods().DrawPlots();
+        }
 
             function OpenDatabase()
             {
@@ -221,21 +480,6 @@
                     debug("loading filename: " + filename);
                     //viewerMethods.SetActiveWindow(windowId);
                     vp.GetViewerMethods().OpenDatabase(filename);
-                }
-            }
-
-            function updateViewerClientInformation(obj) 
-            {
-                var vars = obj.get("vars");
-                var supportedFormats = obj.get("supportedFormats");
-
-                for(var i = 0; i < 1 /*vars.length*/; ++i) {
-                    if(vars[i].get("format") === supportedFormats.indexOf("Image")) 
-                    {
-                        var image  = "data:image/jpeg;base64,";
-                        image += vars[i].get("data");
-                        imageObj.src = image;
-                    }
                 }
             }
 
@@ -322,6 +566,48 @@
 
                 document.getElementById("messageTextArea").value = "";
             }
+
+
+            function enableSlicing() {
+                var isChecked = document.getElementById("slice").checked;
+             
+                if(isChecked) {
+                    
+                    sliceAttr = vp.GetViewerState().getIndexFromTypename("ThreeSliceAttributes");
+                    //vp.GetViewerState().set(sliceAttr,"originType", 2);
+                    //vp.GetViewerState().set(sliceAttr,"project2d", false);
+                    vp.GetViewerState().set(sliceAttr,"interactive", false);
+                    vp.GetViewerState().notify(sliceAttr);
+                    vp.GetViewerMethods().AddOperator("ThreeSlice");
+                    vp.GetViewerMethods().SetOperatorOptions("ThreeSlice");
+                    vp.GetViewerMethods().DrawPlots();
+                } else {
+                    vp.GetViewerMethods().RemoveOperator(0);
+                    vp.GetViewerMethods().DrawPlots();
+                }
+            }
+            function sliceUpdate(axis, value) {
+              var isChecked = document.getElementById("slice").checked;                
+              if(isChecked === false) {
+                  return;
+              }
+              sliceAttr = vp.GetViewerState().getIndexFromTypename("ThreeSliceAttributes");
+              vp.GetViewerState().set(sliceAttr,axis, value);
+              vp.GetViewerState().notify(sliceAttr);
+              vp.GetViewerMethods().SetOperatorOptions();
+              vp.GetViewerMethods().SetOperatorOptions("ThreeSlice");
+              vp.GetViewerMethods().DrawPlots();     
+            }
+
+            d3.select("#xRange").on("input", function() {
+              sliceUpdate("x",+this.value);
+            });
+            d3.select("#yRange").on("input", function() {
+              sliceUpdate("y",+this.value);
+            });
+            d3.select("#zRange").on("input", function() {
+              sliceUpdate("z",+this.value);
+            });
         </script>
     </body>
 </html>

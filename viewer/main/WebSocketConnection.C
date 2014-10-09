@@ -883,6 +883,7 @@ WebSocketConnection::closeConnection()
     QObject::disconnect(socket,SIGNAL(aboutToClose()),this, SLOT(closeConnection()));
     socket->close("closing the connection");
     socket->internalSocket()->close();
+    emit disconnected();
 }
 
 void
@@ -897,7 +898,7 @@ WebSocketConnection::ReadFrame(const QString &str)
     //test if object..
     if(!str.startsWith("{") || !str.endsWith("}"))
     {
-        std::cout << "Incomplete Object..:" << str.toStdString() << std::endl;
+        std::cerr << "Incomplete Object..:" << str.toStdString() << std::endl;
         while(socket->internalSocket()->bytesAvailable())
             socket->internalSocket()->readAll();
         return;
@@ -905,6 +906,8 @@ WebSocketConnection::ReadFrame(const QString &str)
 
     messageRead = str;
     messages.push_back(str);
+
+    emit activated(0);
 }
 
 // ****************************************************************************
@@ -1052,9 +1055,29 @@ WebSocketConnection::Fill()
         std::string message = messageRead.toStdString();
         messageRead = "";
 
-        JSONNode node;
         try{
-        node.Parse(message);
+            //node.Parse(message);
+
+            while(message.size() > 0)
+            {
+                JSONNode node;
+
+                size_t amt = node.Parse(message);
+
+                //std::cout << "message processing: " << node.ToString() << " " << amt << " " << message.size() << std::endl;
+
+                int guido = node["id"].GetInt();
+
+                JSONNode contents = node["contents"];
+                JSONNode metadata = node["metadata"];
+
+                res += SocketConnection::Write(guido, contents, metadata); //Write(guido,&mapnode);
+
+                if(amt >= message.size())
+                    break;
+
+                message = message.substr(amt);
+            }
         }
         catch(...)
         {
@@ -1062,21 +1085,6 @@ WebSocketConnection::Fill()
             std::cerr << "message: " << message << std::endl;
             continue;
         }
-
-        int guido = node["id"].GetInt();
-        JSONNode contents = node["contents"];
-        JSONNode metadata = node["metadata"];
-
-        /// With the information I have I could probably
-        /// just use JSONNode to convert completely..
-        /// but that would leave MapNode incomplete..
-
-        //MapNode mapnode(contents, metadata, false);
-
-        //std::cout << mapnode.ToXML(false) << std::endl;
-        //std::cout << mapnode.ToJSON(false) << std::endl;
-
-        res += SocketConnection::Write(guido, contents, metadata); //Write(guido,&mapnode);
     }
 
     messages.clear();

@@ -166,6 +166,9 @@ private:
     void OpenClient();
 
 private slots:
+    /// Experimental Web Client Stuff
+    void BroadcastImage(int windowId, bool inMotion);
+    void BroadcastData(int windowId);
     void HeavyInitialization();
 
     void AddInputToXfer(ViewerClientConnection *, AttributeSubject *subj);
@@ -210,6 +213,7 @@ private:
     static void CommandNotificationCallback(void *cbdata, int timeout);
     static void ProcessEventsCB(void *cbData);
     static void PostponeActionCallback(int windowId, const ViewerRPC &args, void *cbdata);
+    static void RenderEventCB(int windowId, bool inMotion, void* cbData);
 private:
     QSocketNotifier       *checkParent;
     QTimer                *keepAliveTimer;
@@ -254,13 +258,12 @@ private:
     int               lastAnimation;
 private:
     // Experimental web client stuff.
-    void BroadcastAdvanced(AttributeSubject *subj);
     void Export();
     void ExportWindow();
     void ExportHostProfile();
 
     SharedDaemon             *shared_viewer_daemon;
-    size_t                   clientIds;
+    //size_t                   clientIds;
 };
 
 #endif

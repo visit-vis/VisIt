@@ -198,7 +198,7 @@ class PIPELINE_API avtDataset : public avtDataObject
     void                     RenumberDomainIDs(bool acrossAllProcs = true);
     virtual void             DebugDump(avtWebpage *, const char *);
 
-    std::string              GetDatasetAsString();
+    std::string              GetDatasetAsString(const std::string &format);
   protected:
     avtDataTree_p            dataTree;
 

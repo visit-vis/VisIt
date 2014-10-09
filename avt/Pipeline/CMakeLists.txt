@@ -260,7 +260,7 @@ ADD_LIBRARY(avtpipeline_ser ${ALL_SOURCES})
                                            vtkCommonDataModel vtkFiltersGeometry 
                                            vtkRenderingOpenGL vtkRenderingFreeType 
                                            vtkRenderingFreeTypeOpenGL vtkInteractionStyle 
-                                           ${ZLIB_LIB} ${EAVL_LIB})
+                                           ${ZLIB_LIB} ${EAVL_LIB} vtkIOGeoJSON)
 
 IF(HAVE_LIB_R)
      TARGET_LINK_LIBRARIES(avtpipeline_ser vtkFiltersStatisticsGnuR)
@@ -280,7 +280,7 @@ IF(VISIT_PARALLEL)
                                               vtkRenderingOpenGL vtkRenderingFreeType 
                                               vtkRenderingFreeTypeOpenGL 
                                               vtkInteractionStyle ${ZLIB_LIB} 
-                                              ${EAVL_LIB})
+                                              ${EAVL_LIB} vtkIOGeoJSON)
     IF(HAVE_LIB_R)
         TARGET_LINK_LIBRARIES(avtpipeline_par vtkFiltersStatisticsGnuR)
     ENDIF(HAVE_LIB_R)

@@ -626,6 +626,9 @@ public:
     static ViewerWindowManagerAttributes *GetWindowAtts();
     static void                          ViewCallback(VisWindow *);
     static void                          RenderInformationCallback(void *data);
+    static void                          RenderEventCallback(void *data, bool inMotion);
+    void                                 SetRenderEventCallback(void (*cb)(int, bool, void*),
+                                                                void *cbdata);
 
     static AnnotationAttributes          *GetAnnotationDefaultAtts();
     static void                          SetClientAnnotationAttsFromDefault();
@@ -719,6 +722,9 @@ public:
     void             *AnimationCBData;
     void             (*UpdateWindowInformationCB)(WindowInformation *, int, void *);
     void             *UpdateWindowInformationCBData;
+
+    void             (*RenderEventCB)(int, bool, void*);
+    void             *RenderEventCBData;
 };
 
 #endif

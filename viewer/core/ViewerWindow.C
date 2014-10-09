@@ -426,6 +426,8 @@ ViewerWindow::SetVisWindow(VisWindow *vw)
     visWindow->SetRenderInfoCallback(ViewerWindowManager::RenderInformationCallback,
         &windowId);
 
+    visWindow->SetRenderEventCallback(ViewerWindowManager::RenderEventCallback,
+        &windowId);
     //
     // Callback for pick.
     //
@@ -10318,4 +10320,13 @@ ViewerWindow::GetScaleMode(ScaleMode &ds, ScaleMode &rs, WINDOW_MODE wm)
         ds = LINEAR;
         rs = LINEAR; 
     }
+}
+
+void
+ViewerWindow::UpdateMouseActions(std::string action,
+                                 double start_dx, double start_dy,
+                                 double end_dx, double end_dy,
+                                 bool ctrl, bool shift)
+{
+    visWindow->UpdateMouseActions(action, start_dx, start_dy, end_dx, end_dy, ctrl, shift);
 }

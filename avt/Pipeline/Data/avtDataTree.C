@@ -61,6 +61,7 @@
 #include <NoInputException.h>
 #include <DebugStream.h>
 #include <TimingsManager.h>
+#include <vtkGeoJSONWriter.h>
 
 #include <set>
 #include <string>
@@ -1676,40 +1677,52 @@ avtDataTree::PruneTree(const string &label)
 // ****************************************************************************
 
 std::string
-avtDataTree::GetDatasetAsString()
+avtDataTree::GetDatasetAsString(const std::string& format)
 {
     int nLeaves = 0;
     vtkDataSet **ds = GetAllLeaves(nLeaves);
 
     if(nLeaves <= 0) return "";
 
-//    vtkDataSetWriter* writer = vtkDataSetWriter::New();
-//    writer->SetFileTypeToASCII();
-//    writer->WriteToOutputStringOn();
-//    writer->SetInput(ds[0]);
-//    writer->Write();
-//    std::string res = writer->GetOutputString();
-//    writer->Delete();
-//    return res;
-
     vtkAppendFilter* vaf = vtkAppendFilter::New();
 
     for(int i = 0; i < nLeaves; ++i)
         vaf->AddInputData(ds[i]);
 
+    vaf->Update();
+
     vtkGeometryFilter* vu = vtkGeometryFilter::New();
 
     vu->AddInputData(vaf->GetOutput());
+    vu->Update();
+
     vtkDataSet* dataset = dynamic_cast<vtkDataSet*>(vu->GetOutput());
 
+    if(format == "GeoJSON") {
+
+        vtkGeoJSONWriter* gjwriter = vtkGeoJSONWriter::New();
+        gjwriter->SetInputData(dataset);
+        gjwriter->SetWriteToOutputString(true);
+        gjwriter->Write();
+
+        vtkStdString str = gjwriter->GetOutputStdString();
+        std::string gjstr = str.c_str();
+        return gjstr;
+    }
+
+    /// else default to VTK...
     vtkDataSetWriter* writer = vtkDataSetWriter::New();
 
+    //writer->SetFileTypeToBinary();
     writer->SetFileTypeToASCII();
     writer->WriteToOutputStringOn();
     writer->SetInputData(dataset);
     writer->Write();
 
-    std::string res(writer->GetOutputString(),writer->GetOutputStringLength());
+    //std::string res(writer->GetOutputString(),writer->GetOutputStringLength());
+    std::string res((char*)writer->GetOutputString());
+
+
     delete [] ds;
     vaf->Delete();
     vu->Delete();

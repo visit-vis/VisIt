@@ -183,6 +183,9 @@ private:
     QWsSocket                 *socket;
     QString messageRead;
     std::vector<QString> messages;
+signals:
+    void activated(int);
+    void disconnected();
 };
 
 #endif

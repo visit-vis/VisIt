@@ -261,6 +261,9 @@ ViewerWindowManager::ViewerWindowManager() : ViewerBase()
     AnimationCBData = NULL;
     UpdateWindowInformationCB = NULL;
     UpdateWindowInformationCBData = NULL;
+
+    RenderEventCB = NULL;
+    RenderEventCBData = NULL;
 }
 
 // ****************************************************************************
@@ -9652,3 +9655,17 @@ void ViewerWindowManager::SetBackendType(int newVal)
     }
 }
 
+
+void ViewerWindowManager::SetRenderEventCallback(void (*cb)(int, bool,void*), void *cbdata) {
+    RenderEventCB = cb;
+    RenderEventCBData = cbdata;
+}
+
+void ViewerWindowManager::RenderEventCallback(void* data, bool inMotion) {
+    ViewerWindowManager* instance = Instance();
+
+    if(instance->RenderEventCB != NULL) {
+        int index = *((int*)data);
+        instance->RenderEventCB(index,inMotion, instance->RenderEventCBData);
+    }
+}

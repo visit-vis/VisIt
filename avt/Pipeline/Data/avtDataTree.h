@@ -157,7 +157,7 @@ class PIPELINE_API avtDataTree
     int                      GetNumberOfCells(int topoDim, bool polysOnly) const;
 
     vtkDataSet              *GetSingleLeaf(void);
-    std::string              GetDatasetAsString();
+    std::string              GetDatasetAsString(const std::string &format);
     int                      GetNumberOfLeaves(void);
     void                     Merge(avtDataTree_p);
 

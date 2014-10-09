@@ -718,7 +718,7 @@ avtDataset::RenumberDomainIDs(bool acrossAllProcs)
 }
 
 std::string
-avtDataset::GetDatasetAsString()
+avtDataset::GetDatasetAsString(const std::string& format)
 {
-    return dataTree->GetDatasetAsString();
+    return dataTree->GetDatasetAsString(format);
 }

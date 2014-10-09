@@ -64,6 +64,7 @@
 #include <ViewerPasswordWindow.h>
 #include <ViewerWindowUI.h>
 #include <VisWindow.h>
+#include <VisWindowWithInteractions.h>
 
 // ****************************************************************************
 // Method: ViewerFactoryUI::ViewerFactoryUI
@@ -126,7 +127,7 @@ ViewerFactoryUI::CreateVisWindow()
     VisWindow *visWindow = NULL;
     if (GetViewerProperties()->GetNowin())
     {
-        visWindow = new VisWindow();
+        visWindow = new VisWindowWithInteractions();
     }
     else
     {
